@@ -14,7 +14,7 @@ Mikrokondo is a tidy workflow for performing routine bioinformatic tasks like, r
 ## Is mikrokondo right for me?
 Mikrokondo takes in either, Illumina, Nanopore or Pacbio data (Pacbio data only partially tested). You can also use mikrokondo for hybrid assemblies or even pass it pre-assembled assembled genomes. Additionally, mikrokondo required minimal upfront knowledge of your sample.
 
- Installation
+# Installation
 
 ## Installing Nextflow
 Nextflow is required to run mikrokondo, but fortunately it is not too hard to install (Linux is required). The instructions for installing Nextflow can be found at either either resource: [Nextflow Home](https://www.nextflow.io/) or  [Nextflow Documentation](https://www.nextflow.io/docs/latest/getstarted.html#installation)
