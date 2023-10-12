@@ -4,18 +4,20 @@
 ## Configuration files
 
 When cloning the pipeline from github a directory labeled `conf/` will be present. Within the `conf/` folder two configuration files are of interest to the user:
+
 - base.config: Where cpu, memory and time parameters can be set for the different workflow processes. **You will likely need to adjust parameters within this file for you computing environment**.
+
 - modules.config: Where process specific parameters are set. It is unadvised to touch this configuration file unless performing pipeline development.
 
 ### Base configuration (conf/base.config)
 Within this file computing resources can be configured for each process. Different labels are listed defining different resources for different Nextflow processes. The defined labels you are encouraged to modify are:
 
-- `process_single`: Resource definitions for processes requiring only a single core and low memory (listing of directories). 
+- `process_single`: Resource definitions for processes requiring only a single core and low memory (listing of directories).
 - `process_low`: Resource definitions for processes that would typically run easily on a small laptop (Staging of data in a Python script).
-- `process_medium`: Resource definitions for processes that would typically run on a desktop computer equipped for playing newer video games (Memory or computationally intensive applications that can be parallelized, rendering, processing large files in memory or running BLAST). 
+- `process_medium`: Resource definitions for processes that would typically run on a desktop computer equipped for playing newer video games (Memory or computationally intensive applications that can be parallelized, rendering, processing large files in memory or running BLAST).
 - `process_high`: Resource definition for processes that would typically run on a high performance desktop computer (Memory our computationally intensive application like running performing *de novo* assembly or performing BLAST searches on large databases).
 - `process_long`: Modifies/overwrites the amount of time allowed for any of the above processes. Allows for certain jobs to take longer (Performing *de novo* assembly with less computational resources or performing global alignments on divergent sequences).
-- `process_high_memory`: Modifies/overwrites the amount of memory given to any process. Grants significantly more memory to any process (Aids in metagenomic assembly or clustering of large datasets).  
+- `process_high_memory`: Modifies/overwrites the amount of memory given to any process. Grants significantly more memory to any process (Aids in metagenomic assembly or clustering of large datasets).
 
 ## Containers
 
@@ -46,25 +48,25 @@ Mikrokondo requires a sample sheet to be run A.K.A FOFN (file of file names). Ha
 - The example layouts for different sample-sheets include:
 
     **Illumina paired-end data**
-    
+
     |sample|fastq_1|fastq_2|
     |------|-------|-------|
     |sample_name|path_to_forward_reads|path_to_reversed_reads|
 
     **Nanopore**
-    
+
     |sample|long_reads|
     |------|----------|
     |sample_name|path_to_reads|
 
     **Hybrid Assembly**
-    
+
     |sample|fastq_1|fastq_2|long_reads|
     |-------|-------|------|----------|
     |sample_name|path_to_forward_reads|path_to_reversed_reads|path_to_long_reads|
 
     **Starting with assembly only**
-    
+
     |sample|assembly|
     |------|--------|
     |sample_name|path_to_assembly|
@@ -106,7 +108,7 @@ If you are using nanopore you must specify a model to use in Medaka for polishin
 
 A model can be specified like so `--nanopore_chemistry YOUR_MODEL_HERE`. A real example would look like this -> `--nanopore_chemistry r1041_e82_400bps_hac_v4.2.0`
 
-No default model is specified to prevent tiny errors that may affect data, but if your lab is using the same setting every time you can update the value in the `nextflow.config` labeled `nanopore_chemistry`. 
+No default model is specified to prevent tiny errors that may affect data, but if your lab is using the same setting every time you can update the value in the `nextflow.config` labeled `nanopore_chemistry`.
 An example of an update would be:
 ```
 nanopore_chemistry = "r1041_e82_400bps_hac_v4.2.0" // Note the quotes around the value
@@ -176,7 +178,7 @@ Numerous steps within mikrokondo can be turned off without compromising the stab
 - `skip_species_classification`
     - This step prevents Mash or Kraken2 from being run on your assembled genome, this also **prevents the subtyping workflow** from triggering
 
-** All of the above options can be turned on by entering `--{skip_option} true` in the command line arguments to the pipeline (where optional parameters can be added)** e.g. To skip read sub-sampling add to the command line arguments `--skip_depth_sampling true` 
+** All of the above options can be turned on by entering `--{skip_option} true` in the command line arguments to the pipeline (where optional parameters can be added)** e.g. To skip read sub-sampling add to the command line arguments `--skip_depth_sampling true`
 
 ### Slurm options
 - `slurm_p`
@@ -192,7 +194,7 @@ TODO make it known what should stay and what can be routinely changed
 ## Tool Specific Parameters
 **NOTE:** to access tool specific parameters from the command line you must use the dot operator. e.g. In order to set the min contig length you would like Quast to use for generating report metrics from the command line you would specify `--quast.min_contig_length 500`
 
-All parameters below are nested, to denote the path to each parameter the options will be denoted nested so that at the top-level is the first level of the parameter, then sub bullets will be nested within that parameter. 
+All parameters below are nested, to denote the path to each parameter the options will be denoted nested so that at the top-level is the first level of the parameter, then sub bullets will be nested within that parameter.
 
 The example below is to show how parameters are denoted.
 
@@ -216,7 +218,7 @@ Screens contigs for antimicrobial and virulence genes.
 
 - abricate
     - **args**: Can be a string of additional command line arguments to pass to abricate
-    - report_tag: This field determines the name of the Abricate output in the final summary file. Do no touch this unless doing pipeline development. 
+    - report_tag: This field determines the name of the Abricate output in the final summary file. Do no touch this unless doing pipeline development.
     - header_p: This field tells the report module that the Abricate output contains headers. Do no touch this unless doing pipeline development.
 
 ### Raw Read Metrics
@@ -590,7 +592,7 @@ Performa typing of *Staphylococcus* species.
     - allele_json_ext: The extension to the output JSON file from SISTR. Do not alter this field unless doing pipeline development.
     - cgmlst_tag: The extension of the CGMLST file from SISTR. Do not alter this field unless doing pipeline development.
     - report_tag: The report tag for SISTR. Do not alter this field unless doing pipeline development.
-    - header_p: Denotes whether or not the output table contains a header. Do not alter this field unless doing pipeline development. 
+    - header_p: Denotes whether or not the output table contains a header. Do not alter this field unless doing pipeline development.
 
 ### Lissero
 *in-silico Listeria* typing.
@@ -635,7 +637,7 @@ An example of the QCReport structure is shown below. With annotation describing 
 ```
 QCReport {
     escherichia // Generic top level name fo the field, it is name is technically arbitrary but it nice field name keeps things organized
-    { 
+    {
         search = "Escherichia coli" // The phrase that is searched for in the species_top_hit field mentioned above. The search is for containment so if you wanted to look for E.coli and E.albertii you could just set the value too "Escherichia"
         raw_average_quality = 30 // Minimum raw average quality of all bases in the sequencing data. This value is generated before the decontamination procedure.
         min_n50 = 95000 // The minimum n50 value allowed from quast
@@ -669,7 +671,7 @@ QCReport {
 If you wanted to add quality control data for *Salmonella* you can start off by using the template below:
 
 ```
-VAR_NAME { // Replace VAR name with the genus name of your sample, only use ASCII (a-zA-Z) alphabet characters in the name and replace spaces, punctuation and other special characters with underscores (_) 
+VAR_NAME { // Replace VAR name with the genus name of your sample, only use ASCII (a-zA-Z) alphabet characters in the name and replace spaces, punctuation and other special characters with underscores (_)
     search = "Search phrase" // Search phrase for your species top_hit, Note the quotes
     raw_average_quality = // 30 is a default value please change it as needed
     min_n50 = // Set your minimum n50 value
@@ -726,7 +728,7 @@ After having my values filled out, I can simply add them to the QCReport section
             max_length = 6000000
             max_checkm_contamination = 3.0
             min_average_coverage = 30
-        } 
+        }
         fallthrough {
             search = "No organism specific QC data available."
             raw_average_quality = 30
