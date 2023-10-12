@@ -65,11 +65,18 @@ mash {
 
 ```
 
+## Run example data
+Three test profile with example data are provided and can be run like so:
+
+- Assembly test profile: `nextflow run main.nf -profile test_assembly,<docker/singularity> --outdir <OUTDIR>`
+- Illumina test profile: `nextflow run main.nf -profile test_illumina,<docker/singularity> --outdir <OUTDIR>`
+- Nanopore test profile: `nextflow run main.nf -profile test_nanopore,<docker/singularity> --outdir <OUTDIR>`
+
 ## TODOs
 - [ ] Provide a script for database downloads
 - [ ] Update details in documentation
 - [ ] Wait for allele caller
-- [ ] Upload test data
+- [x] Upload test data
 
 
 ## Citations
