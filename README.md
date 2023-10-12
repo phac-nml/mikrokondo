@@ -69,6 +69,7 @@ mash {
 - [ ] Provide a script for database downloads
 - [ ] Update details in documentation
 - [ ] Wait for allele caller
+- [ ] Upload test data
 
 
 ## Citations
