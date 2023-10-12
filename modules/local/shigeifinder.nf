@@ -1,0 +1,30 @@
+// Taking alot of code from: https://github.com/nf-core/modules/blob/master/modules/nf-core/shigeifinder/main.nf
+
+
+process SHIGEIFINDER {
+    tag "$meta.id"
+    label 'process_low'
+    afterScript "rm $tmp_file"
+    container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.containers.get('singularity') : task.ext.containers.get('docker')}"
+
+    input:
+    tuple val(meta), path(seqs)
+
+    output:
+    tuple val(meta), path("*${params.shigeifinder}"), emit: tsv
+    path "versions.yml"           , emit: versions
+
+    script:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    tmp_file = "${prefix}.fa"
+    def VERSION = '1.3.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    """
+    gunzip -c $seqs > $tmp_file
+    shigeifinder $args --output ${prefix}.tsv -t $task.cpus -i $tmp_file
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        shigeifinder: $VERSION
+    END_VERSIONS
+    """
+}

@@ -1,0 +1,2472 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "https://raw.githubusercontent.com/mk-kondo/mikrokondo/master/nextflow_schema.json",
+    "title": "mikrokondo pipeline parameters",
+    "description": "mikrokondo schema",
+    "type": "object",
+    "definitions": {
+        "skip_options": {
+            "title": "Skip Options",
+            "type": "object",
+            "description": "Options to alter control flow of the pipeline",
+            "default": "",
+            "properties": {
+                "skip_depth_sampling": {
+                    "type": "boolean"
+                },
+                "skip_subtyping": {
+                    "type": "boolean"
+                },
+                "skip_polishing": {
+                    "type": "boolean"
+                },
+                "skip_ont_header_cleaning": {
+                    "type": "boolean"
+                },
+                "skip_checkm": {
+                    "type": "boolean"
+                },
+                "skip_report": {
+                    "type": "boolean"
+                },
+                "skip_raw_read_metrics": {
+                    "type": "boolean"
+                },
+                "skip_version_gathering": {
+                    "type": "boolean"
+                },
+                "skip_abricate": {
+                    "type": "boolean"
+                },
+                "skip_bakta": {
+                    "type": "boolean"
+                },
+                "skip_species_classification": {
+                    "type": "boolean"
+                },
+                "skip_mlst": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "input_output_options": {
+            "title": "Input/output options",
+            "type": "object",
+            "fa_icon": "fas fa-terminal",
+            "description": "Define where the pipeline should find input data and save output data.",
+            "required": [
+                "input",
+                "outdir"
+            ],
+            "properties": {
+                "input": {
+                    "type": "string",
+                    "format": "file-path",
+                    "mimetype": "text/csv",
+                    "pattern": "^\\S+\\.csv$",
+                    "schema": "assets/schema_input.json",
+                    "description": "Path to comma-separated file containing information about the samples in the experiment.",
+                    "help_text": "You will need to create a design file with information about the samples in your experiment before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 3 columns, and a header row.",
+                    "fa_icon": "fas fa-file-csv"
+                },
+                "outdir": {
+                    "type": "string",
+                    "format": "directory-path",
+                    "description": "The output directory where the results will be saved. You have to use absolute paths to storage on Cloud infrastructure.",
+                    "fa_icon": "fas fa-folder-open"
+                },
+                "email": {
+                    "type": "string",
+                    "description": "Email address for completion summary.",
+                    "fa_icon": "fas fa-envelope",
+                    "help_text": "Set this parameter to your e-mail address to get a summary e-mail with details of the run sent to you when the workflow exits. If set in your user config file (`~/.nextflow/config`) then you don't need to specify this on the command line for every run.",
+                    "pattern": "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$"
+                },
+                "multiqc_title": {
+                    "type": "string",
+                    "description": "MultiQC report title. Printed as page header, used for filename if not otherwise specified.",
+                    "fa_icon": "fas fa-file-signature"
+                }
+            }
+        },
+        "institutional_config_options": {
+            "title": "Institutional config options",
+            "type": "object",
+            "fa_icon": "fas fa-university",
+            "description": "Parameters used to describe centralised config profiles. These should not be edited.",
+            "help_text": "The centralised nf-core configuration profiles use a handful of pipeline parameters to describe themselves. This information is then printed to the Nextflow log when you run a pipeline. You should not need to change these values when you run a pipeline.",
+            "properties": {
+                "custom_config_version": {
+                    "type": "string",
+                    "description": "Git commit id for Institutional configs.",
+                    "default": "master",
+                    "fa_icon": "fas fa-users-cog",
+                    "hidden": true
+                },
+                "custom_config_base": {
+                    "type": "string",
+                    "description": "Base directory for Institutional configs.",
+                    "default": "https://raw.githubusercontent.com/nf-core/configs/master",
+                    "help_text": "If you're running offline, Nextflow will not be able to fetch the institutional config files from the internet. If you don't need them, then this is not a problem. If you do need them, you should download the files from the repo and tell Nextflow where to find them with this parameter.",
+                    "fa_icon": "fas fa-users-cog",
+                    "hidden": true
+                },
+                "config_profile_name": {
+                    "type": "string",
+                    "description": "Institutional config name.",
+                    "fa_icon": "fas fa-users-cog",
+                    "hidden": true
+                },
+                "config_profile_description": {
+                    "type": "string",
+                    "description": "Institutional config description.",
+                    "fa_icon": "fas fa-users-cog",
+                    "hidden": true
+                },
+                "config_profile_contact": {
+                    "type": "string",
+                    "description": "Institutional config contact information.",
+                    "fa_icon": "fas fa-users-cog",
+                    "hidden": true
+                },
+                "config_profile_url": {
+                    "type": "string",
+                    "description": "Institutional config URL link.",
+                    "fa_icon": "fas fa-users-cog",
+                    "hidden": true
+                }
+            }
+        },
+        "max_job_request_options": {
+            "title": "Max job request options",
+            "type": "object",
+            "fa_icon": "fab fa-acquisitions-incorporated",
+            "description": "Set the top limit for requested resources for any single job.",
+            "help_text": "If you are running on a smaller system, a pipeline step requesting more resources than are available may cause the Nextflow to stop the run with an error. These options allow you to cap the maximum resources requested by any single job so that the pipeline will run on your system.\n\nNote that you can not _increase_ the resources requested by any job using these options. For that you will need your own configuration file. See [the nf-core website](https://nf-co.re/usage/configuration) for details.",
+            "properties": {
+                "max_cpus": {
+                    "type": "integer",
+                    "description": "Maximum number of CPUs that can be requested for any single job.",
+                    "default": 16,
+                    "fa_icon": "fas fa-microchip",
+                    "hidden": true,
+                    "help_text": "Use to set an upper-limit for the CPU requirement for each process. Should be an integer e.g. `--max_cpus 1`"
+                },
+                "max_memory": {
+                    "type": "string",
+                    "description": "Maximum amount of memory that can be requested for any single job.",
+                    "default": "128.GB",
+                    "fa_icon": "fas fa-memory",
+                    "pattern": "^\\d+(\\.\\d+)?\\.?\\s*(K|M|G|T)?B$",
+                    "hidden": true,
+                    "help_text": "Use to set an upper-limit for the memory requirement for each process. Should be a string in the format integer-unit e.g. `--max_memory '8.GB'`"
+                },
+                "max_time": {
+                    "type": "string",
+                    "description": "Maximum amount of time that can be requested for any single job.",
+                    "default": "240.h",
+                    "fa_icon": "far fa-clock",
+                    "pattern": "^(\\d+\\.?\\s*(s|m|h|day)\\s*)+$",
+                    "hidden": true,
+                    "help_text": "Use to set an upper-limit for the time requirement for each process. Should be a string in the format integer-unit e.g. `--max_time '2.h'`"
+                }
+            }
+        },
+        "generic_options": {
+            "title": "Generic options",
+            "type": "object",
+            "fa_icon": "fas fa-file-import",
+            "description": "Less common options for the pipeline, typically set in a config file.",
+            "help_text": "These options are common to all nf-core pipelines and allow you to customise some of the core preferences for how the pipeline runs.\n\nTypically these options would be set in a Nextflow config file loaded for all pipeline runs, such as `~/.nextflow/config`.",
+            "properties": {
+                "help": {
+                    "type": "boolean",
+                    "description": "Display help text.",
+                    "fa_icon": "fas fa-question-circle",
+                    "hidden": true
+                },
+                "version": {
+                    "type": "boolean",
+                    "description": "Display version and exit.",
+                    "fa_icon": "fas fa-question-circle",
+                    "hidden": true
+                },
+                "publish_dir_mode": {
+                    "type": "string",
+                    "default": "copy",
+                    "description": "Method used to save pipeline results to output directory.",
+                    "help_text": "The Nextflow `publishDir` option specifies which intermediate files should be saved to the output directory. This option tells the pipeline what method should be used to move these files. See [Nextflow docs](https://www.nextflow.io/docs/latest/process.html#publishdir) for details.",
+                    "fa_icon": "fas fa-copy",
+                    "enum": [
+                        "symlink",
+                        "rellink",
+                        "link",
+                        "copy",
+                        "copyNoFollow",
+                        "move"
+                    ],
+                    "hidden": true
+                },
+                "email_on_fail": {
+                    "type": "string",
+                    "description": "Email address for completion summary, only when pipeline fails.",
+                    "fa_icon": "fas fa-exclamation-triangle",
+                    "pattern": "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$",
+                    "help_text": "An email address to send a summary email to when the pipeline is completed - ONLY sent if the pipeline does not exit successfully."
+                },
+                "plaintext_email": {
+                    "type": "boolean",
+                    "description": "Send plain-text email instead of HTML.",
+                    "fa_icon": "fas fa-remove-format"
+                },
+                "max_multiqc_email_size": {
+                    "type": "string",
+                    "description": "File size limit when attaching MultiQC reports to summary emails.",
+                    "pattern": "^\\d+(\\.\\d+)?\\.?\\s*(K|M|G|T)?B$",
+                    "default": "25.MB",
+                    "fa_icon": "fas fa-file-upload",
+                    "hidden": true
+                },
+                "monochrome_logs": {
+                    "type": "boolean",
+                    "description": "Do not use coloured log outputs.",
+                    "fa_icon": "fas fa-palette",
+                    "hidden": true
+                },
+                "hook_url": {
+                    "type": "string",
+                    "description": "Incoming hook URL for messaging service",
+                    "fa_icon": "fas fa-people-group",
+                    "help_text": "Incoming hook URL for messaging service. Currently, MS Teams and Slack are supported.",
+                    "hidden": true
+                },
+                "multiqc_config": {
+                    "type": "string",
+                    "description": "Custom config file to supply to MultiQC.",
+                    "fa_icon": "fas fa-cog",
+                    "hidden": true
+                },
+                "multiqc_logo": {
+                    "type": "string",
+                    "description": "Custom logo file to supply to MultiQC. File name must also be set in the MultiQC config file",
+                    "fa_icon": "fas fa-image",
+                    "hidden": true
+                },
+                "multiqc_methods_description": {
+                    "type": "string",
+                    "description": "Custom MultiQC yaml file containing HTML including a methods description.",
+                    "fa_icon": "fas fa-cog",
+                    "hidden": true
+                },
+                "tracedir": {
+                    "type": "string",
+                    "description": "Directory to keep pipeline Nextflow logs and reports.",
+                    "default": "${params.outdir}/pipeline_info",
+                    "fa_icon": "fas fa-cogs",
+                    "hidden": true
+                },
+                "validate_params": {
+                    "type": "boolean",
+                    "description": "Boolean whether to validate parameters against the schema at runtime",
+                    "default": true,
+                    "fa_icon": "fas fa-check-square",
+                    "hidden": true
+                },
+                "show_hidden_params": {
+                    "type": "boolean",
+                    "fa_icon": "far fa-eye-slash",
+                    "description": "Show all params when using `--help`",
+                    "hidden": true,
+                    "help_text": "By default, parameters set as _hidden_ in the schema are not shown on the command line when a user runs with `--help`. Specifying this option will tell the pipeline to show all parameters."
+                },
+                "output_idx_name": {
+                    "type": "string",
+                    "default": "None"
+                },
+                "platform": {
+                    "type": "string",
+                    "enum": [
+                        "illumina",
+                        "nanopore",
+                        "pacbio",
+                        "hybrid"
+                    ]
+                },
+                "nanopore_chemistry": {
+                    "type": "string"
+                },
+                "run_kraken": {
+                    "type": "boolean"
+                },
+                "hybrid_unicycler": {
+                    "type": "boolean"
+                },
+                "long_read_opt": {
+                    "type": "string",
+                    "default": "nanopore"
+                },
+                "min_reads": {
+                    "type": "integer",
+                    "default": 1000
+                },
+                "metagenomic_run": {
+                    "type": "boolean"
+                },
+                "stage_in_mode": {
+                    "type": "string",
+                    "default": "symlink"
+                },
+                "slurm_p": {
+                    "type": "boolean"
+                },
+                "slurm_profile": {
+                    "type": "string"
+                },
+                "schema_ignore_params": {
+                    "type": "string",
+                    "default": "genomes,shigeifinder,lissero,sistr,ectyper,bandage,bakta,unicycler,medaka,pilon_iterative,pilon,racon,samtools,minimap2,r_contaminants,mash,kraken,checkm,quast_filter,quast,fastqc,spades,flye,chopper,fastp,seqtk,kat,coreutils,opt_platforms",
+                    "hidden": true
+                }
+            },
+            "required": [
+                "platform"
+            ]
+        },
+        "kat": {
+            "title": "Kat",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "properties": {
+                "kat.hist_ext": {
+                    "type": "string",
+                    "default": ".hist",
+                    "hidden": true
+                },
+                "kat.json_ext": {
+                    "type": "string",
+                    "default": ".hist.dist_analysis.json",
+                    "hidden": true
+                },
+                "kat.png_ext": {
+                    "type": "string",
+                    "default": ".png",
+                    "hidden": true
+                },
+                "kat.postscript_ext": {
+                    "type": "string",
+                    "default": ".ps",
+                    "hidden": true
+                },
+                "kat.output_type": {
+                    "type": "string",
+                    "default": "png",
+                    "hidden": true
+                },
+                "kat.pdf_ext": {
+                    "type": "string",
+                    "default": ".pdf",
+                    "hidden": true
+                },
+                "kat.report_tag": {
+                    "type": "string",
+                    "default": "KatHist",
+                    "hidden": true
+                },
+                "kat.jfhash_ext": {
+                    "type": "string",
+                    "default": ".jf",
+                    "hidden": true
+                }
+            }
+        },
+        "platform_options": {
+            "title": "Platform Options",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "properties": {
+                "opt_platforms.ont": {
+                    "type": "string",
+                    "default": "nanopore",
+                    "hidden": true
+                },
+                "opt_platforms.pacbio": {
+                    "type": "string",
+                    "default": "pacbio",
+                    "hidden": true
+                },
+                "opt_platforms.hybrid": {
+                    "type": "string",
+                    "default": "hybrid",
+                    "hidden": true
+                },
+                "opt_platforms.illumina": {
+                    "type": "string",
+                    "default": "illumina",
+                    "hidden": true
+                }
+            }
+        },
+        "seqtk": {
+            "title": "Seqtk",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "properties": {
+                "seqtk.seed": {
+                    "type": "integer",
+                    "default": 42,
+                    "hidden": true
+                },
+                "seqtk.reads_ext": {
+                    "type": "string",
+                    "default": "_sampled.fastq.gz",
+                    "hidden": true
+                }
+            }
+        },
+        "fastp": {
+            "title": "fastp",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "properties": {
+                "fastp.html_ext": {
+                    "type": "string",
+                    "default": ".html",
+                    "hidden": true
+                },
+                "fastp.average_quality_e": {
+                    "type": "integer",
+                    "default": 0
+                },
+                "fastp.json_ext": {
+                    "type": "string",
+                    "default": ".json",
+                    "hidden": true
+                },
+                "fastp.cut_mean_quality": {
+                    "type": "integer",
+                    "default": 30
+                },
+                "fastp.qualified_quality_phred": {
+                    "type": "integer",
+                    "default": 30
+                },
+                "fastp.unqualified_percent_limit": {
+                    "type": "integer",
+                    "default": 10
+                },
+                "fastp.fastq_ext": {
+                    "type": "string",
+                    "default": ".trimmed.fastq.gz",
+                    "hidden": true
+                },
+                "fastp.illumina_args": {
+                    "type": "string",
+                    "default": "--cut_front --cut_tail --trim_poly_x --cut_mean_quality 30 --qualified_quality_phred 30 --unqualified_percent_limit 10 --length_required 100",
+                    "hidden": true
+                },
+                "fastp.single_end_args": {
+                    "type": "string",
+                    "default": "-Q -e 0",
+                    "hidden": true
+                },
+                "fastp.report_tag": {
+                    "type": "string",
+                    "default": "FastP",
+                    "hidden": true
+                },
+                "fastp.illumina_length_min": {
+                    "type": "integer",
+                    "default": 100
+                },
+                "fastp.single_end_length_min": {
+                    "type": "integer",
+                    "default": 1000
+                },
+                "fastp.dedup_reads": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "flye": {
+            "title": "flye",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "properties": {
+                "flye.nanopore.corr": {
+                    "type": "string",
+                    "default": "--nano-corr",
+                    "hidden": true
+                },
+                "flye.nanopore.hq": {
+                    "type": "string",
+                    "default": "--nano-hq",
+                    "hidden": true
+                },
+                "flye.pacbio.raw": {
+                    "type": "string",
+                    "default": "--pacbio-raw",
+                    "hidden": true
+                },
+                "flye.pacbio.corr": {
+                    "type": "string",
+                    "default": "--pacbio-corr",
+                    "hidden": true
+                },
+                "flye.pacbio.hifi": {
+                    "type": "string",
+                    "default": "--pacbio-hifi",
+                    "hidden": true
+                },
+                "flye.nanopore.raw": {
+                    "type": "string",
+                    "default": "--nano-raw",
+                    "hidden": true
+                },
+                "flye.gfa_ext": {
+                    "type": "string",
+                    "default": ".gfa.gz",
+                    "hidden": true
+                },
+                "flye.gv_ext": {
+                    "type": "string",
+                    "default": ".gv.gz",
+                    "hidden": true
+                },
+                "flye.txt_ext": {
+                    "type": "string",
+                    "default": ".txt",
+                    "hidden": true
+                },
+                "flye.log_ext": {
+                    "type": "string",
+                    "default": ".log",
+                    "hidden": true
+                },
+                "flye.json_ext": {
+                    "type": "string",
+                    "default": ".json",
+                    "hidden": true
+                },
+                "flye.polishing_iterations": {
+                    "type": "integer",
+                    "default": 1,
+                    "hidden": true
+                },
+                "flye.ext_args": {
+                    "type": "string",
+                    "hidden": true
+                },
+                "flye.fasta_ext": {
+                    "type": "string",
+                    "default": ".fasta.gz",
+                    "hidden": true
+                }
+            }
+        },
+        "quast": {
+            "title": "quast",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "properties": {
+                "quast.suffix": {
+                    "type": "string",
+                    "default": "quast",
+                    "hidden": true
+                },
+                "quast.report_base": {
+                    "type": "string",
+                    "default": "report",
+                    "hidden": true
+                },
+                "quast.report_prefix": {
+                    "type": "string",
+                    "default": "transposed_",
+                    "hidden": true
+                },
+                "quast.report_ext": {
+                    "type": "string",
+                    "default": ".tsv",
+                    "hidden": true
+                },
+                "quast.report_tag": {
+                    "type": "string",
+                    "default": "QUAST",
+                    "hidden": true
+                },
+                "quast_filter.n50_field": {
+                    "type": "string",
+                    "default": "N50",
+                    "hidden": true
+                },
+                "quast_filter.n50_value": {
+                    "type": "integer",
+                    "default": 0,
+                    "hidden": true
+                },
+                "quast_filter.nr_contigs_field": {
+                    "type": "string",
+                    "default": "# contigs (>= 0 bp)",
+                    "hidden": true
+                },
+                "quast_filter.nr_contigs_value": {
+                    "type": "integer",
+                    "default": 500
+                },
+                "quast_filter.sample_header": {
+                    "type": "string",
+                    "default": "Assembly",
+                    "hidden": true
+                },
+                "quast.min_contig_length": {
+                    "type": "integer",
+                    "default": 0
+                },
+                "quast.args": {
+                    "type": "string",
+                    "default": "--min-contig 0 --report-all-metrics",
+                    "hidden": true
+                }
+            }
+        },
+        "spades": {
+            "title": "spades",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "properties": {
+                "spades.scaffolds_ext": {
+                    "type": "string",
+                    "default": ".scaffolds.fasta.gz",
+                    "hidden": true
+                },
+                "spades.contigs_ext": {
+                    "type": "string",
+                    "default": ".contigs.fasta.gz",
+                    "hidden": true
+                },
+                "spades.transcripts_ext": {
+                    "type": "string",
+                    "default": ".transcripts.fasta.gz",
+                    "hidden": true
+                },
+                "spades.gene_clusters_ext": {
+                    "type": "string",
+                    "default": ".gene_clusters.fasta.gz",
+                    "hidden": true
+                },
+                "spades.assembly_graphs_ext": {
+                    "type": "string",
+                    "default": ".assembly.gfa.gz",
+                    "hidden": true
+                },
+                "spades.log_ext": {
+                    "type": "string",
+                    "default": ".log",
+                    "hidden": true
+                },
+                "spades.outdir": {
+                    "type": "string",
+                    "default": "assembly",
+                    "hidden": true
+                }
+            }
+        },
+        "checkm": {
+            "title": "checkm",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "properties": {
+                "checkm.alignment_ext": {
+                    "type": "string",
+                    "default": "-genes.aln",
+                    "hidden": true
+                },
+                "checkm.results_ext": {
+                    "type": "string",
+                    "default": "-results.txt",
+                    "hidden": true
+                },
+                "checkm.tsv_ext": {
+                    "type": "string",
+                    "default": ".tsv",
+                    "hidden": true
+                },
+                "checkm.folder_name": {
+                    "type": "string",
+                    "default": "checkm",
+                    "hidden": true
+                },
+                "checkm.gzip_ext": {
+                    "type": "string",
+                    "default": ".gz",
+                    "hidden": true
+                },
+                "checkm.lineage_ms": {
+                    "type": "string",
+                    "default": "lineage.ms",
+                    "hidden": true
+                },
+                "checkm.threads": {
+                    "type": "integer",
+                    "default": 4,
+                    "hidden": true
+                },
+                "checkm.report_tag": {
+                    "type": "string",
+                    "default": "CheckM",
+                    "hidden": true
+                }
+            }
+        },
+        "kraken2": {
+            "title": "kraken2",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "properties": {
+                "kraken.db": {
+                    "type": "string",
+                    "default": "databases/k2_standard_20220607/"
+                },
+                "kraken.classified_suffix": {
+                    "type": "string",
+                    "default": "classified",
+                    "hidden": true
+                },
+                "kraken.unclassified_suffix": {
+                    "type": "string",
+                    "default": "unclassified",
+                    "hidden": true
+                },
+                "kraken.report_suffix": {
+                    "type": "string",
+                    "default": "report",
+                    "hidden": true
+                },
+                "kraken.output_suffix": {
+                    "type": "string",
+                    "default": "output",
+                    "hidden": true
+                },
+                "kraken.save_output_fastqs": {
+                    "type": "boolean",
+                    "hidden": true
+                },
+                "kraken.save_reads_assignments": {
+                    "type": "boolean",
+                    "default": true,
+                    "hidden": true
+                },
+                "kraken.run_kraken_quick": {
+                    "type": "boolean",
+                    "hidden": true
+                },
+                "kraken.report_tag": {
+                    "type": "string",
+                    "default": "KrakenReport",
+                    "hidden": true
+                },
+                "kraken.tophit_level": {
+                    "type": "string",
+                    "default": "S",
+                    "hidden": true
+                },
+                "kraken_bin.taxonomic_level": {
+                    "type": "string",
+                    "default": "G",
+                    "description": "Taxonomic level to bin contigs at."
+                }
+            }
+        }
+    },
+    "allOf": [
+        {
+            "$ref": "#/definitions/skip_options"
+        },
+        {
+            "$ref": "#/definitions/input_output_options"
+        },
+        {
+            "$ref": "#/definitions/institutional_config_options"
+        },
+        {
+            "$ref": "#/definitions/max_job_request_options"
+        },
+        {
+            "$ref": "#/definitions/generic_options"
+        },
+        {
+            "$ref": "#/definitions/kat"
+        },
+        {
+            "$ref": "#/definitions/platform_options"
+        },
+        {
+            "$ref": "#/definitions/seqtk"
+        },
+        {
+            "$ref": "#/definitions/fastp"
+        },
+        {
+            "$ref": "#/definitions/flye"
+        },
+        {
+            "$ref": "#/definitions/quast"
+        },
+        {
+            "$ref": "#/definitions/spades"
+        },
+        {
+            "$ref": "#/definitions/checkm"
+        },
+        {
+            "$ref": "#/definitions/kraken2"
+        }
+    ],
+    "properties": {
+        "chopper.quality": {
+            "type": "integer",
+            "default": 0,
+            "hidden": true
+        },
+        "chopper.minlength": {
+            "type": "integer",
+            "default": 100,
+            "hidden": true
+        },
+        "chopper.fastq_ext": {
+            "type": "string",
+            "default": ".fastq.gz",
+            "hidden": true
+        },
+        "fastqc.html_ext": {
+            "type": "string",
+            "default": ".html",
+            "hidden": true
+        },
+        "fastqc.zip_ext": {
+            "type": "string",
+            "default": ".zip",
+            "hidden": true
+        },
+        "mash.mash_ext": {
+            "type": "string",
+            "default": ".screen",
+            "hidden": true
+        },
+        "mash.output_reads_ext": {
+            "type": "string",
+            "default": ".reads.screen",
+            "hidden": true
+        },
+        "mash.output_taxa_ext": {
+            "type": "string",
+            "default": ".taxa.screen",
+            "hidden": true
+        },
+        "mash.output_dir": {
+            "type": "string",
+            "default": "contamination",
+            "hidden": true
+        },
+        "mash.mash_sketch": {
+            "type": "string",
+            "default": "databases/GTDBSketch_20231003.msh",
+            "hidden": true
+        },
+        "mash.sketch_ext": {
+            "type": "string",
+            "default": ".msh",
+            "hidden": true
+        },
+        "mash.sketch_kmer_size": {
+            "type": "integer",
+            "default": 21,
+            "hidden": true
+        },
+        "mash.final_sketch_name": {
+            "type": "string",
+            "default": "GTDB_sketch",
+            "hidden": true
+        },
+        "r_contaminants.phix_fa": {
+            "type": "string",
+            "default": "\"\"",
+            "hidden": true
+        },
+        "r_contaminants.homo_sapiens_fa": {
+            "type": "string",
+            "default": "\"\"",
+            "hidden": true
+        },
+        "r_contaminants.pacbio_mg": {
+            "type": "string",
+            "default": "\"\"",
+            "hidden": true
+        },
+        "r_contaminants.output_ext": {
+            "type": "string",
+            "default": ".fastq.gz",
+            "hidden": true
+        },
+        "r_contaminants.mega_mm2_idx": {
+            "type": "string",
+            "default": "databases/PhiPacHum_m2.idx",
+            "hidden": true
+        },
+        "r_contaminants.mm2_illumina": {
+            "type": "string",
+            "default": "-x sr",
+            "hidden": true
+        },
+        "r_contaminants.mm2_pac": {
+            "type": "string",
+            "default": "-x map-pb",
+            "hidden": true
+        },
+        "r_contaminants.mm2_ont": {
+            "type": "string",
+            "default": "-x map-ont",
+            "hidden": true
+        },
+        "r_contaminants.mm2_output_ext": {
+            "type": "string",
+            "default": ".sam",
+            "hidden": true
+        },
+        "r_contaminants.samtools_output_ext": {
+            "type": "string",
+            "default": ".fastq",
+            "hidden": true
+        },
+        "r_contaminants.samtools_singletons_ext": {
+            "type": "string",
+            "default": ".singleton.fq",
+            "hidden": true
+        },
+        "r_contaminants.samtools_output_suffix": {
+            "type": "string",
+            "default": "deconned",
+            "hidden": true
+        },
+        "r_contaminants.output_dir": {
+            "type": "string",
+            "default": "contamination/deconned_reads",
+            "hidden": true
+        },
+        "minimap2.index_outdir": {
+            "type": "string",
+            "default": "indices",
+            "hidden": true
+        },
+        "minimap2.index_ext": {
+            "type": "string",
+            "default": ".idx",
+            "hidden": true
+        },
+        "minimap2.mapped_paf_ext": {
+            "type": "string",
+            "default": ".paf",
+            "hidden": true
+        },
+        "minimap2.mapped_sam_ext": {
+            "type": "string",
+            "default": ".sam",
+            "hidden": true
+        },
+        "minimap2.mapped_outdir": {
+            "type": "string",
+            "default": "mapped",
+            "hidden": true
+        },
+        "samtools.bam_ext": {
+            "type": "string",
+            "default": ".bam",
+            "hidden": true
+        },
+        "samtools.bai_ext": {
+            "type": "string",
+            "default": ".bai",
+            "hidden": true
+        },
+        "racon.consensus_suffix": {
+            "type": "string",
+            "default": "_assembly_consensus.fasta",
+            "hidden": true
+        },
+        "racon.consensus_ext": {
+            "type": "string",
+            "default": ".fasta.gz",
+            "hidden": true
+        },
+        "racon.outdir": {
+            "type": "string",
+            "default": "polished",
+            "hidden": true
+        },
+        "pilon.outdir": {
+            "type": "string",
+            "default": "pilon",
+            "hidden": true
+        },
+        "pilon.fasta_ext": {
+            "type": "string",
+            "default": ".fasta.gz",
+            "hidden": true
+        },
+        "pilon.fasta_outdir": {
+            "type": "string",
+            "default": "fasta",
+            "hidden": true
+        },
+        "pilon.vcf_ext": {
+            "type": "string",
+            "default": ".vcf",
+            "hidden": true
+        },
+        "pilon.vcf_outdir": {
+            "type": "string",
+            "default": "vcf",
+            "hidden": true
+        },
+        "pilon.changes_ext": {
+            "type": "string",
+            "default": ".changes",
+            "hidden": true
+        },
+        "pilon.changes_outdir": {
+            "type": "string",
+            "default": "changes",
+            "hidden": true
+        },
+        "pilon.max_memory_multiplier": {
+            "type": "integer",
+            "default": 3,
+            "hidden": true
+        },
+        "pilon_iterative.outdir": {
+            "type": "string",
+            "default": "pilon",
+            "hidden": true
+        },
+        "pilon_iterative.fasta_ext": {
+            "type": "string",
+            "default": ".fasta.gz",
+            "hidden": true
+        },
+        "pilon_iterative.fasta_outdir": {
+            "type": "string",
+            "default": "fasta",
+            "hidden": true
+        },
+        "pilon_iterative.vcf_ext": {
+            "type": "string",
+            "default": ".vcf",
+            "hidden": true
+        },
+        "pilon_iterative.vcf_outdir": {
+            "type": "string",
+            "default": "vcf",
+            "hidden": true
+        },
+        "pilon_iterative.bam_ext": {
+            "type": "string",
+            "default": ".bam",
+            "hidden": true
+        },
+        "pilon_iterative.bai_ext": {
+            "type": "string",
+            "default": ".bai",
+            "hidden": true
+        },
+        "pilon_iterative.changes_ext": {
+            "type": "string",
+            "default": ".changes",
+            "hidden": true
+        },
+        "pilon_iterative.changes_outdir": {
+            "type": "string",
+            "default": "changes",
+            "hidden": true
+        },
+        "pilon_iterative.max_memory_multiplier": {
+            "type": "integer",
+            "default": 3,
+            "hidden": true
+        },
+        "pilon_iterative.max_polishing_illumina": {
+            "type": "integer",
+            "default": 3,
+            "hidden": true
+        },
+        "pilon_iterative.max_polishing_pacbio": {
+            "type": "integer",
+            "default": 4,
+            "hidden": true
+        },
+        "pilon_iterative.max_polishing_nanopore": {
+            "type": "integer",
+            "default": 10,
+            "hidden": true
+        },
+        "medaka.model": {
+            "type": "string",
+            "default": "None"
+        },
+        "medaka.fasta_ext": {
+            "type": "string",
+            "default": ".fa.gz",
+            "hidden": true
+        },
+        "medaka.outdir": {
+            "type": "string",
+            "default": "medaka",
+            "hidden": true
+        },
+        "medaka.batch_size": {
+            "type": "integer",
+            "default": 5
+        },
+        "unicycler.scaffolds_ext": {
+            "type": "string",
+            "default": ".scaffolds.fa.gz",
+            "hidden": true
+        },
+        "unicycler.assembly_ext": {
+            "type": "string",
+            "default": ".assembly.gfa.gz",
+            "hidden": true
+        },
+        "unicycler.log_ext": {
+            "type": "string",
+            "default": ".unicycler.log",
+            "hidden": true
+        },
+        "unicycler.outdir": {
+            "type": "string",
+            "default": "unicycler",
+            "hidden": true
+        },
+        "unicycler.mem_modifier": {
+            "type": "integer",
+            "default": 1000,
+            "hidden": true
+        },
+        "unicycler.threads_increase_factor": {
+            "type": "integer",
+            "default": 1,
+            "hidden": true
+        },
+        "bakta.db_type": {
+            "type": "string",
+            "default": "light",
+            "hidden": true
+        },
+        "bakta.output_dir": {
+            "type": "string",
+            "default": "bakta",
+            "hidden": true
+        },
+        "bakta.embl_ext": {
+            "type": "string",
+            "default": ".embl",
+            "hidden": true
+        },
+        "bakta.faa_ext": {
+            "type": "string",
+            "default": ".faa",
+            "hidden": true
+        },
+        "bakta.ffn_ext": {
+            "type": "string",
+            "default": ".ffn",
+            "hidden": true
+        },
+        "bakta.fna_ext": {
+            "type": "string",
+            "default": ".fna",
+            "hidden": true
+        },
+        "bakta.gbff_ext": {
+            "type": "string",
+            "default": ".gbff",
+            "hidden": true
+        },
+        "bakta.gff_ext": {
+            "type": "string",
+            "default": ".gff3",
+            "hidden": true
+        },
+        "bakta.threads": {
+            "type": "integer",
+            "default": 12,
+            "hidden": true
+        },
+        "bakta.hypotheticals_tsv_ext": {
+            "type": "string",
+            "default": ".hypotheticals.tsv",
+            "hidden": true
+        },
+        "bakta.hypotheticals_faa_ext": {
+            "type": "string",
+            "default": ".hypotheticals.faa",
+            "hidden": true
+        },
+        "bakta.tsv_ext": {
+            "type": "string",
+            "default": ".tsv",
+            "hidden": true
+        },
+        "bakta.txt_ext": {
+            "type": "string",
+            "default": ".txt",
+            "hidden": true
+        },
+        "bakta.min_contig_length": {
+            "type": "integer",
+            "default": 200,
+            "hidden": true
+        },
+        "bandage.svg_ext": {
+            "type": "string",
+            "default": ".svg",
+            "hidden": true
+        },
+        "bandage.outdir": {
+            "type": "string",
+            "default": "bandage",
+            "hidden": true
+        },
+        "ectyper.log_ext": {
+            "type": "string",
+            "default": ".log",
+            "hidden": true
+        },
+        "ectyper.tsv_ext": {
+            "type": "string",
+            "default": ".tsv",
+            "hidden": true
+        },
+        "ectyper.txt_ext": {
+            "type": "string",
+            "default": ".txt",
+            "hidden": true
+        },
+        "ectyper.report_tag": {
+            "type": "string",
+            "default": "ECTyper",
+            "hidden": true
+        },
+        "sistr.tsv_ext": {
+            "type": "string",
+            "default": ".tab",
+            "hidden": true
+        },
+        "sistr.allele_fasta_ext": {
+            "type": "string",
+            "default": "-allele.fasta",
+            "hidden": true
+        },
+        "sistr.allele_json_ext": {
+            "type": "string",
+            "default": "-allele.json",
+            "hidden": true
+        },
+        "sistr.cgmlst_ext": {
+            "type": "string",
+            "default": "-cgmlst.csv",
+            "hidden": true
+        },
+        "sistr.report_tag": {
+            "type": "string",
+            "default": "SISTR",
+            "hidden": true
+        },
+        "lissero.tsv_ext": {
+            "type": "string",
+            "default": ".tsv",
+            "hidden": true
+        },
+        "lissero.report_tag": {
+            "type": "string",
+            "default": "LISSERO",
+            "hidden": true
+        },
+        "shigeifinder.tsv_ext": {
+            "type": "string",
+            "default": ".tsv",
+            "hidden": true
+        },
+        "target_depth": {
+            "type": "integer",
+            "default": 100
+        },
+        "abricate_params.args": {
+            "type": "string",
+            "hidden": true
+        },
+        "abricate_params.report_tag": {
+            "type": "string",
+            "default": "Abricate",
+            "hidden": true
+        },
+        "abricate_params.header_p": {
+            "type": "boolean",
+            "default": true,
+            "hidden": true
+        },
+        "raw_reads.high_precision": {
+            "type": "boolean",
+            "hidden": true
+        },
+        "raw_reads.report_tag": {
+            "type": "string",
+            "default": "RawReadSummary",
+            "hidden": true
+        },
+        "coreutils.docker": {
+            "type": "string",
+            "default": "quay.io/biocontainers/coreutils:8.31--h14c3975_0",
+            "hidden": true
+        },
+        "kat.docker": {
+            "type": "string",
+            "default": "quay.io/biocontainers/kat:2.4.2--py38hfc5f9d8_2",
+            "hidden": true
+        },
+        "seqtk.docker": {
+            "type": "string",
+            "default": "quay.io/biocontainers/seqtk:1.3--h5bf99c6_3",
+            "hidden": true
+        },
+        "seqtk.assembly_fastq": {
+            "type": "string",
+            "default": ".fastq.gz",
+            "hidden": true
+        },
+        "seqtk.report_tag": {
+            "type": "string",
+            "default": "Seqtk",
+            "hidden": true
+        },
+        "fastp.docker": {
+            "type": "string",
+            "default": "quay.io/biocontainers/fastp:0.23.2--hb7a2d85_2",
+            "hidden": true
+        },
+        "fastp.report_exclude_fields": {
+            "type": "string",
+            "default": "['content_curves', 'quality_curves', 'GC', 'mean', 'G', 'C', 'A', 'T', 'N', 'GC', 'kmer_count', 'histogram', 'overrepresented_sequences']",
+            "hidden": true
+        },
+        "flye.docker": {
+            "type": "string",
+            "default": "quay.io/biocontainers/flye:2.9.2--py39h6935b12_0",
+            "hidden": true
+        },
+        "spades.docker": {
+            "type": "string",
+            "default": "quay.io/biocontainers/spades:3.15.3--h95f258a_1",
+            "hidden": true
+        },
+        "quast.docker": {
+            "type": "string",
+            "default": "quay.io/biocontainers/quast:5.2.0--py39pl5321h4e691d4_3",
+            "hidden": true
+        },
+        "quast.header_p": {
+            "type": "boolean",
+            "default": true,
+            "hidden": true
+        },
+        "checkm.docker": {
+            "type": "string",
+            "default": "quay.io/biocontainers/checkm-genome:1.2.2--pyhdfd78af_1",
+            "hidden": true
+        },
+        "checkm.header_p": {
+            "type": "boolean",
+            "default": true,
+            "hidden": true
+        },
+        "kraken.docker": {
+            "type": "string",
+            "default": "quay.io/biocontainers/mulled-v2-5799ab18b5fc681e75923b2450abaa969907ec98:941789bd7fe00db16531c26de8bf3c5c985242a5-0",
+            "hidden": true
+        },
+        "kraken.header_p": {
+            "type": "boolean",
+            "hidden": true
+        },
+        "kraken.headers": {
+            "type": "string",
+            "default": "['PercentID', 'FragmentsRecovered', 'FragmentsAssignmentTaxon', 'RankCode']",
+            "hidden": true
+        },
+        "mlst.docker": {
+            "type": "string",
+            "default": "quay.io/biocontainers/mlst:2.19.0--hdfd78af_1",
+            "hidden": true
+        },
+        "mlst.args": {
+            "type": "string",
+            "hidden": true
+        },
+        "mlst.tsv_ext": {
+            "type": "string",
+            "default": ".tsv",
+            "hidden": true
+        },
+        "mlst.json_ext": {
+            "type": "string",
+            "default": ".json",
+            "hidden": true
+        },
+        "mlst.report_tag": {
+            "type": "string",
+            "default": "SevenGeneMLSTReport",
+            "hidden": true
+        },
+        "mash.docker": {
+            "type": "string",
+            "default": "quay.io/biocontainers/mash:2.3--he348c14_1",
+            "hidden": true
+        },
+        "mash.json_ext": {
+            "type": "string",
+            "default": ".json",
+            "hidden": true
+        },
+        "mash.min_kmer": {
+            "type": "integer",
+            "default": 10,
+            "hidden": true
+        },
+        "mash.report_tag": {
+            "type": "string",
+            "default": "Mash",
+            "hidden": true
+        },
+        "mash.header_p": {
+            "type": "boolean",
+            "hidden": true
+        },
+        "mash.headers": {
+            "type": "string",
+            "default": "['identity', 'Shared Hashes', 'Median Multiplicity', 'P-Value', 'Query ID', 'Query Note']",
+            "hidden": true
+        },
+        "mash_meta.report_tag": {
+            "type": "string",
+            "default": "MashMeta",
+            "hidden": true
+        },
+        "top_hit_species.report_tag": {
+            "type": "string",
+            "default": "SpeciesTopHit",
+            "hidden": true
+        },
+        "kraken_species.report_tag": {
+            "type": "string",
+            "default": "Kraken2TopHit",
+            "hidden": true
+        },
+        "r_contaminants.docker": {
+            "type": "string",
+            "default": "quay.io/biocontainers/mulled-v2-66534bcbb7031a148b13e2ad42583020b9cd25c4:8f2087d838e5270cd83b5a016667234429f16eea-0",
+            "hidden": true
+        },
+        "minimap2.docker": {
+            "type": "string",
+            "default": "quay.io/biocontainers/mulled-v2-66534bcbb7031a148b13e2ad42583020b9cd25c4:8f2087d838e5270cd83b5a016667234429f16eea-0",
+            "hidden": true
+        },
+        "samtools.docker": {
+            "type": "string",
+            "default": "quay.io/biocontainers/mulled-v2-66534bcbb7031a148b13e2ad42583020b9cd25c4:8f2087d838e5270cd83b5a016667234429f16eea-0",
+            "hidden": true
+        },
+        "racon.docker": {
+            "type": "string",
+            "default": "quay.io/biocontainers/racon:1.4.20--h9a82719_1",
+            "hidden": true
+        },
+        "pilon.docker": {
+            "type": "string",
+            "default": "quay.io/biocontainers/pilon:1.24--hdfd78af_0",
+            "hidden": true
+        },
+        "pilon_iterative.docker": {
+            "type": "string",
+            "default": "docker://mwells14/pilonpolisher:0.0.1",
+            "hidden": true
+        },
+        "medaka.docker": {
+            "type": "string",
+            "default": "quay.io/biocontainers/medaka:1.8.0--py38hdaa7744_0",
+            "hidden": true
+        },
+        "unicycler.docker": {
+            "type": "string",
+            "default": "quay.io/biocontainers/unicycler:0.5.0--py38h3b68952_2",
+            "hidden": true
+        },
+        "bakta.docker": {
+            "type": "string",
+            "hidden": true
+        },
+        "bandage.docker": {
+            "type": "string",
+            "default": "quay.io/biocontainers/bandage:0.8.1--hc9558a2_2",
+            "hidden": true
+        },
+        "subtyping_report.report_tag": {
+            "type": "string",
+            "default": "Subtyping",
+            "hidden": true
+        },
+        "ectyper.docker": {
+            "type": "string",
+            "default": "quay.io/biocontainers/ectyper:1.0.0--pyhdfd78af_1",
+            "hidden": true
+        },
+        "ectyper.args": {
+            "type": "string",
+            "default": "--verify",
+            "hidden": true
+        },
+        "ectyper.header_p": {
+            "type": "boolean",
+            "default": true,
+            "hidden": true
+        },
+        "kleborate.docker": {
+            "type": "string",
+            "default": "quay.io/biocontainers/kleborate:2.1.0--pyhdfd78af_1",
+            "hidden": true
+        },
+        "kleborate.txt_ext": {
+            "type": "string",
+            "default": ".results.txt",
+            "hidden": true
+        },
+        "kleborate.report_tag": {
+            "type": "string",
+            "default": "Subtyping",
+            "hidden": true
+        },
+        "kleborate.header_p": {
+            "type": "boolean",
+            "default": true,
+            "hidden": true
+        },
+        "spatyper.docker": {
+            "type": "string",
+            "default": "quay.io/biocontainers/spatyper:0.3.3--pyhdfd78af_3",
+            "hidden": true
+        },
+        "spatyper.tsv_ext": {
+            "type": "string",
+            "default": ".tsv",
+            "hidden": true
+        },
+        "spatyper.report_tag": {
+            "type": "string",
+            "default": "Subtyping",
+            "hidden": true
+        },
+        "spatyper.header_p": {
+            "type": "boolean",
+            "default": true,
+            "hidden": true
+        },
+        "spatyper.repeats": {
+            "type": "string",
+            "hidden": true
+        },
+        "spatyper.repeat_order": {
+            "type": "string",
+            "hidden": true
+        },
+        "sistr.docker": {
+            "type": "string",
+            "default": "quay.io/biocontainers/sistr_cmd:1.1.1--pyh864c0ab_2",
+            "hidden": true
+        },
+        "sistr.header_p": {
+            "type": "boolean",
+            "default": true,
+            "hidden": true
+        },
+        "lissero.docker": {
+            "type": "string",
+            "default": "quay.io/biocontainers/lissero:0.4.9--py_0",
+            "hidden": true
+        },
+        "lissero.header_p": {
+            "type": "boolean",
+            "default": true,
+            "hidden": true
+        },
+        "shigeifinder.docker": {
+            "type": "string",
+            "default": "quay.io/biocontainers/shigeifinder:1.3.2--pyhdfd78af_0",
+            "hidden": true
+        },
+        "shigeifinder.header_p": {
+            "type": "boolean",
+            "default": true,
+            "hidden": true
+        },
+        "shigatyper.docker": {
+            "type": "string",
+            "default": "quay.io/biocontainers/shigatyper:2.0.1--pyhdfd78af_0",
+            "hidden": true
+        },
+        "shigatyper.tsv_ext": {
+            "type": "string",
+            "default": ".tsv",
+            "hidden": true
+        },
+        "shigatyper.report_tag": {
+            "type": "string",
+            "default": "Subtyping",
+            "hidden": true
+        },
+        "shigatyper.header_p": {
+            "type": "boolean",
+            "default": true,
+            "hidden": true
+        },
+        "kraken_bin.fasta_ext": {
+            "type": "string",
+            "default": "_binned.fasta.gz",
+            "hidden": true
+        },
+        "QCReport.escherichia.search": {
+            "type": "string",
+            "default": "Escherichia coli",
+            "hidden": true
+        },
+        "QCReport.escherichia.raw_average_quality": {
+            "type": "integer",
+            "default": 30,
+            "hidden": true
+        },
+        "QCReport.escherichia.min_n50": {
+            "type": "integer",
+            "default": 95000,
+            "hidden": true
+        },
+        "QCReport.escherichia.max_n50": {
+            "type": "integer",
+            "default": 6000000,
+            "hidden": true
+        },
+        "QCReport.escherichia.min_nr_contigs": {
+            "type": "integer",
+            "default": 10,
+            "hidden": true
+        },
+        "QCReport.escherichia.max_nr_contigs": {
+            "type": "integer",
+            "default": 500,
+            "hidden": true
+        },
+        "QCReport.escherichia.min_length": {
+            "type": "integer",
+            "default": 4500000,
+            "hidden": true
+        },
+        "QCReport.escherichia.max_length": {
+            "type": "integer",
+            "default": 6000000,
+            "hidden": true
+        },
+        "QCReport.escherichia.max_checkm_contamination": {
+            "type": "number",
+            "default": 3,
+            "hidden": true
+        },
+        "QCReport.escherichia.min_average_coverage": {
+            "type": "integer",
+            "default": 30,
+            "hidden": true
+        },
+        "QCReport.salmonella.search": {
+            "type": "string",
+            "default": "Salmonella",
+            "hidden": true
+        },
+        "QCReport.salmonella.raw_average_quality": {
+            "type": "integer",
+            "default": 30,
+            "hidden": true
+        },
+        "QCReport.salmonella.min_n50": {
+            "type": "integer",
+            "default": 95000,
+            "hidden": true
+        },
+        "QCReport.salmonella.max_n50": {
+            "type": "integer",
+            "default": 6000000,
+            "hidden": true
+        },
+        "QCReport.salmonella.min_nr_contigs": {
+            "type": "integer",
+            "default": 10,
+            "hidden": true
+        },
+        "QCReport.salmonella.max_nr_contigs": {
+            "type": "integer",
+            "default": 200,
+            "hidden": true
+        },
+        "QCReport.salmonella.min_length": {
+            "type": "integer",
+            "default": 4400000,
+            "hidden": true
+        },
+        "QCReport.salmonella.max_length": {
+            "type": "integer",
+            "default": 6000000,
+            "hidden": true
+        },
+        "QCReport.salmonella.max_checkm_contamination": {
+            "type": "number",
+            "default": 3,
+            "hidden": true
+        },
+        "QCReport.salmonella.min_average_coverage": {
+            "type": "integer",
+            "default": 30,
+            "hidden": true
+        },
+        "QCReport.shigella.search": {
+            "type": "string",
+            "default": "Shigella",
+            "hidden": true
+        },
+        "QCReport.shigella.raw_average_quality": {
+            "type": "integer",
+            "default": 30,
+            "hidden": true
+        },
+        "QCReport.shigella.min_n50": {
+            "type": "integer",
+            "default": 17500,
+            "hidden": true
+        },
+        "QCReport.shigella.max_n50": {
+            "type": "integer",
+            "default": 5000000,
+            "hidden": true
+        },
+        "QCReport.shigella.min_nr_contigs": {
+            "type": "integer",
+            "default": 10,
+            "hidden": true
+        },
+        "QCReport.shigella.max_nr_contigs": {
+            "type": "integer",
+            "default": 500,
+            "hidden": true
+        },
+        "QCReport.shigella.min_length": {
+            "type": "integer",
+            "default": 4300000,
+            "hidden": true
+        },
+        "QCReport.shigella.max_length": {
+            "type": "integer",
+            "default": 5000000,
+            "hidden": true
+        },
+        "QCReport.shigella.max_checkm_contamination": {
+            "type": "number",
+            "default": 3,
+            "hidden": true
+        },
+        "QCReport.shigella.min_average_coverage": {
+            "type": "integer",
+            "default": 30,
+            "hidden": true
+        },
+        "QCReport.listeria.search": {
+            "type": "string",
+            "default": "Listeria",
+            "hidden": true
+        },
+        "QCReport.listeria.raw_average_quality": {
+            "type": "integer",
+            "default": 30,
+            "hidden": true
+        },
+        "QCReport.listeria.min_n50": {
+            "type": "integer",
+            "default": 45000,
+            "hidden": true
+        },
+        "QCReport.listeria.max_n50": {
+            "type": "integer",
+            "default": 3200000,
+            "hidden": true
+        },
+        "QCReport.listeria.min_nr_contigs": {
+            "type": "integer",
+            "default": 10,
+            "hidden": true
+        },
+        "QCReport.listeria.max_nr_contigs": {
+            "type": "integer",
+            "default": 200,
+            "hidden": true
+        },
+        "QCReport.listeria.min_length": {
+            "type": "integer",
+            "default": 2700000,
+            "hidden": true
+        },
+        "QCReport.listeria.max_length": {
+            "type": "integer",
+            "default": 3200000,
+            "hidden": true
+        },
+        "QCReport.listeria.max_checkm_contamination": {
+            "type": "number",
+            "default": 3,
+            "hidden": true
+        },
+        "QCReport.listeria.min_average_coverage": {
+            "type": "integer",
+            "default": 30,
+            "hidden": true
+        },
+        "QCReport.campylobacter.search": {
+            "type": "string",
+            "default": "Campylobacter",
+            "hidden": true
+        },
+        "QCReport.campylobacter.raw_average_quality": {
+            "type": "integer",
+            "default": 30,
+            "hidden": true
+        },
+        "QCReport.campylobacter.min_n50": {
+            "type": "integer",
+            "default": 9500,
+            "hidden": true
+        },
+        "QCReport.campylobacter.max_n50": {
+            "type": "integer",
+            "default": 2000000,
+            "hidden": true
+        },
+        "QCReport.campylobacter.min_nr_contigs": {
+            "type": "integer",
+            "default": 10,
+            "hidden": true
+        },
+        "QCReport.campylobacter.max_nr_contigs": {
+            "type": "integer",
+            "default": 150,
+            "hidden": true
+        },
+        "QCReport.campylobacter.min_length": {
+            "type": "integer",
+            "default": 1400000,
+            "hidden": true
+        },
+        "QCReport.campylobacter.max_length": {
+            "type": "integer",
+            "default": 2000000,
+            "hidden": true
+        },
+        "QCReport.campylobacter.max_checkm_contamination": {
+            "type": "number",
+            "default": 3,
+            "hidden": true
+        },
+        "QCReport.campylobacter.min_average_coverage": {
+            "type": "integer",
+            "default": 30,
+            "hidden": true
+        },
+        "QCReport.vibrio.search": {
+            "type": "string",
+            "default": "Vibrio",
+            "hidden": true
+        },
+        "QCReport.vibrio.raw_average_quality": {
+            "type": "integer",
+            "default": 30,
+            "hidden": true
+        },
+        "QCReport.vibrio.min_n50": {
+            "type": "integer",
+            "default": 95000,
+            "hidden": true
+        },
+        "QCReport.vibrio.max_n50": {
+            "type": "integer",
+            "default": 4300000,
+            "hidden": true
+        },
+        "QCReport.vibrio.min_nr_contigs": {
+            "type": "integer",
+            "default": 10,
+            "hidden": true
+        },
+        "QCReport.vibrio.max_nr_contigs": {
+            "type": "integer",
+            "default": 150,
+            "hidden": true
+        },
+        "QCReport.vibrio.min_length": {
+            "type": "integer",
+            "default": 3800000,
+            "hidden": true
+        },
+        "QCReport.vibrio.max_length": {
+            "type": "integer",
+            "default": 4300000,
+            "hidden": true
+        },
+        "QCReport.vibrio.max_checkm_contamination": {
+            "type": "number",
+            "default": 3,
+            "hidden": true
+        },
+        "QCReport.vibrio.min_average_coverage": {
+            "type": "integer",
+            "default": 30,
+            "hidden": true
+        },
+        "QCReport.klebsiella.search": {
+            "type": "string",
+            "default": "Klebsiella",
+            "hidden": true
+        },
+        "QCReport.klebsiella.raw_average_quality": {
+            "type": "integer",
+            "default": 30,
+            "hidden": true
+        },
+        "QCReport.klebsiella.min_n50": {
+            "type": "integer",
+            "default": 100000,
+            "hidden": true
+        },
+        "QCReport.klebsiella.max_n50": {
+            "type": "integer",
+            "default": 6000000,
+            "hidden": true
+        },
+        "QCReport.klebsiella.min_nr_contigs": {
+            "type": "integer",
+            "default": 10,
+            "hidden": true
+        },
+        "QCReport.klebsiella.max_nr_contigs": {
+            "type": "integer",
+            "default": 500,
+            "hidden": true
+        },
+        "QCReport.klebsiella.min_length": {
+            "type": "integer",
+            "default": 4500000,
+            "hidden": true
+        },
+        "QCReport.klebsiella.max_length": {
+            "type": "integer",
+            "default": 6000000,
+            "hidden": true
+        },
+        "QCReport.klebsiella.max_checkm_contamination": {
+            "type": "number",
+            "default": 3,
+            "hidden": true
+        },
+        "QCReport.klebsiella.min_average_coverage": {
+            "type": "integer",
+            "default": 30,
+            "hidden": true
+        },
+        "QCReport.staphylococcus.search": {
+            "type": "string",
+            "default": "Staphylococcus",
+            "hidden": true
+        },
+        "QCReport.staphylococcus.raw_average_quality": {
+            "type": "integer",
+            "default": 30,
+            "hidden": true
+        },
+        "QCReport.staphylococcus.min_n50": {
+            "type": "integer",
+            "default": 100000,
+            "hidden": true
+        },
+        "QCReport.staphylococcus.max_n50": {
+            "type": "integer",
+            "default": 3500000,
+            "hidden": true
+        },
+        "QCReport.staphylococcus.min_nr_contigs": {
+            "type": "integer",
+            "default": 10,
+            "hidden": true
+        },
+        "QCReport.staphylococcus.max_nr_contigs": {
+            "type": "integer",
+            "default": 550,
+            "hidden": true
+        },
+        "QCReport.staphylococcus.min_length": {
+            "type": "integer",
+            "default": 2000000,
+            "hidden": true
+        },
+        "QCReport.staphylococcus.max_length": {
+            "type": "integer",
+            "default": 3500000,
+            "hidden": true
+        },
+        "QCReport.staphylococcus.max_checkm_contamination": {
+            "type": "number",
+            "default": 3,
+            "hidden": true
+        },
+        "QCReport.staphylococcus.min_average_coverage": {
+            "type": "integer",
+            "default": 30,
+            "hidden": true
+        },
+        "QCReport.fallthrough.search": {
+            "type": "string",
+            "default": "No organism specific QC data available.",
+            "hidden": true
+        },
+        "QCReport.fallthrough.raw_average_quality": {
+            "type": "integer",
+            "default": 30,
+            "hidden": true
+        },
+        "QCReport.fallthrough.min_n50": {
+            "type": "integer",
+            "hidden": true
+        },
+        "QCReport.fallthrough.max_n50": {
+            "type": "integer",
+            "hidden": true
+        },
+        "QCReport.fallthrough.min_nr_contigs": {
+            "type": "integer",
+            "hidden": true
+        },
+        "QCReport.fallthrough.max_nr_contigs": {
+            "type": "integer",
+            "hidden": true
+        },
+        "QCReport.fallthrough.min_length": {
+            "type": "integer",
+            "hidden": true
+        },
+        "QCReport.fallthrough.max_length": {
+            "type": "integer",
+            "hidden": true
+        },
+        "QCReport.fallthrough.max_checkm_contamination": {
+            "type": "number",
+            "default": 3,
+            "hidden": true
+        },
+        "QCReport.fallthrough.min_average_coverage": {
+            "type": "integer",
+            "default": 30,
+            "hidden": true
+        },
+        "QCReportFields.raw_average_quality.path": {
+            "type": "string",
+            "default": "['RawReadSummary', 'combined', 'qual_mean']",
+            "hidden": true
+        },
+        "QCReportFields.raw_average_quality.coerce_type": {
+            "type": "string",
+            "default": "Float",
+            "hidden": true
+        },
+        "QCReportFields.raw_average_quality.compare_fields": {
+            "type": "string",
+            "default": "['raw_average_quality']",
+            "hidden": true
+        },
+        "QCReportFields.raw_average_quality.comp_type": {
+            "type": "string",
+            "default": "ge",
+            "hidden": true
+        },
+        "QCReportFields.raw_average_quality.on": {
+            "type": "boolean",
+            "default": true,
+            "hidden": true
+        },
+        "QCReportFields.raw_average_quality.low_msg": {
+            "type": "string",
+            "default": "Base quality is poor, resequencing is recommended.",
+            "hidden": true
+        },
+        "QCReportFields.average_coverage.path": {
+            "type": "string",
+            "default": "['QUAST', '0', 'Avg. coverage depth']",
+            "hidden": true
+        },
+        "QCReportFields.average_coverage.coerce_type": {
+            "type": "string",
+            "default": "Float",
+            "hidden": true
+        },
+        "QCReportFields.average_coverage.compare_fields": {
+            "type": "string",
+            "default": "['min_average_coverage']",
+            "hidden": true
+        },
+        "QCReportFields.average_coverage.comp_type": {
+            "type": "string",
+            "default": "ge",
+            "hidden": true
+        },
+        "QCReportFields.average_coverage.on": {
+            "type": "boolean",
+            "default": true,
+            "hidden": true
+        },
+        "QCReportFields.average_coverage.low_msg": {
+            "type": "string",
+            "default": "Depth of coverage from assembly is lower than than expected. A top-up run is likely needed.",
+            "hidden": true
+        },
+        "QCReportFields.metagenomic.path": {
+            "type": "string",
+            "default": "['MashMeta']",
+            "hidden": true
+        },
+        "QCReportFields.metagenomic.coerce_type": {
+            "type": "string",
+            "default": "Bool",
+            "hidden": true
+        },
+        "QCReportFields.metagenomic.compare_fields": {
+            "type": "string",
+            "default": "[]",
+            "hidden": true
+        },
+        "QCReportFields.metagenomic.comp_type": {
+            "type": "string",
+            "default": "bool",
+            "hidden": true
+        },
+        "QCReportFields.metagenomic.on": {
+            "type": "boolean",
+            "hidden": true
+        },
+        "QCReportFields.n50_value.path": {
+            "type": "string",
+            "default": "['QUAST', '0', 'N50']",
+            "hidden": true
+        },
+        "QCReportFields.n50_value.coerce_type": {
+            "type": "string",
+            "default": "Integer",
+            "hidden": true
+        },
+        "QCReportFields.n50_value.compare_fields": {
+            "type": "string",
+            "default": "['min_n50', 'max_n50']",
+            "hidden": true
+        },
+        "QCReportFields.n50_value.comp_type": {
+            "type": "string",
+            "default": "range",
+            "hidden": true
+        },
+        "QCReportFields.n50_value.on": {
+            "type": "boolean",
+            "default": true,
+            "hidden": true
+        },
+        "QCReportFields.n50_value.low_msg": {
+            "type": "string",
+            "default": "N50 value is low, this could be due to many reasons involving contamination, poor template quality or insufficient template quantity. Reisolation and reseqeuncing may be needed.",
+            "hidden": true
+        },
+        "QCReportFields.n50_value.high_msg": {
+            "type": "string",
+            "default": "N50 value is high, this is likely a good thing if you have fewer contigs than expected.",
+            "hidden": true
+        },
+        "QCReportFields.nr_contigs.path": {
+            "type": "string",
+            "default": "['QUAST', '0', '# contigs (>= 0 bp)']",
+            "hidden": true
+        },
+        "QCReportFields.nr_contigs.coerce_type": {
+            "type": "string",
+            "default": "Integer",
+            "hidden": true
+        },
+        "QCReportFields.nr_contigs.compare_fields": {
+            "type": "string",
+            "default": "['min_nr_contigs', 'max_nr_contigs']",
+            "hidden": true
+        },
+        "QCReportFields.nr_contigs.comp_type": {
+            "type": "string",
+            "default": "range",
+            "hidden": true
+        },
+        "QCReportFields.nr_contigs.on": {
+            "type": "boolean",
+            "default": true,
+            "hidden": true
+        },
+        "QCReportFields.nr_contigs.low_msg": {
+            "type": "string",
+            "default": "Fewer contigs than expected, if your genome length is of an expected size and you have a high N50 you likely just have a high quality assembly.",
+            "hidden": true
+        },
+        "QCReportFields.nr_contigs.high_msg": {
+            "type": "string",
+            "default": "More contigs are present than expected, if your N50 is low and your genome length is shorter than expected you likely need to potentially need to reisolate and resequence/top-up your sample.",
+            "hidden": true
+        },
+        "QCReportFields.length.path": {
+            "type": "string",
+            "default": "['QUAST', '0', 'Total length']",
+            "hidden": true
+        },
+        "QCReportFields.length.coerce_type": {
+            "type": "string",
+            "default": "Integer",
+            "hidden": true
+        },
+        "QCReportFields.length.compare_fields": {
+            "type": "string",
+            "default": "['min_length', 'max_length']",
+            "hidden": true
+        },
+        "QCReportFields.length.comp_type": {
+            "type": "string",
+            "default": "range",
+            "hidden": true
+        },
+        "QCReportFields.length.on": {
+            "type": "boolean",
+            "default": true,
+            "hidden": true
+        },
+        "QCReportFields.length.low_msg": {
+            "type": "string",
+            "default": "Genome length lower than expected, you may need to resequence the sample.",
+            "hidden": true
+        },
+        "QCReportFields.length.high_msg": {
+            "type": "string",
+            "default": "Genome length is higher than expected, contmination is potentially present.",
+            "hidden": true
+        },
+        "QCReportFields.checkm_contamination.path": {
+            "type": "string",
+            "default": "['CheckM', '0', 'Contamination']",
+            "hidden": true
+        },
+        "QCReportFields.checkm_contamination.coerce_type": {
+            "type": "string",
+            "default": "Float",
+            "hidden": true
+        },
+        "QCReportFields.checkm_contamination.compare_fields": {
+            "type": "string",
+            "default": "['max_checkm_contamination']",
+            "hidden": true
+        },
+        "QCReportFields.checkm_contamination.comp_type": {
+            "type": "string",
+            "default": "le",
+            "hidden": true
+        },
+        "QCReportFields.checkm_contamination.on": {
+            "type": "boolean",
+            "default": true,
+            "hidden": true
+        },
+        "QCReportFields.checkm_contamination.high_msg": {
+            "type": "string",
+            "default": "Potential contamination is present in your sample. You may need to reisolate and resequence your sample.",
+            "hidden": true
+        },
+        "coreutils.singularity": {
+            "type": "string",
+            "default": "https://depot.galaxyproject.org/singularity/coreutils%3A8.31--h14c3975_0",
+            "hidden": true
+        },
+        "kat.singularity": {
+            "type": "string",
+            "default": "https://depot.galaxyproject.org/singularity/kat:2.4.2--py38hfc5f9d8_2",
+            "hidden": true
+        },
+        "seqtk.singularity": {
+            "type": "string",
+            "default": "https://depot.galaxyproject.org/singularity/seqtk:1.3--h5bf99c6_3",
+            "hidden": true
+        },
+        "fastp.singularity": {
+            "type": "string",
+            "default": "https://depot.galaxyproject.org/singularity/fastp%3A0.23.2--hb7a2d85_2",
+            "hidden": true
+        },
+        "chopper.singularity": {
+            "type": "string",
+            "default": "https://depot.galaxyproject.org/singularity/chopper%3A0.5.0--hd03093a_0",
+            "hidden": true
+        },
+        "flye.singularity": {
+            "type": "string",
+            "default": "https://depot.galaxyproject.org/singularity/flye:2.9--py39h6935b12_1",
+            "hidden": true
+        },
+        "spades.singularity": {
+            "type": "string",
+            "default": "https://depot.galaxyproject.org/singularity/spades:3.15.5--h95f258a_1",
+            "hidden": true
+        },
+        "quast.singularity": {
+            "type": "string",
+            "default": "https://depot.galaxyproject.org/singularity/quast%3A5.2.0--py39pl5321h4e691d4_3",
+            "hidden": true
+        },
+        "checkm.singularity": {
+            "type": "string",
+            "default": "https://depot.galaxyproject.org/singularity/checkm-genome%3A1.2.2--pyhdfd78af_1",
+            "hidden": true
+        },
+        "kraken.singularity": {
+            "type": "string",
+            "default": "https://depot.galaxyproject.org/singularity/mulled-v2-5799ab18b5fc681e75923b2450abaa969907ec98:87fc08d11968d081f3e8a37131c1f1f6715b6542-0",
+            "hidden": true
+        },
+        "mlst.singularity": {
+            "type": "string",
+            "default": "https://depot.galaxyproject.org/singularity/mlst:2.19.0--hdfd78af_1",
+            "hidden": true
+        },
+        "mash.singularity": {
+            "type": "string",
+            "default": "https://depot.galaxyproject.org/singularity/mash:2.3--he348c14_1",
+            "hidden": true
+        },
+        "r_contaminants.singularity": {
+            "type": "string",
+            "default": "https://depot.galaxyproject.org/singularity/mulled-v2-66534bcbb7031a148b13e2ad42583020b9cd25c4:1679e915ddb9d6b4abda91880c4b48857d471bd8-0",
+            "hidden": true
+        },
+        "minimap2.singularity": {
+            "type": "string",
+            "default": "https://depot.galaxyproject.org/singularity/mulled-v2-66534bcbb7031a148b13e2ad42583020b9cd25c4:1679e915ddb9d6b4abda91880c4b48857d471bd8-0",
+            "hidden": true
+        },
+        "samtools.singularity": {
+            "type": "string",
+            "default": "https://depot.galaxyproject.org/singularity/mulled-v2-66534bcbb7031a148b13e2ad42583020b9cd25c4:1679e915ddb9d6b4abda91880c4b48857d471bd8-0",
+            "hidden": true
+        },
+        "racon.singularity": {
+            "type": "string",
+            "default": "https://depot.galaxyproject.org/singularity/racon:1.4.20--h9a82719_1",
+            "hidden": true
+        },
+        "pilon.singularity": {
+            "type": "string",
+            "default": "https://depot.galaxyproject.org/singularity/pilon%3A1.24--hdfd78af_0",
+            "hidden": true
+        },
+        "pilon_iterative.singularity": {
+            "type": "string",
+            "default": "library://mwells14/pilonpolisher/pilonpolisher:0.0.1",
+            "hidden": true
+        },
+        "medaka.singularity": {
+            "type": "string",
+            "default": "https://depot.galaxyproject.org/singularity/medaka%3A1.8.0--py38hdaa7744_0",
+            "hidden": true
+        },
+        "unicycler.singularity": {
+            "type": "string",
+            "default": "https://depot.galaxyproject.org/singularity/unicycler%3A0.5.0--py38h3b68952_2",
+            "hidden": true
+        },
+        "bakta.singularity": {
+            "type": "string",
+            "default": "https://depot.galaxyproject.org/singularity/bakta%3A1.8.1--pyhdfd78af_0",
+            "hidden": true
+        },
+        "bakta.db": {
+            "type": "string",
+            "default": "databases/db-light/",
+            "hidden": true
+        },
+        "bakta.args": {
+            "type": "string",
+            "hidden": true,
+            "description": "Additional arguments to pass to bakta"
+        },
+        "bandage.singularity": {
+            "type": "string",
+            "default": "https://depot.galaxyproject.org/singularity/bandage:0.8.1--hc9558a2_2",
+            "hidden": true
+        },
+        "ectyper.singularity": {
+            "type": "string",
+            "default": "https://depot.galaxyproject.org/singularity/ectyper:1.0.0--pyhdfd78af_1",
+            "hidden": true
+        },
+        "kleborate.singularity": {
+            "type": "string",
+            "default": "https://depot.galaxyproject.org/singularity/kleborate:2.1.0--pyhdfd78af_1",
+            "hidden": true
+        },
+        "spatyper.singularity": {
+            "type": "string",
+            "default": "https://depot.galaxyproject.org/singularity/spatyper:0.3.3--pyhdfd78af_3",
+            "hidden": true
+        },
+        "sistr.singularity": {
+            "type": "string",
+            "default": "https://depot.galaxyproject.org/singularity/sistr_cmd:1.1.1--pyh864c0ab_2",
+            "hidden": true
+        },
+        "lissero.singularity": {
+            "type": "string",
+            "default": "https://depot.galaxyproject.org/singularity/lissero:0.4.9--py_0",
+            "hidden": true
+        },
+        "shigeifinder.singularity": {
+            "type": "string",
+            "default": "https://depot.galaxyproject.org/singularity/shigeifinder:1.3.2--pyhdfd78af_0",
+            "hidden": true
+        },
+        "shigatyper.singularity": {
+            "type": "string",
+            "default": "https://depot.galaxyproject.org/singularity/shigatyper%3A2.0.1--pyhdfd78af_0",
+            "hidden": true
+        }
+    }
+}

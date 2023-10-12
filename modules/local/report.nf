@@ -1,0 +1,691 @@
+/*Generate mikrokondo report
+
+
+TODO test fallthrough QC params
+*/
+
+import groovy.json.JsonSlurper
+import groovy.json.JsonBuilder
+import java.nio.file.Paths
+
+
+process REPORT{
+    tag "Report Generation"
+
+
+    input:
+    val test_in
+
+    output:
+    // TODO update final_report.json to constants
+    path("final_report.json"), emit: final_report
+
+    exec:
+    def sample_data = [:] // Where to aggergate and create json data
+    def data_stride = 3 // report values added in groups of three
+    def headers_list = 'headers' // ! TODO this string exists twice, need to fix that
+    // TODO Check if there is a better way to get array size
+
+    def arr_size = test_in.size()
+    for(long i = 0; i < arr_size; i=i+data_stride){
+        def meta_data = test_in[i]
+        def report_tag = test_in[i+1]
+        def report_value = test_in[i+2]
+
+        if(!sample_data.containsKey(meta_data.sample)){
+            sample_data[meta_data.sample] = [:]
+            // TODO add strings to constants file
+            sample_data[meta_data.sample]["meta"] = [:]
+        }
+
+        update_map_values(sample_data, meta_data, "metagenomic")
+        update_map_values(sample_data, meta_data, "assembly")
+        update_map_values(sample_data, meta_data, "hybrid")
+        update_map_values(sample_data, meta_data, "single_end")
+        update_map_values(sample_data, meta_data, "merge")
+        update_map_values(sample_data, meta_data, "downsampled")
+
+        if(!sample_data[meta_data.sample].containsKey(meta_data.id)){
+            sample_data[meta_data.sample][meta_data.id] = [:]
+        }
+
+        if(report_value instanceof Path){
+            def extension = report_value.getExtension()
+            if(!check_file_params(report_tag, extension)){
+                continue
+            }
+            // TODO pass in report metadata
+            def output_data = parse_data(report_value, extension, report_tag, headers_list)
+            if(output_data){
+                report_value = output_data
+            }
+        }
+
+        sample_data[meta_data.sample][meta_data.id][report_tag.report_tag] = report_value
+    }
+    def search_phrases = qc_params_species()
+    // Add in quality information in place
+    generate_qc_data(sample_data, search_phrases)
+    create_action_call(sample_data)
+
+    //sample_data["QualityAnalysis"] = generate_qc_data(sample_data, search_phrases)
+    def json_converted_data = new JsonBuilder(sample_data).toPrettyString()
+    def report_name = "final_report.json"
+
+
+    def output_file_path = Paths.get("$task.workDir", report_name)
+    output_file = file(output_file_path).newWriter()
+    output_file.write(json_converted_data)
+    output_file.close()
+
+}
+
+
+
+def n50_nrcontigs_decision(qual_data, nr_cont_p, n50_p, qual_message, reisolate, resequence){
+    /*
+        qual_data: the quality data string
+        nr_cont_p: nr_contigs failed (true means it failed)
+        n50_p: n50_value failed (true means it failed)
+        qual_message: array of quality messges to be used
+        reisolate: int of reisolation score
+        resequence: int of reseqeunce score
+    */
+
+    if(nr_cont_p && n50_p){
+        // both fialed :(
+        if(qual_data && qual_data.containsKey("nr_contigs") && qual_data.nr_contigs.low){
+            if(!qual_data.n50_value.low){
+                // This is good!!
+                qual_message.add(params.QCReportFields.nr_contigs.low_msg)
+                qual_message.add(params.QCReportFields.n50_value.high_msg)
+            }else{
+                qual_message.add(params.QCReportFields.nr_contigs.low_msg)
+                qual_message.add(params.QCReportFields.n50_value.low_msg)
+                resequence += 1
+            }
+        }else{
+            if(!qual_data.n50_value.low){
+                qual_message.add(params.QCReportFields.nr_contigs.high_msg)
+                qual_message.add(params.QCReportFields.n50_value.high_msg)
+                reisolate += 1
+                resequence += 1
+            }else{
+                qual_message.add(params.QCReportFields.nr_contigs.high_msg)
+                qual_message.add(params.QCReportFields.n50_value.low_msg)
+                resequence += 1
+            }
+        }
+    }else if(nr_cont_p){
+        if(qual_data.nr_contigs.low){
+            qual_message.add(params.QCReportFields.nr_contigs.low_msg)
+            resequence += 1
+        }else{
+            qual_message.add(params.QCReportFields.nr_contigs.high_msg)
+            resequence += 1
+        }
+    }else if(n50_p){
+        if(!qual_data.n50_value.low){
+            qual_message.add(params.QCReportFields.n50_value.low_msg)
+            resequence += 1
+        }else{
+            qual_message.add(params.QCReportFields.n50_value.high_msg)
+            // No increment here, as higher n50 means its a good assembly
+        }
+    }
+    // return the values
+    return [reisolate, resequence]
+
+}
+
+
+def populate_qual_message(qual_data){
+    /*Takes in quality data, and converts it to a summary
+    */
+    def msg = ["Quality Summary"]
+    for(i in qual_data){
+        if(i.value instanceof Map && i.value.containsKey("message")){
+            msg.add(i.value.message)
+        }else{
+            msg.add(i.value)
+        }
+
+    }
+    return msg
+}
+
+// Action: Reisolate and resequence, resequence, all good.
+def create_action_call(sample_data){
+    /*Define criteria used to create base sketches
+
+    TODO Need to test a falthrough sample (e.g. unspeciated to see what happens)
+
+    TODO if this become unwieldly, I should make a matrix of passed conditions that can look up the correct value
+    based on conditions passed.
+
+    ***** LOGIC ****
+    contamination checkm resequence and reisolate
+
+    // Are reads provided?
+        // Coverage low, need to resequence
+
+        // Low quality, need to resequence
+
+    // Genome length to long, reisolate and resequence
+        // length to low, resequencing needed e.g. top up run likely needed
+
+
+    // High n50, low # of contigs likely all is good -> check n50 if it is low or high then check if nr_contigs is low
+    // flip this, nr_contigs is too high, reisolate and resequence
+        // if nr_contigs is low, check n50 values. if n50 is high good news.
+            // nr_contigs is low, n50 is low, check genome size if low top up may be needed likely need to resequence
+
+
+    TODO creating a logic heavy function that needs to be refactored
+    */
+
+    for(val in sample_data){
+            def contamination_fail = 2
+            def final_message = ""
+
+            def resequence = 0
+            def reisolate = 0
+            def qual_data = val.value["QualityAnalysis"]
+            def meta_data = val.value["meta"]
+            def sample_status = "FAILED"
+            if(meta_data.metagenomic){
+                // nothing to do here
+                if(params.metagenomic_run){
+                    final_message = "No QC Summary is provided for metagenomic samples."
+                    sample_status = "NA"
+                }else{
+                    final_message = "[FAILED] Sample was determined to be metagenomic, and this was not specied as" +
+                    " a metagenomic run indicating contamination REISOLATION AND RESEQUENCING RECOMMENDED." +
+                    "There is additionally a possibility that your sample could not be identified as it is novel and " +
+                    "not included in the mash sketch provided to the pipeline (however this would be very rare), "+
+                    "but if this is the case please disregard this message."
+                }
+                sample_data[val.key]["QCStatus"] = sample_status
+                sample_data[val.key]["QCSummary"] = final_message
+                continue
+            }
+            def qual_message = populate_qual_message(qual_data)
+            def failed_p = false
+            def checks_failed = 0
+            def checks = 0
+            def checks_ignored = 0
+            def n50_failed = false
+            def nr_contigs_failed = false
+            qual_message.add("Sample Identification")
+            qual_message.add("[TOPHIT] ${val.value[val.key][params.top_hit_species.report_tag]}")
+            qual_message.add("Additional feedback")
+
+            // ! TODO Need to make checks failed reflect checks not performed currently if no checks are performed the samples passes..
+            if(qual_data && qual_data.containsKey("checkm_contamination") && !qual_data.checkm_contamination.status){
+                qual_message.add(params.QCReportFields.checkm_contamination.high_msg)
+                reisolate = reisolate + contamination_fail
+                resequence += 1
+                failed_p = true
+                checks_failed += 1
+            }else if (!qual_data.checkm_contamination.status){
+                checks_ignored += 1
+            }
+            checks += 1
+
+            if(!meta_data.assembly){
+                // We should have reads as we assembled it
+                if(qual_data && qual_data.containsKey("raw_average_quality") && !qual_data.raw_average_quality.status){
+                    qual_message.add(params.QCReportFields.raw_average_quality.low_msg)
+                    resequence += 1
+                    checks_failed += 1
+                }else if (!qual_data.raw_average_quality.status){
+                    checks_ignored += 1
+                }
+                checks += 1
+                
+                if(qual_data && qual_data.containsKey("average_coverage") && !qual_data.average_coverage.status){
+                    qual_message.add(params.QCReportFields.average_coverage.low_msg)
+                    if(meta_data.downsampled){
+                        qual_message.add("The sample may have been downsampled too aggressively, if this is the cause please re-run sample with a different target depth.")
+                    }
+                    checks_failed += 1
+                    resequence += 1
+                }else if(!qual_data.average_coverage.status){
+                    checks_ignored += 1
+                }
+                checks += 1
+            }
+
+            if(qual_data && qual_data.containsKey("length") && !qual_data.length.status){
+                if(qual_data.length.low){
+                    qual_message.add(params.QCReportFields.length.low_msg)
+                    resequence += 1
+                    checks_failed += 1
+                }else{
+                    qual_message.add(params.QCReportFields.length.high_msg)
+                    resequence += 1
+                    reisolate = reisolate + contamination_fail
+                    checks_failed += 1
+                }
+            }else if (!qual_data.length.status){
+                checks_ignored += 1
+            }
+            checks += 1
+
+            if(qual_data && qual_data.containsKey("nr_contigs") && !qual_data.nr_contigs.status){
+                checks_failed += 1
+                nr_contigs_failed = true
+            }else if (!qual_data.nr_contigs.status){
+                checks_ignored += 1
+            }
+            checks += 1
+
+            if(qual_data && qual_data.containsKey("n50_value") && !qual_data.n50_value.status){
+                checks_failed += 1
+                n50_failed = true
+            }else if (!qual_data.n50_value.status){
+                checks_ignored += 1
+            }
+            checks += 1
+
+            (reisolate, resequence) = n50_nrcontigs_decision(qual_data, nr_contigs_failed, n50_failed, qual_message, reisolate, resequence)
+            qual_message.add("Quality Conclusion")
+            // TODO can reisolate be incremented without resequence? need to make sure no
+            if(reisolate >= contamination_fail){
+                qual_message.add("[FAILED] Sample is likely contaminated, REISOLATION AND RESEQUENCING RECOMMENDED.")
+            }else if(resequence > 0 && reisolate > 0){
+                qual_message.add("[FAILED] RESEQUENCING IS RECOMMENDED. Further screening may be required as some evidence of CONTAMINATION was present.")
+            }else if(resequence > 0){
+                qual_message.add("[FAILED] RESEQUENCING IS RECOMMENDED.")
+            }else if(checks_ignored > 0 || checks_failed > 0){
+                qual_message.add("[FAILED] Checks had to be ignored.")
+            }else{
+                qual_message.add("[PASSED] All Checks passed.")
+                sample_status = "PASSED"
+            }
+            qual_message.add("Passed Tests: ${checks - checks_failed - checks_ignored}/${checks}")
+            // Qual summary not final message
+            final_message = qual_message.join("\n")
+            log.info "\n$val.key\n${final_message}\n"
+            sample_data[val.key]["QCStatus"] = sample_status
+            sample_data[val.key]["QCSummary"] = final_message
+        }
+
+}
+
+def qc_params_species(){
+    def search_term = "search";
+    def search_phrases = [];
+    params.QCReport.each{k, v ->
+        search_phrases.add([v[search_term], v])
+    }
+    return search_phrases;
+}
+
+def convert_type(type, val){
+    def val_
+    switch (type.toUpperCase()){
+        case 'INTEGER':
+            try{
+                val_ = val.toLong()
+            }catch (NumberFormatException ex){
+                val_ = null
+            }
+        break;
+        case 'FLOAT':
+            try{
+                val_ = val.toFloat()
+            }catch (NumberFormatException ex){
+                val_ = null
+            }
+        break;
+        case 'BOOL':
+            val_ = val.toBoolean()
+        default:
+        val_ = val
+        break;
+    }
+    return val_;
+}
+
+def recurse_keys(value, keys_rk){
+    // TODO add in generic return for if a value is not found
+    def temp = value
+    def value_found = true
+    for(key_rk in keys_rk.path){
+        def key_val
+        if(key_rk.isNumber()){
+            // ! This is a potential source of error as nextflow is numeric strings to int
+            key_val = key_rk.toInteger()
+        }else{
+            key_val = key_rk
+        }
+        if (temp.containsKey(key_val)){
+            temp = temp[key_val]
+        }else{
+            value_found = false
+            break
+        }
+    }
+    def ret_val = null
+    if(value_found){
+        ret_val = convert_type(keys_rk.coerce_type, temp)
+    }
+
+    return ret_val
+}
+
+def range_comp(fields, qc_data, comp_val, qc_obj){
+    if(qc_data == null){
+        qc_obj.message ="[${qc_obj.field}] WARNING: No comparison available for ${qc_obj.field}"
+        qc_obj.status = true
+        return qc_obj
+    }
+
+    def vals = [qc_data[fields[0]], qc_data[fields[1]]].sort()
+    if(vals[0] == null){
+        qc_obj.message ="[${qc_obj.field}] WARNING: No comparison available for ${qc_obj.field}"
+        qc_obj.status = true
+        return qc_obj
+    }
+    if(vals[0] <= comp_val && comp_val <= vals[1]){
+        qc_obj.status = true
+        qc_obj.message = "[${qc_obj.field} PASSED] ${comp_val} is within acceptable QC range for ${qc_data.search} (${fields[0]}: ${vals[0]} - ${fields[1]} ${vals[1]})"
+    }else{
+        if(comp_val < vals[0]){
+            qc_obj.low = true
+        }else{
+            qc_obj.low = false
+        }
+        qc_obj.message = "[${qc_obj.field} FAILED] ${comp_val} is outside the acceptable ranges for ${qc_data.search} (${fields[0]}: ${vals[0]} - ${fields[1]} ${vals[1]})"
+    }
+    return qc_obj
+}
+
+def greater_equal_comp(fields, qc_data, comp_val, qc_obj){
+    if(qc_data == null){
+        qc_obj.message ="[${qc_obj.field}] WARNING: No comparison available for ${qc_obj.field}"
+        qc_obj.status = true
+        return qc_obj
+    }
+    def vals = qc_data[fields[0]]
+    if(vals == null){
+        qc_obj.message ="[${qc_obj.field}] WARNING: No comparison available"
+        qc_obj.status = true
+        return qc_obj
+    }
+
+    if(comp_val >= vals ){
+        qc_obj.status = true
+        qc_obj.message = "[${qc_obj.field} PASSED] ${comp_val} meets QC parameter of => ${vals} for ${qc_data.search}"
+    }else{
+        qc_obj.low = true
+        qc_obj.message = "[${qc_obj.field} FAILED] ${comp_val} is less than QC parameter of ${vals} for ${qc_data.search}"
+    }
+    return qc_obj
+}
+
+def lesser_equal_comp(fields, qc_data, comp_val, qc_obj){
+    // TODO  move checks into seperate function
+    if(qc_data == null){
+        qc_obj.message ="[${qc_obj.field}] WARNING: No comparison available for ${qc_obj.field}"
+        qc_obj.status = true
+        return qc_obj
+    }
+    def vals = qc_data[fields[0]]
+    if(vals == null){
+        qc_obj.message = "[${qc_obj.field}] WARNING: No comparison available for ${qc_obj.field}"
+        qc_obj.status = true
+        return qc_obj
+    }
+
+    if(comp_val <= vals ){
+        qc_obj.status = true
+        qc_obj.message = "[${qc_obj.field} PASSED] ${comp_val} meets QC parameter of <= ${vals} for ${qc_data.search}"
+    }else{
+        qc_obj.low = false
+        qc_obj.message = "[${qc_obj.field} FAILED] ${comp_val} is greater than than QC parameter of ${vals} for ${qc_data.search}"
+    }
+    return qc_obj
+}
+
+def prep_qc_vals(qc_vals, qc_data, comp_val, field_val){
+    // Low value is added to designate if a value was too low or too high if it fails a qc threshold
+    def status = ["status": false, "message": "", "field": field_val, "low": false]
+    def comp_fields = qc_vals.compare_fields
+    switch(qc_vals.comp_type.toUpperCase()){
+        case 'GE':
+            greater_equal_comp(comp_fields, qc_data, comp_val, status);
+            break;
+        case 'LE':
+            lesser_equal_comp(comp_fields, qc_data, comp_val, status);
+            break;
+        case 'RANGE':
+            range_comp(comp_fields, qc_data, comp_val, status)
+            break;
+        case 'NONE':
+            if (comp_val && params.metagenomic_run){
+                status.status = true
+            }else if(comp_val){
+                status.status = false
+            }else{
+                status.status = true
+            }
+            break;
+        default:
+            log.warn "Unknow comparison type: ${comp_fields}"
+            break;
+    }
+    return status
+}
+
+
+def get_species(value, search_phrases, value_data){
+    def search_term_val = 0;
+    def quality_messages = [:]
+    def qc_data = null;
+    if(value == null){
+        return null
+    }
+
+    for(item in search_phrases){
+        if(value.contains(item[search_term_val])){
+            qc_data = item;
+            break;
+        }
+    }
+
+
+    params.QCReportFields.each{
+        k, v ->
+        if(v.on){ // only use the fields specified in the config
+            def out = recurse_keys(value_data, v)
+            if(out != null){
+                if(qc_data == null){
+                    species_data = params.QCReport.fallthrough
+                }else{
+                    species_data = qc_data[1]
+                }
+                def prepped_data = prep_qc_vals(v, species_data, out, k)
+                quality_messages[k] = prepped_data
+            }else{
+                quality_messages[k] = ["field": k, "message": "No data"]
+            }
+        }
+    }
+
+    return quality_messages;
+}
+
+def generate_qc_data(data, search_phrases){
+    // TODO Need to update constants....
+    def top_hit_tag = params.top_hit_species.report_tag;
+    def quality_analysis = "QualityAnalysis"
+    for(k in data){
+        if(!k.value.meta.metagenomic){
+            data[k.key][quality_analysis] = get_species(k.value[k.key][top_hit_tag], search_phrases, k.value[k.key])
+        }else{
+            data[k.key][quality_analysis] = ["Metagenomic": ["message": null, "status": false]]
+            data[k.key][quality_analysis]["Metagenomic"].message = "The sample was determined to be metagenomic, summary metrics will not be generated" +
+                    " e.g. multiple genus are present in the sample. If your sample is supposed to be an isolate it is recommended" +
+                    " you re-isolate and re-sequence this sample"
+        }
+    }
+}
+
+def update_map_values(data, meta_data, tag){
+        if(!data[meta_data.sample].containsKey(tag)){
+            data[meta_data.sample]["meta"][tag] = meta_data[tag]
+        }
+}
+
+
+def check_file_params(param_data, extension){
+    def header_tag = 'header_p'
+    def report_tag_key = 'report_tag'
+    def headers_list = 'headers'
+    def info_tag = param_data.containsKey(report_tag_key) ? param_data.report_tag_key : param_data
+    if(param_data.containsKey(header_tag) && extension.equals('json')){
+        log.warn "The parameters specified for ${info_tag} state that it is a json file and has headers."
+        log.warn "This does not quite make sense please update your configuration file to reflect the reported file type."
+        log.warn "Report data for this file will not be added."
+        return false
+    }
+    if(param_data.containsKey(header_tag) && !param_data[header_tag] && !param_data.containsKey(headers_list)){
+        log.warn "The parameters for ${info_tag} indicate that it is not a tabular file without headers."
+        log.warn "However no headers have been provided for the file in the config. Please update a 'headers' tag and array of field names to the config file."
+        log.warn "Report data will not be added for this tool: ${param_data} extension: ${extension}"
+        return false
+    }
+    return true
+}
+
+def parse_data(file_path, extension, report_data, headers_key){
+    /*Select the correct parse based on the passed file type
+    */
+    // ? TODO should a check of existence be passed here?
+    //println "${file_path} extension is ${extension}"
+    def headers = report_data.containsKey(headers_key) ? report_data[headers_key] : null
+    def return_text = null
+    switch(extension){
+        case "tsv":
+            //println "${file_path.getSimpleName()} is tsv"
+            return_text = table_values(file_path, report_data.header_p, '\t', headers)
+            break
+        case "tab":
+            //println "${file_path.getSimpleName()} is tsv"
+            return_text = table_values(file_path, report_data.header_p, '\t', headers)
+            break
+        case "txt":
+            //println "${file_path.getSimpleName()} is txt"
+            return_text = table_values(file_path, report_data.header_p, '\t', headers)
+            break
+        case "csv":
+            //println "${file_path.getSimpleName()} is csv"
+            return_text = table_values(file_path, report_data.header_p, ',', headers)
+            break
+        case "json":
+            //println "${file_path.getSimpleName()} is json"
+            return_text = json_values(file_path, report_data)
+            break
+        case "screen":
+            // Passsing on mash as the parser result is output
+            //println "${file_path.getSimpleName()} is Mash output"
+            //table_values(file_path, report_data.header_p, '\t', headers)
+            break
+        default:
+            log.warn "I dont know what kind of file ${file_path} is. You may need to update the nextflow.config report settings \
+Or the report module text parser."
+            break
+    }
+    //println return_text
+    return return_text
+}
+
+def json_values(file_path, report_data){
+    // Returns lazy map
+    def delimiter = "."
+    def exclude_field_tag = 'report_exclude_fields'
+    def jsonSlurper = new JsonSlurper()
+    String file_data = file_path.text
+    def json_data = jsonSlurper.parseText(file_data)
+    if (report_data.containsKey(exclude_field_tag)){
+        json_paths = gather_json_paths(json_data, "", delimiter, [], report_data[exclude_field_tag])
+        trim_json(json_data, json_paths, delimiter) // operates in place
+    }
+    return json_data
+}
+
+def trim_json(json_data, paths, delimiter){
+    def unique_paths = paths.unique()
+    def temp = json_data
+    def head = json_data
+    for(path in paths){
+        def last_key = null
+        def tokenized_values = path.tokenize(delimiter)
+        def values_size = tokenized_values.size()
+        for(long i = 0; i < values_size - 1; i++){
+            temp = temp[tokenized_values[i]]
+        }
+        temp.remove(tokenized_values[values_size-1])
+        temp = head
+    }
+}
+
+def gather_json_paths(json_data, parents, delimiter, list_paths, exclude_paths){
+    /*Trim json fields
+
+    It seems nextflow does not support recursion...
+    */
+
+    json_data.each{
+        key, value ->
+        def temp = parents + "${delimiter}${key}"
+        if(json_data[key] instanceof Map && !exclude_paths.contains(key)){
+            list_paths.addAll(gather_json_paths(json_data[key], temp, delimiter, list_paths, exclude_paths))
+        }else if(exclude_paths.contains(key)){
+            list_paths << temp
+        }
+    }
+    return list_paths
+
+
+}
+
+def table_values(file_path, header_p, seperator, headers=null){
+    /*
+        create a map matching rows to columns
+
+        returns a map
+    */
+    def split_header = null
+    def split_line = null
+    def converted_data = [:]
+    def idx = 0
+    def lines_read = false
+    file_path.withReader{
+        String line
+        if(header_p){
+            header = it.readLine()
+            split_header = header.tokenize(seperator)
+        }
+        if(headers){
+            split_header = headers
+        }
+        while(line = it.readLine()){
+            split_line = line.tokenize(seperator)
+            // Transpose, and collect converts the data to a map
+            converted_data[idx] = [split_header, split_line].transpose().collectEntries()
+            idx++
+            lines_read = true
+        }
+        if(!lines_read){
+            converted_data[idx] = [split_header, Collections.nCopies(split_header.size, "NoData")].transpose().collectEntries()
+        }
+
+    }
+    return converted_data
+}
+
+
+
