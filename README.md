@@ -16,6 +16,7 @@ Mikrokondo takes in either, Illumina, Nanopore or Pacbio data (Pacbio data only 
 
 # Installation
 
+
 ## Installing Nextflow
 Nextflow is required to run mikrokondo, but fortunately it is not too hard to install (Linux is required). The instructions for installing Nextflow can be found at either either resource: [Nextflow Home](https://www.nextflow.io/) or  [Nextflow Documentation](https://www.nextflow.io/docs/latest/getstarted.html#installation)
 
