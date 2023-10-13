@@ -12,7 +12,6 @@ testing*
 *log
 .devcontainer
 .github
-*.jar
 .*
 slurm*
 *.fasta

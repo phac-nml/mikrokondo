@@ -517,11 +517,6 @@
                     "default": "--pacbio-corr",
                     "hidden": true
                 },
-                "flye.pacbio.hifi": {
-                    "type": "string",
-                    "default": "--pacbio-hifi",
-                    "hidden": true
-                },
                 "flye.nanopore.raw": {
                     "type": "string",
                     "default": "--nano-raw",
@@ -565,6 +560,10 @@
                     "type": "string",
                     "default": ".fasta.gz",
                     "hidden": true
+                },
+                "flye.pacbio.hq": {
+                    "type": "string",
+                    "default": "--pacbio-hifi"
                 }
             }
         },
@@ -2467,6 +2466,15 @@
             "type": "string",
             "default": "https://depot.galaxyproject.org/singularity/shigatyper%3A2.0.1--pyhdfd78af_0",
             "hidden": true
+        },
+        "flye_read_type": {
+            "type": "string",
+            "default": "hq",
+            "enum": [
+                "hq",
+                "corr",
+                "raw"
+            ]
         }
     }
 }

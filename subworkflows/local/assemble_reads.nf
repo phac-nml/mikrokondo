@@ -22,8 +22,14 @@ workflow ASSEMBLE_READS{
         ch_assembled = SPADES_ASSEMBLE(sample_data)
 
     }else if(platform_comp == params.opt_platforms.ont || platform_comp == params.opt_platforms.pacbio){
-        // TODO add information to detect read types, e.g. raw etc, turns out this can come from header infor at times
-        def def_mode = params.flye[params.platform].hq
+        def options = ["hq", "corr", "raw"]
+        def read_type = "hq"
+        if(params.flye_read_type in options){
+            read_type = params.flye_read_type
+        }else{
+            log.warn "No read type quality type specified for flye. Defualting to reads as high-quality if Nanopre or hifi if pacbio."
+        }
+        def def_mode = params.flye[params.platform][read_type]
         ch_assembled = FLYE_ASSEMBLE(sample_data, Channel.value(def_mode))
 
 
