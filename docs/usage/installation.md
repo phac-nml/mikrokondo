@@ -14,7 +14,17 @@ Containers are not perfect, below is a list of some issues you may face using co
 - Exit code 137, likely means your docker container used to much memory.
 
 ## Dependencies
-Besides the Nextflow run time (requires Java), and container engine the dependencies required by mikrokondo are fairly minimal requiring only Python 3.10 (more recent Python versions will work as well) to run. Currently mikrokondo has been tested with fully with Singularity (partially with Apptainer, containers all work not all workflow paths tested) and partially tested with Docker (not all workflow paths tested). **Dependencies can be installed with Conda (e.g. Nextflow and Python)**
+Besides the Nextflow run time (requires Java), and container engine the dependencies required by mikrokondo are fairly minimal requiring only Python 3.10 (more recent Python versions will work as well) to run. Currently mikrokondo has been tested with fully with Singularity (partially with Apptainer, containers all work not all workflow paths tested) and partially tested with Docker (not all workflow paths tested). **Dependencies can be installed with Conda (e.g. Nextflow and Python)**. To download the pipeline run:
+
+`git clone https://github.com/phac-nml/mikrokondo.git`
+
+### Dependencies listed
+
+- Python (3.10>=)
+- Nextflow (22.10.1>=)
+- Container service (Docker, Singularity, Apptainer have been tested)
+- The source code: `git clone https://github.com/phac-nml/mikrokondo.git`
+
 
 
 ## Resources to download
