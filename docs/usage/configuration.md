@@ -114,6 +114,9 @@ An example of an update would be:
 nanopore_chemistry = "r1041_e82_400bps_hac_v4.2.0" // Note the quotes around the value
 ```
 
+## Assembly with Flye (Nanopore and Pacbio)
+As Flye provides different assembly optoins for Nanopore or Pacbio reads of varying qualities the `--fly_read_type` parameter can be altered from the command line. The default value is set too `hq` (High quality for Nanopore reads, and HiFi for bacterial reads). User options include `hq`, `corr` and `raw`, and a default value can be specified in the `nextflow.config` file.
+
 ## Running Kraken2 instead of Mash
 If you really like Kraken2 for speciation, you can enable it over Mash at the command line by specifying:
 `--run_kraken true`
@@ -125,6 +128,9 @@ run_kraken = true // Note the lack of quotes
 
 ## Run Unicycler instead of Flye->Racon->Pilon
 To use Unicycler specify on the command line `--hybrid_unicycler true`. If you would like to update this value so that the pipeline always uses Unicycler you can adjust the `nextflow.config` file like so:
+
+### Potential error with Unicycler
+You may need to check the `conf/base.config` `process_high_memory` declaration and provide it upwards of 1000GB of memory if you get errors mentioning `tputs`. This error is not very clear sadly but increasing resources available to the process will help.
 
 ```
 hybrid_unicycler = true // Note the lack of quotes

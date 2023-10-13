@@ -72,6 +72,7 @@ Three test profile with example data are provided and can be run like so:
 - Illumina test profile: `nextflow run main.nf -profile test_illumina,<docker/singularity> --outdir <OUTDIR>`
 - Nanopore test profile: `nextflow run main.nf -profile test_nanopore,<docker/singularity> --outdir <OUTDIR>`
 - Pacbio test profile: `nextflow run main.nf -profile test_pacbio,<docker/singularity> --outdir <OUTDIR>`
+  - The pacbio workflow has only been partially tested as it fails at Flye due to not enough reads being present.
 
 ## TODOs
 - [ ] Provide a script for database downloads

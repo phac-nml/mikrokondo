@@ -40,7 +40,14 @@ workflow HYBRID_ASSEMBLY {
         log.info "Running hybrid assembly using Flye->Racon then pilon polishing with short reads"
         def sequencing_mode = null
         if(params.long_read_opt == params.opt_platforms.ont || params.long_read_opt == params.opt_platforms.pacbio){
-            sequencing_mode = params.flye[params.long_read_opt].hq
+            def options = ["hq", "corr", "raw"]
+            def read_type = "hq"
+            if(params.flye_read_type in options){
+                read_type = params.flye_read_type
+            }else{
+                log.warn "No read type quality type specified for flye. Defualting to reads as high-quality if Nanopre or hifi if pacbio."
+            }
+            sequencing_mode = params.flye[params.long_read_opt][read_type]
         }
 
         ch_long_read_data = reads.map{
