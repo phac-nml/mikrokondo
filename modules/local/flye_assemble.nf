@@ -10,9 +10,7 @@ process FLYE_ASSEMBLE{
     label 'process_long'
     container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.containers.get('singularity') : task.ext.containers.get('docker')}"
 
-    errorStrategy { task.exitStatus in [140] ? 'retry' : 'terminate'}
     memory { task.memory * task.attempt}
-    maxRetries 3
     // TODO check if --debug flag should be added to flye to actually  turns off the debug logging?
 
     input:
@@ -29,7 +27,7 @@ process FLYE_ASSEMBLE{
     path "versions.yml"                , emit: versions
 
     script:
-    def args = task.ext.args ?: "--iterations ${params.flye.polishing_iterations} ${params.flye.ext_args}"
+    def args = task.ext.args ?: ""
     if(meta.metagenomic){
         args = args + "--meta "
     }
