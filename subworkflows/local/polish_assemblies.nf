@@ -32,7 +32,7 @@ workflow POLISH_ASSEMBLIES{
         ch_fasta_reads = MEDAKA_POLISH.out.medaka_polished
 
     }else{
-        log.warn "No additional polishing step availble for ${params.platform} no addittional polishing will be performed."
+        log.warn "No additional polishing with Pilon or Medaka available for ${params.platform}."
         // TODO verify pacbio works
         ch_fasta_reads = assembled_data.join(sample_data)
     }

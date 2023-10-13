@@ -71,6 +71,7 @@ Three test profile with example data are provided and can be run like so:
 - Assembly test profile: `nextflow run main.nf -profile test_assembly,<docker/singularity> --outdir <OUTDIR>`
 - Illumina test profile: `nextflow run main.nf -profile test_illumina,<docker/singularity> --outdir <OUTDIR>`
 - Nanopore test profile: `nextflow run main.nf -profile test_nanopore,<docker/singularity> --outdir <OUTDIR>`
+- Pacbio test profile: `nextflow run main.nf -profile test_pacbio,<docker/singularity> --outdir <OUTDIR>`
 
 ## TODOs
 - [ ] Provide a script for database downloads

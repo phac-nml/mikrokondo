@@ -39,7 +39,7 @@ workflow HYBRID_ASSEMBLY {
     }else{
         log.info "Running hybrid assembly using Flye->Racon then pilon polishing with short reads"
         def sequencing_mode = null
-        if(params.long_read_opt == params.opt_platforms.ont){
+        if(params.long_read_opt == params.opt_platforms.ont || params.long_read_opt == params.opt_platforms.pacbio){
             sequencing_mode = params.flye[params.long_read_opt].hq
         }
 
