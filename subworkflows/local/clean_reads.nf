@@ -48,8 +48,28 @@ workflow QC_READS {
 
 
     fastp_data = PARSE_FASTP(ch_meta_cleaned_reads.fastp_json)
+
+    /*
+    * Below snippet was an experiment, need to have a discussion if nextflow should continue to handle the conversion of parameters, as it can mis cast things.
+    // def min_reads = null
+    //try{
+    //    min_reads = params.min_reads.toLong();
+    //    if(min_reads < 0){
+    //        log.warn "Integer overflow for parameter min_reads. The minimum value (${params.min_reads}) is too high. Setting parameter to default value of 1000"
+    //        min_reads = 1000;
+    //    }
+    //}catch(NumberFormatException ex){
+    //    log.warn "A valid numberic type was not passed to params.min_reads (${params.min_reads}). Setting parameter to default value of 1000"
+    //    min_reads = 1000; // TODO add to constants file
+    //}
+
+    // passed_read_count = fastp_data.read_count.filter{
+    //     it[1] >= min_reads // Read counts are at position 1
+    // }
+    */
+
     passed_read_count = fastp_data.read_count.filter{
-        it[1] >= params.min_reads // Read count are at position 1
+        it[1] >= params.min_reads // Read counts are at position 1
     }
 
 
