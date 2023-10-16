@@ -40,6 +40,10 @@ Besides the Nextflow run time (requires Java), and container engine the dependen
 - Container service (Docker, Singularity, Apptainer have been tested)
 - The source code: `git clone https://github.com/phac-nml/mikrokondo.git`
 
+# Usage
+Please check out the documentation for usage instructions here: [docs](https://phac-nml.github.io/mikrokondo/)
+
+Under the usage section you can find example commands, instructions for configuration and a reference to a utility script to reduce command line bloat!
 
 
 ## Resources to download
