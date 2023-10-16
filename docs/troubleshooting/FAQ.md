@@ -22,7 +22,7 @@ The way a variable type is determined from the command line can be found in the 
     }
 ```
 
-## Common errors and how to encounter them
+## Common errors and to (maybe) fix them
 
 ### Troubleshooting
 
