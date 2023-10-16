@@ -89,6 +89,7 @@ Three test profile with example data are provided and can be run like so:
   - The pacbio workflow has only been partially tested as it fails at Flye due to not enough reads being present.
 
 ## TODOs
+- [ ] Add export of parameters after pipeline runs
 - [ ] Provide a script for database downloads
 - [ ] Update details in documentation
 - [ ] Wait for allele caller
