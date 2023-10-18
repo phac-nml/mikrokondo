@@ -42,7 +42,6 @@ Sometimes the resume features of Nextflow don't always work completely. The abov
   - If you continue to have problems with StarAMR you can skip it using `--skip_staramr`
 
 
-
 ### Common mash estimates
 
 - Mash exit code 139 or 255, you may see `org.iq80.leveldb.impl.Version.retain()` appearing on screen as well.

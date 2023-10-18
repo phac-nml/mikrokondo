@@ -526,7 +526,6 @@ Bakta is use to provide annotation of genomes, it is very reliable but it can be
 - bakta
     - singularity: The singularity container containing Bakta.
     - docker: The Docker container containing Bakta.
-    - db_type: The database option to download, current options are `light` or `full`
     - **db**: the path where the downloaded Bakta database should be downloaded.
     - output_dir: The name of the folder where Bakta data is saved too. Do not alter this field unless doing pipeline development.
     - embl_ext: File extension of embl file. Do not alter this field unless doing pipeline development.

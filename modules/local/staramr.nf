@@ -14,7 +14,7 @@ process STARAMR {
     tuple val(meta), path("$prefix/summary${params.staramr.tsv_ext}"), emit: summary
     tuple val(meta), path("$prefix/detailed_summary${params.staramr.tsv_ext}"), emit: detailed_summary
     tuple val(meta), path("$prefix/resfinder${params.staramr.tsv_ext}"), emit: resfinder
-    tuple val(meta), path("$prefix/pointfinder${params.staramr.tsv_ext}"), emit: point_finder
+    tuple val(meta), path("$prefix/pointfinder${params.staramr.tsv_ext}"), emit: point_finder, optional: true
     tuple val(meta), path("$prefix/plasmidfinder${params.staramr.tsv_ext}"), emit: plasmid_finder
     tuple val(meta), path("$prefix/mlst${params.staramr.tsv_ext}"), emit: mlst
     tuple val(meta), path("$prefix/settings${params.staramr.txt_ext}"), emit: settings
