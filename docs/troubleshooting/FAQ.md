@@ -33,6 +33,14 @@ Common errors and potential fixes for modules will be detailed here.
 Sometimes the resume features of Nextflow don't always work completely. The above error string typically implies that some output could not be gathered from a process and on subsequent resumes you will get an error. You can find out what process (and its work directory location) caused the error in the `nextflow.log` (normally it will be at the top of some long traceback in the log), and a work directory will be specified listing the directory causing the error. Delete this directory and resume the pipeline. **If you hate logs and you don't care about resuming** other processes you can simply delete the work directory entirely.
 
 
+### StarAMR
+
+- Exit code 1, and an error involving ` stderr=FASTA-Reader: Ignoring invalid residues at position(s):`
+  - This is likely not a problem with your data but with your databases, following the instructions listed here: https://github.com/phac-nml/staramr/issues/200#issuecomment-1741082733 seems to have fixed the issue.
+  - The command to download the proper databases mentioned in the issue is listed here: `staramr db build --dir staramr_databases --resfinder-commit fa32d9a3cf0c12ec70ca4e90c45c0d590ee810bd --pointfinder-commit 8c694b9f336153e6d618b897b3b4930961521eb8 --plasmidfinder-commit c18e08c17a5988d4f075fc1171636e47546a323d`
+
+
+
 ### Common mash estimates
 
 - Mash exit code 139 or 255, you may see `org.iq80.leveldb.impl.Version.retain()` appearing on screen as well.

@@ -1,10 +1,13 @@
 // annotate genomes
 include { BAKTA_ANNOTATE } from '../../modules/local/bakta_annotate.nf'
 include { ABRICATE_RUN } from "../../modules/nf-core/abricate/run/main.nf"
+include { MOBSUITE_RECON } from "../../modules/local/mob_recon.nf"
+include { STARAMR } from "../../modules/local/staramr.nf"
 
 workflow ANNOTATE_GENOMES {
     take:
     contig_data // val(meta), path(assembly)
+    // TODO add in species so that point finder can run
 
     main:
     versions = channel.empty()
@@ -46,6 +49,20 @@ workflow ANNOTATE_GENOMES {
         reports = reports.mix(abricated.report.map{
             meta, report -> tuple(meta, params.abricate_params, report);
         })
+    }
+
+    if(!params.skip_mobrecon){
+        mobrecon = MOBSUITE_RECON(contig_data)
+        versions = versions.mix(mobrecon.versions)
+        reports = reports.mix(mobrecon.mobtyper_results.map{
+            meta, report -> tuple(meta, params.mobsuite_recon, report)
+        })
+    }
+
+    if(!params.skip_staramr){
+        db_star = Channel.value("${params.staramr.db}")
+        staramr_ = STARAMR(contig_data, db_star)
+        versions = versions.mix(staramr_.versions)
     }
 
 

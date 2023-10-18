@@ -46,6 +46,44 @@
                 },
                 "skip_mlst": {
                     "type": "boolean"
+                },
+                "skip_mobrecon": {
+                    "type": "string"
+                }
+            }
+        },
+        "mobrecon": {
+            "title": "mobrecon",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "properties": {
+                "mobsuite_recon.singularity": {
+                    "type": "string",
+                    "default": "https://depot.galaxyproject.org/singularity/mob_suite%3A3.0.3--pyhdfd78af_0"
+                },
+                "mobsuite_recon.docker": {
+                    "type": "string",
+                    "default": "quay.io/biocontainers/mob_suite:3.0.3--pyhdfd78af_0"
+                },
+                "mobsuite_recon.args": {
+                    "type": "string"
+                },
+                "mobsuite_recon.fasta_ext": {
+                    "type": "string",
+                    "default": ".fasta"
+                },
+                "mobsuite_recon.results_ext": {
+                    "type": "string",
+                    "default": ".txt"
+                },
+                "mobsuite_recon.mob_results_file": {
+                    "type": "string",
+                    "default": "mobtyper_results.txt"
+                },
+                "mobsuite_recon.contig_report": {
+                    "type": "string",
+                    "default": "contig_report.fasta"
                 }
             }
         },
@@ -788,6 +826,9 @@
     "allOf": [
         {
             "$ref": "#/definitions/skip_options"
+        },
+        {
+            "$ref": "#/definitions/mobrecon"
         },
         {
             "$ref": "#/definitions/input_output_options"

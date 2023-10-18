@@ -56,6 +56,9 @@
 - [mlst](https://github.com/tseemann/mlst)
   > Seemann T, mlst Github https://github.com/tseemann/mlst
 
+- [mob-suite](https://github.com/phac-nml/mob-suite)
+  > Robertson J, Nash JHE. MOB-suite: software tools for clustering, reconstruction and typing of plasmids from draft assemblies. Microb Genom. 2018 Aug;4(8):e000206. doi: 10.1099/mgen.0.000206. Epub 2018 Jul 27. PMID: 30052170; PMCID: PMC6159552.
+
 - [MultiQC](https://pubmed.ncbi.nlm.nih.gov/27312411/)
   > Ewels P, Magnusson M, Lundin S, Käller M. MultiQC: summarize analysis results for multiple tools and samples in a single report. Bioinformatics. 2016 Oct 1;32(19):3047-8. doi: 10.1093/bioinformatics/btw354. Epub 2016 Jun 16. PubMed PMID: 27312411; PubMed Central PMCID: PMC5039924.
 
@@ -84,6 +87,9 @@
 
 - [Spatyper](https://github.com/HCGB-IGTP/spaTyper)
   > Jose Francisco Sanchez-Herrero, & mjsull. (2020). spaTyper: Staphylococcal protein A (spa) characterization pipeline (v0.3.1). Zenodo. https://doi.org/10.5281/zenodo.4063625
+
+- [StarAMR](https://github.com/phac-nml/staramr)
+  > Bharat A, Petkau A, Avery BP, Chen JC, Folster JP, Carson CA, Kearney A, Nadon C, Mabon P, Thiessen J, Alexander DC, Allen V, El Bailey S, Bekal S, German GJ, Haldane D, Hoang L, Chui L, Minion J, Zahariadis G, Domselaar GV, Reid-Smith RJ, Mulvey MR. Correlation between Phenotypic and In Silico Detection of Antimicrobial Resistance in Salmonella enterica in Canada Using Staramr. Microorganisms. 2022; 10(2):292. https://doi.org/10.3390/microorganisms10020292
 
 - [Unicycler](https://github.com/rrwick/Unicycler)
   > Wick RR, Judd LM, Gorrie CL, Holt KE (2017) Unicycler: Resolving bacterial genome assemblies from short and long sequencing reads. PLOS Computational Biology 13(6): e1005595. https://doi.org/10.1371/journal.pcbi.1005595

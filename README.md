@@ -52,6 +52,7 @@ Under the usage section you can find example commands, instructions for configur
 - [Decontamination Index](https://zenodo.org/record/8408557): Required for decontamination of reads (it is simply a minimap2 index)
 - [Kraken2 nt database](https://benlangmead.github.io/aws-indexes/k2): Required for binning of metagenommic data and is an alternative to using Mash for speciation
 - [Bakta database](https://zenodo.org/record/7669534): Running Bakta is optional and there is a light database option, however the full one is recommended. You will have to unzip and un-tar the database for usage.
+- [StarAMR database](https://github.com/phac-nml/staramr#database-build): Running StarAMR is optional and requires downloading the StarAMR databases. Downloading the StarAMR databases requires the above command to run.
 
 ### Fields to update with resources
 The above downloadable resources must be updated in the following places in your `nextflow.config`. The spots to update in the params section of the `nextflow.config` are listed below:
@@ -77,6 +78,11 @@ mash {
     mash_sketch = "/PATH/TO/MASH/SKETCH/"
 }
 
+// STARAMR database path, note the quotation marks
+staramr {
+  db = "/PATH/TO/STARMAR/DB"
+}
+
 ```
 
 ## Run example data
@@ -89,12 +95,16 @@ Three test profile with example data are provided and can be run like so:
   - The pacbio workflow has only been partially tested as it fails at Flye due to not enough reads being present.
 
 ## TODOs
+
 - [ ] Add export of parameters after pipeline runs
 - [ ] Provide a script for database downloads
 - [ ] Update details in documentation
 - [ ] Wait for allele caller
 - [x] Upload test data
 
+## Enhancements
+
+- Swap Seqtk with Rasusa for down sampling
 
 ## Citations
 
