@@ -79,6 +79,7 @@ mash {
 }
 
 // STARAMR database path, note the quotation marks
+// Passing in a StarAMR database is optional if one is not specified the database in the container will be used. You can just leave the db option as null if you do not wish to pass one
 staramr {
   db = "/PATH/TO/STARMAR/DB"
 }
@@ -96,6 +97,7 @@ Three test profile with example data are provided and can be run like so:
 
 ## TODOs
 
+- [ ] allow autodetect of pointfinder db
 - [ ] Add export of parameters after pipeline runs
 - [ ] Provide a script for database downloads
 - [ ] Update details in documentation

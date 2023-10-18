@@ -184,7 +184,9 @@ Numerous steps within mikrokondo can be turned off without compromising the stab
 - `skip_species_classification`
     - This step prevents Mash or Kraken2 from being run on your assembled genome, this also **prevents the subtyping workflow** from triggering
 - `skip_mobrecon`
-  - This step allows you to skip running Mobsuite recon on your data.
+  - This step allows you to skip running mob-suite recon on your data.
+- `skip_starmar`
+  - This step allows you to skip running staramr on your data.
 
 ** All of the above options can be turned on by entering `--{skip_option} true` in the command line arguments to the pipeline (where optional parameters can be added)** e.g. To skip read sub-sampling add to the command line arguments `--skip_depth_sampling true`
 

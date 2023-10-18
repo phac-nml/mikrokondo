@@ -23,9 +23,13 @@ process STARAMR {
 
     script:
     def args = task.ext.args ?: ''
+    def db_ = ""
     prefix = task.ext.prefix ?: "${meta.id}"
     def is_compressed = fasta.getName().endsWith(".gz") ? true : false
     def fasta_name = fasta.getName().replace(".gz", "")
+    if(db){
+        db_ = "-d $db"
+    }
     """
     export TMPDIR=\$PWD # set env temp dir to in the folder
     if [ "$is_compressed" == "true" ]; then
@@ -35,7 +39,7 @@ process STARAMR {
     # Trim line endings to fit the blastDB, and keep contig headers unique, thank you to Dillon Barker for the awk!!
     awk '/>/ {print substr(\$0, 1, 49 - length(NR))"_" NR} \$0!~">" {print \$0}' $fasta_name > temp.fasta
 
-    staramr search $args -o $prefix -d $db temp.fasta
+    staramr search $args -o $prefix $db_ temp.fasta
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         staramr: \$(echo \$(staramr -V 2>&1) | sed 's/^.*staramr //; s/ .*\$//')

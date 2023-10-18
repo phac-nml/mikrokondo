@@ -60,8 +60,14 @@ workflow ANNOTATE_GENOMES {
     }
 
     if(!params.skip_staramr){
-        db_star = Channel.value("${params.staramr.db}")
-        staramr_ = STARAMR(contig_data, db_star)
+        // TODO make db optional to pass in
+        if(params.staramr.db){
+            db_star = Channel.value("${params.staramr.db}")
+            staramr_ = STARAMR(contig_data, db_star)
+        }else{
+            staramr_ = STARAMR(contig_data, []) // pass nothing for database as it will use what is in the container
+        }
+
         versions = versions.mix(staramr_.versions)
     }
 
