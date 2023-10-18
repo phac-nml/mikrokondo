@@ -22,11 +22,21 @@ The way a variable type is determined from the command line can be found in the 
     }
 ```
 
-## Common errors and to (maybe) fix them
+## Common errors and how to (maybe) fix them
 
 ### Troubleshooting
 
 Common errors and potential fixes for modules will be detailed here.
+
+### Random issues containing on resume `org.iq80.leveldb.impl.Version.retain()`
+
+Sometimes the resume features of Nextflow don't always work completely. The above error string typically implies that some output could not be gathered from a process and on subsequent resumes you will get an error. You can find out what process (and its work directory location) caused the error in the `nextflow.log` (normally it will be at the top of some long traceback in the log), and a work directory will be specified listing the directory causing the error. Delete this directory and resume the pipeline. **If you hate logs and you don't care about resuming** other processes you can simply delete the work directory entirely.
+
+
+### Common mash estimates
+
+- Mash exit code 139 or 255, you may see `org.iq80.leveldb.impl.Version.retain()` appearing on screen as well.
+  - This indicates a segmentation fault, due to mash failing or alternatively some resource not being available. If you see that mash has run properly in the work directory output but Nextflow is saying the process failed and the `versions.yml` file is missing you likely have encountered some resource limit on your system. A simple solution is likely to reduce the number of `maxForks` available to mash the different Mash processes in the `conf/modules.config` file. Alternatively you may need to alter the number some environment variables Nextflow e.g. `OMP_NUM_THREADS`, `USE_SIMPLE_THREADED_LEVEL3` and `OPENBLAS_NUM_THREADS`.
 
 ### Common spades issues
 

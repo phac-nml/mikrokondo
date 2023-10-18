@@ -20,8 +20,6 @@ include { KLEBORATE } from "../../modules/local/kleborate.nf"
 include { SPATYPER } from "../../modules/local/spatyper.nf"
 
 
-
-// TODO add in torsts mlst
 workflow SUBTYPE_GENOME{
 
     take:

@@ -220,14 +220,17 @@ def create_action_call(sample_data){
             qual_message.add("[TOPHIT] ${val.value[val.key][params.top_hit_species.report_tag]}")
             qual_message.add("Additional feedback")
 
-            // ! TODO Need to make checks failed reflect checks not performed currently if no checks are performed the samples passes..
+
+            // ! TODO Summing of ignored checks is messy and the logic can likely be cleaned up
             if(qual_data && qual_data.containsKey("checkm_contamination") && !qual_data.checkm_contamination.status){
                 qual_message.add(params.QCReportFields.checkm_contamination.high_msg)
                 reisolate = reisolate + contamination_fail
                 resequence += 1
                 failed_p = true
                 checks_failed += 1
-            }else if (!qual_data.checkm_contamination.status){
+            }else if (qual_data && (!qual_data.containsKey("checkm_contamination") || !qual_data.checkm_contamination.status)){
+                checks_ignored += 1
+            }else if(qual_data == null){
                 checks_ignored += 1
             }
             checks += 1
@@ -238,11 +241,13 @@ def create_action_call(sample_data){
                     qual_message.add(params.QCReportFields.raw_average_quality.low_msg)
                     resequence += 1
                     checks_failed += 1
-                }else if (!qual_data.raw_average_quality.status){
+                }else if (qual_data && (!qual_data.containsKey("raw_average_quality") || !qual_data.raw_average_quality.status)){
+                    checks_ignored += 1
+                }else if(qual_data == null){
                     checks_ignored += 1
                 }
                 checks += 1
-                
+
                 if(qual_data && qual_data.containsKey("average_coverage") && !qual_data.average_coverage.status){
                     qual_message.add(params.QCReportFields.average_coverage.low_msg)
                     if(meta_data.downsampled){
@@ -250,7 +255,9 @@ def create_action_call(sample_data){
                     }
                     checks_failed += 1
                     resequence += 1
-                }else if(!qual_data.average_coverage.status){
+                }else if(qual_data && (!qual_data.containsKey("average_coverage") || !qual_data.average_coverage.status)){
+                    checks_ignored += 1
+                }else if(qual_data == null){
                     checks_ignored += 1
                 }
                 checks += 1
@@ -267,7 +274,9 @@ def create_action_call(sample_data){
                     reisolate = reisolate + contamination_fail
                     checks_failed += 1
                 }
-            }else if (!qual_data.length.status){
+            }else if (qual_data && (!qual_data.containsKey("length") || !qual_data.length.status)){
+                checks_ignored += 1
+            }else if(qual_data == null){
                 checks_ignored += 1
             }
             checks += 1
@@ -275,7 +284,9 @@ def create_action_call(sample_data){
             if(qual_data && qual_data.containsKey("nr_contigs") && !qual_data.nr_contigs.status){
                 checks_failed += 1
                 nr_contigs_failed = true
-            }else if (!qual_data.nr_contigs.status){
+            }else if (qual_data && (!qual_data.containsKey("nr_contigs") || !qual_data.nr_contigs.status)){
+                checks_ignored += 1
+            }else if(qual_data == null){
                 checks_ignored += 1
             }
             checks += 1
@@ -283,7 +294,9 @@ def create_action_call(sample_data){
             if(qual_data && qual_data.containsKey("n50_value") && !qual_data.n50_value.status){
                 checks_failed += 1
                 n50_failed = true
-            }else if (!qual_data.n50_value.status){
+            }else if (qual_data && (!qual_data.containsKey("n50_value") || !qual_data.n50_value.status)){
+                checks_ignored += 1
+            }else if(qual_data == null){
                 checks_ignored += 1
             }
             checks += 1
