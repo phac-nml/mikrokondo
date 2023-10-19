@@ -148,7 +148,7 @@ def group_reads(ArrayList sequencing_data){
 def check_file_exists(String file_path){
     // Check if a file exists, exit if it does not
     if(file_path == null){
-        exit 1, "ERROR: Please check input samplesheet -> $file_path is null. This could be due to forgetting to add Headers to your sample sheet."
+        exit 1, "ERROR: Please check input samplesheet -> $file_path is null. This could be due to forgetting to add Headers to your sample sheet or you could have empty rows in your sample sheet."
     }
     if(!file(file_path).exists()){
         exit 1, "ERROR: Please check input samplesheet -> $file_path does not exist. If your file in you sample sheet does not exist make sure you do not have spaces in your path name."
