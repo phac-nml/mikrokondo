@@ -3,7 +3,6 @@
 process IDENTIFY_POINTDB {
     tag "$meta.id"
     label "process_low"
-    errorStrategy 'terminate'
 
     input:
     tuple val(meta), val(species)
