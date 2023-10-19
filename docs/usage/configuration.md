@@ -186,7 +186,7 @@ Numerous steps within mikrokondo can be turned off without compromising the stab
 - `skip_mobrecon`
   - This step allows you to skip running mob-suite recon on your data.
 - `skip_starmar`
-  - This step allows you to skip running staramr on your data.
+  - This step allows you to skip running StarAMR on your data.
 
 ** All of the above options can be turned on by entering `--{skip_option} true` in the command line arguments to the pipeline (where optional parameters can be added)** e.g. To skip read sub-sampling add to the command line arguments `--skip_depth_sampling true`
 
@@ -519,6 +519,34 @@ Unicycler is an option provided for hybrid assembly, it is a great option and ou
     - mem_modifier: Specifies a high amount of memory for Unicycler to prevent a common spades error that is fairly cryptic. Do not alter this field unless doing pipeline development.
     - threads_increase_factor: Factor to increase the number of threads passed to Unicycler. Do not alter this field unless doing pipeline development.
 
+
+### Mob-suite Recon
+mob-suite recon provides annotation of plasmids in you data.
+
+- mobsuite_recon
+    - singularity: The singularity container containing mob-suite recon.
+    - docker: The Docker container containing mob-suite recon.
+    - **args**: Additional arguments to pass to mobsuite.
+    - fasta_ext: The file extension for FASTAs. Do not alter this field unless doing pipeline development.
+    - results_ext: The file extension for results in mob-suite. Do not alter this field unless doing pipeline development.
+    - mob_results_file: The final results to be included in the final report by mob-suite. Do not alter this field unless doing pipeline development.
+    - report_tag: The field name of mob-suite data in the final report. Do not alter this field unless doing pipeline development.
+    - header_p: Default is `true` and indicates that the results output by mob-suite contains a header. Do not alter this field unless doing pipeline development.
+
+## StarAMR
+StarAMR provides annotation of antimicrobial resistance genes within your data. The process will alter FASTA headers of input files to ensure the header length <50 characters long.
+
+- staramr
+    - singularity: The singularity container containing staramr.
+    - docker: The Docker container containing starmar.
+    - **db**: The database for StarAMR. The default value of `null` tells the pipeline to use the database included in the StarAMR container. However you can specify a path to a valid StarAMR datbase and use that instead.
+    - tsv_ext: File extension of the reports from StarAMR. Do not alter this field unless doing pipeline development.
+    - txt_ext: File extension of the text reports from StarAMR. Do not alter this field unless doing pipeline development.
+    - xlsx_ext: File extension of the excel spread sheet from StarAMR. Do not alter this field unless doing pipeline development.
+    - **args**: Additional arguments to pass to StarAMR. Do not alter this field unless doing pipeline development.
+    - point_finder_dbs: A list containing the valid databases StarAMR supports for pointfinder. The way they are structured matches what StarAMR needs for input. Do not alter this field unless doing pipeline development. Do not alter this field unless doing pipeline development.
+    - report_tag: The field name of StarAMR in the final summary report. Do not alter this field unless doing pipeline development.
+    - header_p: Indicates the final report from StarAMR contains a header line. Do not alter this field unless doing pipeline development.
 
 ### Bakta
 Bakta is use to provide annotation of genomes, it is very reliable but it can be slow.
