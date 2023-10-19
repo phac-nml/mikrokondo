@@ -14,12 +14,25 @@ process IDENTIFY_POINTDB {
     def species_data = species.split('_|\s') // tokenize string
     species_data = species_data*.toLowerCase()
 
+    def overly_large_number = 100000
     def databases = []
     // tokenize database options
+    def shortest_entry = overly_large_number
     for(i in params.staramr.point_finder_dbs){
         def db_tokens = i.split('_|\s')
+
+        for(g in db_tokens){
+            def tok_size = g.size()
+            if(tok_size < shortest_entry){
+                shortest_entry = tok_size
+            }
+        }
+
         databases.add(db_tokens*.toLowerCase())
     }
+
+    // Remove spurious characters and strings that may affect database identification e.g. Entercoccus_B -> it would get rid of the B
+    species_data = species_data.findAll { it.size() >= shortest_entry }
 
     def db_opt = null
 

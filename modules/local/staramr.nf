@@ -29,7 +29,7 @@ process STARAMR {
     if(db){
         db_ = "-d $db"
     }else{
-        log.info "Using default database in StarAMR"
+        log.info "Using default database in StarAMR for ${meta.id}"
     }
 
 
