@@ -8,6 +8,7 @@ process BIN_KRAKEN2{
     tag "$meta.id"
     label "process_low"
     cache 'deep' // ! Deep caching is required to not bungle up the later metadata updates on resumes
+    container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.containers.get('singularity') : task.ext.containers.get('docker')}"
 
     input:
     tuple val(meta), path(contigs), path(kraken_report), path(kraken_output)

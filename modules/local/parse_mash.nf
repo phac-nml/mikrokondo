@@ -6,7 +6,7 @@
 process PARSE_MASH{
     tag "$meta.id"
     label "process_low"
-
+    container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.containers.get('singularity') : task.ext.containers.get('docker')}"
 
     input:
     tuple val(meta), path(mash_screen)
