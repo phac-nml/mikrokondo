@@ -3,10 +3,13 @@ include { BAKTA_ANNOTATE } from '../../modules/local/bakta_annotate.nf'
 include { ABRICATE_RUN } from "../../modules/nf-core/abricate/run/main.nf"
 include { MOBSUITE_RECON } from "../../modules/local/mob_recon.nf"
 include { STARAMR } from "../../modules/local/staramr.nf"
+include { STARAMR_DUMP_DB_VERSIONS } from "../../modules/local/staramr_version.nf"
+include { IDENTIFY_POINTDB } from "../../modules/local/select_pointfinder.nf"
 
 workflow ANNOTATE_GENOMES {
     take:
     contig_data // val(meta), path(assembly)
+    top_hit // val(meta), val(species)
     // TODO add in species so that point finder can run
 
     main:
@@ -65,8 +68,22 @@ workflow ANNOTATE_GENOMES {
         if(params.staramr.db){
             db_star = Channel.value("${params.staramr.db}")
         }
-        staramr_ = STARAMR(contig_data, db_star) // pass nothing for database as it will use what is in the container
+        // Dump db versions
+        STARAMR_DUMP_DB_VERSIONS(db_star)
+
+        point_finder_organism = IDENTIFY_POINTDB(top_hit).pointfinder_db
+
+        // Report point finder databases used
+        reports = reports.mix(point_finder_organism.map{
+            meta, organism -> tuple(meta, params.pointfinder_db_tag, organism)
+        })
+
+        star_amr_data_merged = contig_data.join(point_finder_organism)
+        staramr_ = STARAMR(star_amr_data_merged, db_star) // pass nothing for database as it will use what is in the container
         versions = versions.mix(staramr_.versions)
+        reports = reports.mix(staramr_.detailed_summary.map{
+            meta, report -> tuple(meta, params.staramr, report)
+        })
     }
 
 

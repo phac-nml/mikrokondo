@@ -93,8 +93,7 @@ workflow POST_ASSEMBLY {
         log.info "No subtyping of assemblies performed"
     }
 
-
-    ANNOTATE_GENOMES(ch_filtered_contigs)
+    ANNOTATE_GENOMES(ch_filtered_contigs, ch_speciation.top_hit)
     ch_reports = ch_reports.mix(ANNOTATE_GENOMES.out.reports)
     ch_versions = ch_versions.mix(ANNOTATE_GENOMES.out.versions)
 

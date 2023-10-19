@@ -62,7 +62,7 @@ class Kraken2Tophit:
             sys.stderr.write(f"Could not find taxa level {self.taxa_level} in output\n")
             sys.exit(-1)
         self.top_hit = self.select_top_hit(list(self.selected_taxa))
-        sys.stdout.write(f"{self.top_hit.SciName}")
+        sys.stdout.write(f"{self.top_hit.SciName.replace('"', '')}")
 
     def select_top_hit(self, taxa_row: list):
         """Pick the top hit of the selected data

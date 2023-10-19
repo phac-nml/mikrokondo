@@ -5,6 +5,61 @@
     "description": "mikrokondo schema",
     "type": "object",
     "definitions": {
+        "staramr": {
+            "title": "StarAMR",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "properties": {
+                "staramr.singularity": {
+                    "type": "string",
+                    "default": "https://depot.galaxyproject.org/singularity/staramr%3A0.9.1--pyhdfd78af_0",
+                    "hidden": true
+                },
+                "staramr.docker": {
+                    "type": "string",
+                    "default": "quay.io/biocontainers/staramr:0.9.1--pyhdfd78af_0",
+                    "hidden": true
+                },
+                "staramr.db": {
+                    "type": "string"
+                },
+                "staramr.tsv_ext": {
+                    "type": "string",
+                    "default": ".tsv",
+                    "hidden": true
+                },
+                "staramr.txt_ext": {
+                    "type": "string",
+                    "default": ".txt",
+                    "hidden": true
+                },
+                "staramr.xlsx_ext": {
+                    "type": "string",
+                    "default": ".xlsx",
+                    "hidden": true
+                },
+                "staramr.args": {
+                    "type": "string",
+                    "hidden": true
+                },
+                "staramr.point_finder_dbs": {
+                    "type": "string",
+                    "default": "['salmonella', 'campylobacter', 'enterococcus_faecalis', 'enterococcus_faecium', 'escherichia_coli', 'helicobacter_pylori']",
+                    "hidden": true
+                },
+                "staramr.report_tag": {
+                    "type": "string",
+                    "default": "StarAMR",
+                    "hidden": true
+                },
+                "staramr.header_p": {
+                    "type": "string",
+                    "default": "true",
+                    "hidden": true
+                }
+            }
+        },
         "skip_options": {
             "title": "Skip Options",
             "type": "object",
@@ -48,7 +103,10 @@
                     "type": "boolean"
                 },
                 "skip_mobrecon": {
-                    "type": "string"
+                    "type": "boolean"
+                },
+                "skip_staramr": {
+                    "type": "boolean"
                 }
             }
         },
@@ -84,6 +142,16 @@
                 "mobsuite_recon.contig_report": {
                     "type": "string",
                     "default": "contig_report.fasta"
+                },
+                "mobsuite_recon.report_tag": {
+                    "type": "string",
+                    "default": "MobRecon",
+                    "hidden": true
+                },
+                "mobsuite_recon.header_p": {
+                    "type": "boolean",
+                    "default": true,
+                    "hidden": true
                 }
             }
         },
@@ -825,6 +893,9 @@
     },
     "allOf": [
         {
+            "$ref": "#/definitions/staramr"
+        },
+        {
             "$ref": "#/definitions/skip_options"
         },
         {
@@ -1202,11 +1273,6 @@
         "unicycler.threads_increase_factor": {
             "type": "integer",
             "default": 1,
-            "hidden": true
-        },
-        "bakta.db_type": {
-            "type": "string",
-            "default": "light",
             "hidden": true
         },
         "bakta.output_dir": {
@@ -2516,6 +2582,11 @@
                 "corr",
                 "raw"
             ]
+        },
+        "pointfinder_db_tag.report_tag": {
+            "type": "string",
+            "default": "PointfinderDB",
+            "hidden": true
         }
     }
 }

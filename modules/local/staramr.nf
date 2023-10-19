@@ -4,10 +4,9 @@ process STARAMR {
     tag "${meta.id}"
     label "process_medium"
     container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.containers.get('singularity') : task.ext.containers.get('docker')}"
-    afterScript 'rm temp.fasta'
 
     input:
-    tuple val(meta), path(fasta)
+    tuple val(meta), path(fasta), val(point_finder_db)
     path db
 
     output:
@@ -22,13 +21,23 @@ process STARAMR {
     path "versions.yml", emit: versions
 
     script:
-    def args = task.ext.args ?: ''
+    def args = task.ext.args ?: ""
     def db_ = ""
     prefix = task.ext.prefix ?: "${meta.id}"
     def is_compressed = fasta.getName().endsWith(".gz") ? true : false
     def fasta_name = fasta.getName().replace(".gz", "")
     if(db){
         db_ = "-d $db"
+    }else{
+        log.info "Using default database in StarAMR"
+    }
+
+
+    if(point_finder_db){
+        log.info "Using ${point_finder_db} pointfinder database for ${meta.id} in StarAMR."
+        args = args + "--pointfinder-organism $point_finder_db"
+    }else{
+        log.info "No relevant pointfinder database could be identified for $meta.id"
     }
     """
     export TMPDIR=\$PWD # set env temp dir to in the folder
@@ -38,8 +47,8 @@ process STARAMR {
 
     # Trim line endings to fit the blastDB, and keep contig headers unique, thank you to Dillon Barker for the awk!!
     awk '/>/ {print substr(\$0, 1, 49 - length(NR))"_" NR} \$0!~">" {print \$0}' $fasta_name > temp.fasta
-
-    staramr search $args -o $prefix $db_ temp.fasta
+    mv temp.fasta $fasta_name
+    staramr search $args -o $prefix $db_ $fasta_name
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         staramr: \$(echo \$(staramr -V 2>&1) | sed 's/^.*staramr //; s/ .*\$//')

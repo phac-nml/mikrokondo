@@ -152,7 +152,7 @@ class MashScreen:
         except IndexError:
             sys.stderr.write(f"No top hit in mash file. Something went wrong perhaps input file was empty.\n")
             sys.exit(-1)
-        return best_option.query_note.split(self.report_taxon_delimiter)[-1]
+        return best_option.query_note.split(self.report_taxon_delimiter)[-1].replace('"', '')
 
 
 
