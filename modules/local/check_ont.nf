@@ -3,10 +3,12 @@
 process CHECK_ONT{
     tag "$meta.id"
     label "process_single"
+    container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.containers.get('singularity') : task.ext.containers.get('docker')}"
 
 
     // TODO add to publish dir
     // TODO perhaps reads should just be dedupped by header...
+    // TODO Awk would be faster...
 
     input:
     tuple val(meta), path(reads)

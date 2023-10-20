@@ -4,7 +4,7 @@
 
 process REPORT_TO_TSV{
     tag "Report to TSV"
-
+    container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.containers.get('singularity') : task.ext.containers.get('docker')}"
 
     input:
     path summary_report

@@ -29,9 +29,11 @@ workflow DETERMINE_SPECIES {
             meta, report -> tuple(meta, params.kraken, report)
         })
 
+        parsed = PARSE_KRAKEN(KRAKEN.out.report)
         reports = reports.mix(parsed.kraken_top.map{
             meta, report -> tuple(meta, params.top_hit_species, report)
         })
+
         top_hit = parsed.kraken_top
         versions = versions.mix(parsed.versions)
         versions = versions.mix(KRAKEN.out.versions)
