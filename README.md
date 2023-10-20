@@ -107,6 +107,7 @@ Three test profile with example data are provided and can be run like so:
 ## Enhancements
 
 - Swap Seqtk with Rasusa for down sampling
+- Trim pilon prefix added to contigs by pilon
 
 ## Citations
 
