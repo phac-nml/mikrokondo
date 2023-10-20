@@ -11,14 +11,14 @@ process SHIGEIFINDER {
     tuple val(meta), path(seqs)
 
     output:
-    tuple val(meta), path("*${params.shigeifinder}"), emit: tsv
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*${params.shigeifinder.tsv_ext}"), emit: tsv
+    path "versions.yml", emit: versions
 
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     tmp_file = "${prefix}.fa"
-    def VERSION = '1.3.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def VERSION = params.shigeifinder.container_version // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     gunzip -c $seqs > $tmp_file
     shigeifinder $args --output ${prefix}.tsv -t $task.cpus -i $tmp_file

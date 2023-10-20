@@ -13,9 +13,9 @@ This creates an output similar to the kraken report
 include { ECTYPER } from "../../modules/local/ectyper.nf"
 include { SISTR } from "../../modules/local/sistr.nf"
 include { LISSERO } from "../../modules/local/lissero.nf"
-//include { SHIGEIFINDER } from "../../modules/local/shigeifinder.nf"
-include { SHIGATYPER } from "../../modules/local/shigatyper.nf"
-include { SEQTK_FASTA_FASTQ } from "../../modules/local/seqtk_fasta_fastq.nf"
+include { SHIGEIFINDER } from "../../modules/local/shigeifinder.nf"
+//include { SHIGATYPER } from "../../modules/local/shigatyper.nf"
+//include { SEQTK_FASTA_FASTQ } from "../../modules/local/seqtk_fasta_fastq.nf"
 include { KLEBORATE } from "../../modules/local/kleborate.nf"
 include { SPATYPER } from "../../modules/local/spatyper.nf"
 
@@ -60,11 +60,16 @@ workflow SUBTYPE_GENOME{
         meta, result, contigs -> tuple(meta, contigs)
     })
 
-    //shigatyper requries reads only
-    fastq_reads = SEQTK_FASTA_FASTQ(isolates.shigella.map{
+
+    shigeifinder_results = SHIGEIFINDER(isolates.shigella.map{
         meta, result, contigs -> tuple(meta, contigs)
     })
-    shigatyper_results = SHIGATYPER(fastq_reads.fastq_reads)
+
+    //shigatyper requries reads onl
+    //fastq_reads = SEQTK_FASTA_FASTQ(isolates.shigella.map{
+    //    meta, result, contigs -> tuple(meta, contigs)
+    //})
+    //shigatyper_results = SHIGATYPER(fastq_reads.fastq_reads)
 
     kleborate_results = KLEBORATE(isolates.klebsiella.map{
         meta, result, contigs -> tuple(meta, contigs)
@@ -84,8 +89,8 @@ workflow SUBTYPE_GENOME{
                 ECTYPER.out.versions,
                 SISTR.out.versions,
                 LISSERO.out.versions,
-                //SHIGEIFINDER.out.versions)
-                SHIGATYPER.out.versions)
+                SHIGEIFINDER.out.versions)
+                //SHIGATYPER.out.versions)
 
     isolates.fallthrough.subscribe{
         log.info "Sample ${it[0].id} could not be serotyped, sample identified as: ${it[1]}"
@@ -97,8 +102,8 @@ workflow SUBTYPE_GENOME{
         add_report_tag(ec_typer_results.tsv, params.ectyper),
         add_report_tag(sistr_results.tsv, params.sistr),
         add_report_tag(lissero_results.tsv, params.lissero),
-        //add_report_tag(shigeifinder_results.tsv, params.shigeifinder))
-        add_report_tag(shigatyper_results.tsv, params.shigeifinder))
+        add_report_tag(shigeifinder_results.tsv, params.shigeifinder))
+        //add_report_tag(shigatyper_results.tsv, params.shigeifinder))
 
     emit:
     reports = reports

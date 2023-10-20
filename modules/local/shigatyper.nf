@@ -12,14 +12,15 @@ process SHIGATYPER{
     tuple val(meta), path(reads) // in mkkondo it will only work with assemblies
 
     output:
-    tuple val(meta), path("${prefix}${params.tsv_ext}"), emit: tsv
-    tuple val(meta), path("${prefix}-hits${params.tsv_ext}"), optional: true, emit: hits
+    tuple val(meta), path("${prefix}${params.shigatyper.tsv_ext}"), emit: tsv
+    tuple val(meta), path("${prefix}-hits${params.shigatyper.tsv_ext}"), optional: true, emit: hits
     path "versions.yml", emit: versions
 
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
+    export TMPDIR=\$PWD # set env temp dir to in the folder
     shigatyper $args --SE $reads --name $prefix
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
