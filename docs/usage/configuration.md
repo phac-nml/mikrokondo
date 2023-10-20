@@ -650,10 +650,19 @@ Performa typing of *Staphylococcus* species.
     - header_p: Denotes if the output table of Lissero contains a header. Do not alter this field unless doing pipeline development.
 
 ### Shigeifinder
-Shigeifinder was added then removed. The code still remains but it will removed at a later date.
+*in-silico Shigella* typing. **NOTE:** It is unlikely this subtyper will be triggered as GTDB has merged *E.coli* and *Shigella* and updated sketch and updated ECTyper will be released soon to address the shortfalls of this sketch. If you are relying on *Shigella* detection add `--run_kraken true` to your command line or update the value in the `.nextflow.config` as Kraken2 (while slower) can still detect *Shigella*.
 
-### Shigatyper
-*in-silico Shigella* typing. **NOTE:** It is unlikely this subtyper will be triggered as GTDB has merged *E.coli* and *Shigella* and updated sketch and updated ECTyper will be released soon to address the shortfalls of this sketch.
+- shigeifinder
+    - singularity: The Singularity container containing Shigeifinder.
+    - docker: The path to the Docker container containing Shigeifinder.
+    - container_version: The version number **to be updated with the containers** as Shigeifinder does not currently have a version number tracked in the command.
+    - tsv_ext: Extension of output report.
+    - report_tag: The name of the output report for shigeifinder.
+    - header_p: Denotes that the output from Shigeifinder includes header values.
+
+
+### Shigatyper (Replaced with Shigeifinder)
+Code still reamins but it will likely be removed later on.
 
 - shigatyper
     - singularity: The Singularity container containing Shigatyper.
