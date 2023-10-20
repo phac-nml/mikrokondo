@@ -21,7 +21,7 @@ Mikrokondo takes in either, Illumina, Nanopore or Pacbio data (Pacbio data only 
 Nextflow is required to run mikrokondo, but fortunately it is not too hard to install (Linux is required). The instructions for installing Nextflow can be found at either resource: [Nextflow Home](https://www.nextflow.io/) or  [Nextflow Documentation](https://www.nextflow.io/docs/latest/getstarted.html#installation)
 
 ## Container Engine
-Nextflow and Mikrokondo only supports running the pipeline using containers such as: Docker, Singularity (now apptainer), podman, gitpod, sifter and charliecloud. Currently only usage with Singularity has been tested, but support for each of the container services exists. Note: Singularity was adopted by the Linux Foundation and is now called Apptainer. Singularity still exists, but it is likely newer installs will use Apptainer.
+Nextflow and Mikrokondo only supports running the pipeline using containers such as: Docker, Singularity (now apptainer), podman, gitpod, shifter and charliecloud. Currently only usage with Singularity has been fully tested, (Docker and Apptainer have only been partially tested) but support for each of the container services exists. Note: Singularity was adopted by the Linux Foundation and is now called Apptainer. Singularity still exists, but it is likely newer installs will use Apptainer.
 
 ## Docker or Singularity?
 Docker or Singularity (Apptainer) Docker requires root privileges which can can make it a hassle to install on computing clusters (there are work arounds). Apptainer/Singularity does not, so running the pipeline using Apptainer/Singularity is the recommended method for running the pipeline.
@@ -52,7 +52,7 @@ Under the usage section you can find example commands, instructions for configur
 - [Decontamination Index](https://zenodo.org/record/8408557): Required for decontamination of reads (it is simply a minimap2 index)
 - [Kraken2 nt database](https://benlangmead.github.io/aws-indexes/k2): Required for binning of metagenommic data and is an alternative to using Mash for speciation
 - [Bakta database](https://zenodo.org/record/7669534): Running Bakta is optional and there is a light database option, however the full one is recommended. You will have to unzip and un-tar the database for usage.
-- [StarAMR database](https://github.com/phac-nml/staramr#database-build): Running StarAMR is optional and requires downloading the StarAMR databases. Downloading the StarAMR databases requires the above command to run.
+- [StarAMR database](https://github.com/phac-nml/staramr#database-build): Running StarAMR is optional and requires downloading the StarAMR databases. Also if you wish to avoid downloading the database, the container for StarAMR has a database included which mikrokondo will default to using if one is not specified.
 
 ### Fields to update with resources
 The above downloadable resources must be updated in the following places in your `nextflow.config`. The spots to update in the params section of the `nextflow.config` are listed below:
