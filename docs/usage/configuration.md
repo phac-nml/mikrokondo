@@ -247,7 +247,7 @@ Some processes only utilize bash scripting, normally Nextflow will utilize syste
 
 
 ### Python
-Some scripts require Python, and to prevent someone requiring a Python we are just putting the requirement into a container for you.
+Some scripts require Python, and to prevent someone requiring a Python we are just putting the requirement into a container for you. Also as all the scripts within mikrokondo use only the the standard library you can swap these containers to use **pypy3** and get a massive performance boost from the scripts!
 
 - python3
     - singularity: Python3 singularity container
