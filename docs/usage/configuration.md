@@ -224,9 +224,11 @@ If as an example if, the `--quast.min_contig_lenth` parameter would be written a
 Note: Parameters that are bolded are ones that can be freely changed. Sensible defaults are provided however
 
 ### Abricate
-Screens contigs for antimicrobial and virulence genes.
+Screens contigs for antimicrobial and virulence genes. If you wish to use a different Abricate database you may need to update the container you use.
 
 - abricate
+    - singularity: Abricate singularity container
+    - docker: Abricate docker container
     - **args**: Can be a string of additional command line arguments to pass to abricate
     - report_tag: This field determines the name of the Abricate output in the final summary file. Do no touch this unless doing pipeline development.
     - header_p: This field tells the report module that the Abricate output contains headers. Do no touch this unless doing pipeline development.

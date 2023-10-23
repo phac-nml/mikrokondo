@@ -1,6 +1,6 @@
 // annotate genomes
 include { BAKTA_ANNOTATE } from '../../modules/local/bakta_annotate.nf'
-include { ABRICATE_RUN } from "../../modules/nf-core/abricate/run/main.nf"
+include { ABRICATE } from "../../modules/local/abricate.nf"
 include { MOBSUITE_RECON } from "../../modules/local/mob_recon.nf"
 include { STARAMR } from "../../modules/local/staramr.nf"
 include { STARAMR_DUMP_DB_VERSIONS } from "../../modules/local/staramr_version.nf"
@@ -46,11 +46,11 @@ workflow ANNOTATE_GENOMES {
     }
 
     if(!params.skip_abricate){
-        abricated = ABRICATE_RUN(contig_data)
+        abricated = ABRICATE(contig_data)
         abricate_report = abricated.report
         versions = versions.mix(abricated.versions)
         reports = reports.mix(abricated.report.map{
-            meta, report -> tuple(meta, params.abricate_params, report);
+            meta, report -> tuple(meta, params.abricate, report);
         })
     }
 
