@@ -5,14 +5,11 @@ process PILON_ITER {
     label 'process_medium'
     memory  {task.memory * task.attempt}
     container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.containers.get('singularity') : task.ext.containers.get('docker')}"
-    errorStrategy 'retry'
-    maxRetries 3 // zero retries allowed while testing
 
     input:
     tuple val(meta), path(reads), path(contigs)
 
     output:
-    // TODO multiple outputs produced so need to make sure the last one/ or optimal one in the future is taken
     tuple val(meta), path("*${params.pilon_iterative.fasta_ext}"), path(reads), emit: pilon_fasta
     tuple val(meta), path("*${params.pilon_iterative.vcf_ext}"), emit: pilon_vcf
     tuple val(meta), path("*${params.pilon_iterative.changes_ext}"), emit: pilon_changes
@@ -47,6 +44,7 @@ process PILON_ITER {
 
     // numbered the files are named as {prefix}_{iteration}.blah
     // below is a convaluted shell string to get the last output sample
+    // tail -n +2 removes the first line of the listed output (output starts at line 2)
     // TODO can set output to be related to max_polisihing runs
     """
     gzip -d -c $contigs > $unzipped_contigs
@@ -64,5 +62,14 @@ process PILON_ITER {
     "${task.process}":
         pilonpolisher: No version statement listed
     END_VERSIONS
+    """
+
+    stub:
+    """
+    touch stub_polished_${params.pilon_iterative.fasta_ext}
+    touch stub_polished_${params.pilon_iterative.vcf_ext}
+    touch stub_polished_${params.pilon_iterative.changes_ext}
+    touch stub_polished_${params.pilon_iterative.bam_ext}
+    touch versions.yml
     """
 }

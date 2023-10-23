@@ -11,6 +11,11 @@ process IDENTIFY_POINTDB {
     tuple val(meta), val(point_finder_val), emit: pointfinder_db
 
     exec:
+    if(workflow.stubRun){
+        // may need to add in a return statment here
+        point_finder_val = "stub"
+        return
+    }
     def species_data = species.split('_|\s') // tokenize string
     species_data = species_data*.toLowerCase()
 

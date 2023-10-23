@@ -33,4 +33,15 @@ process MOBSUITE_RECON {
         mobsuite: \$(echo \$(mob_recon --version 2>&1) | sed 's/^.*mob_recon //; s/ .*\$//')
     END_VERSIONS
     """
+
+    stub:
+    prefix = "stub"
+    """
+    mkdir stub
+    touch stub/chromosome${params.mobsuite_recon.fasta_ext}
+    touch stub/${params.mobsuite_recon.contig_report}
+    touch stub/plasmid_stub${params.mobsuite_recon.fasta_ext}
+    touch stub/${params.mobsuite_recon.mob_results_file}
+    touch versions.yml
+    """
 }

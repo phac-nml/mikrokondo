@@ -54,4 +54,20 @@ process BAKTA_ANNOTATE {
         bakta: \$(echo \$(bakta --version) 2>&1 | cut -f '2' -d ' ')
     END_VERSIONS
     """
+
+    stub:
+    prefix = "stub"
+    """
+    touch stub.${params.bakta.embl_ext}
+    touch stub.${params.bakta.faa_ext}
+    touch stub.${params.bakta.ffn_ext}
+    touch stub.${params.bakta.fna_ext}
+    touch stub.${params.bakta.gbff_ext}
+    touch stub.${params.bakta.gff_ext}
+    touch stub.${params.bakta.hypotheticals_tsv_ext}
+    touch stub.${params.bakta.hypotheticals_faa_ext}
+    touch stub.${params.bakta.tsv_ext}
+    touch stub.${params.bakta.txt_ext}
+    touch versions.yml
+    """
 }

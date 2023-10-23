@@ -32,4 +32,11 @@ process MEDAKA_POLISH{
         medaka: \$( medaka --version 2>&1 | sed 's/medaka //g' )
     END_VERSIONS
     """
+
+    stub:
+    """
+    touch stub${params.medaka.fasta_ext}
+    touch versions.yml
+    """
+
 }

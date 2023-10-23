@@ -26,4 +26,10 @@ process PARSE_KRAKEN {
     END_VERSIONS
     """
 
+    stub:
+    """
+    echo "stub"
+    touch versions.yml
+    """
+
 }

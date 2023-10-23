@@ -23,4 +23,10 @@ process MLST {
         mlst: \$( echo \$(mlst --version 2>&1) | sed 's/mlst //' )
     END_VERSIONS
     """
+
+    stub:
+    """
+    touch stub${params.mlst.json_ext}
+    touch versions.yml
+    """
 }

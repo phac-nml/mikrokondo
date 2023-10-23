@@ -29,4 +29,10 @@ process KLEBORATE {
         kleborate: \$( echo \$(kleborate --version | sed 's/Kleborate v//;'))
     END_VERSIONS
     """
+
+    stub:
+    """
+    touch stub.txt
+    touch versions.yml
+    """
 }

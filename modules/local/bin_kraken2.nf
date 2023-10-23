@@ -31,4 +31,12 @@ process BIN_KRAKEN2{
         python: \$(python --version | sed 's/Python //g')
     END_VERSIONS
     """
+
+    stub:
+    prefix = "stub"
+    """
+    touch stub_Escherichia${params.kraken_bin.fasta_ext}
+    touch stub_Salmonella${params.kraken_bin.fasta_ext}
+    touch versions.yml
+    """
 }

@@ -31,4 +31,11 @@ process SEQTK_SAMPLE{
     $cmd
     cat <<-END_VERSIONS > versions.yml\n"${task.process}":\n    seqtk: \$(echo \$(seqtk 2>&1) | sed 's/^.*Version: //; s/ .*\$//')\nEND_VERSIONS
     """
+
+    stub:
+    sample_fraction = 0.5
+    """
+    touch stub${params.seqtk.reads_ext}
+    touch versions.yml
+    """
 }

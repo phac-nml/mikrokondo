@@ -21,8 +21,18 @@ process REPORT{
     path("final_report.json"), emit: final_report
 
     exec:
+    if (workflow.stubRun){
+        // may need to add in a return here
+        def report_name = "final_report.json"
+        def output_file_path = Paths.get("$task.workDir", report_name)
+        output_file = file(output_file_path).newWriter()
+        output_file.write("")
+        output_file.close()
+        return
+    }
+
     def sample_data = [:] // Where to aggergate and create json data
-    def data_stride = 3 // report values added in groups of three
+    def data_stride = 3 // report values added in groups of three, e.g sample meta info, parameters, output file of interest
     def headers_list = 'headers' // ! TODO this string exists twice, need to fix that
     // TODO Check if there is a better way to get array size
 

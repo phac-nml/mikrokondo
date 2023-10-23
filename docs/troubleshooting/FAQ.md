@@ -28,6 +28,10 @@ The way a variable type is determined from the command line can be found in the 
 
 Common errors and potential fixes for modules will be detailed here.
 
+### Permission denied on a python script (`bin/some_script.py`)
+
+There may be an issue on certain installs where the python scripts included alongside mikrokondo do not work due to lack of permissions. The easiest way to solve this issue is to execute `chmod +x bin/*.py` in the mikrokondo installation directory. This will add execution permissions to all of the scripts, if this solution does not work then please submit an issue.
+
 ### Random issues containing on resume `org.iq80.leveldb.impl.Version.retain()`
 
 Sometimes the resume features of Nextflow don't always work completely. The above error string typically implies that some output could not be gathered from a process and on subsequent resumes you will get an error. You can find out what process (and its work directory location) caused the error in the `nextflow.log` (normally it will be at the top of some long traceback in the log), and a work directory will be specified listing the directory causing the error. Delete this directory and resume the pipeline. **If you hate logs and you don't care about resuming** other processes you can simply delete the work directory entirely.

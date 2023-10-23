@@ -41,4 +41,12 @@ process UNICYCLER_ASSEMBLE {
     END_VERSIONS
     """
 
+    stub:
+    """
+    touch stub${params.unicycler.scaffolds_ext}
+    touch stub${params.unicycler.assembly_ext}
+    touch stub${params.unicycler.log_ext}
+    touch versions.yml
+    """
+
 }

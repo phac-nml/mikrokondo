@@ -21,12 +21,20 @@ process KRAKEN {
     def args = task.ext.args ?: ""
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    kraken2 --db $db --memory-mapping --threads $task.cpus --output ${meta.id}.${params.kraken.output_suffix}.txt --report ${prefix}.kraken2.${params.kraken.report_suffix}.txt --classified-out ${meta.id}.${params.kraken.classified_suffix}.fasta --unclassified-out ${meta.id}.${params.kraken.unclassified_suffix}.fasta $args --gzip-compressed $contigs
+    kraken2 --db $db --memory-mapping --threads $task.cpus --output ${prefix}.${params.kraken.output_suffix}.txt --report ${prefix}.kraken2.${params.kraken.report_suffix}.txt --classified-out ${meta.id}.${params.kraken.classified_suffix}.fasta --unclassified-out ${meta.id}.${params.kraken.unclassified_suffix}.fasta $args --gzip-compressed $contigs
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         kraken2: \$(echo \$(kraken2 --version 2>&1) | sed 's/^.*Kraken version //; s/ .*\$//')
     END_VERSIONS
     """
 
+    stub:
+    """
+    touch stub.${params.kraken.classified_suffix}.fasta
+    touch stub.${params.kraken.unclassified_suffix}.fasta
+    touch stub.${params.kraken.output_suffix}.txt
+    touch stub.${params.kraken.report_suffix}.txt
+    touch versions.yml
+    """
 
 }

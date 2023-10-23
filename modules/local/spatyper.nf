@@ -34,4 +34,10 @@ process SPATYPER {
         spatyper: \$( echo \$(spaTyper --version 2>&1) | sed 's/^.*spaTyper //' )
     END_VERSIONS
     """
+
+    stub:
+    """
+    touch stub${params.spatyper.tsv_ext}
+    touch versions.yml
+    """
 }
