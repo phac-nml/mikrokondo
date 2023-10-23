@@ -30,4 +30,10 @@ process RACON_POLISH {
     END_VERSIONS
     """
 
+    stub:
+    """
+    touch stub${params.racon.consensus_ext}
+    touch versions.yml
+    """
+
 }

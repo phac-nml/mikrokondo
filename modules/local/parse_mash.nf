@@ -31,4 +31,10 @@ process PARSE_MASH{
     END_VERSIONS
     """
 
+    stub:
+    """
+    echo "stub"
+    touch versions.yml
+    """
+
 }

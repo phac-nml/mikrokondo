@@ -16,9 +16,6 @@ process SISTR {
     tuple val(meta), path("*${params.sistr.cgmlst_ext}")  , emit: cgmlst_csv
     path "versions.yml"                    , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
-
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
@@ -44,5 +41,14 @@ process SISTR {
     "${task.process}":
         sistr: \$(echo \$(sistr --version 2>&1) | sed 's/^.*sistr_cmd //; s/ .*\$//' )
     END_VERSIONS
+    """
+
+    stub:
+    """
+    touch stub${params.sistr.tsv_ext}
+    touch stub${params.sistr.allele_fasta_ext}
+    touch stub${params.sistr.allele_json_ext}
+    touch stub${params.sistr.cgmlst_ext}
+    touch versions.yml
     """
 }

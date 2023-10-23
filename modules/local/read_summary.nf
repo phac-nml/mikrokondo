@@ -37,5 +37,11 @@ process READ_SCAN{
     END_VERSIONS
     """
 
+    stub:
+    prefix = "stub"
+    """
+    touch stub.json
+    touch versions.yml
+    """
 
 }

@@ -47,4 +47,10 @@ process MINIMAP2_MAP {
     END_VERSIONS
     """
 
+    stub:
+    def mapped_ext = paf_out ? ".paf" : ".sam"
+    """
+    touch stub${mapped_ext}
+    touch versions.yml
+    """
 }

@@ -72,4 +72,10 @@ process REMOVE_CONTAMINANTS {
         samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
     END_VERSIONS
     """
+
+    stub:
+    """
+    touch stub.${params.r_contaminants.samtools_output_suffix}${params.r_contaminants.output_ext}
+    touch versions.yml
+    """
 }

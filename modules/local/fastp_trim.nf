@@ -45,5 +45,13 @@ process FASTP_TRIM{
     END_VERSIONS
     """
 
+    stub:
+    """
+    touch stub${params.fastp.fastq_ext}
+    touch stub${params.fastp.json_ext}
+    touch stub${params.fastp.html_ext}
+    touch versions.yml
+    """
+
 }
 

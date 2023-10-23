@@ -33,4 +33,12 @@ process MASH_SCREEN {
         mash: \$( mash --version )
     END_VERSIONS
     """
+
+    stub:
+    prefix = "stub"
+    prefix_post = task.process.toString().contains("QC_READS") ? prefix + params.mash.output_reads_ext : prefix + params.mash.output_taxa_ext
+    """
+    touch stub${prefix_post}
+    touch versions.yml
+    """
 }

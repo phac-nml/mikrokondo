@@ -27,9 +27,9 @@ process CHECK_ONT{
     """
 
     stub:
-    output_name = "test.unique_headers.fastq.gz"
+    output_name = "stub.unique_headers.fastq.gz"
     """
-    touch ${output_name}
+    touch stub.unique_headers.fastq.gz
     touch versions.yml
     """
 

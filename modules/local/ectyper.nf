@@ -35,4 +35,13 @@ process ECTYPER{
     END_VERSIONS
     """
 
+    stub:
+    prefix = "stub"
+    """
+    touch stub/stub${params.ectyper.log_ext}
+    touch stub/stub${params.ectyper.tsv_ext}
+    touch stub/stub${params.ectyper.txt_ext}
+    touch versions.yml
+    """
+
 }

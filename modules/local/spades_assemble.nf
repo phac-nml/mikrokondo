@@ -65,5 +65,16 @@ implemented and requires paired end reads. Therefore typical De-Novo assembly wi
     END_VERSIONS
     """
 
+    stub:
+    """
+    touch stub${params.spades.scaffolds_ext}
+    touch stub${params.spades.contigs_ext}
+    touch stub${params.spades.transcripts_ext}
+    touch stub${params.spades.gene_clusters_ext}
+    touch stub${params.spades.assembly_graphs_ext}
+    touch stub${params.spades.log_ext}
+    touch versions.yml
+    """
+
 
 }

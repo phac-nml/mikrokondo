@@ -55,6 +55,20 @@ process STARAMR {
     END_VERSIONS
     """
 
+    stub:
+    prefix = "stub"
+    """
+    mkdir stub
+    touch stub/summary${params.staramr.tsv_ext}
+    touch stub/detailed_summary${params.staramr.tsv_ext}
+    touch stub/resfinder${params.staramr.tsv_ext}
+    touch stub/pointfinder${params.staramr.tsv_ext}
+    touch stub/plasmidfinder${params.staramr.tsv_ext}
+    touch stub/mlst${params.staramr.tsv_ext}
+    touch stub/settings${params.staramr.txt_ext}
+    touch stub/results${params.staramr.xlsx_ext}
+    touch versions.yml
+    """
 
 
 

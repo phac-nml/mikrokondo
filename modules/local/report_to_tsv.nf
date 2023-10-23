@@ -11,6 +11,7 @@ process REPORT_TO_TSV{
 
     output:
     path("final_report.tsv"), emit: final_report
+    path "versions.yml", emit: versions
 
     script:
     """
@@ -19,5 +20,11 @@ process REPORT_TO_TSV{
     "${task.process}":
         python: \$(python --version | sed 's/Python //g')
     END_VERSIONS
+    """
+
+    stub:
+    """
+    touch final_report.tsv
+    touch versions.yml
     """
 }

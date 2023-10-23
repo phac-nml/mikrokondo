@@ -28,4 +28,10 @@ process STARAMR_DUMP_DB_VERSIONS {
     END_VERSIONS
     """
 
+    stub:
+    """
+    touch StarAMRDBVersions.txt
+    touch versions.yml
+    """
+
 }

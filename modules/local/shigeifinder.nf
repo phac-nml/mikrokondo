@@ -27,4 +27,10 @@ process SHIGEIFINDER {
         shigeifinder: $VERSION
     END_VERSIONS
     """
+
+    stub:
+    """
+    touch stub${params.shigeifinder.tsv_ext}
+    touch versions.yml
+    """
 }

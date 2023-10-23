@@ -46,4 +46,15 @@ process FLYE_ASSEMBLE{
     END_VERSIONS
     """
 
+    stub:
+    """
+    touch stub${params.flye.fasta_ext}
+    touch stub${params.flye.gfa_ext}
+    touch stub${params.flye.gv_ext}
+    touch stub${params.flye.txt_ext}
+    touch stub${params.flye.log_ext}
+    touch stub${params.flye.json_ext}
+    touch versions.yml
+    """
+
 }

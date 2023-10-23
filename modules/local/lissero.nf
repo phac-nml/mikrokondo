@@ -31,4 +31,10 @@ process LISSERO {
         lissero: \$( echo \$(lissero --version 2>&1) | sed 's/^.*LisSero //' )
     END_VERSIONS
     """
+
+    stub:
+    """
+    touch stub${params.lissero.tsv_ext}
+    touch versions.yml
+    """
 }

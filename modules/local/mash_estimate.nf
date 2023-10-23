@@ -30,4 +30,13 @@ process MASH_ESTIMATE{
         mash: \$( mash --version )
     END_VERSIONS
     """
+
+    stub:
+    prefix = "stub"
+    """
+    touch stub${params.mash.sketch_ext}
+    touch genome_size.txt
+    echo "100000" > genome_size.txt
+    touch versions.yml
+    """
 }

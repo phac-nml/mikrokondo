@@ -43,14 +43,16 @@ process CHECKM_LINEAGEWF {
     """
 
     stub:
+    prefix = "stub"
     """
-    mkdir test/bins/
-    touch test/bins/genes.faa
-    touch test/bins/genes.gff
-    touch test/bins/hmmer.analyze.txt
-    touch test/bins/hmmer.tree.txt
-    touch test/test-results.txt
-    touch test/lineage.ms
+    mkdir -p stub/bins/
+    touch stub/bins/genes.faa
+    touch stub/bins/genes.gff
+    touch stub/bins/hmmer.analyze.txt
+    touch stub/bins/hmmer.tree.txt
+    touch stub/stub-results.txt
+    touch stub/${params.checkm.results_ext}
+    touch stub/${params.checkm.lineage_ms}
     touch versions.yml
     """
 

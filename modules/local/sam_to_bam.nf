@@ -29,4 +29,11 @@ process SAM_TO_BAM{
     END_VERSIONS
     """
 
+    stub:
+    """
+    touch stub${params.samtools.bam_ext}
+    touch stub${params.samtools.bai_ext}
+    touch versions.yml
+    """
+
 }
