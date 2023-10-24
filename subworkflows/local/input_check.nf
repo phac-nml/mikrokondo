@@ -212,7 +212,7 @@ def create_fastq_channel(LinkedHashMap row) {
     }else if(!meta.single_end && row.long_reads != null && (row.assembly == null || row.assembly.isEmpty())){
         check_file_exists(row.long_reads)
         check_file_exists(row.fastq_1)
-        check_file_exists(row.fastq_1)
+        check_file_exists(row.fastq_2)
         meta.hybrid = true
         files = [[ file(row.fastq_1), file(row.fastq_2) ], [file(row.long_reads)]]
 
