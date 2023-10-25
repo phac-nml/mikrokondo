@@ -15,3 +15,5 @@ assets*
 mkdocs.yml
 nextflow_schema.json
 README.md
+fontlist-v330.json
+CITATIONS.md
