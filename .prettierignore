@@ -10,3 +10,8 @@ testing/
 testing*
 *.pyc
 bin/
+docs/*
+assets*
+mkdocs.yml
+nextflow_schema.json
+README.md
