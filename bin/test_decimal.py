@@ -44,20 +44,22 @@ class ProgressTimer(Timer):
         print()
         return timing
 
+
 def mean_c(nums, func):
     def _mean_c():
         func(nums)
+
     return _mean_c
+
 
 iters = 10000000
 d = ProgressTimer(mean_c(DECIMAL, mean))
 i = ProgressTimer(mean_c(RAND_LIST, mean))
 f = ProgressTimer(mean_c(FLOAT, mean))
-ff =ProgressTimer(mean_c(FLOAT, fmean))
-fi =ProgressTimer(mean_c(INT_ARRAY, fmean))
+ff = ProgressTimer(mean_c(FLOAT, fmean))
+fi = ProgressTimer(mean_c(INT_ARRAY, fmean))
 print("Float Fmean: ", ff.timeit(iters))
 print("Int array Fmean: ", fi.timeit(iters))
 print("Decimal: ", d.timeit(iters))
 print("Integer: ", i.timeit(iters))
 print("Float: ", f.timeit(iters))
-

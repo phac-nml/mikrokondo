@@ -13,9 +13,10 @@ import copy
 import re
 import sys
 
+
 class JsonImport:
-    """Intake json report to convert to CSV
-    """
+    """Intake json report to convert to CSV"""
+
     __depth_limit = 10
     __keep_keys = set(["meta", "QualityAnalysis", "QCSummary", "QCStatus"])
     __delimiter = "\t"
@@ -29,10 +30,9 @@ class JsonImport:
         self.formatted_data = self.format_for_csv(self.normalized, self.rows)
         self.to_file()
 
-
     def to_file(self):
         with open(self.output_name, "w") as out_file:
-            out_file.write(self.__delimiter) # first column is index
+            out_file.write(self.__delimiter)  # first column is index
             for i in self.formatted_data:
                 out_file.write(f"{i[0]}{self.__delimiter}")
             out_file.write("\n")
@@ -44,7 +44,7 @@ class JsonImport:
                         out_file.write(f'"{val_write}"')
                     else:
                         out_file.write(val_write)
-                        #out_file.write(str(ii[1][i]).replace('\n', ' \\'))
+                        # out_file.write(str(ii[1][i]).replace('\n', ' \\'))
                     out_file.write(self.__delimiter)
                 out_file.write("\n")
 
@@ -53,7 +53,7 @@ class JsonImport:
         data = []
         for k, v in results.items():
             n_row = copy.deepcopy(row)
-            sample_data = [key for key in v.keys() if key != "summary" ]
+            sample_data = [key for key in v.keys() if key != "summary"]
             for item in v["summary"]:
                 n_row[item[0]] = item[1]
             n_row_samp = copy.deepcopy(n_row)
@@ -119,15 +119,15 @@ class JsonImport:
         qc_status_rows.extend(list(qc_analysis_rows))
         qc_status_rows.append("QCSummary")
         qc_status_rows.extend(list(meta_data_rows))
-        #meta_data_rows = list(meta_data_rows)
-        #meta_data_rows.extend(list(qc_analysis_rows))
-        #meta_data_rows.append("QCSummary")
+        # meta_data_rows = list(meta_data_rows)
+        # meta_data_rows.extend(list(qc_analysis_rows))
+        # meta_data_rows.append("QCSummary")
         rows = list(rows)
         rows.sort(reverse=True)
         qc_status_rows.extend(rows)
-        #meta_data_rows.extend(rows)
+        # meta_data_rows.extend(rows)
 
-        #return (sample_data_overview, meta_data_rows)
+        # return (sample_data_overview, meta_data_rows)
         return (sample_data_overview, qc_status_rows)
 
     def get_quality_analysis_fields(self, qc_fields):
@@ -139,23 +139,22 @@ class JsonImport:
                 fields.append((v["field"], v["message"]))
         return fields
 
-
     def recurse_json(self, dict_, prev_key, results):
         if isinstance(dict_, dict):
             for key in dict_:
                 if isinstance(dict_[key], dict):
-                    self.recurse_json(dict_[key], prev_key=prev_key+"."+key, results=results)
+                    self.recurse_json(dict_[key], prev_key=prev_key + "." + key, results=results)
                 elif isinstance(dict_[key], list):
                     for val in dict_[key]:
                         if isinstance(val, dict):
-                            self.recurse_json(val, prev_key=prev_key+"."+key+"."+val, results=results)
+                            self.recurse_json(val, prev_key=prev_key + "." + key + "." + val, results=results)
                         else:
                             results.append((prev_key + "." + key, dict_[key]))
                 else:
                     results.append((prev_key + "." + key, dict_[key]))
         else:
             if isinstance(dict_, str):
-                results.append((prev_key, dict_.replace("\"", "")))
+                results.append((prev_key, dict_.replace('"', "")))
             elif isinstance(dict_, float):
                 results.append((prev_key, dict_))
             elif isinstance(dict_, list):
@@ -168,7 +167,6 @@ class JsonImport:
                 # issues with iterables here
                 sys.stderr.write(f"Having issues with report JSON value {prev_key}. Data value {dict_}\n")
                 results.append((prev_key, dict_))
-
 
     def regroup_data(self, paths):
         """Re-group data into a form that is easier to put into CSV format
@@ -189,8 +187,7 @@ class JsonImport:
         return sample_specific
 
     def subset_paths(self):
-        """Could be made faster by using the dictionary as input
-        """
+        """Could be made faster by using the dictionary as input"""
         paths = []
         for k in self.qc_paths:
             sample = k[0][0]
@@ -199,7 +196,6 @@ class JsonImport:
                 if val in vals:
                     paths.append(k)
         return paths
-
 
     def get_samples(self, dict_obj):
         keys = dict_obj.keys()
@@ -243,7 +239,6 @@ class JsonImport:
             path = [i]
             self.recurse_dict(dict_obj[i], 0, info, path)
 
-
     def normalize_overlapping_fields(self, normalized_dict):
         """Normalize overlapping json fields, e.g. if a sample is metagenomic and has species data
         copied, add in the fastp data to each part
@@ -268,7 +263,7 @@ class JsonImport:
 
     def ingest_report(self, report_fp):
         data = None
-        with open(report_fp, 'r', encoding='utf8') as report:
+        with open(report_fp, "r", encoding="utf8") as report:
             data = json.load(report)
         return data
 
@@ -283,6 +278,7 @@ def main_(args_in):
     else:
         sys.stderr.write(f"{args.file_in} does not exist.\n")
         sys.exit(-1)
+
 
 if __name__ == "__main__":
     # pass json file to program to parse it
