@@ -14,11 +14,13 @@ class PasteyMcPasteFace:
     Returns:
         _type_: _description_
     """
+
     ...
 
+
 class AssemblyPaths:
-    """Take in a file of assemblies and parse out the assembly prefix
-    """
+    """Take in a file of assemblies and parse out the assembly prefix"""
+
     _rs_gb_delimiter = "_"
     _gcf_gca_delimiter = "_"
     _search_prefix = "GCF"
@@ -37,28 +39,25 @@ class AssemblyPaths:
         self.filtered_output = self.remove_missing_taxa_info()
         self.save_outputs()
 
-
     def save_outputs(self):
         """write multiple output files for mash sketch
 
         Mash seems to need labels passed to the CLI for each sequence to sketch so now the samples are being used to create cli commands
         """
-        id_data = open("mash_cli.txt", "w", encoding='utf8')
-        #path_data = open("mash_paths.txt", "w", encoding='utf8')
-        #taxa_data = open("mash_taxa.txt", "w", encoding='utf8')
+        id_data = open("mash_cli.txt", "w", encoding="utf8")
+        # path_data = open("mash_paths.txt", "w", encoding='utf8')
+        # taxa_data = open("mash_taxa.txt", "w", encoding='utf8')
         for k, v in self.filtered_output.items():
             id_data.write(f"\"{v[0]}\" -I '{k}' -C '{v[1]}'\n")
-            #path_data.write(f"{v[0]}\n")
-            #taxa_data.write(f"{v[1]}\n")
+            # path_data.write(f"{v[0]}\n")
+            # taxa_data.write(f"{v[1]}\n")
 
         id_data.close()
-        #path_data.close()
-        #taxa_data.close()
-
+        # path_data.close()
+        # taxa_data.close()
 
     def remove_missing_taxa_info(self):
-        """remove dictionary entries with missing taxa info
-        """
+        """remove dictionary entries with missing taxa info"""
         keys_rm = set()
         for k, v in self.file_names.items():
             if len(v) == 1:
@@ -69,7 +68,6 @@ class AssemblyPaths:
         new_dict = {k: v for k, v in self.file_names.items() if k not in keys_rm}
         return new_dict
 
-
     def merge_taxa_info(self):
         """merge the taxa data and the assembly paths
 
@@ -77,7 +75,7 @@ class AssemblyPaths:
             _type_: _description_
         """
         for i in self.taxa:
-            if self._search_prefix != i[0][0:self._search_pre_len]:
+            if self._search_prefix != i[0][0 : self._search_pre_len]:
                 continue
             if self.file_names.get(i[0]):
                 self.file_names[i[0]].append(i[1])
@@ -94,14 +92,13 @@ class AssemblyPaths:
             sys.exit(-1)
 
     def taxon_info(self):
-        """Parse assembly name and taxa info
-        """
+        """Parse assembly name and taxa info"""
         out_list = []
-        with open(self.taxa_info, 'r', encoding='utf8') as taxa:
+        with open(self.taxa_info, "r", encoding="utf8") as taxa:
             for i in taxa.readlines():
                 split_line = i.strip().split("\t")
                 # split at first under score as gtdb appends weather source is refseq or genbank
-                name = split_line[0][split_line[0].index(self._rs_gb_delimiter)+1:]
+                name = split_line[0][split_line[0].index(self._rs_gb_delimiter) + 1 :]
                 out_list.append((name, split_line[1]))
 
         return out_list
@@ -110,11 +107,11 @@ class AssemblyPaths:
         """
         read and parse all entries
         """
-        with open(self.fp, 'r', encoding='utf8') as file_in:
+        with open(self.fp, "r", encoding="utf8") as file_in:
             # all file names are delimited from tail at second underscore
-            #lines = map(lambda x: (os.path.basename(x[:x.rindex("_")]), x.strip()), file_in.readlines())
-            #lines = [(os.path.basename(x[:x.rindex(self._gcf_gca_delimiter)]), x.strip()) for x in  file_in.readlines()]
-            lines = {os.path.basename(x[:x.rindex(self._gcf_gca_delimiter)]): [x.strip()] for x in  file_in.readlines()}
+            # lines = map(lambda x: (os.path.basename(x[:x.rindex("_")]), x.strip()), file_in.readlines())
+            # lines = [(os.path.basename(x[:x.rindex(self._gcf_gca_delimiter)]), x.strip()) for x in  file_in.readlines()]
+            lines = {os.path.basename(x[: x.rindex(self._gcf_gca_delimiter)]): [x.strip()] for x in file_in.readlines()}
         return lines
 
 

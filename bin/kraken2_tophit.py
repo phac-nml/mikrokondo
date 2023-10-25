@@ -10,11 +10,10 @@ from collections import defaultdict
 import sys
 
 
-
 KRAKEN2_CLASSIFIERS = frozenset(["U", "R", "D", "K", "P", "C", "O", "F", "G", "S"])
 
 
-@dataclass()# not using slots=True as many people are using an old python
+@dataclass()  # not using slots=True as many people are using an old python
 class ReportRows:
     __slots__ = ("PercentId", "FragmentsRecovered", "FragmentsAssignmentTaxon", "RankCode", "ncbi", "SciName")
     PercentId: float
@@ -43,6 +42,7 @@ class ReportRows:
             return self.__key() == other.__key()
         return NotImplemented
 
+
 class Kraken2Tophit:
     """Alternate implementation of the kraken2 report class
 
@@ -51,18 +51,19 @@ class Kraken2Tophit:
 
     TODO See if this functionality can fit into a refactor of the kraken2_bin.py script
     """
+
     _delimiter = "\t"
 
     def __init__(self, report, taxa_level) -> None:
         self.report = report
         self.taxa_level = taxa_level
         self.report_levels = self.read_report(self.report)
-        self.selected_taxa =  self.report_levels.get(taxa_level)
+        self.selected_taxa = self.report_levels.get(taxa_level)
         if self.selected_taxa is None:
             sys.stderr.write(f"Could not find taxa level {self.taxa_level} in output\n")
             sys.exit(-1)
         self.top_hit = self.select_top_hit(list(self.selected_taxa))
-        output = self.top_hit.SciName.replace('"', '')
+        output = self.top_hit.SciName.replace('"', "")
         sys.stdout.write(f"{output}")
 
     def select_top_hit(self, taxa_row: list):
@@ -73,7 +74,7 @@ class Kraken2Tophit:
         """
         taxa_row.sort(reverse=True, key=lambda x: x.PercentId)
         output = "No Species Identified"
-        if taxa_row: # list has objects
+        if taxa_row:  # list has objects
             output = taxa_row[0]
         return output
 
@@ -86,10 +87,7 @@ class Kraken2Tophit:
         return report_levels
 
 
-
-
-
-if __name__=="__main__":
+if __name__ == "__main__":
     try:
         taxonomic_level = sys.argv[2].upper()
     except IndexError:
