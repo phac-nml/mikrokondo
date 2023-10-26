@@ -61,7 +61,6 @@ include { REPORT_TO_TSV } from './modules/local/report_to_tsv.nf'
 
 workflow input_test {
     prepped_data = INPUT_CHECK(params.input)
-    prepped_data.reads.view()
 }
 
 //

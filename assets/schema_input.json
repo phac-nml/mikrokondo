@@ -37,7 +37,7 @@
             },
             "assembly": {
                 "type": "string",
-                "pattern": "^\\S+\\.f(ast|na)?a\\.gz$",
+                "pattern": "^\\S+\\.f(ast)?n?a\\.gz$",
                 "errorMessage": "Fasta file, cannot contain spaces and must have extension '.fa.gz' or '.fasta.gz'.",
                 "meta": ["assembly"],
                 "unique": true
