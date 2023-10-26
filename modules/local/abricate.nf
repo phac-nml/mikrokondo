@@ -24,4 +24,10 @@ process ABRICATE {
         abricate: \$(echo \$(abricate --version 2>&1) | sed 's/^.*abricate //' )
     END_VERSIONS
     """
+
+    stub:
+    """
+    touch abricate.txt
+    touch versions.yml
+    """
 }
