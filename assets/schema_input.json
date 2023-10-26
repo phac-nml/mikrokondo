@@ -1,7 +1,7 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema",
     "$id": "https://raw.githubusercontent.com/mk-kondo/mikrokondo/master/assets/schema_input.json",
-    "title": "mk-kondo/mikrokondo pipeline - params.input schema",
+    "title": "Samplesheet schema validation",
     "description": "Schema for the file provided with params.input",
     "type": "array",
     "items": {
@@ -10,35 +10,37 @@
             "sample": {
                 "type": "string",
                 "pattern": "^\\S+$",
-                "errorMessage": "Sample name must be provided and cannot contain spaces"
+                "errorMessage": "Sample name must be provided and cannot contain spaces",
+                "meta": ["id"]
             },
             "fastq_1": {
                 "type": "string",
                 "pattern": "^\\S+\\.f(ast)?q\\.gz$",
-                "errorMessage": "FastQ file for reads 1 must be provided, cannot contain spaces and must have extension '.fq.gz' or '.fastq.gz'."
+                "errorMessage": "FastQ file for reads 1 (forward reads) must be provided, cannot contain spaces and must have extension '.fq.gz' or '.fastq.gz'.",
+                "dependentRequired": ["fastq_2"],
+                "meta": ["fastq_1"],
+                "unique": true
             },
             "fastq_2": {
-                "errorMessage": "FastQ file for reads 2 cannot contain spaces and must have extension '.fq.gz' or '.fastq.gz'",
-                "anyOf": [
-                    {
-                        "type": "string",
-                        "pattern": "^\\S+\\.f(ast)?q\\.gz$"
-                    },
-                    {
-                        "type": "string",
-                        "maxLength": 0
-                    }
-                ]
+                "type": "string",
+                "pattern": "^\\S+\\.f(ast)?q\\.gz$",
+                "errorMessage": "FastQ file for reads 2 (reverse reads) cannot contain spaces and must have extension '.fq.gz' or '.fastq.gz'",
+                "meta": ["fastq_2"],
+                "unique": true
             },
             "long_reads": {
                 "type": "string",
                 "pattern": "^\\S+\\.f(ast)?q\\.gz$",
-                "errorMessage": "FastQ file for reads 1 must be provided, cannot contain spaces and must have extension '.fq.gz' or '.fastq.gz'."
+                "errorMessage": "FastQ file for reads 1 must be provided, cannot contain spaces and must have extension '.fq.gz' or '.fastq.gz'.",
+                "meta": ["long_reads"],
+                "unique": true
             },
             "assembly": {
                 "type": "string",
-                "pattern": "^\\S+\\.f(ast)?a\\.gz$",
-                "errorMessage": "Fasta file, cannot contain spaces and must have extension '.fa.gz' or '.fasta.gz'."
+                "pattern": "^\\S+\\.f(ast|na)?a\\.gz$",
+                "errorMessage": "Fasta file, cannot contain spaces and must have extension '.fa.gz' or '.fasta.gz'.",
+                "meta": ["assembly"],
+                "unique": true
             }
         },
         "required": ["sample"]

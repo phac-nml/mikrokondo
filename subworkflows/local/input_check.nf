@@ -3,17 +3,26 @@
 //
 
 include { COMBINE_DATA } from '../../modules/local/combine_data.nf'
+include { fromSamplesheet } from 'plugin/nf-validation'
 
 workflow INPUT_CHECK {
     take:
+    // todo may need to remove with input nf-validation
     samplesheet // file: /path/to/samplesheet.csv
 
     main:
     // TODO add in automatic gzipping of all samples in
     versions = Channel.empty()
-    reads_in = Channel.fromPath(samplesheet)
-            .splitCsv ( header:true, sep:',' )
-            .map { create_fastq_channel(it) }
+    def sample_sheet = params.input
+    reads_in = Channel.fromSamplesheet(
+        "input", // apparentely input maps to params.input...
+        parameters_schema: 'nextflow_schema.json',
+        skip_duplicate_check: false,
+        validationS3PathCheck: false) // need to determine what skip duplication does.. e.g. throw error?
+    reads_in.view()
+    //reads_in = Channel.fromPath(samplesheet)
+    //        .splitCsv ( header:true, sep:',' )
+    //        .map { create_fastq_channel(it) }
 
     if(params.opt_platforms.ont == params.platform && params.nanopore_chemistry == null){
         exit 1, "ERROR: Nanopore data was selected without a model being specified."

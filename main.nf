@@ -59,7 +59,10 @@ include { INPUT_CHECK } from './subworkflows/local/input_check.nf'
 include { REPORT } from './modules/local/report.nf'
 include { REPORT_TO_TSV } from './modules/local/report_to_tsv.nf'
 
-
+workflow input_test {
+    prepped_data = INPUT_CHECK(params.input)
+    prepped_data.reads.view()
+}
 
 //
 // WORKFLOW: Run main mk-kondo/mikrokondo analysis pipeline
@@ -67,6 +70,7 @@ include { REPORT_TO_TSV } from './modules/local/report_to_tsv.nf'
 workflow MIKROKONDO {
     ch_reports = Channel.empty()
     prepped_data = INPUT_CHECK(ch_input)
+
     split_data = prepped_data.reads.branch{
         post_assembly: it[0].assembly // [0] dentoes the meta tag
         read_data: true
@@ -100,7 +104,8 @@ workflow MIKROKONDO {
 // See: https://github.com/nf-core/rnaseq/issues/619
 //
 workflow {
-    MIKROKONDO ()
+    //MIKROKONDO ()
+    input_test()
 }
 
 /*
