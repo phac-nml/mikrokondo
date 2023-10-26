@@ -1,4 +1,4 @@
-name: Fix linting from a comment
+name: Run prettier checks
 on:
   issue_comment:
     types: [created]
