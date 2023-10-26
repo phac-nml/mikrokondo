@@ -5,9 +5,11 @@ on:
     branches:
       - dev
       - main
-  pull_request:
-  release:
-    types: [published]
+  workflow_run:
+    workflows: ["nf-core linting"]
+  #pull_request:
+  #release:
+  #  types: [published]
 
 env:
   NXF_ANSI_LOG: false
