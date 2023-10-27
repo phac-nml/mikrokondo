@@ -103,8 +103,8 @@ workflow MIKROKONDO {
 // See: https://github.com/nf-core/rnaseq/issues/619
 //
 workflow {
-    //MIKROKONDO ()
-    input_test()
+    MIKROKONDO ()
+    //input_test()
 }
 
 /*

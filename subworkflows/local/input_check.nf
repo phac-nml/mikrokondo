@@ -63,7 +63,7 @@ workflow INPUT_CHECK {
         it -> format_reads(it)
     }
 
-
+    reads.view()
     emit:
     reads // channel: [ val(meta), [ reads ] ]
     versions = versions // channel: [ versions.yml ]
