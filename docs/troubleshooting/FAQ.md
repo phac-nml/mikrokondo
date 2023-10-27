@@ -28,6 +28,10 @@ The way a variable type is determined from the command line can be found in the 
 
 Common errors and potential fixes for modules will be detailed here.
 
+### null errors, or report generation failing on line 701
+
+Currently there seems to be some compatibility issues between version 22 of nextflow and version 23.10.0 with regards to parsing the `nextflow.config` file. I am currently working on addressing them now. if you happen to encounter issues please downgrade your nextflow install to 22.10.1
+
 ### Permission denied on a python script (`bin/some_script.py`)
 
 There may be an issue on certain installs where the python scripts included alongside mikrokondo do not work due to lack of permissions. The easiest way to solve this issue is to execute `chmod +x bin/*.py` in the mikrokondo installation directory. This will add execution permissions to all of the scripts, if this solution does not work then please submit an issue.
