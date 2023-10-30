@@ -121,7 +121,7 @@ workflow QC_READS {
         // TODO add to report if reads down sampled
         // Log read sampling
         reads_sample.sub_sample.subscribe{
-            log.info "Down sampling ${it[0].id} by a factor of ${it[1]}."
+            log.info "Down sampling ${it[0].id} by a factor of ${it[sample_frac_pos]}."
         }
         reads_sample.other.subscribe{
             log.info "Not down sampling ${it[0].id} as estimated sample depth is already below targeted depth of ${params.target_depth}."

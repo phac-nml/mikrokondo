@@ -9,8 +9,8 @@
 
 nextflow.enable.dsl = 2
 
-// TODO remove before PR to main
-nextflow.enable.strict = true
+// Enable for testing purposes only
+// nextflow.enable.strict = true
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -87,9 +87,8 @@ workflow MIKROKONDO {
     ps_out = POST_ASSEMBLY(assembly_data, mk_out.cleaned_reads, mk_out.versions)
     ch_reports = ch_reports.mix(mk_out.reports)
     ch_reports = ch_reports.mix(ps_out.reports)
-    //ch_reports = ch_reports.groupTuple()
     ch_reports_all = ch_reports.collect()
-    //ch_reports_all.view()
+
     if(!params.skip_report){
         REPORT(ch_reports_all)
         REPORT_TO_TSV(REPORT.out.final_report)
