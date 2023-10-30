@@ -63,7 +63,6 @@ workflow INPUT_CHECK {
         it -> format_reads(it)
     }
 
-    reads.view()
     emit:
     reads // channel: [ val(meta), [ reads ] ]
     versions = versions // channel: [ versions.yml ]
@@ -102,8 +101,8 @@ def check_file_exists(String file_path){
     //    exit 1, "ERROR: Please check input samplesheet -> $file_path is null. This could be due to forgetting to add Headers to your sample sheet or you could have empty rows in your sample sheet."
     //}
     if(!file(file_path).exists()){
-        //exit 1, "ERROR: Please check input samplesheet -> $file_path does not exist. If your file in you sample sheet does not exist make sure you do not have spaces in your path name."
-        log.warn "[SET BACK TO EXIT BEFORE PR] ERROR: Please check input samplesheet -> $file_path does not exist. If your file in you sample sheet does not exist make sure you do not have spaces in your path name."
+        exit 1, "ERROR: Please check input samplesheet -> $file_path does not exist. If your file in you sample sheet does not exist make sure you do not have spaces in your path name."
+        //log.warn "[SET BACK TO EXIT BEFORE PR] ERROR: Please check input samplesheet -> $file_path does not exist. If your file in you sample sheet does not exist make sure you do not have spaces in your path name."
     }
     return true
 }
@@ -168,10 +167,9 @@ def format_reads(ArrayList sheet_data){
         error_occured = true
     }
 
-    // TODO turn back on before pushing to main
-    //if(error_occured){
-    //    exit 1
-    //}
+    if(error_occured){
+        exit 1
+    }
 
     return [meta, files]
 

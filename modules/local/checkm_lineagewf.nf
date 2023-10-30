@@ -29,9 +29,9 @@ process CHECKM_LINEAGEWF {
     fi
     mkdir bins
     mv *.${file_ext} ./bins
-    checkm lineage_wf ./bins/ ${prefix} --tab_table --threads ${params.checkm.threads} \\
+    checkm lineage_wf ./bins/ ${prefix} --tab_table --threads ${task.cpus} \\
         -x ${file_ext} \\
-        --pplacer_threads ${params.checkm.threads} \\
+        --pplacer_threads ${task.cpus} \\
         --alignment_file  ${prefix}/${prefix}${params.checkm.alignment_ext} \\
         --file ${prefix}/${prefix}${params.checkm.results_ext} \\
         $args
