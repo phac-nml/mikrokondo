@@ -9,6 +9,9 @@
 
 nextflow.enable.dsl = 2
 
+// TODO remove before PR to main
+nextflow.enable.strict = true
+
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     GENOME PARAMETER VALUES

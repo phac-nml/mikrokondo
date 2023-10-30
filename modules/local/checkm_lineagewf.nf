@@ -45,11 +45,12 @@ process CHECKM_LINEAGEWF {
     stub:
     prefix = "stub"
     """
-    mkdir -p stub/bins/
-    touch stub/bins/genes.faa
-    touch stub/bins/genes.gff
-    touch stub/bins/hmmer.analyze.txt
-    touch stub/bins/hmmer.tree.txt
+    #mkdir bins
+    mkdir -p stub
+    #touch stub/bins/genes.faa
+    #touch stub/bins/genes.gff
+    #touch stub/bins/hmmer.analyze.txt
+    #touch stub/bins/hmmer.tree.txt
     touch stub/stub-results.txt
     touch stub/${params.checkm.results_ext}
     touch stub/${params.checkm.lineage_ms}
