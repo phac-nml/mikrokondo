@@ -121,7 +121,7 @@ def format_reads(ArrayList sheet_data){
     if(sequencing_data.containsKey("merge")){
         meta.merge = sequencing_data.merge
     }
-    def files = null
+    def ret_val = null
 
 
 
@@ -135,7 +135,8 @@ def format_reads(ArrayList sheet_data){
         check_file_exists(sequencing_data.fastq_1)
         check_file_exists(sequencing_data.fastq_2)
         check_file_exists(sequencing_data.long_reads)
-        files = [[file(sequencing_data.fastq_1), file(sequencing_data.fastq_2)], [file(sequencing_data.long_reads)]]
+        ret_val = tuple(meta, [file(sequencing_data.fastq_1), file(sequencing_data.fastq_2)], file(sequencing_data.long_reads))
+
     }else if(sequencing_data.long_reads){
         meta.single_end = true
         if(![params.opt_platforms.ont, params.opt_platforms.pacbio].contains(params.platform)){
@@ -143,7 +144,7 @@ def format_reads(ArrayList sheet_data){
             error_occured = true
         }
         check_file_exists(sequencing_data.long_reads)
-        files = [file(sequencing_data.long_reads)]
+        ret_val = tuple(meta, file(sequencing_data.long_reads))
 
     }else if(sequencing_data.assembly){
         if(sequencing_data.fastq_1 != null || sequencing_data.fastq_2 != null || sequencing_data.long_reads != null){
@@ -152,7 +153,7 @@ def format_reads(ArrayList sheet_data){
         }
         check_file_exists(sequencing_data.assembly)
         meta.assembly = true
-        files = [file(sequencing_data.assembly)]
+        ret_val = tuple(meta, file(sequencing_data.assembly))
 
     }else if(sequencing_data.fastq_1 || sequencing_data.fastq_2){ // using or here to capture any chances taht only one read set is specified
         if(params.platform != params.opt_platforms.illumina){
@@ -161,7 +162,8 @@ def format_reads(ArrayList sheet_data){
         }
         check_file_exists(sequencing_data.fastq_1)
         check_file_exists(sequencing_data.fastq_2)
-        files = [ file(sequencing_data.fastq_1), file(sequencing_data.fastq_2) ]
+        ret_val = tuple(meta, [file(sequencing_data.fastq_1), file(sequencing_data.fastq_2)])
+
     }else{
         log.warning "Cannot determine what type of data is presented for $meta.id, more that one read type is specified"
         error_occured = true
@@ -171,7 +173,7 @@ def format_reads(ArrayList sheet_data){
         exit 1
     }
 
-    return [meta, files]
+    return ret_val
 
 }
 

@@ -74,6 +74,7 @@ workflow MIKROKONDO {
         post_assembly: it[0].assembly // [0] dentoes the meta tag
         read_data: true
     }
+
     mk_out = CLEAN_ASSEMBLE_READS(split_data.read_data)
 
     assembly_data =  mk_out.final_assembly.mix(split_data.post_assembly.map{
