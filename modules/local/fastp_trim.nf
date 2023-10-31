@@ -33,9 +33,9 @@ process FASTP_TRIM{
         args = args + "-D "
     }
     if(meta.single_end || reads instanceof nextflow.processor.TaskPath) {
-        args = args + "${params.fastp.single_end_args} -i ${reads[0]} -o ${reads[0].simpleName}${params.fastp.fastq_ext}"
+        args = args + "${params.fastp.args.single_end} -i ${reads[0]} -o ${reads[0].simpleName}${params.fastp.fastq_ext}"
     }else{
-        args = args + "${params.fastp.illumina_args} -i ${reads[0]} -I ${reads[1]} -o ${reads[0].simpleName}.R1${params.fastp.fastq_ext} -O ${reads[1].simpleName}.R2${params.fastp.fastq_ext}"
+        args = args + "${params.fastp.args.illumina} -i ${reads[0]} -I ${reads[1]} -o ${reads[0].simpleName}.R1${params.fastp.fastq_ext} -O ${reads[1].simpleName}.R2${params.fastp.fastq_ext}"
     }
     """
     fastp ${args} --json ${meta.id}.json --html ${meta.id}.html
