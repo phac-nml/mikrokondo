@@ -6,7 +6,7 @@ process COMBINE_DATA{
     container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.containers.get('singularity') : task.ext.containers.get('docker')}"
 
     input:
-    tuple val(meta), path(forward_reads), path(reverse_reads), path(long_reads), path(assembly)
+    tuple val(meta), path(fastq_1), path(fastq_2), path(long_reads), path(assembly)
 
     output:
     tuple val(meta), path("out/${prefix}_R1.merged.fastq.gz"), path("out/${prefix}_R2.merged.fastq.gz"), path("out/${prefix}.merged.fastq.gz"), path("out/${prefix}.merged.fasta.gz"), emit: reads
@@ -16,19 +16,34 @@ process COMBINE_DATA{
     script:
     // Adding an output directory to preven name collisions in case of some unlikely event
     prefix = task.ext.prefix ?: meta.id
-    def cmd = null
-    if(meta.hybrid){
-        cmd = "cat ${forward_reads.join(' ')} > out/${prefix}_R1.merged.fastq.gz; " + \
-            "cat ${reverse_reads.join(' ')} > out/${prefix}_R2.merged.fastq.gz; " +
-            "cat ${long_reads.join(' ')} > out/${prefix}.merged.fastq.gz"
-    }else if(meta.single_end){
-        cmd = "cat ${long_reads.join(' ')} > out/${prefix}.merged.fastq.gz"
-    }else if(meta.assembly){
-        cmd = "cat ${assembly.join(' ')} > out/${prefix}.merged.fasta.gz"
-    }else{
-        cmd = "cat ${forward_reads.join(' ')} > out/${prefix}_R1.merged.fastq.gz; " +
-            "cat ${reverse_reads.join(' ')} > out/${prefix}_R2.merged.fastq.gz"
+    def cmd_ = []
+    def fields_merge = meta.fields_merge
+
+    if(fastq_1){
+        cmd_ << "cat ${meta.fastq_1.join(' ')} > out/${prefix}_R1.merged.fastq.gz;"
     }
+    if(fastq_2){
+        cmd_ << "cat ${meta.fastq_2.join(' ')} > out/${prefix}_R2.merged.fastq.gz;"
+    }
+    if(long_reads){
+        cmd_ << "cat ${meta.fastq_2.join(' ')} > out/${prefix}.merged.fastq.gz;"
+    }
+    if(assembly){
+        cmd_ << "cat ${meta.fastq_2.join(' ')} > out/${prefix}.merged.fastq.gz;"
+    }
+    def cmd = cmd_.join("\n")
+    //if(meta.hybrid){
+    //    cmd = "cat ${forward_reads.join(' ')} > out/${prefix}_R1.merged.fastq.gz; " + \
+    //        "cat ${reverse_reads.join(' ')} > out/${prefix}_R2.merged.fastq.gz; " +
+    //        "cat ${long_reads.join(' ')} > out/${prefix}.merged.fastq.gz"
+    //}else if(meta.single_end){
+    //    cmd = "cat ${long_reads.join(' ')} > out/${prefix}.merged.fastq.gz"
+    //}else if(meta.assembly){
+    //    cmd = "cat ${assembly.join(' ')} > out/${prefix}.merged.fasta.gz"
+    //}else{
+    //    cmd = "cat ${forward_reads.join(' ')} > out/${prefix}_R1.merged.fastq.gz; " +
+    //        "cat ${reverse_reads.join(' ')} > out/${prefix}_R2.merged.fastq.gz"
+    //}
     // creating dummy outputs so that all outputs exist for any scenario
     """
     mkdir out

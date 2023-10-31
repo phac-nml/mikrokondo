@@ -107,8 +107,8 @@ workflow CLEAN_ASSEMBLE_READS {
     }
 
     // TODO change this up to use branches from the meta tag
-    // TODO make below logic into a seperate workflow
     if(params.platform == params.opt_platforms.hybrid){
+
 
         divided_reads = prepped_input.multiMap{
             meta, s_reads, l_reads ->

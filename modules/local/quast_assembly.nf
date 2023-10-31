@@ -17,7 +17,7 @@ process QUAST {
 
     script:
     // TODO clean up this messy control flow logic that was written on the fly to decide read parameters
-    def args =  params.quast.args ?: ""
+    def args =  task.ext.args ?: ""
     def reads = null
     prefix = meta.id
 

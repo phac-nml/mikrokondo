@@ -29,9 +29,9 @@ process CHECKM_LINEAGEWF {
     fi
     mkdir bins
     mv *.${file_ext} ./bins
-    checkm lineage_wf ./bins/ ${prefix} --tab_table --threads ${params.checkm.threads} \\
+    checkm lineage_wf ./bins/ ${prefix} --tab_table --threads ${task.cpus} \\
         -x ${file_ext} \\
-        --pplacer_threads ${params.checkm.threads} \\
+        --pplacer_threads ${task.cpus} \\
         --alignment_file  ${prefix}/${prefix}${params.checkm.alignment_ext} \\
         --file ${prefix}/${prefix}${params.checkm.results_ext} \\
         $args
@@ -45,11 +45,12 @@ process CHECKM_LINEAGEWF {
     stub:
     prefix = "stub"
     """
-    mkdir -p stub/bins/
-    touch stub/bins/genes.faa
-    touch stub/bins/genes.gff
-    touch stub/bins/hmmer.analyze.txt
-    touch stub/bins/hmmer.tree.txt
+    #mkdir bins
+    mkdir -p stub
+    #touch stub/bins/genes.faa
+    #touch stub/bins/genes.gff
+    #touch stub/bins/hmmer.analyze.txt
+    #touch stub/bins/hmmer.tree.txt
     touch stub/stub-results.txt
     touch stub/${params.checkm.results_ext}
     touch stub/${params.checkm.lineage_ms}

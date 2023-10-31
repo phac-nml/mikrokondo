@@ -17,7 +17,8 @@ process MOBSUITE_RECON {
     path "versions.yml", emit: versions
 
     script:
-    def args = task.ext.args ?: ''
+    def args = task.ext.args ?: ""
+
     prefix = task.ext.prefix ?: "${meta.id}"
     def is_compressed = fasta.getName().endsWith(".gz") ? true : false
     def fasta_name = fasta.getName().replace(".gz", "")

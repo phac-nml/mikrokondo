@@ -27,9 +27,6 @@ workflow QC_READS {
     def platform_comp = platform.toString()
 
 
-
-
-
     // TODO add in code to check that there are always enough reads left over after decontamination
     // TODO need to make sure that if one read is unmapped the other is not included as well
     deconned_reads = REMOVE_CONTAMINANTS(reads, file(params.r_contaminants.mega_mm2_idx), Channel.value(platform_comp))
@@ -90,23 +87,12 @@ workflow QC_READS {
     // TODO move subsampling into a seperate workflow
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Sampling depth estimation for each set of reads
-    // It is requested that only sub-sampled reads go on for further analysis
+    // It is requested that only sub-sampled reads go on for further analysis e.g. when calculating coverage only downsampled reads are used
     // TODO determine if metagenomic samples should be down sampled
-    // TODO add to report
     read_sketch = MASH_ESTIMATE(filtered_samples, Channel.value(hyb_lr))
     genome_sizes = read_sketch.gsize.map{
         meta, gsize -> tuple(meta, get_size(gsize))
     }
-
-    // * Commenting out kat data as switching to using mash estimate for read sub-sampling
-    // kat_hist_out = KAT_HIST(filtered_samples, Channel.value(hyb_lr))
-    // reports = reports.mix(kat_hist_out.json.map{
-    //     meta, json -> tuple(meta, params.kat, json)
-    // })
-    // versions = versions.mix(kat_hist_out.versions)
-    // genome_sizes = PARSE_KAT(kat_hist_out.json).genome_size.map{
-    //     meta, size -> tuple(meta, size.toLong()) // verify sample size is int
-    // }
 
     def ch_prepped_reads = null
     if(params.platform == params.opt_platforms.hybrid && !params.skip_depth_sampling){
@@ -120,24 +106,32 @@ workflow QC_READS {
             meta, ge_size, base_count -> tuple(meta, sampling_fraction(ge_size, base_count, params.target_depth, meta.id))
         }
 
+
+        reads_and_fractions = filtered_samples.join(sample_fractions)
+
         // Branch to take reads for sampling from here
-        reads_sample = sample_fractions.branch{
-            sub_sample: it[1] < 1.0 // less than 1 (double) the data should be sub sampled otherwise there is not enough data to hit depth requirements anyway
+        //reads_sample = sample_fractions.branch{
+        def sample_frac_pos = 2
+
+        reads_sample = reads_and_fractions.branch{
+            sub_sample: it[sample_frac_pos] < 1.0 // less than 1 (double) the data should be sub sampled otherwise there is not enough data to hit depth requirements anyway
             other: true
         }
 
         // TODO add to report if reads down sampled
-        // TODO have write to
         // Log read sampling
         reads_sample.sub_sample.subscribe{
-            log.info "Down sampling ${it[0].id} by a factor of ${it[1]}."
+            log.info "Down sampling ${it[0].id} by a factor of ${it[sample_frac_pos]}."
         }
         reads_sample.other.subscribe{
             log.info "Not down sampling ${it[0].id} as estimated sample depth is already below targeted depth of ${params.target_depth}."
         }
-        sub_sampled_reads = filtered_samples.join(reads_sample.sub_sample)
 
-        down_sampled_reads = SEQTK_SAMPLE(sub_sampled_reads)
+
+        //sub_sampled_reads = filtered_samples.join(reads_sample.sub_sample)
+
+        //down_sampled_reads = SEQTK_SAMPLE(sub_sampled_reads)
+        down_sampled_reads = SEQTK_SAMPLE(reads_sample.sub_sample)
         reports = reports.mix(down_sampled_reads.sampled_reads.map{
             meta, reads, down_sampling -> tuple(meta, params.seqtk, down_sampling)
         })
@@ -149,40 +143,43 @@ workflow QC_READS {
         }
 
         versions = versions.mix(down_sampled_reads.versions)
+
         //non downsampled reads
-        non_depth_corrected = filtered_samples.join(reads_sample.other)
-        ch_prepped_reads = non_depth_corrected.mix(reads_down_sampled_updated).map{
+        //non_depth_corrected = filtered_samples.join(reads_sample.other)
+        //ch_prepped_reads = non_depth_corrected.mix(reads_down_sampled_updated).map{
+        //    meta, reads, sampling_factor -> tuple(meta, reads)
+        //}
+        ch_prepped_reads = reads_sample.other.mix(reads_down_sampled_updated).map{
             meta, reads, sampling_factor -> tuple(meta, reads)
         }
+
+
     }else{
         ch_prepped_reads = filtered_samples // put in un-downsampled reads
     }
 
-
     mash_screen_out = MASH_SCREEN(ch_prepped_reads, file(params.mash.mash_sketch))
 
-    //reports = reports.mix(mash_screen_out.mash_data.map{
-    //    meta, screen -> tuple(meta, params.mash, screen)
-    //})
     versions = versions.mix(mash_screen_out.versions)
 
     // Determine if sample is metagenomic
     def ch_cleaned_reads = null
     if(params.platform != params.opt_platforms.hybrid){
-        // If no need to try and classify the sampels if it is decided they are metagenomic at the start
+        // If metagenomic, no need to trying to classify the samples
         if(params.metagenomic_run){
-            // TODO add in comments to clarify syntax here
+
             ch_cleaned_reads = ch_prepped_reads.map {
                 meta, fastq -> tuple(add_meta_tag(meta, "true"), fastq)
             }
 
         }else{
             parsed_mash = PARSE_MASH(mash_screen_out.mash_data, Channel.value("classify")) // Classify is passed to tell the script to determine if the sample is metagenomic or not
+
             reports = reports.mix(parsed_mash.mash_out.map{
                 meta, result -> tuple(meta, params.mash_meta, result)
             })
             // Update file metadata
-            ch_cleaned_reads = ch_prepped_reads.join(parsed_mash.mash_out).map {
+            ch_cleaned_reads = ch_prepped_reads.join(parsed_mash.mash_out, remainder: true).map {
                 meta, fastq, m_gen -> tuple(add_meta_tag(meta, m_gen), fastq)
                 }
             }

@@ -74,3 +74,7 @@ Sometimes the resume features of Nextflow don't always work completely. The abov
 - Exit code 137:
   - Exit code 137, likely means your docker container used to much memory. You can adjust how much memory each process gets in the `conf/base.config` file, however there may be some underlying configuration you need to perform for Docker to solve this issue.
 
+### CheckM fails
+
+- CheckM exit code 1, could not find concatenated.tree or concatentated.pplacer.json
+  - This is a sign that CheckM has run out of memory, make sure you are using your desired executor. You may need to adjust configuration settings.

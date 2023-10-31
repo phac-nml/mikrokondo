@@ -9,6 +9,9 @@
 
 nextflow.enable.dsl = 2
 
+// Enable for testing purposes only
+// nextflow.enable.strict = true
+
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     GENOME PARAMETER VALUES
@@ -59,7 +62,9 @@ include { INPUT_CHECK } from './subworkflows/local/input_check.nf'
 include { REPORT } from './modules/local/report.nf'
 include { REPORT_TO_TSV } from './modules/local/report_to_tsv.nf'
 
-
+workflow input_test {
+    prepped_data = INPUT_CHECK(params.input)
+}
 
 //
 // WORKFLOW: Run main mk-kondo/mikrokondo analysis pipeline
@@ -67,10 +72,12 @@ include { REPORT_TO_TSV } from './modules/local/report_to_tsv.nf'
 workflow MIKROKONDO {
     ch_reports = Channel.empty()
     prepped_data = INPUT_CHECK(ch_input)
+
     split_data = prepped_data.reads.branch{
         post_assembly: it[0].assembly // [0] dentoes the meta tag
         read_data: true
     }
+
     mk_out = CLEAN_ASSEMBLE_READS(split_data.read_data)
 
     assembly_data =  mk_out.final_assembly.mix(split_data.post_assembly.map{
@@ -80,9 +87,8 @@ workflow MIKROKONDO {
     ps_out = POST_ASSEMBLY(assembly_data, mk_out.cleaned_reads, mk_out.versions)
     ch_reports = ch_reports.mix(mk_out.reports)
     ch_reports = ch_reports.mix(ps_out.reports)
-    //ch_reports = ch_reports.groupTuple()
     ch_reports_all = ch_reports.collect()
-    //ch_reports_all.view()
+
     if(!params.skip_report){
         REPORT(ch_reports_all)
         REPORT_TO_TSV(REPORT.out.final_report)
@@ -101,6 +107,7 @@ workflow MIKROKONDO {
 //
 workflow {
     MIKROKONDO ()
+    //input_test()
 }
 
 /*
