@@ -6,11 +6,9 @@ include { COMBINE_DATA } from '../../modules/local/combine_data.nf'
 include { fromSamplesheet } from 'plugin/nf-validation'
 
 workflow INPUT_CHECK {
-    take:
-    // todo may need to remove with input nf-validation
-    samplesheet // file: /path/to/samplesheet.csv
 
     main:
+
     // TODO add in automatic gzipping of all samples in
     versions = Channel.empty()
     def sample_sheet = params.input

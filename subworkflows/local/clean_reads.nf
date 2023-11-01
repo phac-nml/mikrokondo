@@ -32,8 +32,7 @@ workflow QC_READS {
     deconned_reads = REMOVE_CONTAMINANTS(reads, file(params.r_contaminants.mega_mm2_idx), Channel.value(platform_comp))
     versions = versions.mix(REMOVE_CONTAMINANTS.out.versions)
 
-    FASTQC(deconned_reads.reads)
-    versions = versions.mix(FASTQC.out.versions)
+
     ch_meta_cleaned_reads = FASTP_TRIM(deconned_reads.reads) // can use the json output of this to decide if chopper should be run
 
 
@@ -46,24 +45,6 @@ workflow QC_READS {
 
     fastp_data = PARSE_FASTP(ch_meta_cleaned_reads.fastp_json)
 
-    /*
-    * Below snippet was an experiment, need to have a discussion if nextflow should continue to handle the conversion of parameters, as it can mis cast things.
-    // def min_reads = null
-    //try{
-    //    min_reads = params.min_reads.toLong();
-    //    if(min_reads < 0){
-    //        log.warn "Integer overflow for parameter min_reads. The minimum value (${params.min_reads}) is too high. Setting parameter to default value of 1000"
-    //        min_reads = 1000;
-    //    }
-    //}catch(NumberFormatException ex){
-    //    log.warn "A valid numberic type was not passed to params.min_reads (${params.min_reads}). Setting parameter to default value of 1000"
-    //    min_reads = 1000; // TODO add to constants file
-    //}
-
-    // passed_read_count = fastp_data.read_count.filter{
-    //     it[1] >= min_reads // Read counts are at position 1
-    // }
-    */
 
     passed_read_count = fastp_data.read_count.filter{
         it[1] >= params.min_reads // Read counts are at position 1
@@ -118,7 +99,6 @@ workflow QC_READS {
             other: true
         }
 
-        // TODO add to report if reads down sampled
         // Log read sampling
         reads_sample.sub_sample.subscribe{
             log.info "Down sampling ${it[0].id} by a factor of ${it[sample_frac_pos]}."
@@ -128,9 +108,6 @@ workflow QC_READS {
         }
 
 
-        //sub_sampled_reads = filtered_samples.join(reads_sample.sub_sample)
-
-        //down_sampled_reads = SEQTK_SAMPLE(sub_sampled_reads)
         down_sampled_reads = SEQTK_SAMPLE(reads_sample.sub_sample)
         reports = reports.mix(down_sampled_reads.sampled_reads.map{
             meta, reads, down_sampling -> tuple(meta, params.seqtk, down_sampling)
@@ -144,11 +121,6 @@ workflow QC_READS {
 
         versions = versions.mix(down_sampled_reads.versions)
 
-        //non downsampled reads
-        //non_depth_corrected = filtered_samples.join(reads_sample.other)
-        //ch_prepped_reads = non_depth_corrected.mix(reads_down_sampled_updated).map{
-        //    meta, reads, sampling_factor -> tuple(meta, reads)
-        //}
         ch_prepped_reads = reads_sample.other.mix(reads_down_sampled_updated).map{
             meta, reads, sampling_factor -> tuple(meta, reads)
         }
