@@ -97,7 +97,8 @@ Three test profile with example data are provided and can be run like so:
 
 ## TODOs
 
-- [ ] allow autodetect of pointfinder db
+- [ ] Add Shigella detection to GTDB sketch
+- [x] allow autodetect of pointfinder db
 - [ ] Add export of parameters after pipeline runs
 - [ ] Provide a script for database downloads
 - [ ] Update details in documentation

@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    mk-kondo/mikrokondo
+    mikrokondo
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     Github : https://github.com/mk-kondo/mikrokondo
 ----------------------------------------------------------------------------------------
@@ -14,19 +14,10 @@ nextflow.enable.dsl = 2
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    GENOME PARAMETER VALUES
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
-
-//params.fasta = WorkflowMain.getGenomeAttribute(params, 'fasta')
-
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     VALIDATE & PRINT PARAMETER SUMMARY
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-WorkflowMain.initialise(workflow, params, log)
 
 println '\033[0;32m ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\033[0m'
 println '\033[0;32m 888b     d888 d8b 888                      888    d8P                         888\033[0m'
@@ -40,13 +31,17 @@ println '\033[0;32m 888       888 888 888  888 888     "Y88P"  888    Y88b  "Y88
 println '\033[0;32m ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\033[0m'
 
 
-// TODO nf-core: Add all file path parameters for the pipeline to the list below
-// Check input path parameters to see if they exist
-def checkPathParamList = [ params.input, params.multiqc_config ]
-for (param in checkPathParamList) { if (param) { file(param, checkIfExists: true) } }
+include { validateParameters; paramsHelp; paramsSummaryLog; paramsSummaryMap } from 'plugin/nf-validation'
+
+if (params.help) {
+    log.info paramsHelp ("nextflow run main.nf --input input_file.csv --outdir ./output_place --platform {platform}")
+    exit 1
+}
 
 // Check mandatory parameters
 if (params.input) { ch_input = file(params.input) } else { exit 1, 'Input samplesheet not specified!' }
+
+
 
 
 
@@ -62,16 +57,32 @@ include { INPUT_CHECK } from './subworkflows/local/input_check.nf'
 include { REPORT } from './modules/local/report.nf'
 include { REPORT_TO_TSV } from './modules/local/report_to_tsv.nf'
 
-workflow input_test {
-    prepped_data = INPUT_CHECK(params.input)
-}
+//import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+//import ch.qos.logback.core.ConsoleAppender;
+//import ch.qos.logback.core.read.ListAppender;
+//import nextflow.util.LoggerHelper;
 
 //
 // WORKFLOW: Run main mk-kondo/mikrokondo analysis pipeline
 //
 workflow MIKROKONDO {
+
+
+    //====Temporarily turn of logging for ScriptBinding process that throws warns
+    // Probes better to disable the console appender briefly https://github.com/nextflow-io/nextflow/blob/6a0626f72455dfdef4135a119f48c3950bc6d9c6/modules/nextflow/src/main/groovy/nextflow/util/LoggerHelper.groovy#L110
+    def logger2 = LoggerFactory.getLogger(nextflow.script.ScriptBinding)
+    // This is working but if things get messy a better solution would be to look for a way to detach the console appender
+    logger2.setLevel(ch.qos.logback.classic.Level.ERROR)
+    validateParameters(monochrome_logs: true)
+    logger2.setLevel(ch.qos.logback.classic.Level.DEBUG)
+    //logger2.setAdditive(true)
+
+
+    log.info paramsSummaryLog(workflow)
+
     ch_reports = Channel.empty()
-    prepped_data = INPUT_CHECK(ch_input)
+    prepped_data = INPUT_CHECK()
 
     split_data = prepped_data.reads.branch{
         post_assembly: it[0].assembly // [0] dentoes the meta tag
@@ -107,7 +118,6 @@ workflow MIKROKONDO {
 //
 workflow {
     MIKROKONDO ()
-    //input_test()
 }
 
 /*
@@ -115,3 +125,4 @@ workflow {
     THE END
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
+
