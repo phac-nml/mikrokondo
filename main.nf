@@ -12,7 +12,6 @@ nextflow.enable.dsl = 2
 // Enable for testing purposes only
 // nextflow.enable.strict = true
 
-
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     VALIDATE & PRINT PARAMETER SUMMARY
@@ -58,14 +57,27 @@ include { INPUT_CHECK } from './subworkflows/local/input_check.nf'
 include { REPORT } from './modules/local/report.nf'
 include { REPORT_TO_TSV } from './modules/local/report_to_tsv.nf'
 
+//import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+//import ch.qos.logback.core.ConsoleAppender;
+//import ch.qos.logback.core.read.ListAppender;
+//import nextflow.util.LoggerHelper;
+
 //
 // WORKFLOW: Run main mk-kondo/mikrokondo analysis pipeline
 //
 workflow MIKROKONDO {
 
-    println log.getProperties().toString()
-    println log.class.methods
+
+    //====Temporarily turn of logging for ScriptBinding process that throws warns
+    // Probes better to disable the console appender briefly https://github.com/nextflow-io/nextflow/blob/6a0626f72455dfdef4135a119f48c3950bc6d9c6/modules/nextflow/src/main/groovy/nextflow/util/LoggerHelper.groovy#L110
+    def logger2 = LoggerFactory.getLogger(nextflow.script.ScriptBinding)
+    // This is working but if things get messy a better solution would be to look for a way to detach the console appender
+    logger2.setLevel(ch.qos.logback.classic.Level.ERROR)
     validateParameters(monochrome_logs: true)
+    logger2.setLevel(ch.qos.logback.classic.Level.DEBUG)
+    //logger2.setAdditive(true)
+
 
     log.info paramsSummaryLog(workflow)
 
@@ -113,3 +125,4 @@ workflow {
     THE END
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
+
