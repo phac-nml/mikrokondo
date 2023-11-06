@@ -5,6 +5,34 @@
     "description": "mikrokondo schema",
     "type": "object",
     "definitions": {
+        "medaka": {
+            "title": "medaka",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "properties": {
+                "medaka.model": {
+                    "type": "string",
+                    "hidden": true,
+                    "description": "This is set to the base calling model specified in the nanopore_chemistry param"
+                },
+                "medaka.fasta_ext": {
+                    "type": "string",
+                    "default": ".fa.gz",
+                    "hidden": true
+                },
+                "medaka.outdir": {
+                    "type": "string",
+                    "default": "medaka",
+                    "hidden": true
+                },
+                "medaka.batch_size": {
+                    "type": "integer",
+                    "default": 5,
+                    "description": "Batch size for medaka to use for processing."
+                }
+            }
+        },
         "docker": {
             "title": "Docker",
             "type": "object",
@@ -153,6 +181,11 @@
                 "abricate.docker": {
                     "type": "string",
                     "default": "quay.io/biocontainers/abricate:1.0.1--ha8f3691_1",
+                    "hidden": true
+                },
+                "mobsuite_recon.docker": {
+                    "type": "string",
+                    "default": "quay.io/biocontainers/mob_suite:3.0.3--pyhdfd78af_0",
                     "hidden": true
                 }
             }
@@ -312,6 +345,11 @@
                     "type": "string",
                     "default": "https://depot.galaxyproject.org/singularity/abricate%3A1.0.1--ha8f3691_1",
                     "hidden": true
+                },
+                "mobsuite_recon.singularity": {
+                    "type": "string",
+                    "default": "https://depot.galaxyproject.org/singularity/mob_suite%3A3.0.3--pyhdfd78af_0",
+                    "hidden": true
                 }
             }
         },
@@ -332,7 +370,8 @@
                     "hidden": true
                 },
                 "staramr.db": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Path to a StarAMR database, a database is included in the container."
                 },
                 "staramr.tsv_ext": {
                     "type": "string",
@@ -377,46 +416,61 @@
             "default": "",
             "properties": {
                 "skip_depth_sampling": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Skip down sampling of data to a target depth. This is not supported for metagenomic samples or hybrid assemblies."
                 },
                 "skip_subtyping": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Do not enter the subtyping workflow, e.g. ECTyper, SISTR etc will not be ran."
                 },
                 "skip_polishing": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Skip polishing of assemblies, useful in case of errors or for metagenomic samples that fail."
                 },
                 "skip_ont_header_cleaning": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Make nanopore headers unique. Only turn this on if you are worried about duplicate id's e.g. from errors in running sequencing.",
+                    "default": true
                 },
                 "skip_checkm": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Skip running CheckM"
                 },
                 "skip_report": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Skip summary report generation"
                 },
                 "skip_raw_read_metrics": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Skip generating raw-read metrics. e.g. when data first enters the pipeline"
                 },
                 "skip_version_gathering": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Skip creating a report of the final versions of tools used in mikrokondo."
                 },
                 "skip_abricate": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Skip running abricate for annotation"
                 },
                 "skip_bakta": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Skip annotation with Bakta"
                 },
                 "skip_species_classification": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Skip determining what your species is (with Kraken2 or Mash)"
                 },
                 "skip_mlst": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Skip classic 7gene MLST (Uses Torstein Tseemann's mlst)"
                 },
                 "skip_mobrecon": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Skip running mob recon for plasmid identification."
                 },
                 "skip_staramr": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Skip running StarAMR"
                 }
             }
         },
@@ -426,32 +480,29 @@
             "description": "",
             "default": "",
             "properties": {
-                "mobsuite_recon.singularity": {
-                    "type": "string",
-                    "default": "https://depot.galaxyproject.org/singularity/mob_suite%3A3.0.3--pyhdfd78af_0"
-                },
-                "mobsuite_recon.docker": {
-                    "type": "string",
-                    "default": "quay.io/biocontainers/mob_suite:3.0.3--pyhdfd78af_0"
-                },
                 "mobsuite_recon.args": {
-                    "type": "string"
+                    "type": "string",
+                    "hidden": true
                 },
                 "mobsuite_recon.fasta_ext": {
                     "type": "string",
-                    "default": ".fasta"
+                    "default": ".fasta",
+                    "hidden": true
                 },
                 "mobsuite_recon.results_ext": {
                     "type": "string",
-                    "default": ".txt"
+                    "default": ".txt",
+                    "hidden": true
                 },
                 "mobsuite_recon.mob_results_file": {
                     "type": "string",
-                    "default": "mobtyper_results.txt"
+                    "default": "mobtyper_results.txt",
+                    "hidden": true
                 },
                 "mobsuite_recon.contig_report": {
                     "type": "string",
-                    "default": "contig_report.fasta"
+                    "default": "contig_report.fasta",
+                    "hidden": true
                 },
                 "mobsuite_recon.report_tag": {
                     "type": "string",
@@ -497,11 +548,6 @@
                     "fa_icon": "fas fa-envelope",
                     "help_text": "Set this parameter to your e-mail address to get a summary e-mail with details of the run sent to you when the workflow exits. If set in your user config file (`~/.nextflow/config`) then you don't need to specify this on the command line for every run.",
                     "pattern": "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$"
-                },
-                "multiqc_title": {
-                    "type": "string",
-                    "description": "MultiQC report title. Printed as page header, used for filename if not otherwise specified.",
-                    "fa_icon": "fas fa-file-signature"
                 }
             }
         },
@@ -598,14 +644,12 @@
                 "help": {
                     "type": "boolean",
                     "description": "Display help text.",
-                    "fa_icon": "fas fa-question-circle",
-                    "hidden": true
+                    "fa_icon": "fas fa-question-circle"
                 },
                 "version": {
                     "type": "boolean",
                     "description": "Display version and exit.",
-                    "fa_icon": "fas fa-question-circle",
-                    "hidden": true
+                    "fa_icon": "fas fa-question-circle"
                 },
                 "publish_dir_mode": {
                     "type": "string",
@@ -635,14 +679,6 @@
                     "description": "Send plain-text email instead of HTML.",
                     "fa_icon": "fas fa-remove-format"
                 },
-                "max_multiqc_email_size": {
-                    "type": "string",
-                    "description": "File size limit when attaching MultiQC reports to summary emails.",
-                    "pattern": "^\\d+(\\.\\d+)?\\.?\\s*(K|M|G|T)?B$",
-                    "default": "25.MB",
-                    "fa_icon": "fas fa-file-upload",
-                    "hidden": true
-                },
                 "monochrome_logs": {
                     "type": "boolean",
                     "description": "Do not use coloured log outputs.",
@@ -654,24 +690,6 @@
                     "description": "Incoming hook URL for messaging service",
                     "fa_icon": "fas fa-people-group",
                     "help_text": "Incoming hook URL for messaging service. Currently, MS Teams and Slack are supported.",
-                    "hidden": true
-                },
-                "multiqc_config": {
-                    "type": "string",
-                    "description": "Custom config file to supply to MultiQC.",
-                    "fa_icon": "fas fa-cog",
-                    "hidden": true
-                },
-                "multiqc_logo": {
-                    "type": "string",
-                    "description": "Custom logo file to supply to MultiQC. File name must also be set in the MultiQC config file",
-                    "fa_icon": "fas fa-image",
-                    "hidden": true
-                },
-                "multiqc_methods_description": {
-                    "type": "string",
-                    "description": "Custom MultiQC yaml file containing HTML including a methods description.",
-                    "fa_icon": "fas fa-cog",
                     "hidden": true
                 },
                 "tracedir": {
@@ -706,42 +724,71 @@
                         "nanopore",
                         "pacbio",
                         "hybrid"
-                    ]
+                    ],
+                    "description": "Sequencing platform used."
                 },
                 "nanopore_chemistry": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "The guppy base calling model. See the docs for a link of valid options."
                 },
                 "run_kraken": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Use Kraken2 instead of Mash for sample speciation (Useful if you have Eukaryotic data or Archae)"
                 },
                 "hybrid_unicycler": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Use unicycler for hybrid assembly."
                 },
                 "long_read_opt": {
                     "type": "string",
-                    "default": "nanopore"
+                    "default": "nanopore",
+                    "enum": [
+                        "nanopore",
+                        "pacbio"
+                    ],
+                    "description": "Specify which longread platform your data is from (nanopore or pacbio). This option must be specified if performing a hybrid assembly."
                 },
                 "min_reads": {
                     "type": "integer",
-                    "default": 1000
+                    "default": 1000,
+                    "description": "Minimum number of reads a sample requires to move forward for assembly."
                 },
                 "metagenomic_run": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Label all samples as metagenomic (Skip autodetection)"
                 },
                 "stage_in_mode": {
                     "type": "string",
-                    "default": "symlink"
+                    "default": "symlink",
+                    "hidden": true
                 },
                 "slurm_p": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Use slurm to execute your pipeline"
                 },
                 "slurm_profile": {
-                    "type": "string"
-                },
-                "schema_ignore_params": {
                     "type": "string",
-                    "default": "genomes,shigeifinder,lissero,sistr,ectyper,bandage,bakta,unicycler,medaka,pilon_iterative,pilon,racon,samtools,minimap2,r_contaminants,mash,kraken,checkm,quast_filter,quast,fastqc,spades,flye,chopper,fastp,seqtk,kat,coreutils,opt_platforms",
-                    "hidden": true
+                    "description": "Slurm partition"
+                },
+                "target_depth": {
+                    "type": "integer",
+                    "default": 100,
+                    "description": "Target depth to sub-sample reads to."
+                },
+                "flye_read_type": {
+                    "type": "string",
+                    "default": "hq",
+                    "enum": [
+                        "hq",
+                        "corr",
+                        "raw"
+                    ],
+                    "description": "Read type for flye to use. hq corresponds to hifi for Pacbio data."
+                },
+                "validationS3PathCheck": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Validate s3 sample sheet."
                 }
             },
             "required": [
@@ -855,7 +902,8 @@
                 },
                 "fastp.average_quality_e": {
                     "type": "integer",
-                    "default": 0
+                    "default": 0,
+                    "description": "Average quality of a read to be included (read pair is discarded if it is below this value)"
                 },
                 "fastp.json_ext": {
                     "type": "string",
@@ -864,15 +912,18 @@
                 },
                 "fastp.cut_mean_quality": {
                     "type": "integer",
-                    "default": 30
+                    "default": 30,
+                    "description": "Average quality to trim reads too"
                 },
                 "fastp.qualified_quality_phred": {
                     "type": "integer",
-                    "default": 30
+                    "default": 30,
+                    "description": "Phred score to be considered qualified. See FastP docs for more details."
                 },
                 "fastp.unqualified_percent_limit": {
                     "type": "integer",
-                    "default": 10
+                    "default": 10,
+                    "description": "Percent of bases in a read to be qualified for the read to be included. See FastP docs for more details."
                 },
                 "fastp.fastq_ext": {
                     "type": "string",
@@ -886,14 +937,17 @@
                 },
                 "fastp.illumina_length_min": {
                     "type": "integer",
-                    "default": 100
+                    "default": 100,
+                    "description": "Minimum length of a read to be included in later analysis for illumina data."
                 },
                 "fastp.single_end_length_min": {
                     "type": "integer",
-                    "default": 1000
+                    "default": 1000,
+                    "description": "Minimum leng of a read to be used in later analysis (for Nanopore or Pacbio)"
                 },
                 "fastp.dedup_reads": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Option to turn on read de-duplication."
                 },
                 "fastp.args.illumina": {
                     "type": "string",
@@ -975,7 +1029,8 @@
                 },
                 "flye.pacbio.hq": {
                     "type": "string",
-                    "default": "--pacbio-hifi"
+                    "default": "--pacbio-hifi",
+                    "hidden": true
                 },
                 "flye.args": {
                     "type": "string",
@@ -1032,7 +1087,8 @@
                 },
                 "quast_filter.nr_contigs_value": {
                     "type": "integer",
-                    "default": 500
+                    "default": 1,
+                    "description": "Mimimum number of contigs required for an assembly to move forward"
                 },
                 "quast_filter.sample_header": {
                     "type": "string",
@@ -1041,7 +1097,8 @@
                 },
                 "quast.min_contig_length": {
                     "type": "integer",
-                    "default": 0
+                    "default": 0,
+                    "description": "Minimum contig length to be used my Quast."
                 },
                 "quast.args": {
                     "type": "string",
@@ -1144,7 +1201,8 @@
             "properties": {
                 "kraken.db": {
                     "type": "string",
-                    "default": "databases/k2_standard_20220607/"
+                    "default": "databases/k2_standard_20220607/",
+                    "description": "Path to Kraken2 database (do not use symlinks)"
                 },
                 "kraken.classified_suffix": {
                     "type": "string",
@@ -1198,6 +1256,9 @@
         }
     },
     "allOf": [
+        {
+            "$ref": "#/definitions/medaka"
+        },
         {
             "$ref": "#/definitions/docker"
         },
@@ -1539,25 +1600,6 @@
             "default": 10,
             "hidden": true
         },
-        "medaka.model": {
-            "type": "string",
-            "hidden": true,
-            "description": "This is set to the base calling model specified in the nanopore_chemistry param"
-        },
-        "medaka.fasta_ext": {
-            "type": "string",
-            "default": ".fa.gz",
-            "hidden": true
-        },
-        "medaka.outdir": {
-            "type": "string",
-            "default": "medaka",
-            "hidden": true
-        },
-        "medaka.batch_size": {
-            "type": "integer",
-            "default": 5
-        },
         "unicycler.scaffolds_ext": {
             "type": "string",
             "default": ".scaffolds.fa.gz",
@@ -1722,10 +1764,6 @@
             "type": "string",
             "default": ".tsv",
             "hidden": true
-        },
-        "target_depth": {
-            "type": "integer",
-            "default": 100
         },
         "raw_reads.high_precision": {
             "type": "boolean",
@@ -1943,7 +1981,7 @@
         },
         "QCReport.escherichia.max_checkm_contamination": {
             "type": "number",
-            "default": 3,
+            "default": 3.0,
             "hidden": true
         },
         "QCReport.escherichia.min_average_coverage": {
@@ -1993,7 +2031,7 @@
         },
         "QCReport.salmonella.max_checkm_contamination": {
             "type": "number",
-            "default": 3,
+            "default": 3.0,
             "hidden": true
         },
         "QCReport.salmonella.min_average_coverage": {
@@ -2043,7 +2081,7 @@
         },
         "QCReport.shigella.max_checkm_contamination": {
             "type": "number",
-            "default": 3,
+            "default": 3.0,
             "hidden": true
         },
         "QCReport.shigella.min_average_coverage": {
@@ -2093,7 +2131,7 @@
         },
         "QCReport.listeria.max_checkm_contamination": {
             "type": "number",
-            "default": 3,
+            "default": 3.0,
             "hidden": true
         },
         "QCReport.listeria.min_average_coverage": {
@@ -2143,7 +2181,7 @@
         },
         "QCReport.campylobacter.max_checkm_contamination": {
             "type": "number",
-            "default": 3,
+            "default": 3.0,
             "hidden": true
         },
         "QCReport.campylobacter.min_average_coverage": {
@@ -2193,7 +2231,7 @@
         },
         "QCReport.vibrio.max_checkm_contamination": {
             "type": "number",
-            "default": 3,
+            "default": 3.0,
             "hidden": true
         },
         "QCReport.vibrio.min_average_coverage": {
@@ -2243,7 +2281,7 @@
         },
         "QCReport.klebsiella.max_checkm_contamination": {
             "type": "number",
-            "default": 3,
+            "default": 3.0,
             "hidden": true
         },
         "QCReport.klebsiella.min_average_coverage": {
@@ -2293,7 +2331,7 @@
         },
         "QCReport.staphylococcus.max_checkm_contamination": {
             "type": "number",
-            "default": 3,
+            "default": 3.0,
             "hidden": true
         },
         "QCReport.staphylococcus.min_average_coverage": {
@@ -2337,7 +2375,7 @@
         },
         "QCReport.fallthrough.max_checkm_contamination": {
             "type": "number",
-            "default": 3,
+            "default": 3.0,
             "hidden": true
         },
         "QCReport.fallthrough.min_average_coverage": {
@@ -2574,15 +2612,6 @@
             "hidden": true,
             "description": "Additional arguments to pass to bakta"
         },
-        "flye_read_type": {
-            "type": "string",
-            "default": "hq",
-            "enum": [
-                "hq",
-                "corr",
-                "raw"
-            ]
-        },
         "pointfinder_db_tag.report_tag": {
             "type": "string",
             "default": "PointfinderDB",
@@ -2604,15 +2633,13 @@
         },
         "shigeifinder.container_version": {
             "type": "string",
-            "default": "1.3.2"
+            "default": "1.3.2",
+            "hidden": true
         },
         "shigeifinder.report_tag": {
             "type": "string",
-            "default": "ShigeifinderSubtyping"
-        },
-        "validationS3PathCheck": {
-            "type": "boolean",
-            "default": true
+            "default": "ShigeifinderSubtyping",
+            "hidden": true
         }
     }
 }
