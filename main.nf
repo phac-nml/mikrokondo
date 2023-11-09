@@ -68,15 +68,17 @@ import org.slf4j.LoggerFactory;
 //
 workflow MIKROKONDO {
 
+    if(params.validate_params){
+        //====Temporarily turn of logging for ScriptBinding process that throws warns
+        // Probes better to disable the console appender briefly https://github.com/nextflow-io/nextflow/blob/6a0626f72455dfdef4135a119f48c3950bc6d9c6/modules/nextflow/src/main/groovy/nextflow/util/LoggerHelper.groovy#L110
+        def logger2 = LoggerFactory.getLogger(nextflow.script.ScriptBinding)
+        // This is working but if things get messy a better solution would be to look for a way to detach the console appender
+        logger2.setLevel(ch.qos.logback.classic.Level.ERROR)
+        validateParameters(monochrome_logs: true)
+        logger2.setLevel(ch.qos.logback.classic.Level.DEBUG)
+        //logger2.setAdditive(true)
+    }
 
-    //====Temporarily turn of logging for ScriptBinding process that throws warns
-    // Probes better to disable the console appender briefly https://github.com/nextflow-io/nextflow/blob/6a0626f72455dfdef4135a119f48c3950bc6d9c6/modules/nextflow/src/main/groovy/nextflow/util/LoggerHelper.groovy#L110
-    def logger2 = LoggerFactory.getLogger(nextflow.script.ScriptBinding)
-    // This is working but if things get messy a better solution would be to look for a way to detach the console appender
-    logger2.setLevel(ch.qos.logback.classic.Level.ERROR)
-    validateParameters(monochrome_logs: true)
-    logger2.setLevel(ch.qos.logback.classic.Level.DEBUG)
-    //logger2.setAdditive(true)
 
 
     log.info paramsSummaryLog(workflow)
