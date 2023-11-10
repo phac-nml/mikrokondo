@@ -16,7 +16,7 @@
             "fastq_1": {
                 "type": "string",
                 "pattern": "^\\S+\\.f(ast)?q\\.gz$",
-                "errorMessage": "FastQ file for reads 1 (forward reads) must be provided, cannot contain spaces and must have extension '.fq.gz' or '.fastq.gz'.",
+                "errorMessage": "FastQ file for reads 1 (forward reads) must be provided, cannot contain spaces and must have extension '.fq.gz' or '.fastq.gz'. If this is meant to be a run of mikrokondo with long read data please specify the paths under long_reads",
                 "dependentRequired": ["fastq_2"],
                 "meta": ["fastq_1"],
                 "unique": true
@@ -31,7 +31,7 @@
             "long_reads": {
                 "type": "string",
                 "pattern": "^\\S+\\.f(ast)?q\\.gz$",
-                "errorMessage": "FastQ file for reads 1 must be provided, cannot contain spaces and must have extension '.fq.gz' or '.fastq.gz'.",
+                "errorMessage": "FastQ file for long reads must be provided, cannot contain spaces and must have extension '.fq.gz' or '.fastq.gz'.",
                 "meta": ["long_reads"],
                 "unique": true
             },
