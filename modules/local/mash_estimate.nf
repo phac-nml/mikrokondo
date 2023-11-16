@@ -4,7 +4,7 @@ Sketch reads to estimate the samples genome size
 
 
 process MASH_ESTIMATE{
-    label 'process_small'
+    label 'process_low'
     tag "${prefix}"
     container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.containers.get('singularity') : task.ext.containers.get('docker')}"
 

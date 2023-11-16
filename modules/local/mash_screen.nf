@@ -7,7 +7,7 @@ identity, shared-hashes, median-multiplicity, p-value, query-ID, query-comment
 
 process MASH_SCREEN {
     tag "$meta.id"
-    label 'process_small'
+    label 'process_low'
     container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.containers.get('singularity') : task.ext.containers.get('docker')}"
 
     input:
