@@ -26,8 +26,7 @@ process MASH_SCREEN {
     // TODO cleaner option is to pass a variable in determing the prefix as it is already decided
     prefix_post = task.process.toString().contains("QC_READS") ? prefix + params.mash.output_reads_ext : prefix + params.mash.output_taxa_ext
     """
-    cat $reads | gunzip -c > ${prefix}.fastq
-    mash screen $args -p $task.cpus $sequences_sketch ${prefix}.fastq > ${prefix_post}
+    mash screen $args -p $task.cpus $sequences_sketch $reads > ${prefix_post}
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         mash: \$( mash --version )
