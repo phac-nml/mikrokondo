@@ -35,7 +35,6 @@ process REPORT{
     def data_stride = 3 // report values added in groups of three, e.g sample meta info, parameters, output file of interest
     def headers_list = 'headers' // ! TODO this string exists twice, need to fix that
     // TODO Check if there is a better way to get array size
-
     def arr_size = test_in.size()
     for(long i = 0; i < arr_size; i=i+data_stride){
         def meta_data = test_in[i]
@@ -557,9 +556,17 @@ def generate_qc_data(data, search_phrases){
 }
 
 def update_map_values(data, meta_data, tag){
-        if(!data[meta_data.sample].containsKey(tag)){
-            data[meta_data.sample]["meta"][tag] = meta_data[tag]
-        }
+    //TODO need to update values that exist if another one exists
+    //log.info "${data[meta_data.sample]["meta"]} $meta_data $tag ${!data[meta_data.sample]["meta"].containsKey(tag)}"
+    // remove log.info "Before ${data[meta_data.sample]["meta"]} ${meta_data} $tag"
+    if(!data[meta_data.sample]["meta"].containsKey(tag)){
+        data[meta_data.sample]["meta"][tag] = meta_data[tag]
+    }else if(data[meta_data.sample]["meta"][tag] == null){ // is a specific case for null needed?
+        data[meta_data.sample]["meta"][tag] = meta_data[tag]
+    }else if(data[meta_data.sample]["meta"][tag] != meta_data[tag]){
+        data[meta_data.sample]["meta"][tag] = meta_data[tag] // update to latest value if it does not match
+    }
+    //log.info "After ${data[meta_data.sample]["meta"]} $meta_data $tag"
 }
 
 

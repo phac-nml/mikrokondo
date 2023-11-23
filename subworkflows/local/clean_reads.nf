@@ -147,14 +147,19 @@ workflow QC_READS {
         }else{
             parsed_mash = PARSE_MASH(mash_screen_out.mash_data, Channel.value("classify")) // Classify is passed to tell the script to determine if the sample is metagenomic or not
 
-            reports = reports.mix(parsed_mash.mash_out.map{
-                meta, result -> tuple(meta, params.mash_meta, result)
-            })
             // Update file metadata
-            ch_cleaned_reads = ch_prepped_reads.join(parsed_mash.mash_out, remainder: true).map {
-                meta, fastq, m_gen -> tuple(add_meta_tag(meta, m_gen), fastq)
-                }
+            ch_cleaned_temp = ch_prepped_reads.join(parsed_mash.mash_out, remainder: true).map {
+                meta, fastq, m_gen -> tuple(add_meta_tag(meta, m_gen), m_gen, fastq)
             }
+
+            reports = reports.mix(ch_cleaned_temp.map{
+                meta, result, reads-> tuple(meta, params.mash_meta, result)
+            })
+
+            ch_cleaned_reads = ch_cleaned_temp.map{
+                meta, result, reads -> tuple(meta, reads)
+            }
+        }
 
     }else{
         // need to nuke single_end bool here as well, to allow for joining of the channels in the assembly runs
@@ -211,10 +216,11 @@ def add_meta_tag(meta_map, meta_flag){
     Add a boolean flag for if data is metagenomic or not
     */
     def meta = [:] + meta_map
-    //meta.id = meta_map.id
-    //meta.single_end = meta_map.single_end
-    meta.metagenomic = meta_flag.toBoolean()
-    return meta
-}
 
+
+    meta.metagenomic = meta_flag.toBoolean()
+
+    return meta
+
+}
 

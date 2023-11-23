@@ -53,7 +53,7 @@ def create_meta_channels(List fasta_paths){
     def one_bin_len = 1
     //def new_meta = deepcopy(meta)
     // TODO check for empty value or out of bounds errors
-    // ! TODO out of bound error will occur if no classified contigs are produced
+    // ! TODO out of bounds error will occur if no classified contigs are produced
 
     if(!(fasta_paths[1] instanceof Collection)){
         //println "Only one sample: ${fasta_paths}"
