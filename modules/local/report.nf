@@ -84,9 +84,8 @@ process REPORT{
     def report_name = "final_report.json"
 
 
-    def work_dir = Path.of("${task.workDir}")
-    def output_file_path = work_dir.resolve(report_name)
-    
+    //def work_dir = Path.of("${task.workDir}")
+    def output_file_path = task.workDir.resolve(report_name)
     output_file = file(output_file_path).newWriter()
     output_file.write(json_converted_data)
     output_file.close()
