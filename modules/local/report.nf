@@ -18,7 +18,7 @@ process REPORT{
 
     output:
     // TODO update final_report.json to constants
-    path("final_report.json"), emit: final_report
+    path output_file_path, emit: final_report
 
     exec:
     if (workflow.stubRun){
@@ -85,7 +85,7 @@ process REPORT{
 
 
     //def work_dir = Path.of("${task.workDir}")
-    def output_file_path = task.workDir.resolve(report_name)
+    output_file_path = task.workDir.resolve(report_name)
     output_file = file(output_file_path).newWriter()
     output_file.write(json_converted_data)
     output_file.close()
