@@ -4,6 +4,7 @@
 
 process REPORT_TO_TSV{
     tag "Report to TSV"
+    label 'process_medium'
     container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.containers.get('singularity') : task.ext.containers.get('docker')}"
 
     input:
