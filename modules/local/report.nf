@@ -72,6 +72,8 @@ process REPORT{
 
         sample_data[meta_data.sample][meta_data.id][report_tag.report_tag] = report_value
     }
+
+
     def search_phrases = qc_params_species()
     // Add in quality information in place
     generate_qc_data(sample_data, search_phrases)
@@ -82,7 +84,9 @@ process REPORT{
     def report_name = "final_report.json"
 
 
-    def output_file_path = Paths.get("$task.workDir", report_name)
+    def work_dir = Path.of("${task.workDir}")
+    def output_file_path = work_dir.resolve(report_name)
+    
     output_file = file(output_file_path).newWriter()
     output_file.write(json_converted_data)
     output_file.close()
