@@ -85,10 +85,15 @@ workflow ASSEMBLE_READS{
 
 
 def extract_base_count(meta, data){
-    //TODO add in error handler
+    //TODO add in error handler for toLong()
     def base_count_pos = 1;
-    def rows = data.splitCsv(header: false, sep: '\t') // get first line split as second val is the base count
-    def base_count = rows[base_count_pos];
+
+    def rows = data.splitCsv(header: false, sep: '\t') // only one line should be present
+    if(rows.size() > 1){
+        log.error "Seqtk size output multiple rows. Output is incorrect for: ${meta.id}. Bailing out"
+        exit 1
+    }
+    def base_count = rows[0][base_count_pos];
     def base_long = base_count.toLong();
     return base_long
 }
