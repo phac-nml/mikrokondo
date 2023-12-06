@@ -22,7 +22,7 @@ workflow ASSEMBLE_READS{
     // no report channel here?
     base_counts = SEQTK_SIZE(sample_data)
     reports = reports.mix(base_counts.map{
-        meta, file_bc -> tuple(meta, extract_base_count(file_bc));
+        meta, file_bc -> tuple(meta, params.seqtk_size, extract_base_count(file_bc));
     })
 
     versions = versions.mix(base_counts.versions)
