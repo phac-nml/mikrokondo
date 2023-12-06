@@ -87,7 +87,7 @@ workflow ASSEMBLE_READS{
 def extract_base_count(meta, data){
     //TODO add in error handler
     def base_count_pos = 1;
-    def rows = data.splitCSV(header: false, sep: '\t') // get first line split as second val is the base count
+    def rows = data.splitCsv(header: false, sep: '\t') // get first line split as second val is the base count
     def base_count = rows[base_count_pos];
     def base_long = base_count.toLong();
     return base_long
