@@ -2748,8 +2748,8 @@
             "hidden": true
         },
         "validationFailUnrecognisedParams": {
-            "type": "string",
-            "default": "true"
+            "type": "boolean",
+            "default": true
         },
         "fastp.cut_tail_mean_quality": {
             "type": "integer",
