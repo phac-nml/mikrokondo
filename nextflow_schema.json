@@ -5,6 +5,799 @@
     "description": "mikrokondo schema",
     "type": "object",
     "definitions": {
+        "qcreport": {
+            "title": "QCReport",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "properties": {
+                "QCReport.escherichia.search": {
+                    "type": "string",
+                    "default": "Escherichia coli",
+                    "hidden": true
+                },
+                "QCReport.escherichia.raw_average_quality": {
+                    "type": "integer",
+                    "default": 30,
+                    "hidden": true
+                },
+                "QCReport.escherichia.min_n50": {
+                    "type": "integer",
+                    "default": 95000,
+                    "hidden": true
+                },
+                "QCReport.escherichia.max_n50": {
+                    "type": "integer",
+                    "default": 6000000,
+                    "hidden": true
+                },
+                "QCReport.escherichia.min_nr_contigs": {
+                    "type": "integer",
+                    "default": 10,
+                    "hidden": true
+                },
+                "QCReport.escherichia.max_nr_contigs": {
+                    "type": "integer",
+                    "default": 500,
+                    "hidden": true
+                },
+                "QCReport.escherichia.min_length": {
+                    "type": "integer",
+                    "default": 4500000,
+                    "hidden": true
+                },
+                "QCReport.escherichia.max_length": {
+                    "type": "integer",
+                    "default": 6000000,
+                    "hidden": true
+                },
+                "QCReport.escherichia.max_checkm_contamination": {
+                    "type": "number",
+                    "default": 3,
+                    "hidden": true
+                },
+                "QCReport.escherichia.min_average_coverage": {
+                    "type": "integer",
+                    "default": 30,
+                    "hidden": true
+                },
+                "QCReport.salmonella.search": {
+                    "type": "string",
+                    "default": "Salmonella",
+                    "hidden": true
+                },
+                "QCReport.salmonella.raw_average_quality": {
+                    "type": "integer",
+                    "default": 30,
+                    "hidden": true
+                },
+                "QCReport.salmonella.min_n50": {
+                    "type": "integer",
+                    "default": 95000,
+                    "hidden": true
+                },
+                "QCReport.salmonella.max_n50": {
+                    "type": "integer",
+                    "default": 6000000,
+                    "hidden": true
+                },
+                "QCReport.salmonella.min_nr_contigs": {
+                    "type": "integer",
+                    "default": 10,
+                    "hidden": true
+                },
+                "QCReport.salmonella.max_nr_contigs": {
+                    "type": "integer",
+                    "default": 200,
+                    "hidden": true
+                },
+                "QCReport.salmonella.min_length": {
+                    "type": "integer",
+                    "default": 4400000,
+                    "hidden": true
+                },
+                "QCReport.salmonella.max_length": {
+                    "type": "integer",
+                    "default": 6000000,
+                    "hidden": true
+                },
+                "QCReport.salmonella.max_checkm_contamination": {
+                    "type": "number",
+                    "default": 3,
+                    "hidden": true
+                },
+                "QCReport.salmonella.min_average_coverage": {
+                    "type": "integer",
+                    "default": 30,
+                    "hidden": true
+                },
+                "QCReport.shigella.search": {
+                    "type": "string",
+                    "default": "Shigella",
+                    "hidden": true
+                },
+                "QCReport.shigella.raw_average_quality": {
+                    "type": "integer",
+                    "default": 30,
+                    "hidden": true
+                },
+                "QCReport.shigella.min_n50": {
+                    "type": "integer",
+                    "default": 17500,
+                    "hidden": true
+                },
+                "QCReport.shigella.max_n50": {
+                    "type": "integer",
+                    "default": 5000000,
+                    "hidden": true
+                },
+                "QCReport.shigella.min_nr_contigs": {
+                    "type": "integer",
+                    "default": 10,
+                    "hidden": true
+                },
+                "QCReport.shigella.max_nr_contigs": {
+                    "type": "integer",
+                    "default": 500,
+                    "hidden": true
+                },
+                "QCReport.shigella.min_length": {
+                    "type": "integer",
+                    "default": 4300000,
+                    "hidden": true
+                },
+                "QCReport.shigella.max_length": {
+                    "type": "integer",
+                    "default": 5000000,
+                    "hidden": true
+                },
+                "QCReport.shigella.max_checkm_contamination": {
+                    "type": "number",
+                    "default": 3,
+                    "hidden": true
+                },
+                "QCReport.shigella.min_average_coverage": {
+                    "type": "integer",
+                    "default": 30,
+                    "hidden": true
+                },
+                "QCReport.listeria.search": {
+                    "type": "string",
+                    "default": "Listeria",
+                    "hidden": true
+                },
+                "QCReport.listeria.raw_average_quality": {
+                    "type": "integer",
+                    "default": 30,
+                    "hidden": true
+                },
+                "QCReport.listeria.min_n50": {
+                    "type": "integer",
+                    "default": 45000,
+                    "hidden": true
+                },
+                "QCReport.listeria.max_n50": {
+                    "type": "integer",
+                    "default": 3200000,
+                    "hidden": true
+                },
+                "QCReport.listeria.min_nr_contigs": {
+                    "type": "integer",
+                    "default": 10,
+                    "hidden": true
+                },
+                "QCReport.listeria.max_nr_contigs": {
+                    "type": "integer",
+                    "default": 200,
+                    "hidden": true
+                },
+                "QCReport.listeria.min_length": {
+                    "type": "integer",
+                    "default": 2700000,
+                    "hidden": true
+                },
+                "QCReport.listeria.max_length": {
+                    "type": "integer",
+                    "default": 3200000,
+                    "hidden": true
+                },
+                "QCReport.listeria.max_checkm_contamination": {
+                    "type": "number",
+                    "default": 3,
+                    "hidden": true
+                },
+                "QCReport.listeria.min_average_coverage": {
+                    "type": "integer",
+                    "default": 30,
+                    "hidden": true
+                },
+                "QCReport.klebsiella.search": {
+                    "type": "string",
+                    "default": "Klebsiella",
+                    "hidden": true
+                },
+                "QCReport.klebsiella.raw_average_quality": {
+                    "type": "integer",
+                    "default": 30,
+                    "hidden": true
+                },
+                "QCReport.klebsiella.min_n50": {
+                    "type": "integer",
+                    "default": 100000,
+                    "hidden": true
+                },
+                "QCReport.klebsiella.max_n50": {
+                    "type": "integer",
+                    "default": 6000000,
+                    "hidden": true
+                },
+                "QCReport.klebsiella.min_nr_contigs": {
+                    "type": "integer",
+                    "default": 10,
+                    "hidden": true
+                },
+                "QCReport.klebsiella.max_nr_contigs": {
+                    "type": "integer",
+                    "default": 500,
+                    "hidden": true
+                },
+                "QCReport.klebsiella.min_length": {
+                    "type": "integer",
+                    "default": 4500000,
+                    "hidden": true
+                },
+                "QCReport.klebsiella.max_length": {
+                    "type": "integer",
+                    "default": 6000000,
+                    "hidden": true
+                },
+                "QCReport.klebsiella.max_checkm_contamination": {
+                    "type": "number",
+                    "default": 3,
+                    "hidden": true
+                },
+                "QCReport.klebsiella.min_average_coverage": {
+                    "type": "integer",
+                    "default": 30,
+                    "hidden": true
+                },
+                "QCReport.staphylococcus.search": {
+                    "type": "string",
+                    "default": "Staphylococcus",
+                    "hidden": true
+                },
+                "QCReport.staphylococcus.raw_average_quality": {
+                    "type": "integer",
+                    "default": 30,
+                    "hidden": true
+                },
+                "QCReport.staphylococcus.min_n50": {
+                    "type": "integer",
+                    "default": 100000,
+                    "hidden": true
+                },
+                "QCReport.staphylococcus.max_n50": {
+                    "type": "integer",
+                    "default": 3500000,
+                    "hidden": true
+                },
+                "QCReport.staphylococcus.min_nr_contigs": {
+                    "type": "integer",
+                    "default": 10,
+                    "hidden": true
+                },
+                "QCReport.staphylococcus.max_nr_contigs": {
+                    "type": "integer",
+                    "default": 550,
+                    "hidden": true
+                },
+                "QCReport.staphylococcus.min_length": {
+                    "type": "integer",
+                    "default": 2000000,
+                    "hidden": true
+                },
+                "QCReport.staphylococcus.max_length": {
+                    "type": "integer",
+                    "default": 3500000,
+                    "hidden": true
+                },
+                "QCReport.staphylococcus.max_checkm_contamination": {
+                    "type": "number",
+                    "default": 3,
+                    "hidden": true
+                },
+                "QCReport.staphylococcus.min_average_coverage": {
+                    "type": "integer",
+                    "default": 30,
+                    "hidden": true
+                },
+                "QCReport.fallthrough.search": {
+                    "type": "string",
+                    "default": "No organism specific QC data available.",
+                    "hidden": true
+                },
+                "QCReport.fallthrough.raw_average_quality": {
+                    "type": "integer",
+                    "default": 30,
+                    "hidden": true
+                },
+                "QCReport.fallthrough.min_n50": {
+                    "type": "integer",
+                    "hidden": true
+                },
+                "QCReport.fallthrough.max_n50": {
+                    "type": "integer",
+                    "hidden": true
+                },
+                "QCReport.fallthrough.min_nr_contigs": {
+                    "type": "integer",
+                    "hidden": true
+                },
+                "QCReport.fallthrough.max_nr_contigs": {
+                    "type": "integer",
+                    "hidden": true
+                },
+                "QCReport.fallthrough.min_length": {
+                    "type": "integer",
+                    "hidden": true
+                },
+                "QCReport.fallthrough.max_length": {
+                    "type": "integer",
+                    "hidden": true
+                },
+                "QCReport.fallthrough.max_checkm_contamination": {
+                    "type": "number",
+                    "default": 3,
+                    "hidden": true
+                },
+                "QCReport.fallthrough.min_average_coverage": {
+                    "type": "integer",
+                    "default": 30,
+                    "hidden": true
+                },
+                "QCReportFields.raw_average_quality.path": {
+                    "type": "string",
+                    "default": "['RawReadSummary', 'combined', 'qual_mean']",
+                    "hidden": true
+                },
+                "QCReportFields.raw_average_quality.coerce_type": {
+                    "type": "string",
+                    "default": "Float",
+                    "hidden": true
+                },
+                "QCReportFields.raw_average_quality.compare_fields": {
+                    "type": "string",
+                    "default": "['raw_average_quality']",
+                    "hidden": true
+                },
+                "QCReportFields.raw_average_quality.comp_type": {
+                    "type": "string",
+                    "default": "ge",
+                    "hidden": true
+                },
+                "QCReportFields.raw_average_quality.on": {
+                    "type": "boolean",
+                    "default": true,
+                    "hidden": true
+                },
+                "QCReportFields.raw_average_quality.low_msg": {
+                    "type": "string",
+                    "default": "Base quality is poor, resequencing is recommended.",
+                    "hidden": true
+                },
+                "QCReportFields.average_coverage.path": {
+                    "type": "string",
+                    "default": "['QUAST', '0', 'Avg. coverage depth']",
+                    "hidden": true
+                },
+                "QCReportFields.average_coverage.coerce_type": {
+                    "type": "string",
+                    "default": "Float",
+                    "hidden": true
+                },
+                "QCReportFields.average_coverage.compare_fields": {
+                    "type": "string",
+                    "default": "['min_average_coverage']",
+                    "hidden": true
+                },
+                "QCReportFields.average_coverage.comp_type": {
+                    "type": "string",
+                    "default": "ge",
+                    "hidden": true
+                },
+                "QCReportFields.average_coverage.on": {
+                    "type": "boolean",
+                    "default": true,
+                    "hidden": true
+                },
+                "QCReportFields.average_coverage.low_msg": {
+                    "type": "string",
+                    "default": "Depth of coverage from assembly is lower than than expected. A top-up run is likely needed.",
+                    "hidden": true
+                },
+                "QCReportFields.metagenomic.path": {
+                    "type": "string",
+                    "default": "['MashMeta']",
+                    "hidden": true
+                },
+                "QCReportFields.metagenomic.coerce_type": {
+                    "type": "string",
+                    "default": "Bool",
+                    "hidden": true
+                },
+                "QCReportFields.metagenomic.compare_fields": {
+                    "type": "string",
+                    "default": "[]",
+                    "hidden": true
+                },
+                "QCReportFields.metagenomic.comp_type": {
+                    "type": "string",
+                    "default": "bool",
+                    "hidden": true
+                },
+                "QCReportFields.metagenomic.on": {
+                    "type": "boolean",
+                    "hidden": true
+                },
+                "QCReportFields.n50_value.path": {
+                    "type": "string",
+                    "default": "['QUAST', '0', 'N50']",
+                    "hidden": true
+                },
+                "QCReportFields.n50_value.coerce_type": {
+                    "type": "string",
+                    "default": "Integer",
+                    "hidden": true
+                },
+                "QCReportFields.n50_value.compare_fields": {
+                    "type": "string",
+                    "default": "['min_n50', 'max_n50']",
+                    "hidden": true
+                },
+                "QCReportFields.n50_value.comp_type": {
+                    "type": "string",
+                    "default": "range",
+                    "hidden": true
+                },
+                "QCReportFields.n50_value.on": {
+                    "type": "boolean",
+                    "default": true,
+                    "hidden": true
+                },
+                "QCReportFields.n50_value.low_msg": {
+                    "type": "string",
+                    "default": "N50 value is low, this could be due to many reasons involving contamination, poor template quality or insufficient template quantity. Reisolation and reseqeuncing may be needed.",
+                    "hidden": true
+                },
+                "QCReportFields.n50_value.high_msg": {
+                    "type": "string",
+                    "default": "N50 value is high, this is likely a good thing if you have fewer contigs than expected.",
+                    "hidden": true
+                },
+                "QCReportFields.nr_contigs.path": {
+                    "type": "string",
+                    "default": "['QUAST', '0', '# contigs (>= 0 bp)']",
+                    "hidden": true
+                },
+                "QCReportFields.nr_contigs.coerce_type": {
+                    "type": "string",
+                    "default": "Integer",
+                    "hidden": true
+                },
+                "QCReportFields.nr_contigs.compare_fields": {
+                    "type": "string",
+                    "default": "['min_nr_contigs', 'max_nr_contigs']",
+                    "hidden": true
+                },
+                "QCReportFields.nr_contigs.comp_type": {
+                    "type": "string",
+                    "default": "range",
+                    "hidden": true
+                },
+                "QCReportFields.nr_contigs.on": {
+                    "type": "boolean",
+                    "default": true,
+                    "hidden": true
+                },
+                "QCReportFields.nr_contigs.low_msg": {
+                    "type": "string",
+                    "default": "Fewer contigs than expected, if your genome length is of an expected size and you have a high N50 you likely just have a high quality assembly.",
+                    "hidden": true
+                },
+                "QCReportFields.nr_contigs.high_msg": {
+                    "type": "string",
+                    "default": "More contigs are present than expected, if your N50 is low and your genome length is shorter than expected you likely need to potentially need to reisolate and resequence/top-up your sample.",
+                    "hidden": true
+                },
+                "QCReportFields.length.path": {
+                    "type": "string",
+                    "default": "['QUAST', '0', 'Total length']",
+                    "hidden": true
+                },
+                "QCReportFields.length.coerce_type": {
+                    "type": "string",
+                    "default": "Integer",
+                    "hidden": true
+                },
+                "QCReportFields.length.compare_fields": {
+                    "type": "string",
+                    "default": "['min_length', 'max_length']",
+                    "hidden": true
+                },
+                "QCReportFields.length.comp_type": {
+                    "type": "string",
+                    "default": "range",
+                    "hidden": true
+                },
+                "QCReportFields.length.on": {
+                    "type": "boolean",
+                    "default": true,
+                    "hidden": true
+                },
+                "QCReportFields.length.low_msg": {
+                    "type": "string",
+                    "default": "Genome length lower than expected, you may need to resequence the sample.",
+                    "hidden": true
+                },
+                "QCReportFields.length.high_msg": {
+                    "type": "string",
+                    "default": "Genome length is higher than expected, contmination is potentially present.",
+                    "hidden": true
+                },
+                "QCReportFields.checkm_contamination.path": {
+                    "type": "string",
+                    "default": "['CheckM', '0', 'Contamination']",
+                    "hidden": true
+                },
+                "QCReportFields.checkm_contamination.coerce_type": {
+                    "type": "string",
+                    "default": "Float",
+                    "hidden": true
+                },
+                "QCReportFields.checkm_contamination.compare_fields": {
+                    "type": "string",
+                    "default": "['max_checkm_contamination']",
+                    "hidden": true
+                },
+                "QCReportFields.checkm_contamination.comp_type": {
+                    "type": "string",
+                    "default": "le",
+                    "hidden": true
+                },
+                "QCReportFields.checkm_contamination.on": {
+                    "type": "boolean",
+                    "default": true,
+                    "hidden": true
+                },
+                "QCReportFields.checkm_contamination.high_msg": {
+                    "type": "string",
+                    "default": "Potential contamination is present in your sample. You may need to reisolate and resequence your sample.",
+                    "hidden": true
+                },
+                "QCReport.escherichia.fixed_genome_size": {
+                    "type": "integer",
+                    "default": 5500000,
+                    "hidden": true
+                },
+                "QCReport.salmonella.fixed_genome_size": {
+                    "type": "integer",
+                    "default": 6000000,
+                    "hidden": true
+                },
+                "QCReport.shigella.fixed_genome_size": {
+                    "type": "integer",
+                    "default": 5000000,
+                    "hidden": true
+                },
+                "QCReport.listeria.fixed_genome_size": {
+                    "type": "integer",
+                    "default": 3200000,
+                    "hidden": true
+                },
+                "QCReport.campylobacter_jejuni.search": {
+                    "type": "string",
+                    "default": "Campylobacter jejuni",
+                    "hidden": true
+                },
+                "QCReport.campylobacter_jejuni.raw_average_quality": {
+                    "type": "integer",
+                    "default": 30,
+                    "hidden": true
+                },
+                "QCReport.campylobacter_jejuni.min_n50": {
+                    "type": "integer",
+                    "default": 9500,
+                    "hidden": true
+                },
+                "QCReport.campylobacter_jejuni.max_n50": {
+                    "type": "integer",
+                    "default": 2000000,
+                    "hidden": true
+                },
+                "QCReport.campylobacter_jejuni.min_nr_contigs": {
+                    "type": "integer",
+                    "default": 1,
+                    "hidden": true
+                },
+                "QCReport.campylobacter_jejuni.max_nr_contigs": {
+                    "type": "integer",
+                    "default": 150,
+                    "hidden": true
+                },
+                "QCReport.campylobacter_jejuni.fixed_genome_size": {
+                    "type": "integer",
+                    "default": 2000000,
+                    "hidden": true
+                },
+                "QCReport.campylobacter_jejuni.min_length": {
+                    "type": "integer",
+                    "default": 1400000,
+                    "hidden": true
+                },
+                "QCReport.campylobacter_jejuni.max_length": {
+                    "type": "integer",
+                    "default": 2000000,
+                    "hidden": true
+                },
+                "QCReport.campylobacter_jejuni.max_checkm_contamination": {
+                    "type": "integer",
+                    "default": 3,
+                    "hidden": true
+                },
+                "QCReport.campylobacter_jejuni.min_average_coverage": {
+                    "type": "integer",
+                    "default": 30,
+                    "hidden": true
+                },
+                "QCReport.campylobacter_coli.search": {
+                    "type": "string",
+                    "default": "Campylobacter coli",
+                    "hidden": true
+                },
+                "QCReport.campylobacter_coli.raw_average_quality": {
+                    "type": "integer",
+                    "default": 30,
+                    "hidden": true
+                },
+                "QCReport.campylobacter_coli.min_n50": {
+                    "type": "integer",
+                    "default": 9500,
+                    "hidden": true
+                },
+                "QCReport.campylobacter_coli.max_n50": {
+                    "type": "integer",
+                    "default": 2000000,
+                    "hidden": true
+                },
+                "QCReport.campylobacter_coli.min_nr_contigs": {
+                    "type": "integer",
+                    "default": 1,
+                    "hidden": true
+                },
+                "QCReport.campylobacter_coli.max_nr_contigs": {
+                    "type": "integer",
+                    "default": 150,
+                    "hidden": true
+                },
+                "QCReport.campylobacter_coli.fixed_genome_size": {
+                    "type": "integer",
+                    "default": 2000000,
+                    "hidden": true
+                },
+                "QCReport.campylobacter_coli.min_length": {
+                    "type": "integer",
+                    "default": 1400000,
+                    "hidden": true
+                },
+                "QCReport.campylobacter_coli.max_length": {
+                    "type": "integer",
+                    "default": 2000000,
+                    "hidden": true
+                },
+                "QCReport.campylobacter_coli.max_checkm_contamination": {
+                    "type": "integer",
+                    "default": 3,
+                    "hidden": true
+                },
+                "QCReport.campylobacter_coli.min_average_coverage": {
+                    "type": "integer",
+                    "default": 30,
+                    "hidden": true
+                },
+                "QCReport.vibrio_cholerae.search": {
+                    "type": "string",
+                    "default": "Vibrio cholerae",
+                    "hidden": true
+                },
+                "QCReport.vibrio_cholerae.raw_average_quality": {
+                    "type": "integer",
+                    "default": 30,
+                    "hidden": true
+                },
+                "QCReport.vibrio_cholerae.min_n50": {
+                    "type": "integer",
+                    "default": 95000,
+                    "hidden": true
+                },
+                "QCReport.vibrio_cholerae.max_n50": {
+                    "type": "integer",
+                    "default": 4300000,
+                    "hidden": true
+                },
+                "QCReport.vibrio_cholerae.min_nr_contigs": {
+                    "type": "integer",
+                    "default": 1,
+                    "hidden": true
+                },
+                "QCReport.vibrio_cholerae.max_nr_contigs": {
+                    "type": "integer",
+                    "default": 150,
+                    "hidden": true
+                },
+                "QCReport.vibrio_cholerae.fixed_genome_size": {
+                    "type": "integer",
+                    "default": 43000000,
+                    "hidden": true
+                },
+                "QCReport.vibrio_cholerae.min_length": {
+                    "type": "integer",
+                    "default": 3800000,
+                    "hidden": true
+                },
+                "QCReport.vibrio_cholerae.max_length": {
+                    "type": "integer",
+                    "default": 4300000,
+                    "hidden": true
+                },
+                "QCReport.vibrio_cholerae.max_checkm_contamination": {
+                    "type": "integer",
+                    "default": 3,
+                    "hidden": true
+                },
+                "QCReport.vibrio_cholerae.min_average_coverage": {
+                    "type": "integer",
+                    "default": 30,
+                    "hidden": true
+                },
+                "QCReport.klebsiella.fixed_genome_size": {
+                    "type": "integer",
+                    "default": 6000000,
+                    "hidden": true
+                },
+                "QCReport.staphylococcus.fixed_genome_size": {
+                    "type": "integer",
+                    "default": 3500000,
+                    "hidden": true
+                },
+                "QCReport.fallthrough.fixed_genome_size": {
+                    "type": "string",
+                    "hidden": true
+                }
+            }
+        },
+        "seqtk_size": {
+            "title": "seqtk_size",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "properties": {
+                "seqtk_size.singularity": {
+                    "type": "string",
+                    "default": "https://depot.galaxyproject.org/singularity/seqtk:1.3--h5bf99c6_3",
+                    "hidden": true
+                },
+                "seqtk_size.docker": {
+                    "type": "string",
+                    "default": "quay.io/biocontainers/seqtk:1.3--h5bf99c6_3",
+                    "hidden": true
+                },
+                "seqtk_size.report_tag": {
+                    "type": "string",
+                    "default": "SeqtkBaseCount",
+                    "hidden": true
+                }
+            }
+        },
         "medaka": {
             "title": "medaka",
             "type": "object",
@@ -910,11 +1703,6 @@
                     "default": ".json",
                     "hidden": true
                 },
-                "fastp.cut_mean_quality": {
-                    "type": "integer",
-                    "default": 30,
-                    "description": "Average quality to trim reads too"
-                },
                 "fastp.qualified_quality_phred": {
                     "type": "integer",
                     "default": 30,
@@ -1068,31 +1856,6 @@
                 "quast.report_tag": {
                     "type": "string",
                     "default": "QUAST",
-                    "hidden": true
-                },
-                "quast_filter.n50_field": {
-                    "type": "string",
-                    "default": "N50",
-                    "hidden": true
-                },
-                "quast_filter.n50_value": {
-                    "type": "integer",
-                    "default": 0,
-                    "hidden": true
-                },
-                "quast_filter.nr_contigs_field": {
-                    "type": "string",
-                    "default": "# contigs (>= 0 bp)",
-                    "hidden": true
-                },
-                "quast_filter.nr_contigs_value": {
-                    "type": "integer",
-                    "default": 1,
-                    "description": "Mimimum number of contigs required for an assembly to move forward"
-                },
-                "quast_filter.sample_header": {
-                    "type": "string",
-                    "default": "Assembly",
                     "hidden": true
                 },
                 "quast.min_contig_length": {
@@ -1256,6 +2019,12 @@
         }
     },
     "allOf": [
+        {
+            "$ref": "#/definitions/qcreport"
+        },
+        {
+            "$ref": "#/definitions/seqtk_size"
+        },
         {
             "$ref": "#/definitions/medaka"
         },
@@ -1939,669 +2708,6 @@
             "default": "_binned.fasta.gz",
             "hidden": true
         },
-        "QCReport.escherichia.search": {
-            "type": "string",
-            "default": "Escherichia coli",
-            "hidden": true
-        },
-        "QCReport.escherichia.raw_average_quality": {
-            "type": "integer",
-            "default": 30,
-            "hidden": true
-        },
-        "QCReport.escherichia.min_n50": {
-            "type": "integer",
-            "default": 95000,
-            "hidden": true
-        },
-        "QCReport.escherichia.max_n50": {
-            "type": "integer",
-            "default": 6000000,
-            "hidden": true
-        },
-        "QCReport.escherichia.min_nr_contigs": {
-            "type": "integer",
-            "default": 10,
-            "hidden": true
-        },
-        "QCReport.escherichia.max_nr_contigs": {
-            "type": "integer",
-            "default": 500,
-            "hidden": true
-        },
-        "QCReport.escherichia.min_length": {
-            "type": "integer",
-            "default": 4500000,
-            "hidden": true
-        },
-        "QCReport.escherichia.max_length": {
-            "type": "integer",
-            "default": 6000000,
-            "hidden": true
-        },
-        "QCReport.escherichia.max_checkm_contamination": {
-            "type": "number",
-            "default": 3.0,
-            "hidden": true
-        },
-        "QCReport.escherichia.min_average_coverage": {
-            "type": "integer",
-            "default": 30,
-            "hidden": true
-        },
-        "QCReport.salmonella.search": {
-            "type": "string",
-            "default": "Salmonella",
-            "hidden": true
-        },
-        "QCReport.salmonella.raw_average_quality": {
-            "type": "integer",
-            "default": 30,
-            "hidden": true
-        },
-        "QCReport.salmonella.min_n50": {
-            "type": "integer",
-            "default": 95000,
-            "hidden": true
-        },
-        "QCReport.salmonella.max_n50": {
-            "type": "integer",
-            "default": 6000000,
-            "hidden": true
-        },
-        "QCReport.salmonella.min_nr_contigs": {
-            "type": "integer",
-            "default": 10,
-            "hidden": true
-        },
-        "QCReport.salmonella.max_nr_contigs": {
-            "type": "integer",
-            "default": 200,
-            "hidden": true
-        },
-        "QCReport.salmonella.min_length": {
-            "type": "integer",
-            "default": 4400000,
-            "hidden": true
-        },
-        "QCReport.salmonella.max_length": {
-            "type": "integer",
-            "default": 6000000,
-            "hidden": true
-        },
-        "QCReport.salmonella.max_checkm_contamination": {
-            "type": "number",
-            "default": 3.0,
-            "hidden": true
-        },
-        "QCReport.salmonella.min_average_coverage": {
-            "type": "integer",
-            "default": 30,
-            "hidden": true
-        },
-        "QCReport.shigella.search": {
-            "type": "string",
-            "default": "Shigella",
-            "hidden": true
-        },
-        "QCReport.shigella.raw_average_quality": {
-            "type": "integer",
-            "default": 30,
-            "hidden": true
-        },
-        "QCReport.shigella.min_n50": {
-            "type": "integer",
-            "default": 17500,
-            "hidden": true
-        },
-        "QCReport.shigella.max_n50": {
-            "type": "integer",
-            "default": 5000000,
-            "hidden": true
-        },
-        "QCReport.shigella.min_nr_contigs": {
-            "type": "integer",
-            "default": 10,
-            "hidden": true
-        },
-        "QCReport.shigella.max_nr_contigs": {
-            "type": "integer",
-            "default": 500,
-            "hidden": true
-        },
-        "QCReport.shigella.min_length": {
-            "type": "integer",
-            "default": 4300000,
-            "hidden": true
-        },
-        "QCReport.shigella.max_length": {
-            "type": "integer",
-            "default": 5000000,
-            "hidden": true
-        },
-        "QCReport.shigella.max_checkm_contamination": {
-            "type": "number",
-            "default": 3.0,
-            "hidden": true
-        },
-        "QCReport.shigella.min_average_coverage": {
-            "type": "integer",
-            "default": 30,
-            "hidden": true
-        },
-        "QCReport.listeria.search": {
-            "type": "string",
-            "default": "Listeria",
-            "hidden": true
-        },
-        "QCReport.listeria.raw_average_quality": {
-            "type": "integer",
-            "default": 30,
-            "hidden": true
-        },
-        "QCReport.listeria.min_n50": {
-            "type": "integer",
-            "default": 45000,
-            "hidden": true
-        },
-        "QCReport.listeria.max_n50": {
-            "type": "integer",
-            "default": 3200000,
-            "hidden": true
-        },
-        "QCReport.listeria.min_nr_contigs": {
-            "type": "integer",
-            "default": 10,
-            "hidden": true
-        },
-        "QCReport.listeria.max_nr_contigs": {
-            "type": "integer",
-            "default": 200,
-            "hidden": true
-        },
-        "QCReport.listeria.min_length": {
-            "type": "integer",
-            "default": 2700000,
-            "hidden": true
-        },
-        "QCReport.listeria.max_length": {
-            "type": "integer",
-            "default": 3200000,
-            "hidden": true
-        },
-        "QCReport.listeria.max_checkm_contamination": {
-            "type": "number",
-            "default": 3.0,
-            "hidden": true
-        },
-        "QCReport.listeria.min_average_coverage": {
-            "type": "integer",
-            "default": 30,
-            "hidden": true
-        },
-        "QCReport.campylobacter.search": {
-            "type": "string",
-            "default": "Campylobacter",
-            "hidden": true
-        },
-        "QCReport.campylobacter.raw_average_quality": {
-            "type": "integer",
-            "default": 30,
-            "hidden": true
-        },
-        "QCReport.campylobacter.min_n50": {
-            "type": "integer",
-            "default": 9500,
-            "hidden": true
-        },
-        "QCReport.campylobacter.max_n50": {
-            "type": "integer",
-            "default": 2000000,
-            "hidden": true
-        },
-        "QCReport.campylobacter.min_nr_contigs": {
-            "type": "integer",
-            "default": 10,
-            "hidden": true
-        },
-        "QCReport.campylobacter.max_nr_contigs": {
-            "type": "integer",
-            "default": 150,
-            "hidden": true
-        },
-        "QCReport.campylobacter.min_length": {
-            "type": "integer",
-            "default": 1400000,
-            "hidden": true
-        },
-        "QCReport.campylobacter.max_length": {
-            "type": "integer",
-            "default": 2000000,
-            "hidden": true
-        },
-        "QCReport.campylobacter.max_checkm_contamination": {
-            "type": "number",
-            "default": 3.0,
-            "hidden": true
-        },
-        "QCReport.campylobacter.min_average_coverage": {
-            "type": "integer",
-            "default": 30,
-            "hidden": true
-        },
-        "QCReport.vibrio.search": {
-            "type": "string",
-            "default": "Vibrio",
-            "hidden": true
-        },
-        "QCReport.vibrio.raw_average_quality": {
-            "type": "integer",
-            "default": 30,
-            "hidden": true
-        },
-        "QCReport.vibrio.min_n50": {
-            "type": "integer",
-            "default": 95000,
-            "hidden": true
-        },
-        "QCReport.vibrio.max_n50": {
-            "type": "integer",
-            "default": 4300000,
-            "hidden": true
-        },
-        "QCReport.vibrio.min_nr_contigs": {
-            "type": "integer",
-            "default": 10,
-            "hidden": true
-        },
-        "QCReport.vibrio.max_nr_contigs": {
-            "type": "integer",
-            "default": 150,
-            "hidden": true
-        },
-        "QCReport.vibrio.min_length": {
-            "type": "integer",
-            "default": 3800000,
-            "hidden": true
-        },
-        "QCReport.vibrio.max_length": {
-            "type": "integer",
-            "default": 4300000,
-            "hidden": true
-        },
-        "QCReport.vibrio.max_checkm_contamination": {
-            "type": "number",
-            "default": 3.0,
-            "hidden": true
-        },
-        "QCReport.vibrio.min_average_coverage": {
-            "type": "integer",
-            "default": 30,
-            "hidden": true
-        },
-        "QCReport.klebsiella.search": {
-            "type": "string",
-            "default": "Klebsiella",
-            "hidden": true
-        },
-        "QCReport.klebsiella.raw_average_quality": {
-            "type": "integer",
-            "default": 30,
-            "hidden": true
-        },
-        "QCReport.klebsiella.min_n50": {
-            "type": "integer",
-            "default": 100000,
-            "hidden": true
-        },
-        "QCReport.klebsiella.max_n50": {
-            "type": "integer",
-            "default": 6000000,
-            "hidden": true
-        },
-        "QCReport.klebsiella.min_nr_contigs": {
-            "type": "integer",
-            "default": 10,
-            "hidden": true
-        },
-        "QCReport.klebsiella.max_nr_contigs": {
-            "type": "integer",
-            "default": 500,
-            "hidden": true
-        },
-        "QCReport.klebsiella.min_length": {
-            "type": "integer",
-            "default": 4500000,
-            "hidden": true
-        },
-        "QCReport.klebsiella.max_length": {
-            "type": "integer",
-            "default": 6000000,
-            "hidden": true
-        },
-        "QCReport.klebsiella.max_checkm_contamination": {
-            "type": "number",
-            "default": 3.0,
-            "hidden": true
-        },
-        "QCReport.klebsiella.min_average_coverage": {
-            "type": "integer",
-            "default": 30,
-            "hidden": true
-        },
-        "QCReport.staphylococcus.search": {
-            "type": "string",
-            "default": "Staphylococcus",
-            "hidden": true
-        },
-        "QCReport.staphylococcus.raw_average_quality": {
-            "type": "integer",
-            "default": 30,
-            "hidden": true
-        },
-        "QCReport.staphylococcus.min_n50": {
-            "type": "integer",
-            "default": 100000,
-            "hidden": true
-        },
-        "QCReport.staphylococcus.max_n50": {
-            "type": "integer",
-            "default": 3500000,
-            "hidden": true
-        },
-        "QCReport.staphylococcus.min_nr_contigs": {
-            "type": "integer",
-            "default": 10,
-            "hidden": true
-        },
-        "QCReport.staphylococcus.max_nr_contigs": {
-            "type": "integer",
-            "default": 550,
-            "hidden": true
-        },
-        "QCReport.staphylococcus.min_length": {
-            "type": "integer",
-            "default": 2000000,
-            "hidden": true
-        },
-        "QCReport.staphylococcus.max_length": {
-            "type": "integer",
-            "default": 3500000,
-            "hidden": true
-        },
-        "QCReport.staphylococcus.max_checkm_contamination": {
-            "type": "number",
-            "default": 3.0,
-            "hidden": true
-        },
-        "QCReport.staphylococcus.min_average_coverage": {
-            "type": "integer",
-            "default": 30,
-            "hidden": true
-        },
-        "QCReport.fallthrough.search": {
-            "type": "string",
-            "default": "No organism specific QC data available.",
-            "hidden": true
-        },
-        "QCReport.fallthrough.raw_average_quality": {
-            "type": "integer",
-            "default": 30,
-            "hidden": true
-        },
-        "QCReport.fallthrough.min_n50": {
-            "type": "integer",
-            "hidden": true
-        },
-        "QCReport.fallthrough.max_n50": {
-            "type": "integer",
-            "hidden": true
-        },
-        "QCReport.fallthrough.min_nr_contigs": {
-            "type": "integer",
-            "hidden": true
-        },
-        "QCReport.fallthrough.max_nr_contigs": {
-            "type": "integer",
-            "hidden": true
-        },
-        "QCReport.fallthrough.min_length": {
-            "type": "integer",
-            "hidden": true
-        },
-        "QCReport.fallthrough.max_length": {
-            "type": "integer",
-            "hidden": true
-        },
-        "QCReport.fallthrough.max_checkm_contamination": {
-            "type": "number",
-            "default": 3.0,
-            "hidden": true
-        },
-        "QCReport.fallthrough.min_average_coverage": {
-            "type": "integer",
-            "default": 30,
-            "hidden": true
-        },
-        "QCReportFields.raw_average_quality.path": {
-            "type": "string",
-            "default": "['RawReadSummary', 'combined', 'qual_mean']",
-            "hidden": true
-        },
-        "QCReportFields.raw_average_quality.coerce_type": {
-            "type": "string",
-            "default": "Float",
-            "hidden": true
-        },
-        "QCReportFields.raw_average_quality.compare_fields": {
-            "type": "string",
-            "default": "['raw_average_quality']",
-            "hidden": true
-        },
-        "QCReportFields.raw_average_quality.comp_type": {
-            "type": "string",
-            "default": "ge",
-            "hidden": true
-        },
-        "QCReportFields.raw_average_quality.on": {
-            "type": "boolean",
-            "default": true,
-            "hidden": true
-        },
-        "QCReportFields.raw_average_quality.low_msg": {
-            "type": "string",
-            "default": "Base quality is poor, resequencing is recommended.",
-            "hidden": true
-        },
-        "QCReportFields.average_coverage.path": {
-            "type": "string",
-            "default": "['QUAST', '0', 'Avg. coverage depth']",
-            "hidden": true
-        },
-        "QCReportFields.average_coverage.coerce_type": {
-            "type": "string",
-            "default": "Float",
-            "hidden": true
-        },
-        "QCReportFields.average_coverage.compare_fields": {
-            "type": "string",
-            "default": "['min_average_coverage']",
-            "hidden": true
-        },
-        "QCReportFields.average_coverage.comp_type": {
-            "type": "string",
-            "default": "ge",
-            "hidden": true
-        },
-        "QCReportFields.average_coverage.on": {
-            "type": "boolean",
-            "default": true,
-            "hidden": true
-        },
-        "QCReportFields.average_coverage.low_msg": {
-            "type": "string",
-            "default": "Depth of coverage from assembly is lower than than expected. A top-up run is likely needed.",
-            "hidden": true
-        },
-        "QCReportFields.metagenomic.path": {
-            "type": "string",
-            "default": "['MashMeta']",
-            "hidden": true
-        },
-        "QCReportFields.metagenomic.coerce_type": {
-            "type": "string",
-            "default": "Bool",
-            "hidden": true
-        },
-        "QCReportFields.metagenomic.compare_fields": {
-            "type": "string",
-            "default": "[]",
-            "hidden": true
-        },
-        "QCReportFields.metagenomic.comp_type": {
-            "type": "string",
-            "default": "bool",
-            "hidden": true
-        },
-        "QCReportFields.metagenomic.on": {
-            "type": "boolean",
-            "hidden": true
-        },
-        "QCReportFields.n50_value.path": {
-            "type": "string",
-            "default": "['QUAST', '0', 'N50']",
-            "hidden": true
-        },
-        "QCReportFields.n50_value.coerce_type": {
-            "type": "string",
-            "default": "Integer",
-            "hidden": true
-        },
-        "QCReportFields.n50_value.compare_fields": {
-            "type": "string",
-            "default": "['min_n50', 'max_n50']",
-            "hidden": true
-        },
-        "QCReportFields.n50_value.comp_type": {
-            "type": "string",
-            "default": "range",
-            "hidden": true
-        },
-        "QCReportFields.n50_value.on": {
-            "type": "boolean",
-            "default": true,
-            "hidden": true
-        },
-        "QCReportFields.n50_value.low_msg": {
-            "type": "string",
-            "default": "N50 value is low, this could be due to many reasons involving contamination, poor template quality or insufficient template quantity. Reisolation and reseqeuncing may be needed.",
-            "hidden": true
-        },
-        "QCReportFields.n50_value.high_msg": {
-            "type": "string",
-            "default": "N50 value is high, this is likely a good thing if you have fewer contigs than expected.",
-            "hidden": true
-        },
-        "QCReportFields.nr_contigs.path": {
-            "type": "string",
-            "default": "['QUAST', '0', '# contigs (>= 0 bp)']",
-            "hidden": true
-        },
-        "QCReportFields.nr_contigs.coerce_type": {
-            "type": "string",
-            "default": "Integer",
-            "hidden": true
-        },
-        "QCReportFields.nr_contigs.compare_fields": {
-            "type": "string",
-            "default": "['min_nr_contigs', 'max_nr_contigs']",
-            "hidden": true
-        },
-        "QCReportFields.nr_contigs.comp_type": {
-            "type": "string",
-            "default": "range",
-            "hidden": true
-        },
-        "QCReportFields.nr_contigs.on": {
-            "type": "boolean",
-            "default": true,
-            "hidden": true
-        },
-        "QCReportFields.nr_contigs.low_msg": {
-            "type": "string",
-            "default": "Fewer contigs than expected, if your genome length is of an expected size and you have a high N50 you likely just have a high quality assembly.",
-            "hidden": true
-        },
-        "QCReportFields.nr_contigs.high_msg": {
-            "type": "string",
-            "default": "More contigs are present than expected, if your N50 is low and your genome length is shorter than expected you likely need to potentially need to reisolate and resequence/top-up your sample.",
-            "hidden": true
-        },
-        "QCReportFields.length.path": {
-            "type": "string",
-            "default": "['QUAST', '0', 'Total length']",
-            "hidden": true
-        },
-        "QCReportFields.length.coerce_type": {
-            "type": "string",
-            "default": "Integer",
-            "hidden": true
-        },
-        "QCReportFields.length.compare_fields": {
-            "type": "string",
-            "default": "['min_length', 'max_length']",
-            "hidden": true
-        },
-        "QCReportFields.length.comp_type": {
-            "type": "string",
-            "default": "range",
-            "hidden": true
-        },
-        "QCReportFields.length.on": {
-            "type": "boolean",
-            "default": true,
-            "hidden": true
-        },
-        "QCReportFields.length.low_msg": {
-            "type": "string",
-            "default": "Genome length lower than expected, you may need to resequence the sample.",
-            "hidden": true
-        },
-        "QCReportFields.length.high_msg": {
-            "type": "string",
-            "default": "Genome length is higher than expected, contmination is potentially present.",
-            "hidden": true
-        },
-        "QCReportFields.checkm_contamination.path": {
-            "type": "string",
-            "default": "['CheckM', '0', 'Contamination']",
-            "hidden": true
-        },
-        "QCReportFields.checkm_contamination.coerce_type": {
-            "type": "string",
-            "default": "Float",
-            "hidden": true
-        },
-        "QCReportFields.checkm_contamination.compare_fields": {
-            "type": "string",
-            "default": "['max_checkm_contamination']",
-            "hidden": true
-        },
-        "QCReportFields.checkm_contamination.comp_type": {
-            "type": "string",
-            "default": "le",
-            "hidden": true
-        },
-        "QCReportFields.checkm_contamination.on": {
-            "type": "boolean",
-            "default": true,
-            "hidden": true
-        },
-        "QCReportFields.checkm_contamination.high_msg": {
-            "type": "string",
-            "default": "Potential contamination is present in your sample. You may need to reisolate and resequence your sample.",
-            "hidden": true
-        },
         "bakta.db": {
             "type": "string",
             "default": "databases/db-light/",
@@ -2640,6 +2746,30 @@
             "type": "string",
             "default": "ShigeifinderSubtyping",
             "hidden": true
+        },
+        "validationFailUnrecognisedParams": {
+            "type": "string",
+            "default": "true"
+        },
+        "fastp.cut_tail_mean_quality": {
+            "type": "integer",
+            "default": 15
+        },
+        "fastp.complexity_threshold": {
+            "type": "integer",
+            "default": 30
+        },
+        "fastp.polyg_min_len": {
+            "type": "integer",
+            "default": 10
+        },
+        "fastp.polyx_min_len": {
+            "type": "integer",
+            "default": 10
+        },
+        "fastp.illumina_length_max": {
+            "type": "integer",
+            "default": 400
         }
     }
 }
