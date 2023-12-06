@@ -1,7 +1,6 @@
 // Run annotate and apply QC metrics
 include { QUAST } from "../../modules/local/quast_assembly.nf"
 include { CHECKM_LINEAGEWF } from "../../modules/local/checkm_lineagewf.nf"
-
 include { MLST } from "../../modules/local/mlst.nf"
 
 workflow QC_ASSEMBLIES {

@@ -120,6 +120,7 @@ workflow CLEAN_ASSEMBLE_READS {
 
         // Isolate workflow
         ch_assembled_reads = ASSEMBLE_READS(ch_trimmed_reads)
+        ch_reports = ch_reports.mix(ch_assembled_reads.reports)
         ch_versions = ch_versions.mix(ch_assembled_reads.versions)
 
         if(!params.skip_polishing){

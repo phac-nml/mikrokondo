@@ -1,6 +1,7 @@
 // Workflow for assembling reads
 // TODO add in read sub-sampling to reduce errors
 
+include { SEQTK_SIZE } from "../../modules/local/seqtk_size.nf"
 include { SPADES_ASSEMBLE } from "../../modules/local/spades_assemble.nf"
 include { FLYE_ASSEMBLE } from "../../modules/local/flye_assemble.nf"
 include { MINIMAP2_INDEX } from "../../modules/local/minimap2_index.nf"
@@ -16,6 +17,16 @@ workflow ASSEMBLE_READS{
     main:
     versions = Channel.empty()
     final_contigs = Channel.empty()
+    reports = Channel.empty()
+
+    // no report channel here?
+    base_counts = SEQTK_SIZE(sample_data)
+    reports = reports.mix(base_counts.map{
+        meta, file_bc -> tuple(meta, extract_base_count(file_bc));
+    })
+
+    versions = versions.mix(base_counts.versions)
+
 
     def platform_comp = params.platform.replaceAll("\\s", "").toString() // strip whitespace from entries
     if(platform_comp == params.opt_platforms.illumina){
@@ -52,7 +63,6 @@ workflow ASSEMBLE_READS{
         minimap2_idx = MINIMAP2_INDEX(ch_assembled.contigs)
         //TODO Move mapping to its own workflow
         versions = versions.mix(minimap2_idx.versions)
-        //TODO no idea if I am doing this right, get input in the future
         ch_mapping_data = sample_data.join(minimap2_idx.index)
         //Decided to leave Racon out of the polishing work flow but to wrap this in statement in a optional value in the future
         output_paf = Channel.value(true)
@@ -70,4 +80,14 @@ workflow ASSEMBLE_READS{
     graphs = ch_assembled.graphs
     final_contigs = final_contigs
     versions = versions
+    reports = reports
+}
+
+
+def extract_base_count(meta, data){
+    def base_count_pos = 1;
+    def rows = data.splitCSV(header: false, sep: '\t') // get first line split as second val is the base count
+    def base_count = rows[base_count_pos];
+    def base_long = base_count.toLong();
+    return base_long
 }
