@@ -15,10 +15,22 @@ workflow HYBRID_ASSEMBLY {
     main:
     versions = Channel.empty()
     ch_contigs = Channel.empty()
+    reports = Channel.empty()
     ch_uni_assembly = Channel.empty()
     ch_uni_log = Channel.empty()
     ch_pilon_vcf = Channel.empty()
     ch_pilon_changes = Channel.empty()
+
+    // Get basecount information
+    sample_data = reads.map{
+        meta, sr, lr -> tuple(meta, [sr[0], sr[1], lr])
+    }
+    base_counts = SEQTK_SIZE(sample_data)
+
+    reports = reports.mix(base_counts.base_counts.map{
+        meta, file_bc -> tuple(meta, params.seqtk_size, extract_base_count(file_bc));
+    })
+    versions = versions.mix(base_counts.versions)
 
     if(params.hybrid_unicycler){
         log.info "Running Unicycler for hybrid assembly"
@@ -91,6 +103,7 @@ workflow HYBRID_ASSEMBLY {
     changes = ch_pilon_vcf
     assembly = ch_uni_assembly
     log_unicycler = ch_uni_log
+    reports = reports
     versions = versions
 
     //versions = UNICYCLER_ASSEMBLE.out.versions

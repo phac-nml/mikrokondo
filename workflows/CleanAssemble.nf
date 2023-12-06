@@ -98,7 +98,7 @@ workflow CLEAN_ASSEMBLE_READS {
         ch_assembled_reads = HYBRID_ASSEMBLY(ch_trimmed_reads)
         ch_output_data_asm = ch_assembled_reads.fasta
         ch_versions = ch_versions.mix(HYBRID_ASSEMBLY.out.versions)
-
+        ch_reports = ch_reports.mix(HYBRID_ASSEMBLY.reports)
         // TODO should long reads be sub-sampled in hybrid assembly?
 
         ch_final_assembly = ch_output_data_asm.map{
