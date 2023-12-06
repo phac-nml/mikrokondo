@@ -22,7 +22,7 @@ workflow ASSEMBLE_READS{
     // no report channel here?
     base_counts = SEQTK_SIZE(sample_data)
     reports = reports.mix(base_counts.base_counts.map{
-        meta, file_bc -> tuple(meta, params.seqtk_size, extract_base_count(file_bc));
+        meta, file_bc -> tuple(meta, params.seqtk_size, extract_base_count(meta, file_bc));
     })
 
     versions = versions.mix(base_counts.versions)
@@ -85,6 +85,7 @@ workflow ASSEMBLE_READS{
 
 
 def extract_base_count(meta, data){
+    //TODO add in error handler
     def base_count_pos = 1;
     def rows = data.splitCSV(header: false, sep: '\t') // get first line split as second val is the base count
     def base_count = rows[base_count_pos];
