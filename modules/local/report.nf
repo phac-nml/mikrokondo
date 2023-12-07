@@ -97,18 +97,26 @@ def generate_coverage_data(sample_data, bp_field, species){
     */
     sample_data.each {
         entry -> if(entry.key != "meta" && entry.key != "QualityAnalysis"){ // TODO add to constants
-            def base_pairs = entry.value[bp_field].toLong()
-            def q_length = recurse_keys(entry.value, params.QCReportFields.length).toLong()
+            def q_length = null
+            def base_counts_p = false
+            if(entry.value.containsKey(bp_field)){
+                base_counts_p = true
+                def base_pairs = entry.value[bp_field].toLong()
+                q_length = recurse_keys(entry.value, params.QCReportFields.length).toLong()
+            }
 
             // Add naive coverage value if required
-            if(q_length != null){
+            if(base_counts_p && q_length != null){
                 def cov = base_pairs / q_length;
                 entry.value[params.coverage_calc_fields.auto_cov] = cov.round(2)
             }
 
             // Add fixed genome coverage for species if desired
             def species_data_pos = 1;
-            if(species[species_data_pos].containsKey("fixed_genome_size") && species[species_data_pos].fixed_genome_size != null){
+            if(base_counts_p
+                && species[species_data_pos].containsKey("fixed_genome_size")
+                && species[species_data_pos].fixed_genome_size != null){
+
                 def length = species[species_data_pos].fixed_genome_size.toLong()
                 def cov = base_pairs / q_length
                 entry.value[params.coverage_calc_fields.fixed_cov] = cov.round(2)
@@ -434,14 +442,14 @@ def recurse_keys(value, keys_rk){
 
 def range_comp(fields, qc_data, comp_val, qc_obj){
     if(qc_data == null){
-        qc_obj.message ="[${qc_obj.field}] WARNING: No comparison available for ${qc_obj.field}"
+        qc_obj.message ="[${qc_obj.field}] WARNING: No comparison available for ${qc_obj.field}. Sample value: ${comp_val}"
         qc_obj.status = true
         return qc_obj
     }
 
     def vals = [qc_data[fields[0]], qc_data[fields[1]]].sort()
     if(vals[0] == null){
-        qc_obj.message ="[${qc_obj.field}] WARNING: No comparison available for ${qc_obj.field}"
+        qc_obj.message ="[${qc_obj.field}] WARNING: No comparison of available for ${qc_obj.field}. Sample value: ${comp_val}"
         qc_obj.status = true
         return qc_obj
     }
@@ -461,13 +469,13 @@ def range_comp(fields, qc_data, comp_val, qc_obj){
 
 def greater_equal_comp(fields, qc_data, comp_val, qc_obj){
     if(qc_data == null){
-        qc_obj.message ="[${qc_obj.field}] WARNING: No comparison available for ${qc_obj.field}"
+        qc_obj.message ="[${qc_obj.field}] WARNING: No comparison available for ${qc_obj.field}. Sample value: ${comp_val}"
         qc_obj.status = true
         return qc_obj
     }
     def vals = qc_data[fields[0]]
     if(vals == null){
-        qc_obj.message ="[${qc_obj.field}] WARNING: No comparison available"
+        qc_obj.message ="[${qc_obj.field}] WARNING: No comparison available. Sample value: ${comp_val}"
         qc_obj.status = true
         return qc_obj
     }
@@ -485,13 +493,13 @@ def greater_equal_comp(fields, qc_data, comp_val, qc_obj){
 def lesser_equal_comp(fields, qc_data, comp_val, qc_obj){
     // TODO  move checks into seperate function
     if(qc_data == null){
-        qc_obj.message ="[${qc_obj.field}] WARNING: No comparison available for ${qc_obj.field}"
+        qc_obj.message ="[${qc_obj.field}] WARNING: No comparison available for ${qc_obj.field}. Sample value: ${comp_val}"
         qc_obj.status = true
         return qc_obj
     }
     def vals = qc_data[fields[0]]
     if(vals == null){
-        qc_obj.message = "[${qc_obj.field}] WARNING: No comparison available for ${qc_obj.field}"
+        qc_obj.message = "[${qc_obj.field}] WARNING: No comparison available for ${qc_obj.field}. Sample value: ${comp_val}"
         qc_obj.status = true
         return qc_obj
     }
@@ -537,15 +545,37 @@ def prep_qc_vals(qc_vals, qc_data, comp_val, field_val){
 }
 
 
-def get_species(value, search_phrases){
+def get_shortest_token(search_params){
+
+    def overly_large_number = 10000000;
+    def shortest_entry = overly_large_number;
+    for(i in search_params){
+        def i_toks = i[0].split('_|\s')
+        for(g in i_toks){
+            def tok_size = g.size()
+            if(tok_size < shortest_entry){
+                shortest_entry = tok_size
+            }
+        }
+    }
+    return shortest_entry
+}
+
+def get_species(value, search_phrases, shortest_token){
     /*
         Get species data for the sample
+        shortest_token: contains values to scrub from value to be searched for
     */
     // search_term_val used to be 0...
     def search_term_val = 0 // location of where the search key is in the search phrases array
     def qc_data = null;
+
+
+    // TODO matching here can likely be enhanced. wait for issue perhaps
+    def comp_val_tokens = value.toLowerCase().split('_|\s').findAll{it.size() >= shortest_token};
+    def comp_val = comp_val_tokens.join(" ")
     for(item in search_phrases){
-        if(value.contains(item[search_term_val])){
+        if(comp_val.contains(item[search_term_val].toLowerCase())){
             qc_data = item;
             break;
         }
@@ -573,7 +603,7 @@ def get_qc_data_species(value_data, qc_data){
                 def prepped_data = prep_qc_vals(v, species_data, out, k)
                 quality_messages[k] = prepped_data
             }else{
-                quality_messages[k] = ["field": k, "message": "No data"]
+                quality_messages[k] = ["field": k, "message": "[${k}] No data"]
             }
         }
     }
@@ -590,9 +620,10 @@ def generate_qc_data(data, search_phrases){
 
     def top_hit_tag = params.top_hit_species.report_tag;
     def quality_analysis = "QualityAnalysis"
+    def shortest_token = get_shortest_token(search_phrases)
     for(k in data){
         if(!k.value.meta.metagenomic){
-            def species = get_species(k.value[k.key][top_hit_tag], search_phrases)
+            def species = get_species(k.value[k.key][top_hit_tag], search_phrases, shortest_token)
             generate_coverage_data(data[k.key], params.seqtk_size.report_tag, species) // update coverage first so its values can be used in generating qc messages
             data[k.key][quality_analysis] = get_qc_data_species(k.value[k.key], species)
         }else{

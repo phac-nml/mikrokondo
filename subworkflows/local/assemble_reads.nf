@@ -51,8 +51,11 @@ workflow ASSEMBLE_READS{
     }
     versions = versions.mix(ch_assembled.versions)
 
+    // For determining what assemblies failed if failure is ignored
+    failed = ch_assembled.contigs.join(sample_data, remainder: true).filter { meta, contigs, reads -> contigs == null ? true : false}
+    failed.view()
 
-    // TODO test output
+
     BANDAGE_IMAGE(ch_assembled.graphs)
     versions = versions.mix(BANDAGE_IMAGE.out.versions)
 
@@ -61,9 +64,9 @@ workflow ASSEMBLE_READS{
         // TODO move this too polishing
         // RACON is next and is common in all steps
         minimap2_idx = MINIMAP2_INDEX(ch_assembled.contigs)
-        //TODO Move mapping to its own workflow
         versions = versions.mix(minimap2_idx.versions)
         ch_mapping_data = sample_data.join(minimap2_idx.index)
+
         //Decided to leave Racon out of the polishing work flow but to wrap this in statement in a optional value in the future
         output_paf = Channel.value(true)
         mapped_data = MINIMAP2_MAP(ch_mapping_data.join(ch_assembled.contigs), output_paf)
