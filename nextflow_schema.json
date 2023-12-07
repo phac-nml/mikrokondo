@@ -5,6 +5,24 @@
     "description": "mikrokondo schema",
     "type": "object",
     "definitions": {
+        "coveragecalculation": {
+            "title": "CoverageCalculation",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "properties": {
+                "coverage_calc_fields.fixed_cov": {
+                    "type": "string",
+                    "default": "FixedGenomeSizeDepth",
+                    "hidden": true
+                },
+                "coverage_calc_fields.auto_cov": {
+                    "type": "string",
+                    "default": "DetectedGenomeSizeDepth",
+                    "hidden": true
+                }
+            }
+        },
         "qcreport": {
             "title": "QCReport",
             "type": "object",
@@ -2020,6 +2038,9 @@
     },
     "allOf": [
         {
+            "$ref": "#/definitions/coveragecalculation"
+        },
+        {
             "$ref": "#/definitions/qcreport"
         },
         {
@@ -2748,8 +2769,7 @@
             "hidden": true
         },
         "validationFailUnrecognisedParams": {
-            "type": "boolean",
-            "default": false
+            "type": "boolean"
         },
         "fastp.cut_tail_mean_quality": {
             "type": "integer",
