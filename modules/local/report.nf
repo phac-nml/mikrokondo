@@ -248,6 +248,7 @@ def create_action_call(sample_data){
             def qual_data = val.value["QualityAnalysis"]
             def meta_data = val.value["meta"]
             def sample_status = "FAILED"
+
             if(meta_data.metagenomic){
                 // nothing to do here
                 if(params.metagenomic_run){
@@ -356,8 +357,17 @@ def create_action_call(sample_data){
             }
             checks += 1
 
+
+
             (reisolate, resequence) = n50_nrcontigs_decision(qual_data, nr_contigs_failed, n50_failed, qual_message, reisolate, resequence)
             qual_message.add("Quality Conclusion")
+
+            if(val.value.containsKey(params.assembly_status.report_tag)){
+                if(!val.value[params.assembly_status.report_tag]){
+                    qual_message.add("Assembly failed, this may be an issue with your data or the pipeline. Please check the log or the outputs in the samples work directory.")
+                }
+            }
+
             // TODO can reisolate be incremented without resequence? need to make sure no
             if(reisolate >= contamination_fail){
                 qual_message.add("[FAILED] Sample is likely contaminated, REISOLATION AND RESEQUENCING RECOMMENDED.")
@@ -372,6 +382,9 @@ def create_action_call(sample_data){
                 sample_status = "PASSED"
             }
             qual_message.add("Passed Tests: ${checks - checks_failed - checks_ignored}/${checks}")
+
+
+
             // Qual summary not final message
             final_message = qual_message.join("\n")
             log.info "\n$val.key\n${final_message}\n"

@@ -46,6 +46,7 @@ workflow QC_READS {
     fastp_data = PARSE_FASTP(ch_meta_cleaned_reads.fastp_json)
 
 
+    // TODO add this to the reports
     passed_read_count = fastp_data.read_count.filter{
         it[1] >= params.min_reads // Read counts are at position 1
     }
