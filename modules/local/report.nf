@@ -34,7 +34,6 @@ process REPORT{
     def sample_data = [:] // Where to aggergate and create json data
     def data_stride = 3 // report values added in groups of three, e.g sample meta info, parameters, output file of interest
     def headers_list = 'headers' // ! TODO this string exists twice, need to fix that
-    // TODO Check if there is a better way to get array size
     def arr_size = test_in.size()
     for(long i = 0; i < arr_size; i=i+data_stride){
         def meta_data = test_in[i]
@@ -79,12 +78,10 @@ process REPORT{
     generate_qc_data(sample_data, search_phrases)
     create_action_call(sample_data)
 
-    //sample_data["QualityAnalysis"] = generate_qc_data(sample_data, search_phrases)
+
     def json_converted_data = new JsonBuilder(sample_data).toPrettyString()
     def report_name = "final_report.json"
 
-
-    //def work_dir = Path.of("${task.workDir}")
     output_file_path = task.workDir.resolve(report_name)
     output_file = file(output_file_path).newWriter()
     output_file.write(json_converted_data)
@@ -92,6 +89,36 @@ process REPORT{
 
 }
 
+
+def generate_coverage_data(sample_data, bp_field, species){
+    /*Generate QC fields based base pairs count
+    sample_data: is the sample to get data for
+    bp_field: is the base count data from seqtk
+    */
+    sample_data.each {
+        entry -> if(entry.key != "meta" && entry.key != "QualityAnalysis"){ // TODO add to constants
+            def base_pairs = entry.value[bp_field].toLong()
+            def q_length = recurse_keys(entry.value, params.QCReportFields.length).toLong()
+
+            // Add naive coverage value if required
+            if(q_length != null){
+                def cov = base_pairs / q_length;
+                entry.value[params.coverage_calc_fields.auto_cov] = cov.round(2)
+            }
+
+            // Add fixed genome coverage for species if desired
+            def species_data_pos = 1;
+            if(species[species_data_pos].containsKey("fixed_genome_size") && species[species_data_pos].fixed_genome_size != null){
+                def length = species[species_data_pos].fixed_genome_size.toLong()
+                def cov = base_pairs / q_length
+                entry.value[params.coverage_calc_fields.fixed_cov] = cov.round(2)
+
+            }
+
+        }
+    }
+
+}
 
 
 def n50_nrcontigs_decision(qual_data, nr_cont_p, n50_p, qual_message, reisolate, resequence){
@@ -339,11 +366,16 @@ def create_action_call(sample_data){
 }
 
 def qc_params_species(){
-    def search_term = "search";
+    // TODO make sure these are all unique
     def search_phrases = [];
     params.QCReport.each{k, v ->
-        search_phrases.add([v[search_term], v])
+        if(v.search in search_phrases){
+            log.error "Duplicate search phrase ${v.search} included in your QCReport parameters. Bailing out as erroneous results could be included by accident. If you have fixed the issue re-run the pipeline with -resume to pick up where you left off."
+            exit 1
+        }
+        search_phrases.add([v.search, v])
     }
+
     return search_phrases;
 }
 
@@ -505,20 +537,26 @@ def prep_qc_vals(qc_vals, qc_data, comp_val, field_val){
 }
 
 
-def get_species(value, search_phrases, value_data){
-    def search_term_val = 0;
-    def quality_messages = [:]
+def get_species(value, search_phrases){
+    /*
+        Get species data for the sample
+    */
+    // search_term_val used to be 0...
+    def search_term_val = 0 // location of where the search key is in the search phrases array
     def qc_data = null;
-    if(value == null){
-        return null
-    }
-
     for(item in search_phrases){
         if(value.contains(item[search_term_val])){
             qc_data = item;
             break;
         }
     }
+    return qc_data;
+}
+
+def get_qc_data_species(value_data, qc_data){
+    def quality_messages = [:]
+
+    //def qc_data = get_species(value, search_phrases)
 
 
     params.QCReportFields.each{
@@ -526,6 +564,7 @@ def get_species(value, search_phrases, value_data){
         if(v.on){ // only use the fields specified in the config
             def out = recurse_keys(value_data, v)
             if(out != null){
+                def species_data = null
                 if(qc_data == null){
                     species_data = params.QCReport.fallthrough
                 }else{
@@ -543,12 +582,19 @@ def get_species(value, search_phrases, value_data){
 }
 
 def generate_qc_data(data, search_phrases){
+    /*
+    data: sample data in a LazyMap
+    search_phrases: normalized search phrases from the nextflow.config
+    */
     // TODO Need to update constants....
+
     def top_hit_tag = params.top_hit_species.report_tag;
     def quality_analysis = "QualityAnalysis"
     for(k in data){
         if(!k.value.meta.metagenomic){
-            data[k.key][quality_analysis] = get_species(k.value[k.key][top_hit_tag], search_phrases, k.value[k.key])
+            def species = get_species(k.value[k.key][top_hit_tag], search_phrases)
+            generate_coverage_data(data[k.key], params.seqtk_size.report_tag, species) // update coverage first so its values can be used in generating qc messages
+            data[k.key][quality_analysis] = get_qc_data_species(k.value[k.key], species)
         }else{
             data[k.key][quality_analysis] = ["Metagenomic": ["message": null, "status": false]]
             data[k.key][quality_analysis]["Metagenomic"].message = "The sample was determined to be metagenomic, summary metrics will not be generated" +
@@ -556,6 +602,7 @@ def generate_qc_data(data, search_phrases){
                     " you re-isolate and re-sequence this sample"
         }
     }
+
 }
 
 def update_map_values(data, meta_data, tag){
@@ -668,7 +715,6 @@ def trim_json(json_data, paths, delimiter){
 def gather_json_paths(json_data, parents, delimiter, list_paths, exclude_paths){
     /*Trim json fields
 
-    It seems nextflow does not support recursion...
     */
 
     json_data.each{

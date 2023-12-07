@@ -79,6 +79,7 @@ workflow ASSEMBLE_READS{
     contigs = ch_assembled.contigs
     graphs = ch_assembled.graphs
     final_contigs = final_contigs
+    base_counts = base_counts.base_counts
     versions = versions
     reports = reports
 }

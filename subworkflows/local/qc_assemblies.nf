@@ -54,7 +54,7 @@ workflow QC_ASSEMBLIES {
 
 
     emit:
-    filtered_assemblies = quast_data.quast_table
+    quast_data = quast_data.quast_table
     reports = reports
     versions = versions
 }

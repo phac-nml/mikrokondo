@@ -640,7 +640,7 @@
                     "hidden": true
                 },
                 "QCReport.campylobacter_jejuni.max_checkm_contamination": {
-                    "type": "integer",
+                    "type": "number",
                     "default": 3,
                     "hidden": true
                 },
@@ -695,7 +695,7 @@
                     "hidden": true
                 },
                 "QCReport.campylobacter_coli.max_checkm_contamination": {
-                    "type": "integer",
+                    "type": "number",
                     "default": 3,
                     "hidden": true
                 },
@@ -750,7 +750,7 @@
                     "hidden": true
                 },
                 "QCReport.vibrio_cholerae.max_checkm_contamination": {
-                    "type": "integer",
+                    "type": "number",
                     "default": 3,
                     "hidden": true
                 },
@@ -2749,7 +2749,7 @@
         },
         "validationFailUnrecognisedParams": {
             "type": "boolean",
-            "default": true
+            "default": false
         },
         "fastp.cut_tail_mean_quality": {
             "type": "integer",

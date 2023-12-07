@@ -100,6 +100,7 @@ workflow HYBRID_ASSEMBLY {
     emit:
     fasta = ch_contigs
     vcf = ch_pilon_vcf
+    base_counts = base_counts.base_counts
     changes = ch_pilon_vcf
     assembly = ch_uni_assembly
     log_unicycler = ch_uni_log

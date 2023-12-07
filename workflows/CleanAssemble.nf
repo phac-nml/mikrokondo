@@ -96,6 +96,7 @@ workflow CLEAN_ASSEMBLE_READS {
 
         // Join long reads back in with the
         ch_assembled_reads = HYBRID_ASSEMBLY(ch_trimmed_reads)
+        ch_base_counts = ch_assembled_reads.base_counts
         ch_output_data_asm = ch_assembled_reads.fasta
         ch_versions = ch_versions.mix(HYBRID_ASSEMBLY.out.versions)
         ch_reports = ch_reports.mix(HYBRID_ASSEMBLY.reports)
@@ -120,6 +121,7 @@ workflow CLEAN_ASSEMBLE_READS {
 
         // Isolate workflow
         ch_assembled_reads = ASSEMBLE_READS(ch_trimmed_reads)
+        ch_base_counts = ch_assembled_reads.base_counts
         ch_reports = ch_reports.mix(ch_assembled_reads.reports)
         ch_versions = ch_versions.mix(ch_assembled_reads.versions)
 
@@ -137,6 +139,7 @@ workflow CLEAN_ASSEMBLE_READS {
 
     emit:
         final_assembly = ch_final_assembly
+        base_counts = ch_base_counts
         cleaned_reads = ch_trimmed_reads
         versions = ch_versions
         reports = ch_reports
