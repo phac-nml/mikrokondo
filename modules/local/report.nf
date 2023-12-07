@@ -99,10 +99,18 @@ def generate_coverage_data(sample_data, bp_field, species){
         entry -> if(entry.key != "meta" && entry.key != "QualityAnalysis"){ // TODO add to constants
             def q_length = null
             def base_counts_p = false
+            if(species == null){
+                return null // break statement is not allowed here...
+            }
             if(entry.value.containsKey(bp_field)){
                 base_counts_p = true
                 def base_pairs = entry.value[bp_field].toLong()
-                q_length = recurse_keys(entry.value, params.QCReportFields.length).toLong()
+                q_length = recurse_keys(entry.value, params.QCReportFields.length)
+                if(q_length != null){ // incase the value returned is null
+                    q_length = q_length.toLong()
+                }else{
+                    return null
+                }
             }
 
             // Add naive coverage value if required
@@ -566,9 +574,14 @@ def get_species(value, search_phrases, shortest_token){
         Get species data for the sample
         shortest_token: contains values to scrub from value to be searched for
     */
+
+    def qc_data = null;
+    if(value == null){
+        return qc_data
+    }
     // search_term_val used to be 0...
     def search_term_val = 0 // location of where the search key is in the search phrases array
-    def qc_data = null;
+
 
 
     // TODO matching here can likely be enhanced. wait for issue perhaps

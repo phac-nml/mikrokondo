@@ -2790,6 +2790,11 @@
         "fastp.illumina_length_max": {
             "type": "integer",
             "default": 400
+        },
+        "assembly_status.report_tag": {
+            "type": "string",
+            "default": "AssemblyCompleted",
+            "hidden": true
         }
     }
 }

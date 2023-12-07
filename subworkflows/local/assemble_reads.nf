@@ -52,8 +52,17 @@ workflow ASSEMBLE_READS{
     versions = versions.mix(ch_assembled.versions)
 
     // For determining what assemblies failed if failure is ignored
-    failed = ch_assembled.contigs.join(sample_data, remainder: true).filter { meta, contigs, reads -> contigs == null ? true : false}
-    failed.view()
+    assembly_status = ch_assembled.contigs.join(sample_data, remainder: true).branch {
+        meta, contigs, reads -> failed: contigs == null
+                                    passed: true}
+
+    reports = reports.mix(assembly_status.failed.map{
+        meta, contigs, reads -> tuple(meta, params.assembly_status, false)
+    })
+    reports = reports.mix(assembly_status.passed.map{
+        meta, contigs, reads -> tuple(meta, params.assembly_status, false)
+    })
+
 
 
     BANDAGE_IMAGE(ch_assembled.graphs)
