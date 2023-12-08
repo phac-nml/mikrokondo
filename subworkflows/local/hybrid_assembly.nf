@@ -1,4 +1,5 @@
 // Perform hybrid assembly
+include { SEQTK_SIZE } from "../../modules/local/seqtk_size.nf"
 include { UNICYCLER_ASSEMBLE } from '../../modules/local/unicycler_assemble.nf'
 include { MINIMAP2_INDEX } from '../../modules/local/minimap2_index.nf'
 include { MINIMAP2_MAP } from '../../modules/local/minimap2_map.nf'
