@@ -2795,6 +2795,16 @@
             "type": "string",
             "default": "AssemblyCompleted",
             "hidden": true
+        },
+        "filtered_reads.threshold": {
+            "type": "integer",
+            "default": 1000,
+            "hidden": true
+        },
+        "filtered_reads.report_tag": {
+            "type": "string",
+            "default": "MeetsReadThreshold",
+            "hidden": true
         }
     }
 }
