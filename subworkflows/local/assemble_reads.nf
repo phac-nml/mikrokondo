@@ -60,7 +60,7 @@ workflow ASSEMBLE_READS{
         meta, contigs, reads -> tuple(meta, params.assembly_status, false)
     })
     reports = reports.mix(assembly_status.passed.map{
-        meta, contigs, reads -> tuple(meta, params.assembly_status, false)
+        meta, contigs, reads -> tuple(meta, params.assembly_status, true)
     })
 
 

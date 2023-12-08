@@ -97,20 +97,20 @@ def generate_coverage_data(sample_data, bp_field, species){
     */
     sample_data.each {
         entry -> if(entry.key != "meta" && entry.key != "QualityAnalysis"){ // TODO add to constants
-            def q_length = null
             def base_counts_p = false
+            def base_pairs = null
             if(species == null){
                 return null // break statement is not allowed here...
             }
+
             if(entry.value.containsKey(bp_field)){
                 base_counts_p = true
-                def base_pairs = entry.value[bp_field].toLong()
-                q_length = recurse_keys(entry.value, params.QCReportFields.length)
-                if(q_length != null){ // incase the value returned is null
+                base_pairs = entry.value[bp_field].toLong()
+            }
+
+            def q_length = recurse_keys(entry.value, params.QCReportFields.length)
+            if(q_length != null){ // incase the value returned is null
                     q_length = q_length.toLong()
-                }else{
-                    return null
-                }
             }
 
             // Add naive coverage value if required
@@ -150,41 +150,46 @@ def n50_nrcontigs_decision(qual_data, nr_cont_p, n50_p, qual_message, reisolate,
     if(nr_cont_p && n50_p){
         // both fialed :(
         if(qual_data && qual_data.containsKey("nr_contigs") && qual_data.nr_contigs.low){
-            if(!qual_data.n50_value.low){
-                // This is good!!
-                qual_message.add(params.QCReportFields.nr_contigs.low_msg)
-                qual_message.add(params.QCReportFields.n50_value.high_msg)
-            }else{
-                qual_message.add(params.QCReportFields.nr_contigs.low_msg)
-                qual_message.add(params.QCReportFields.n50_value.low_msg)
-                resequence += 1
+            if(qual_data.n50_value.low){
+                //qual_message.add(params.QCReportFields.nr_contigs.low_msg)
+                //qual_message.add(params.QCReportFields.n50_value.low_msg)
+                reseqeunce += 1
             }
+            //if(!qual_data.n50_value.low){
+            //    // This is good!!
+            //    qual_message.add(params.QCReportFields.nr_contigs.low_msg)
+            //    qual_message.add(params.QCReportFields.n50_value.high_msg)
+            //}else{
+            //    //qual_message.add(params.QCReportFields.nr_contigs.low_msg)
+            //    //qual_message.add(params.QCReportFields.n50_value.low_msg)
+            //    resequence += 1
+            //}
         }else{
             if(!qual_data.n50_value.low){
-                qual_message.add(params.QCReportFields.nr_contigs.high_msg)
-                qual_message.add(params.QCReportFields.n50_value.high_msg)
+                //qual_message.add(params.QCReportFields.nr_contigs.high_msg)
+                //qual_message.add(params.QCReportFields.n50_value.high_msg)
                 reisolate += 1
                 resequence += 1
             }else{
-                qual_message.add(params.QCReportFields.nr_contigs.high_msg)
-                qual_message.add(params.QCReportFields.n50_value.low_msg)
+                //qual_message.add(params.QCReportFields.nr_contigs.high_msg)
+                //qual_message.add(params.QCReportFields.n50_value.low_msg)
                 resequence += 1
             }
         }
     }else if(nr_cont_p){
         if(qual_data.nr_contigs.low){
-            qual_message.add(params.QCReportFields.nr_contigs.low_msg)
+            //qual_message.add(params.QCReportFields.nr_contigs.low_msg)
             resequence += 1
         }else{
-            qual_message.add(params.QCReportFields.nr_contigs.high_msg)
+            //qual_message.add(params.QCReportFields.nr_contigs.high_msg)
             resequence += 1
         }
     }else if(n50_p){
         if(!qual_data.n50_value.low){
-            qual_message.add(params.QCReportFields.n50_value.low_msg)
+            //qual_message.add(params.QCReportFields.n50_value.low_msg)
             resequence += 1
         }else{
-            qual_message.add(params.QCReportFields.n50_value.high_msg)
+            //qual_message.add(params.QCReportFields.n50_value.high_msg)
             // No increment here, as higher n50 means its a good assembly
         }
     }
@@ -265,21 +270,20 @@ def create_action_call(sample_data){
                 sample_data[val.key]["QCSummary"] = final_message
                 continue
             }
-            def qual_message = populate_qual_message(qual_data)
+            //def terminal_message = populate_qual_message(qual_data)
+            def qual_message = []
             def failed_p = false
             def checks_failed = 0
             def checks = 0
             def checks_ignored = 0
             def n50_failed = false
             def nr_contigs_failed = false
-            qual_message.add("Sample Identification")
-            qual_message.add("[TOPHIT] ${val.value[val.key][params.top_hit_species.report_tag]}")
-            qual_message.add("Additional feedback")
+            qual_message.add("Species ID: ${val.value[val.key][params.top_hit_species.report_tag]}")
 
 
             // ! TODO Summing of ignored checks is messy and the logic can likely be cleaned up
             if(qual_data && qual_data.containsKey("checkm_contamination") && !qual_data.checkm_contamination.status){
-                qual_message.add(params.QCReportFields.checkm_contamination.high_msg)
+                //qual_message.add(params.QCReportFields.checkm_contamination.high_msg)
                 reisolate = reisolate + contamination_fail
                 resequence += 1
                 failed_p = true
@@ -294,7 +298,7 @@ def create_action_call(sample_data){
             if(!meta_data.assembly){
                 // We should have reads as we assembled it
                 if(qual_data && qual_data.containsKey("raw_average_quality") && !qual_data.raw_average_quality.status){
-                    qual_message.add(params.QCReportFields.raw_average_quality.low_msg)
+                    //qual_message.add(params.QCReportFields.raw_average_quality.low_msg)
                     resequence += 1
                     checks_failed += 1
                 }else if (qual_data && (!qual_data.containsKey("raw_average_quality") || !qual_data.raw_average_quality.status)){
@@ -305,7 +309,7 @@ def create_action_call(sample_data){
                 checks += 1
 
                 if(qual_data && qual_data.containsKey("average_coverage") && !qual_data.average_coverage.status){
-                    qual_message.add(params.QCReportFields.average_coverage.low_msg)
+                    //qual_message.add(params.QCReportFields.average_coverage.low_msg)
                     if(meta_data.downsampled){
                         qual_message.add("The sample may have been downsampled too aggressively, if this is the cause please re-run sample with a different target depth.")
                     }
@@ -321,11 +325,11 @@ def create_action_call(sample_data){
 
             if(qual_data && qual_data.containsKey("length") && !qual_data.length.status){
                 if(qual_data.length.low){
-                    qual_message.add(params.QCReportFields.length.low_msg)
+                    //qual_message.add(params.QCReportFields.length.low_msg)
                     resequence += 1
                     checks_failed += 1
                 }else{
-                    qual_message.add(params.QCReportFields.length.high_msg)
+                    //qual_message.add(params.QCReportFields.length.high_msg)
                     resequence += 1
                     reisolate = reisolate + contamination_fail
                     checks_failed += 1
@@ -362,23 +366,28 @@ def create_action_call(sample_data){
             (reisolate, resequence) = n50_nrcontigs_decision(qual_data, nr_contigs_failed, n50_failed, qual_message, reisolate, resequence)
             qual_message.add("Quality Conclusion")
 
-            if(val.value.containsKey(params.assembly_status.report_tag)){
-                if(!val.value[params.assembly_status.report_tag]){
-                    qual_message.add("Assembly failed, this may be an issue with your data or the pipeline. Please check the log or the outputs in the samples work directory.")
-                }
-            }
+            //if(val.value.containsKey(params.assembly_status.report_tag)){
+            //    if(!val.value[params.assembly_status.report_tag]){
+            //        qual_message.add("Assembly failed, this may be an issue with your data or the pipeline. Please check the log or the outputs in the samples work directory.")
+            //    }
+            //}
+            add_secondary_message(params.assembly_status.report_tag,
+                                "Assembly failed, this may be an issue with your data or the pipeline. Please check the log or the outputs in the samples work directory.",
+                                val.value)
+
+            add_secondary_message(params.filtered_reads.report_tag, "Sample did not have enough reads. (${params.min_reads}< present)", val.value)
 
             // TODO can reisolate be incremented without resequence? need to make sure no
             if(reisolate >= contamination_fail){
-                qual_message.add("[FAILED] Sample is likely contaminated, REISOLATION AND RESEQUENCING RECOMMENDED.")
+                qual_message.add("[FAILED] Sample is likely contaminated, REISOLATION AND RESEQUENCING RECOMMENDED")
             }else if(resequence > 0 && reisolate > 0){
-                qual_message.add("[FAILED] RESEQUENCING IS RECOMMENDED. Further screening may be required as some evidence of CONTAMINATION was present.")
+                qual_message.add("[FAILED] RESEQUENCING IS RECOMMENDED. Further screening may be required as some evidence of CONTAMINATION was present")
             }else if(resequence > 0){
-                qual_message.add("[FAILED] RESEQUENCING IS RECOMMENDED.")
+                qual_message.add("[FAILED] RESEQUENCING IS RECOMMENDED")
             }else if(checks_ignored > 0 || checks_failed > 0){
-                qual_message.add("[FAILED] Checks had to be ignored.")
+                qual_message.add("[FAILED] Checks had to be ignored")
             }else{
-                qual_message.add("[PASSED] All Checks passed.")
+                qual_message.add("[PASSED] All Checks passed")
                 sample_status = "PASSED"
             }
             qual_message.add("Passed Tests: ${checks - checks_failed - checks_ignored}/${checks}")
@@ -387,11 +396,20 @@ def create_action_call(sample_data){
 
             // Qual summary not final message
             final_message = qual_message.join("\n")
-            log.info "\n$val.key\n${final_message}\n"
+            def terminal_message = populate_qual_message(qual_data).join("\n")
+            log.info "\n$val.key\n${terminal_message}\n${sample_status}\n${final_message}"
             sample_data[val.key]["QCStatus"] = sample_status
             sample_data[val.key]["QCSummary"] = final_message
         }
 
+}
+
+def add_secondary_message(report_tag, message, data){
+    if(data.containsKey(report_tag)){
+        if(!data.value[report_tag]){
+            data.add(message)
+        }
+    }
 }
 
 def qc_params_species(){
