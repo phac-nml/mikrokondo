@@ -1890,6 +1890,11 @@
                     "type": "string",
                     "default": "--min-contig 0 --report-all-metrics",
                     "hidden": true
+                },
+                "quast.contigs_field": {
+                    "type": "string",
+                    "default": "# contigs",
+                    "hidden": true
                 }
             }
         },
