@@ -20,6 +20,11 @@
                     "type": "string",
                     "default": "DetectedGenomeSizeDepth",
                     "hidden": true
+                },
+                "coverage_calc_fields.bp_field": {
+                    "type": "string",
+                    "default": "['RawReadSummary', 'combined', 'total_bp']",
+                    "hidden": true
                 }
             }
         },
@@ -2805,6 +2810,10 @@
             "type": "string",
             "default": "MeetsReadThreshold",
             "hidden": true
+        },
+        "fastp.cut_tail_window_size": {
+            "type": "integer",
+            "default": 4
         }
     }
 }

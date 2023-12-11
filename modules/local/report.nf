@@ -99,13 +99,14 @@ def generate_coverage_data(sample_data, bp_field, species){
         entry -> if(entry.key != "meta" && entry.key != "QualityAnalysis"){ // TODO add to constants
             def base_counts_p = false
             def base_pairs = null
+            def base_pairs_t = traverse_values(entry.value, bp_field)
             if(species == null){
                 return null // break statement is not allowed here...
             }
 
-            if(entry.value.containsKey(bp_field)){
+            if(base_pairs_t != null){
                 base_counts_p = true
-                base_pairs = entry.value[bp_field].toLong()
+                base_pairs = base_pairs_t.toLong()
             }
 
             def q_length = recurse_keys(entry.value, params.QCReportFields.length)
@@ -454,29 +455,61 @@ def convert_type(type, val){
 
 def recurse_keys(value, keys_rk){
     // TODO add in generic return for if a value is not found
-    def temp = value
+    def temp = traverse_values(value, keys_rk.path)
     def value_found = true
-    for(key_rk in keys_rk.path){
-        def key_val
-        if(key_rk.isNumber()){
-            // ! This is a potential source of error as nextflow is numeric strings to int
-            key_val = key_rk.toInteger()
-        }else{
-            key_val = key_rk
-        }
-        if (temp.containsKey(key_val)){
-            temp = temp[key_val]
-        }else{
-            value_found = false
-            break
-        }
+    if(temp == null){
+        value_found = false;
     }
+
+    //for(key_rk in keys_rk.path){
+    //    def key_val
+    //    if(key_rk.isNumber()){
+    //        // ! This is a potential source of error as nextflow is numeric strings to int
+    //        key_val = key_rk.toInteger()
+    //    }else{
+    //        key_val = key_rk
+    //    }
+    //    if (temp.containsKey(key_val)){
+    //        temp = temp[key_val]
+    //    }else{
+    //        value_found = false
+    //        break
+    //    }
+    //}
     def ret_val = null
     if(value_found){
         ret_val = convert_type(keys_rk.coerce_type, temp)
     }
 
     return ret_val
+}
+
+def traverse_values(value, path){
+    def temp = value
+    def value_found = true
+    def ret_val = null
+
+    if(path instanceof String){
+        temp = temp[path]
+        return temp
+    }
+
+    for(key in path){
+        def key_val
+        if(key.isNumber()){
+            key_val = key.toInteger()
+        }else{
+            key_val = key
+        }
+
+        if(temp.containsKey(key_val)){
+            temp = temp[key_val]
+        }else{
+            temp = null
+            break
+        }
+    }
+    return temp
 }
 
 def range_comp(fields, qc_data, comp_val, qc_obj){
@@ -668,7 +701,8 @@ def generate_qc_data(data, search_phrases){
     for(k in data){
         if(!k.value.meta.metagenomic){
             def species = get_species(k.value[k.key][top_hit_tag], search_phrases, shortest_token)
-            generate_coverage_data(data[k.key], params.seqtk_size.report_tag, species) // update coverage first so its values can be used in generating qc messages
+            //generate_coverage_data(data[k.key], params.seqtk_size.report_tag, species) // update coverage first so its values can be used in generating qc messages
+            generate_coverage_data(data[k.key], params.coverage_calc_fields.bp_field, species) // update coverage first so its values can be used in generating qc messages
             data[k.key][quality_analysis] = get_qc_data_species(k.value[k.key], species)
         }else{
             data[k.key][quality_analysis] = ["Metagenomic": ["message": null, "status": false]]
