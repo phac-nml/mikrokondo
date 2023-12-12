@@ -581,7 +581,7 @@ def lesser_equal_comp(fields, qc_data, comp_val, qc_obj){
         qc_obj.status = true
         qc_obj.message = "[PASSED ${qc_obj.field}] ${comp_val} meets QC parameter of <= ${vals} for ${qc_data.search}"
     }else{
-        qc_obj.low = falses
+        qc_obj.low = false
         qc_obj.message = "[FAILED ${qc_obj.field}] ${comp_val} is greater than than QC parameter of ${vals} for ${qc_data.search}"
     }
     return qc_obj
