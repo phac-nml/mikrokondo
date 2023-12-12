@@ -279,7 +279,7 @@ def create_action_call(sample_data){
             def checks_ignored = 0
             def n50_failed = false
             def nr_contigs_failed = false
-            qual_message.add("Species ID: ${val.value[val.key][params.top_hit_species.report_tag]}")
+
 
 
             // ! TODO Summing of ignored checks is messy and the logic can likely be cleaned up
@@ -394,6 +394,7 @@ def create_action_call(sample_data){
             qual_message.add("Passed Tests: ${checks - checks_failed - checks_ignored}/${checks}")
 
 
+            qual_message.add("Species ID: ${val.value[val.key][params.top_hit_species.report_tag]}")
 
             // Qual summary not final message
             final_message = qual_message.join("\n")
