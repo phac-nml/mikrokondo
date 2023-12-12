@@ -365,7 +365,7 @@ def create_action_call(sample_data){
 
 
             (reisolate, resequence) = n50_nrcontigs_decision(qual_data, nr_contigs_failed, n50_failed, qual_message, reisolate, resequence)
-            qual_message.add("Quality Conclusion")
+            //qual_message.add("Quality Conclusion")
 
             //if(val.value.containsKey(params.assembly_status.report_tag)){
             //    if(!val.value[params.assembly_status.report_tag]){
@@ -514,50 +514,50 @@ def traverse_values(value, path){
 
 def range_comp(fields, qc_data, comp_val, qc_obj){
     if(qc_data == null){
-        qc_obj.message ="[${qc_obj.field}] WARNING: No comparison available for ${qc_obj.field}. Sample value: ${comp_val}"
+        qc_obj.message ="[WARNING ${qc_obj.field}] No comparison available for ${qc_obj.field}. Sample value: ${comp_val}"
         qc_obj.status = true
         return qc_obj
     }
 
     def vals = [qc_data[fields[0]], qc_data[fields[1]]].sort()
     if(vals[0] == null){
-        qc_obj.message ="[${qc_obj.field}] WARNING: No comparison of available for ${qc_obj.field}. Sample value: ${comp_val}"
+        qc_obj.message ="[WARNING ${qc_obj.field}] No comparison of available for ${qc_obj.field}. Sample value: ${comp_val}"
         qc_obj.status = true
         return qc_obj
     }
     if(vals[0] <= comp_val && comp_val <= vals[1]){
         qc_obj.status = true
-        qc_obj.message = "[${qc_obj.field} PASSED] ${comp_val} is within acceptable QC range for ${qc_data.search} (${fields[0]}: ${vals[0]} - ${fields[1]} ${vals[1]})"
+        qc_obj.message = "[PASSED ${qc_obj.field}] ${comp_val} is within acceptable QC range for ${qc_data.search} (${fields[0]}: ${vals[0]} - ${fields[1]} ${vals[1]})"
     }else{
         if(comp_val < vals[0]){
             qc_obj.low = true
         }else{
             qc_obj.low = false
         }
-        qc_obj.message = "[${qc_obj.field} FAILED] ${comp_val} is outside the acceptable ranges for ${qc_data.search} (${fields[0]}: ${vals[0]} - ${fields[1]} ${vals[1]})"
+        qc_obj.message = "[FAILED ${qc_obj.field}] ${comp_val} is outside the acceptable ranges for ${qc_data.search} (${fields[0]}: ${vals[0]} - ${fields[1]} ${vals[1]})"
     }
     return qc_obj
 }
 
 def greater_equal_comp(fields, qc_data, comp_val, qc_obj){
     if(qc_data == null){
-        qc_obj.message ="[${qc_obj.field}] WARNING: No comparison available for ${qc_obj.field}. Sample value: ${comp_val}"
+        qc_obj.message ="[WARNING ${qc_obj.field}] No comparison available for ${qc_obj.field}. Sample value: ${comp_val}"
         qc_obj.status = true
         return qc_obj
     }
     def vals = qc_data[fields[0]]
     if(vals == null){
-        qc_obj.message ="[${qc_obj.field}] WARNING: No comparison available. Sample value: ${comp_val}"
+        qc_obj.message ="[WARNING ${qc_obj.field}] No comparison available. Sample value: ${comp_val}"
         qc_obj.status = true
         return qc_obj
     }
 
     if(comp_val >= vals ){
         qc_obj.status = true
-        qc_obj.message = "[${qc_obj.field} PASSED] ${comp_val} meets QC parameter of => ${vals} for ${qc_data.search}"
+        qc_obj.message = "[PASSED ${qc_obj.field}] ${comp_val} meets QC parameter of => ${vals} for ${qc_data.search}"
     }else{
         qc_obj.low = true
-        qc_obj.message = "[${qc_obj.field} FAILED] ${comp_val} is less than QC parameter of ${vals} for ${qc_data.search}"
+        qc_obj.message = "[FAILED ${qc_obj.field}] ${comp_val} is less than QC parameter of ${vals} for ${qc_data.search}"
     }
     return qc_obj
 }
@@ -565,23 +565,23 @@ def greater_equal_comp(fields, qc_data, comp_val, qc_obj){
 def lesser_equal_comp(fields, qc_data, comp_val, qc_obj){
     // TODO  move checks into seperate function
     if(qc_data == null){
-        qc_obj.message ="[${qc_obj.field}] WARNING: No comparison available for ${qc_obj.field}. Sample value: ${comp_val}"
+        qc_obj.message ="[WARNING ${qc_obj.field}] No comparison available for ${qc_obj.field}. Sample value: ${comp_val}"
         qc_obj.status = true
         return qc_obj
     }
     def vals = qc_data[fields[0]]
     if(vals == null){
-        qc_obj.message = "[${qc_obj.field}] WARNING: No comparison available for ${qc_obj.field}. Sample value: ${comp_val}"
+        qc_obj.message = "[WARNING ${qc_obj.field}] No comparison available for ${qc_obj.field}. Sample value: ${comp_val}"
         qc_obj.status = true
         return qc_obj
     }
 
     if(comp_val <= vals ){
         qc_obj.status = true
-        qc_obj.message = "[${qc_obj.field} PASSED] ${comp_val} meets QC parameter of <= ${vals} for ${qc_data.search}"
+        qc_obj.message = "[PASSED ${qc_obj.field}] ${comp_val} meets QC parameter of <= ${vals} for ${qc_data.search}"
     }else{
-        qc_obj.low = false
-        qc_obj.message = "[${qc_obj.field} FAILED] ${comp_val} is greater than than QC parameter of ${vals} for ${qc_data.search}"
+        qc_obj.low = falses
+        qc_obj.message = "[FAILED ${qc_obj.field}] ${comp_val} is greater than than QC parameter of ${vals} for ${qc_data.search}"
     }
     return qc_obj
 }
