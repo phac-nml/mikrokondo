@@ -15,9 +15,13 @@ workflow QC_ASSEMBLIES {
 
     quast_data = QUAST(assembled_reads)
     versions = versions.mix(quast_data.versions)
+
     reports = reports.mix(quast_data.quast_table.map{
         meta, report, contigs -> tuple(meta, params.quast, report)
     })
+
+
+
 
     if(!params.skip_checkm){
         CHECKM_LINEAGEWF(assembled_reads.map{
@@ -42,15 +46,15 @@ workflow QC_ASSEMBLIES {
 
 
     // Filter out assemvlies that do not meet quast criteria
-    // TODO update meta tag to hold fail or pass value, hard stop should be nothing there
-    // TODO add in do not bother processing further for e.g. when something only has 10,000 bases
-    ch_assembly_filtered = quast_data.quast_table.filter {
-        meta, report, contigs -> filter_quast_assembly(meta, report)
-    }
+    //// TODO update meta tag to hold fail or pass value, hard stop should be nothing there
+    //// TODO add in do not bother processing further for e.g. when something only has 10,000 bases
+    //ch_assembly_filtered = quast_data.quast_table.filter {
+    //    meta, report, contigs -> filter_quast_assembly(meta, report)
+    //}
 
 
     emit:
-    filtered_assemblies = ch_assembly_filtered
+    quast_data = quast_data.quast_table
     reports = reports
     versions = versions
 }

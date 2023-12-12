@@ -46,16 +46,34 @@ workflow QC_READS {
     fastp_data = PARSE_FASTP(ch_meta_cleaned_reads.fastp_json)
 
 
-    passed_read_count = fastp_data.read_count.filter{
-        it[1] >= params.min_reads // Read counts are at position 1
+    reads_passed = fastp_data.read_count.branch{
+        passed: it[1] >= params.min_reads
+        failed: true
     }
+
+    // TODO add this to the reports
+    //passed_read_count = fastp_data.read_count.filter{
+    //    it[1] >= params.min_reads // Read counts are at position 1
+    //}
+
+    // This can be condensed to one line...
+    reports = reports.mix(reads_passed.failed.map{
+        meta, count -> tuple(meta, params.filtered_reads, false)
+    })
+    reports = reports.mix(reads_passed.passed.map{
+        meta, count -> tuple(meta, params.filtered_reads, true)
+    })
 
 
     total_base_counts = fastp_data.base_count.map{
         meta, bases -> tuple(meta, bases)
     }
 
-    filtered_samples = ch_meta_cleaned_reads.reads.join(passed_read_count).map{
+    //filtered_samples = ch_meta_cleaned_reads.reads.join(passed_read_count).map{
+    //    meta, reads, count -> tuple(meta, reads) // Only keeping reads that pass a threshold
+    //}
+
+    filtered_samples = ch_meta_cleaned_reads.reads.join(reads_passed.passed).map{
         meta, reads, count -> tuple(meta, reads) // Only keeping reads that pass a threshold
     }
 

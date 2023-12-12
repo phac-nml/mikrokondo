@@ -98,6 +98,14 @@ workflow MIKROKONDO {
     })
 
     ps_out = POST_ASSEMBLY(assembly_data, mk_out.cleaned_reads, mk_out.versions)
+
+
+    // Assemblies will be discared
+    base_count_data = ps_out.quast_table.map{
+        meta, reports, contigs -> tuple(meta, reports)
+    }.join(mk_out.base_counts)
+    
+
     ch_reports = ch_reports.mix(mk_out.reports)
     ch_reports = ch_reports.mix(ps_out.reports)
     ch_reports_all = ch_reports.collect()

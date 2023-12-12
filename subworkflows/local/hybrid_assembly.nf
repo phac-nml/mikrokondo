@@ -1,4 +1,5 @@
 // Perform hybrid assembly
+include { SEQTK_SIZE } from "../../modules/local/seqtk_size.nf"
 include { UNICYCLER_ASSEMBLE } from '../../modules/local/unicycler_assemble.nf'
 include { MINIMAP2_INDEX } from '../../modules/local/minimap2_index.nf'
 include { MINIMAP2_MAP } from '../../modules/local/minimap2_map.nf'
@@ -15,10 +16,22 @@ workflow HYBRID_ASSEMBLY {
     main:
     versions = Channel.empty()
     ch_contigs = Channel.empty()
+    reports = Channel.empty()
     ch_uni_assembly = Channel.empty()
     ch_uni_log = Channel.empty()
     ch_pilon_vcf = Channel.empty()
     ch_pilon_changes = Channel.empty()
+
+    // Get basecount information
+    sample_data = reads.map{
+        meta, sr, lr -> tuple(meta, [sr[0], sr[1], lr])
+    }
+    base_counts = SEQTK_SIZE(sample_data)
+
+    reports = reports.mix(base_counts.base_counts.map{
+        meta, file_bc -> tuple(meta, params.seqtk_size, extract_base_count(meta, file_bc));
+    })
+    versions = versions.mix(base_counts.versions)
 
     if(params.hybrid_unicycler){
         log.info "Running Unicycler for hybrid assembly"
@@ -88,11 +101,28 @@ workflow HYBRID_ASSEMBLY {
     emit:
     fasta = ch_contigs
     vcf = ch_pilon_vcf
+    base_counts = base_counts.base_counts
     changes = ch_pilon_vcf
     assembly = ch_uni_assembly
     log_unicycler = ch_uni_log
+    reports = reports
     versions = versions
 
     //versions = UNICYCLER_ASSEMBLE.out.versions
 
+}
+
+
+def extract_base_count(meta, data){
+    //TODO add in error handler for toLong()
+    def base_count_pos = 1;
+
+    def rows = data.splitCsv(header: false, sep: '\t') // only one line should be present
+    if(rows.size() > 1){
+        log.error "Seqtk size output multiple rows. Output is incorrect for: ${meta.id}. Bailing out"
+        exit 1
+    }
+    def base_count = rows[0][base_count_pos];
+    def base_long = base_count.toLong();
+    return base_long
 }

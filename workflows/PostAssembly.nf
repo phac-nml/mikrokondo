@@ -47,18 +47,24 @@ workflow POST_ASSEMBLY {
 
     divided_samples = SPLIT_METAGENOMIC(metagenomic_samples.metagenomic)
     // TODO when output is formalized mix this info back in
-    // TODO test with mash turned on
 
     ch_final_assembly = metagenomic_samples.isolate.mix(divided_samples.divided_contigs.map{
         meta, contigs -> tuple(meta, contigs, []) // empty brackets as no reads to add
     })
 
+
     QC_ASSEMBLY(ch_final_assembly)
+    quast_data = QC_ASSEMBLY.out.quast_data.map{
+        meta, report, contigs -> tuple(meta, report)
+    }
+
     ch_versions = ch_versions.mix(QC_ASSEMBLY.out.versions)
     ch_reports = ch_reports.mix(QC_ASSEMBLY.out.reports)
 
+
+
     // take quast data used for filtering is not needed along side the channel
-    ch_filtered_contigs = QC_ASSEMBLY.out.filtered_assemblies.map{
+    ch_filtered_contigs = QC_ASSEMBLY.out.quast_data.map{
         meta, quast_files, contigs -> tuple(meta, contigs)
     }
 
@@ -104,6 +110,7 @@ workflow POST_ASSEMBLY {
 
 
     emit:
+    quast_table = QC_ASSEMBLY.out.quast_data
     reports = ch_reports
 
 }
