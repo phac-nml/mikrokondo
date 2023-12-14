@@ -20,6 +20,7 @@ process REMOVE_CONTAMINANTS {
     def mapping_setting = null
     // traditional if/else as I find it more readable
     def platform_comp = platform.toString()
+
     if(platform_comp == params.opt_platforms.illumina){
         mapping_setting = params.r_contaminants.mm2_illumina;
     }else if(platform_comp == params.opt_platforms.ont){
@@ -62,7 +63,7 @@ process REMOVE_CONTAMINANTS {
     // -N added to add /1 and /2 to reads with the same name
     def samtools_cmds = "-N -f${samtools_filtering}" // -f4 filters out unmapped reads
     """
-    minimap2 $mapping_setting $args $contaminant_fa $reads_in > $minimap2_output
+    minimap2 $mapping_setting -y $args $contaminant_fa $reads_in > $minimap2_output
     samtools fastq $samtools_cmds $minimap2_output $reads_out
     gzip *${params.r_contaminants.samtools_output_ext}
     $zip_singletons
