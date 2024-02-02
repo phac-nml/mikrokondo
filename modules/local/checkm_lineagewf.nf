@@ -3,7 +3,7 @@
 
 process CHECKM_LINEAGEWF {
     tag "$meta.id"
-    label 'process_medium'
+    label 'process_high'
     container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.containers.get('singularity') : task.ext.containers.get('docker')}"
 
     input:
