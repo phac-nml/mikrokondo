@@ -1,6 +1,7 @@
 // Run annotate and apply QC metrics
 include { QUAST } from "../../modules/local/quast_assembly.nf"
-include {SEQKIT_STATS} from "../../modules/local/seqkit_stats.nf"
+include { SEQKIT_STATS } from "../../modules/local/seqkit_stats.nf"
+include { SEQKIT_FILTER } from "../../modules/local/seqkit_filter.nf"
 include { CHECKM_LINEAGEWF } from "../../modules/local/checkm_lineagewf.nf"
 include { MLST } from "../../modules/local/mlst.nf"
 
@@ -18,7 +19,7 @@ workflow QC_ASSEMBLIES {
 
     versions = versions.mix(seqkit_stats.versions)
     reports = reports.mix(seqkit_stats.stats.map{
-        meta, contigs, reads, report -> tuple(meta, params.seqkit_stats, report)
+        meta, contigs, reads, report -> tuple(meta, params.seqkit, report)
     })
 
     seqkit_stats_checked = seqkit_stats.stats.map{
@@ -31,15 +32,20 @@ workflow QC_ASSEMBLIES {
 
     // TODO need to add in QC message channel so failed messages are collated together
     //seqkit_stats_checked.failed.view()
-
-    quast_data = QUAST(seqkit_stats_checked.passed.map{
+    pre_checked_data = seqkit_stats_checked.passed.map{
         meta, contigs, reads, contig_length -> tuple(meta, contigs, reads)
-    })
-    versions = versions.mix(quast_data.versions)
+    }
 
+    quast_data = QUAST(pre_checked_data)
+    versions = versions.mix(quast_data.versions)
     reports = reports.mix(quast_data.quast_table.map{
         meta, report, contigs -> tuple(meta, params.quast, report)
     })
+
+    min_length = Channel.value(params.quast.min_contig_length)
+    filterd_contigs = SEQKIT_FILTER(pre_checked_data, min_length)
+    versions = versions.mix(filterd_contigs.versions)
+
 
 
     if(!params.skip_checkm){
@@ -87,7 +93,7 @@ def check_contig_length(meta, report){
         exit 1
     }
 
-    if(row[params.seqkit_stats.filter_field].toLong() < params.quast.min_contig_length){
+    if(row[params.seqkit.filter_field].toLong() < params.quast.min_contig_length){
         log.warn "${meta.id} Max contig length is less than the minimum contig length specified for quast (${params.quast.min_contig_length}). Sample will not progress through the rest of the workflow."
         return false
     }

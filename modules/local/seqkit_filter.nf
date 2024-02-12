@@ -1,25 +1,24 @@
-/* Generate fasta stats with seqkit
-*/
+// Filter contigs by length
 
 
-process SEQKIT_STATS {
+process SEQKIT_FILTER {
     tag "$meta.id"
-    label 'process_single'
+    label 'process_low'
     container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.containers.get('singularity') : task.ext.containers.get('docker')}"
 
+
     input:
-    tuple val(meta), path(contigs), path(trimmed_reads)
+    tuple val(meta), path(contigs), path(reads)
+    val min_length
 
     output:
-    tuple val(meta), path(contigs), path(trimmed_reads), path("*${params.seqkit.report_ext}"), emit: stats
+    tuple val(meta), path("${prefix}${params.seqkit.fasta_ext}"), emit: filtered_sequences
     path "versions.yml", emit: versions
 
-
     script:
-    def prefix =  task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
-    seqkit stats -T ${contigs} > ${prefix}${params.seqkit.report_ext}
-
+    seqkit seq -m ${min_length} ${contigs} | gzip > ${prefix}${params.seqkit.fasta_ext}
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         seqkit: \$( seqkit version | sed 's/seqkit v//' )
@@ -28,9 +27,7 @@ process SEQKIT_STATS {
 
     stub:
     """
-    touch stub_${params.seqkit.report_ext}
+    touch stub${params.seqkit.fasta.ext}
     touch versions.yml
     """
-
-
 }
