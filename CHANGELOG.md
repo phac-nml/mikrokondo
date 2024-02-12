@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Initial release of mk-kondo/mikrokondo, created with the [nf-core](https://nf-co.re/) template.
 
 ### `Added`
-
+Added contig count check before running Quast to ensure empty files are not passed in.
 ### `Fixed`
 
 ### `Dependencies`
