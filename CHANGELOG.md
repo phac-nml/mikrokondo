@@ -10,6 +10,7 @@ Initial release of mk-kondo/mikrokondo, created with the [nf-core](https://nf-co
 ### `Added`
 Added contig count check before running Quast to ensure empty files are not passed in.
 Added process to filter contigs based on a minimum required contig length.
+Added option to force sample to be implemented as an isolate
 ### `Fixed`
 
 ### `Dependencies`

@@ -162,7 +162,12 @@ workflow QC_READS {
                 meta, fastq -> tuple(add_meta_tag(meta, "true"), fastq)
             }
 
-        }else{
+        }else if(params.skip_metagenomic_detection){
+            ch_cleaned_reads = ch_prepped_reads.map {
+                meta, fastq -> tuple(add_meta_tag(meta, "false"), fastq)
+            }
+        }
+        else{
             parsed_mash = PARSE_MASH(mash_screen_out.mash_data, Channel.value("classify")) // Classify is passed to tell the script to determine if the sample is metagenomic or not
 
             // Update file metadata
@@ -234,6 +239,9 @@ def add_meta_tag(meta_map, meta_flag){
     Add a boolean flag for if data is metagenomic or not
     */
     def meta = [:] + meta_map
+    if(params.skip_metagenomic_detection){
+        log.info "Forcing ${meta_map.id} to be analysed as an isolate as 'skip_metagenomic_detection' is set to true."
+    }
 
 
     meta.metagenomic = meta_flag.toBoolean()
