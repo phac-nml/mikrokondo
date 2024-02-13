@@ -16,4 +16,4 @@ theme:
   language: en
 plugins:
     - search
-    - awesome-page
+    - awesome-pages
