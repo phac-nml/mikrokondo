@@ -152,49 +152,29 @@ def n50_nrcontigs_decision(qual_data, nr_cont_p, n50_p, qual_message, reisolate,
         // both fialed :(
         if(qual_data && qual_data.containsKey("nr_contigs") && qual_data.nr_contigs.low){
             if(qual_data.n50_value.low){
-                //qual_message.add(params.QCReportFields.nr_contigs.low_msg)
-                //qual_message.add(params.QCReportFields.n50_value.low_msg)
+
                 reseqeunce += 1
             }
-            //if(!qual_data.n50_value.low){
-            //    // This is good!!
-            //    qual_message.add(params.QCReportFields.nr_contigs.low_msg)
-            //    qual_message.add(params.QCReportFields.n50_value.high_msg)
-            //}else{
-            //    //qual_message.add(params.QCReportFields.nr_contigs.low_msg)
-            //    //qual_message.add(params.QCReportFields.n50_value.low_msg)
-            //    resequence += 1
-            //}
+
         }else{
             if(!qual_data.n50_value.low){
-                //qual_message.add(params.QCReportFields.nr_contigs.high_msg)
-                //qual_message.add(params.QCReportFields.n50_value.high_msg)
                 reisolate += 1
                 resequence += 1
             }else{
-                //qual_message.add(params.QCReportFields.nr_contigs.high_msg)
-                //qual_message.add(params.QCReportFields.n50_value.low_msg)
                 resequence += 1
             }
         }
     }else if(nr_cont_p){
         if(qual_data.nr_contigs.low){
-            //qual_message.add(params.QCReportFields.nr_contigs.low_msg)
             resequence += 1
         }else{
-            //qual_message.add(params.QCReportFields.nr_contigs.high_msg)
             resequence += 1
         }
     }else if(n50_p){
         if(!qual_data.n50_value.low){
-            //qual_message.add(params.QCReportFields.n50_value.low_msg)
             resequence += 1
-        }else{
-            //qual_message.add(params.QCReportFields.n50_value.high_msg)
-            // No increment here, as higher n50 means its a good assembly
         }
     }
-    // return the values
     return [reisolate, resequence]
 
 }
@@ -284,7 +264,6 @@ def create_action_call(sample_data){
 
             // ! TODO Summing of ignored checks is messy and the logic can likely be cleaned up
             if(qual_data && qual_data.containsKey("checkm_contamination") && !qual_data.checkm_contamination.status){
-                //qual_message.add(params.QCReportFields.checkm_contamination.high_msg)
                 reisolate = reisolate + contamination_fail
                 resequence += 1
                 failed_p = true
@@ -326,11 +305,9 @@ def create_action_call(sample_data){
 
             if(qual_data && qual_data.containsKey("length") && !qual_data.length.status){
                 if(qual_data.length.low){
-                    //qual_message.add(params.QCReportFields.length.low_msg)
                     resequence += 1
                     checks_failed += 1
                 }else{
-                    //qual_message.add(params.QCReportFields.length.high_msg)
                     resequence += 1
                     reisolate = reisolate + contamination_fail
                     checks_failed += 1
@@ -367,11 +344,6 @@ def create_action_call(sample_data){
             (reisolate, resequence) = n50_nrcontigs_decision(qual_data, nr_contigs_failed, n50_failed, qual_message, reisolate, resequence)
             qual_message.add("Quality Conclusion")
 
-            //if(val.value.containsKey(params.assembly_status.report_tag)){
-            //    if(!val.value[params.assembly_status.report_tag]){
-            //        qual_message.add("Assembly failed, this may be an issue with your data or the pipeline. Please check the log or the outputs in the samples work directory.")
-            //    }
-            //}
             add_secondary_message(params.assembly_status.report_tag,
                                 "Assembly failed, this may be an issue with your data or the pipeline. Please check the log or the outputs in the samples work directory.",
                                 val.value)
@@ -461,21 +433,6 @@ def recurse_keys(value, keys_rk){
         value_found = false;
     }
 
-    //for(key_rk in keys_rk.path){
-    //    def key_val
-    //    if(key_rk.isNumber()){
-    //        // ! This is a potential source of error as nextflow is numeric strings to int
-    //        key_val = key_rk.toInteger()
-    //    }else{
-    //        key_val = key_rk
-    //    }
-    //    if (temp.containsKey(key_val)){
-    //        temp = temp[key_val]
-    //    }else{
-    //        value_found = false
-    //        break
-    //    }
-    //}
     def ret_val = null
     if(value_found){
         ret_val = convert_type(keys_rk.coerce_type, temp)
@@ -646,8 +603,6 @@ def get_species(value, search_phrases, shortest_token){
     // search_term_val used to be 0...
     def search_term_val = 0 // location of where the search key is in the search phrases array
 
-
-
     // TODO matching here can likely be enhanced. wait for issue perhaps
     def comp_val_tokens = value.toLowerCase().split('_|\s').findAll{it.size() >= shortest_token};
     def comp_val = comp_val_tokens.join(" ")
@@ -662,8 +617,6 @@ def get_species(value, search_phrases, shortest_token){
 
 def get_qc_data_species(value_data, qc_data){
     def quality_messages = [:]
-
-    //def qc_data = get_species(value, search_phrases)
 
 
     params.QCReportFields.each{
