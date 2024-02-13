@@ -3,24 +3,25 @@
 
 ## Included sub-workflows
 
-- `input_check.nf`
-- `clean_reads.nf`
 - `assemble_reads.nf`
+- `clean_reads.nf`
 - `hybrid_assembly.nf`
+- `input_check.nf`
 - `polish_assemblies.nf`
 
-## Steps <!-- I need to add in the links to the workflow pages once they exist -->
-1. **QC reads** subworkflow steps in brief are listed below, for further information see (clean_reads.nf)
+
+## Steps
+1. **[QC reads](subworkflows/clean_reads)** subworkflow steps in brief are listed below, for further information see [clean_reads.nf](subworkflows/local/clean_reads.nf)
 	- Reads are checked for known sequencing contamination
 	- Quality metrics are calculated
 	- Reads are trimmed
 	- Coverage is estimated
-	- Sample is subsampled to set level (OPTIONAL)
+	- Read set subsampled to set level (OPTIONAL)
 	- Read set is assessed to be either an isolate or metagenomic sample (from presence of multiple taxa)
 
-2. **Assemble reads** using the '<SOMETHING>' flag, read sets will be diverted to either the assemble_reads (short reads) or hybrid_assembly (short and/or long reads) workflow. Though the data is handled differently in eash subworklow, both generate a contigs file and a bandage image and have an option of initial polishing via Racon. See (assemble_reads.nf) and (hybrid_assembly.nf) subworkflow pages for more details. <!-- ADD IN LINKS TO PAGES -->
+2. **[Assemble reads](/subworkflows/assemble_reads)** using the `params.platform` flag, read sets will be diverted to either the assemble_reads (short reads) or hybrid_assembly (short and/or long reads) workflow. Though the data is handled differently in eash subworklow, both generate a contigs file and a bandage image, with an option of initial polishing via Racon. See [assemble_reads.nf](subworkflows/local/assemble_reads.nf) and [hybrid_assembly.nf](subworkflows/local/hybrid_assembly.nf) subworkflow pages for more details.
 
-3. **Polish assembles** (OPTIONAL) Polishing of contigs can be added (polish_assemblies.nf). To make changes to the default workflow, see setting 'optional flags' page <!-- ADD IN LINK TO PAGE -->
+3. **[Polish assembles](/subworkflows/polish_assemblies)** (OPTIONAL) Polishing of contigs can be added [polish_assemblies.nf](subworkflows/local/polish_assemblies.nf). To make changes to the default workflow, see setting 'optional flags' page.
 
 ## Input
 - Next generation sequencing reads:
