@@ -74,6 +74,7 @@ process REPORT{
 
 
     def search_phrases = qc_params_species()
+
     // Add in quality information in place
     generate_qc_data(sample_data, search_phrases)
     create_action_call(sample_data)
@@ -576,7 +577,7 @@ def prep_qc_vals(qc_vals, qc_data, comp_val, field_val){
 
 def get_shortest_token(search_params){
 
-    def overly_large_number = 10000000;
+    def overly_large_number = 1000000000000;
     def shortest_entry = overly_large_number;
     for(i in search_params){
         def i_toks = i[0].split('_|\s')
@@ -669,8 +670,7 @@ def generate_qc_data(data, search_phrases){
 
 def update_map_values(data, meta_data, tag){
     //TODO need to update values that exist if another one exists
-    //log.info "${data[meta_data.sample]["meta"]} $meta_data $tag ${!data[meta_data.sample]["meta"].containsKey(tag)}"
-    // remove log.info "Before ${data[meta_data.sample]["meta"]} ${meta_data} $tag"
+
     if(!data[meta_data.sample]["meta"].containsKey(tag)){
         data[meta_data.sample]["meta"][tag] = meta_data[tag]
     }else if(data[meta_data.sample]["meta"][tag] == null){ // is a specific case for null needed?
@@ -678,7 +678,6 @@ def update_map_values(data, meta_data, tag){
     }else if(data[meta_data.sample]["meta"][tag] != meta_data[tag]){
         data[meta_data.sample]["meta"][tag] = meta_data[tag] // update to latest value if it does not match
     }
-    //log.info "After ${data[meta_data.sample]["meta"]} $meta_data $tag"
 }
 
 
@@ -706,24 +705,19 @@ def parse_data(file_path, extension, report_data, headers_key){
     /*Select the correct parse based on the passed file type
     */
     // ? TODO should a check of existence be passed here?
-    //println "${file_path} extension is ${extension}"
     def headers = report_data.containsKey(headers_key) ? report_data[headers_key] : null
     def return_text = null
     switch(extension){
         case "tsv":
-            //println "${file_path.getSimpleName()} is tsv"
             return_text = table_values(file_path, report_data.header_p, '\t', headers)
             break
         case "tab":
-            //println "${file_path.getSimpleName()} is tsv"
             return_text = table_values(file_path, report_data.header_p, '\t', headers)
             break
         case "txt":
-            //println "${file_path.getSimpleName()} is txt"
             return_text = table_values(file_path, report_data.header_p, '\t', headers)
             break
         case "csv":
-            //println "${file_path.getSimpleName()} is csv"
             return_text = table_values(file_path, report_data.header_p, ',', headers)
             break
         case "json":
@@ -740,7 +734,6 @@ def parse_data(file_path, extension, report_data, headers_key){
 Or the report module text parser."
             break
     }
-    //println return_text
     return return_text
 }
 
@@ -775,7 +768,7 @@ def trim_json(json_data, paths, delimiter){
 }
 
 def gather_json_paths(json_data, parents, delimiter, list_paths, exclude_paths){
-    /*Trim json fields
+    /*Trim json fields that should be excluded to prevent generating a massive yaml
 
     */
 

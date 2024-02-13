@@ -20,7 +20,6 @@ workflow POLISH_ASSEMBLIES{
 
 
     if(params.platform == params.opt_platforms.illumina){
-        //ch_pilon_polish = sample_data.join(assembled_data)
 
         PILON_ITER(ch_sample_assem)
         versions = versions.mix(PILON_ITER.out.versions)

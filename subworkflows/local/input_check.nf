@@ -72,7 +72,6 @@ def reset_combined_map(LinkedHashMap meta, sun.nio.fs.UnixPath f_reads, sun.nio.
     */
     // TODO find a way to make this cleaner
     def new_meta = meta
-    //new_meta.id = meta.id
     new_meta.merge = true
 
     // Converting paths back to strings so that the data fits in the format data function
@@ -94,13 +93,9 @@ def reset_combined_map(LinkedHashMap meta, sun.nio.fs.UnixPath f_reads, sun.nio.
 }
 
 def check_file_exists(String file_path){
-    // Check if a file exists, exit if it does not
-    //if(file_path == null){
-    //    exit 1, "ERROR: Please check input samplesheet -> $file_path is null. This could be due to forgetting to add Headers to your sample sheet or you could have empty rows in your sample sheet."
-    //}
+
     if(!file(file_path).exists()){
         exit 1, "ERROR: Please check input samplesheet -> $file_path does not exist. If your file in you sample sheet does not exist make sure you do not have spaces in your path name."
-        //log.warn "[SET BACK TO EXIT BEFORE PR] ERROR: Please check input samplesheet -> $file_path does not exist. If your file in you sample sheet does not exist make sure you do not have spaces in your path name."
     }
     return true
 }
@@ -200,7 +195,6 @@ def group_reads(ArrayList read_data){
         }
     }
 
-    //reads_combine.fields_merge = fields_merge
     return reads_combine
 }
 

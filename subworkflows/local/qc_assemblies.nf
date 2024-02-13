@@ -31,7 +31,6 @@ workflow QC_ASSEMBLIES {
                             }
 
     // TODO need to add in QC message channel so failed messages are collated together
-    //seqkit_stats_checked.failed.view()
     pre_checked_data = seqkit_stats_checked.passed.map{
         meta, contigs, reads, contig_length -> tuple(meta, contigs, reads)
     }
@@ -67,16 +66,6 @@ workflow QC_ASSEMBLIES {
         })
         versions = versions.mix(MLST.out.versions)
     }
-
-
-
-    // Filter out assemvlies that do not meet quast criteria
-    //// TODO update meta tag to hold fail or pass value, hard stop should be nothing there
-    //// TODO add in do not bother processing further for e.g. when something only has 10,000 bases
-    //ch_assembly_filtered = quast_data.quast_table.filter {
-    //    meta, report, contigs -> filter_quast_assembly(meta, report)
-    //}
-
 
     emit:
     quast_data = quast_data.quast_table
