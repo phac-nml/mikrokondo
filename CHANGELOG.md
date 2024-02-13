@@ -14,7 +14,7 @@ Added process to filter contigs based on a minimum required contig length.
 
 Added option to force sample to be implemented as an isolate
 
-Changed salmonella default quality option to 40
+Changed salmonella default default coverage to 40
 
 ### `Fixed`
 
