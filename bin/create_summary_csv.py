@@ -16,7 +16,8 @@ import sys
 
 class JsonImport:
     """Intake json report to convert to CSV"""
-    __max_depth = 15
+
+    __depth_limit = 15
     __keep_keys = set(["meta", "QualityAnalysis", "QCSummary", "QCStatus"])
     __delimiter = "\t"
 
@@ -118,10 +119,15 @@ class JsonImport:
         qc_status_rows.extend(list(qc_analysis_rows))
         qc_status_rows.append("QCSummary")
         qc_status_rows.extend(list(meta_data_rows))
+        # meta_data_rows = list(meta_data_rows)
+        # meta_data_rows.extend(list(qc_analysis_rows))
+        # meta_data_rows.append("QCSummary")
         rows = list(rows)
         rows.sort(reverse=True)
         qc_status_rows.extend(rows)
+        # meta_data_rows.extend(rows)
 
+        # return (sample_data_overview, meta_data_rows)
         return (sample_data_overview, qc_status_rows)
 
     def get_quality_analysis_fields(self, qc_fields):
@@ -205,7 +211,7 @@ class JsonImport:
             path (_type_): _description_
         """
         depth += 1
-        if depth < self.__max_depth:
+        if depth < self.__depth_limit:
             for k, v in dict_.items():
                 if type(v) is dict:
                     new_path = copy.deepcopy(path)
