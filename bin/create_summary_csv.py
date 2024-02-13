@@ -119,15 +119,11 @@ class JsonImport:
         qc_status_rows.extend(list(qc_analysis_rows))
         qc_status_rows.append("QCSummary")
         qc_status_rows.extend(list(meta_data_rows))
-        # meta_data_rows = list(meta_data_rows)
-        # meta_data_rows.extend(list(qc_analysis_rows))
-        # meta_data_rows.append("QCSummary")
+
+
         rows = list(rows)
         rows.sort(reverse=True)
         qc_status_rows.extend(rows)
-        # meta_data_rows.extend(rows)
-
-        # return (sample_data_overview, meta_data_rows)
         return (sample_data_overview, qc_status_rows)
 
     def get_quality_analysis_fields(self, qc_fields):
