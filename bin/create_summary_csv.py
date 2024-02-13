@@ -17,7 +17,6 @@ import sys
 class JsonImport:
     """Intake json report to convert to CSV"""
 
-    __depth_limit = 10
     __keep_keys = set(["meta", "QualityAnalysis", "QCSummary", "QCStatus"])
     __delimiter = "\t"
 
