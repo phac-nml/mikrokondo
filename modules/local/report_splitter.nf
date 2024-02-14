@@ -3,7 +3,7 @@
 */
 
 process REPORT_SUMMARIES{
-    tag "Report to TSV"
+    tag "Creating alternate output formats"
     label 'process_medium'
     container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.containers.get('singularity') : task.ext.containers.get('docker')}"
 
@@ -12,6 +12,7 @@ process REPORT_SUMMARIES{
 
     output:
     path("final_report.tsv"), emit: final_report
+    path("*_flattened.json"), emit: flattened_files
     path "versions.yml", emit: versions
 
     script:

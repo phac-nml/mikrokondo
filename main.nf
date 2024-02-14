@@ -110,7 +110,7 @@ workflow MIKROKONDO {
 
     if(!params.skip_report){
         REPORT(ch_reports_all)
-        REPORT_TO_TSV(REPORT.out.final_report)
+        REPORT_SUMMARIES(REPORT.out.final_report)
     }
 }
 
