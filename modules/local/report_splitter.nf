@@ -2,7 +2,7 @@
 
 */
 
-process REPORT_TO_TSV{
+process REPORT_SUMMARIES{
     tag "Report to TSV"
     label 'process_medium'
     container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.containers.get('singularity') : task.ext.containers.get('docker')}"
@@ -16,7 +16,7 @@ process REPORT_TO_TSV{
 
     script:
     """
-    create_summary_csv.py -f ${summary_report} -o final_report.tsv
+    report_summaries.py -f ${summary_report} -o final_report.tsv
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         python: \$(python --version | sed 's/Python //g')

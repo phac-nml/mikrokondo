@@ -55,13 +55,11 @@ include { CLEAN_ASSEMBLE_READS } from './workflows/CleanAssemble.nf'
 include { POST_ASSEMBLY } from './workflows/PostAssembly.nf'
 include { INPUT_CHECK } from './subworkflows/local/input_check.nf'
 include { REPORT } from './modules/local/report.nf'
-include { REPORT_TO_TSV } from './modules/local/report_to_tsv.nf'
+include { REPORT_SUMMARIES } from './modules/local/report_splitter.nf'
 
 //import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-//import ch.qos.logback.core.ConsoleAppender;
-//import ch.qos.logback.core.read.ListAppender;
-//import nextflow.util.LoggerHelper;
+
 
 //
 // WORKFLOW: Run main mk-kondo/mikrokondo analysis pipeline
@@ -104,7 +102,7 @@ workflow MIKROKONDO {
     base_count_data = ps_out.quast_table.map{
         meta, reports, contigs -> tuple(meta, reports)
     }.join(mk_out.base_counts)
-    
+
 
     ch_reports = ch_reports.mix(mk_out.reports)
     ch_reports = ch_reports.mix(ps_out.reports)

@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-"""Convert the summary report json into a CSV
+"""Convert the summary report json into a CSV, create a flattened json summary for individual data points as well
 TODO code base for this script needs to be cleaned up quite a bit
 TODO add static html table output
 
@@ -23,12 +23,66 @@ class JsonImport:
 
     def __init__(self, report_fp, output_name):
         self.output_name = output_name
+        self.output_dir = os.path.dirname(self.output_name)
+        self.flat_json = os.path.splitext(os.path.basename(self.output_name))[0] + "_flattened.json"
         self.qc_paths = []
         self.report_fp = report_fp
         self.data = self.ingest_report(self.report_fp)
+
+        self.flat_data = self.create_flat_json(self.data) # this could probably replace alot of other methods
+        self.output_indv_json(self.flat_data)
+        self.output_flat_json(self.flat_data)
+
         self.normalized, self.rows = self.flatten_groups(self.data)
         self.formatted_data = self.format_for_csv(self.normalized, self.rows)
         self.to_file()
+
+    def output_flat_json(self, flattened_data):
+        with open(os.path.join(self.output_dir, self.flat_json), "w") as output:
+            d_out = json.dumps(flattened_data, indent=2)
+            output.write(d_out)
+
+    def output_indv_json(self, flattened_data):
+        for k, v in flattened_data.items():
+            with open(os.path.join(self.output_dir, f"{k}_flattened.json"), "w") as output:
+                json_data = json.dumps(v, indent=2)
+                output.write(json_data)
+
+    def create_flat_json(self, data):
+        """ Create independent outputs for each sample
+        """
+        final_dict = dict()
+        for key, value in data.items():
+            root_data = value[key]
+            keys = [k for k in value.keys() if key == k[:len(key)] and key != k]
+            qc_data = {k: value[k] for k in value.keys() if key != k[:len(key)] and key != k}
+            if keys:
+                for k in keys:
+                    aggregated_data = copy.deepcopy(qc_data)
+                    aggregated_data.update({k: v for k, v in root_data.items()})
+                    aggregated_data.update({k: v for k, v in value[k].items()})
+                    values = []
+                    self.flatten_json(aggregated_data, None, values)
+                    output = {k[0]: k[1] for k in values}
+                    final_dict[k] = output
+
+        return final_dict
+
+    def flatten_json(self, data, p_key, values):
+        if isinstance(data, dict):
+            for k, v in data.items():
+                if p_key is None:
+                    out_str = f"{k}"
+                else:
+                    out_str = f"{p_key}.{k}"
+                if isinstance(v, dict):
+                    self.flatten_json(v, out_str, values)
+                else:
+                    values.append((out_str, v))
+        else:
+            values.append((p_key, v))
+        return values
+
 
     def to_file(self):
         with open(self.output_name, "w") as out_file:
