@@ -54,7 +54,6 @@ class JsonImport:
         final_dict = dict()
         for key, value in data.items():
             root_data = value[key]
-            #keys = [k for k in value.keys() if key == k[:len(key)] and key != k]
             keys = [k for k in value.keys() if key == k[:len(key)]]
             qc_data = {k: value[k] for k in value.keys() if key != k[:len(key)] and key != k}
             if keys:
@@ -66,15 +65,6 @@ class JsonImport:
                     self.flatten_json(aggregated_data, None, values)
                     output = {k[0]: k[1] for k in values}
                     final_dict[k] = output
-            #if keys:
-            #    for k in keys:
-            #        aggregated_data = copy.deepcopy(qc_data)
-            #        aggregated_data.update({k: v for k, v in root_data.items()})
-            #        aggregated_data.update({k: v for k, v in value[k].items()})
-            #        values = []
-            #        self.flatten_json(aggregated_data, None, values)
-            #        output = {k[0]: k[1] for k in values}
-            #        final_dict[k] = output
 
         return final_dict
 
