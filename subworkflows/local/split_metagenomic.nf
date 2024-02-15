@@ -56,9 +56,7 @@ def create_meta_channels(List fasta_paths){
     // ! TODO out of bounds error will occur if no classified contigs are produced
 
     if(!(fasta_paths[1] instanceof Collection)){
-        //println "Only one sample: ${fasta_paths}"
         output_list << [meta, file(fasta_paths[1])]
-        //output_list.mix(channel.of(tuple(meta, file(fasta_paths[1]))))
     }else{
         for (i in fasta_paths[1]){
             def new_meta = deepcopy(meta)

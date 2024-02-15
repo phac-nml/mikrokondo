@@ -76,7 +76,7 @@
                 },
                 "QCReport.escherichia.max_checkm_contamination": {
                     "type": "number",
-                    "default": 3,
+                    "default": 3.0,
                     "hidden": true
                 },
                 "QCReport.escherichia.min_average_coverage": {
@@ -126,7 +126,7 @@
                 },
                 "QCReport.salmonella.max_checkm_contamination": {
                     "type": "number",
-                    "default": 3,
+                    "default": 3.0,
                     "hidden": true
                 },
                 "QCReport.salmonella.min_average_coverage": {
@@ -176,7 +176,7 @@
                 },
                 "QCReport.shigella.max_checkm_contamination": {
                     "type": "number",
-                    "default": 3,
+                    "default": 3.0,
                     "hidden": true
                 },
                 "QCReport.shigella.min_average_coverage": {
@@ -226,7 +226,7 @@
                 },
                 "QCReport.listeria.max_checkm_contamination": {
                     "type": "number",
-                    "default": 3,
+                    "default": 3.0,
                     "hidden": true
                 },
                 "QCReport.listeria.min_average_coverage": {
@@ -276,7 +276,7 @@
                 },
                 "QCReport.klebsiella.max_checkm_contamination": {
                     "type": "number",
-                    "default": 3,
+                    "default": 3.0,
                     "hidden": true
                 },
                 "QCReport.klebsiella.min_average_coverage": {
@@ -326,7 +326,7 @@
                 },
                 "QCReport.staphylococcus.max_checkm_contamination": {
                     "type": "number",
-                    "default": 3,
+                    "default": 3.0,
                     "hidden": true
                 },
                 "QCReport.staphylococcus.min_average_coverage": {
@@ -370,7 +370,7 @@
                 },
                 "QCReport.fallthrough.max_checkm_contamination": {
                     "type": "number",
-                    "default": 3,
+                    "default": 3.0,
                     "hidden": true
                 },
                 "QCReport.fallthrough.min_average_coverage": {
@@ -664,7 +664,7 @@
                 },
                 "QCReport.campylobacter_jejuni.max_checkm_contamination": {
                     "type": "number",
-                    "default": 3,
+                    "default": 3.0,
                     "hidden": true
                 },
                 "QCReport.campylobacter_jejuni.min_average_coverage": {
@@ -719,7 +719,7 @@
                 },
                 "QCReport.campylobacter_coli.max_checkm_contamination": {
                     "type": "number",
-                    "default": 3,
+                    "default": 3.0,
                     "hidden": true
                 },
                 "QCReport.campylobacter_coli.min_average_coverage": {
@@ -774,7 +774,7 @@
                 },
                 "QCReport.vibrio_cholerae.max_checkm_contamination": {
                     "type": "number",
-                    "default": 3,
+                    "default": 3.0,
                     "hidden": true
                 },
                 "QCReport.vibrio_cholerae.min_average_coverage": {
@@ -2819,6 +2819,38 @@
         "fastp.cut_tail_window_size": {
             "type": "integer",
             "default": 4
+        },
+        "skip_metagenomic_detection": {
+            "type": "string",
+            "default": "false"
+        },
+        "seqkit.singularity": {
+            "type": "string",
+            "default": "https://depot.galaxyproject.org/singularity/seqkit:2.2.0--h9ee0642_0"
+        },
+        "seqkit.docker": {
+            "type": "string",
+            "default": "quay.io/biocontainers/seqkit:2.2.0--h9ee0642_0"
+        },
+        "seqkit.report_ext": {
+            "type": "string",
+            "default": ".tsv"
+        },
+        "seqkit.fasta_ext": {
+            "type": "string",
+            "default": "_filtered.fasta.gz"
+        },
+        "seqkit.filter_field": {
+            "type": "string",
+            "default": "max_len"
+        },
+        "seqkit.report_tag": {
+            "type": "string",
+            "default": "Seqkit_stats"
+        },
+        "seqkit.header_p": {
+            "type": "string",
+            "default": "true"
         }
     }
 }
