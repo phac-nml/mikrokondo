@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Initial release of mk-kondo/mikrokondo, created with the [nf-core](https://nf-co.re/) template.
 
 ### `Added`
+
+Added message to final summary report notifying user if an assembly does not have any contigs exceeding the minimum contig length parameter
+
 Added contig count check before running Quast to ensure empty files are not passed in.
 
 Added process to filter contigs based on a minimum required contig length.
