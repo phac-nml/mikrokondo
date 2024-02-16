@@ -3,7 +3,6 @@ work/
 data/
 test_data/
 test_data/*
-tests/*
 results/
 .DS_Store
 testing/
@@ -21,6 +20,5 @@ FutureLabelNotes.txt
 databases/**
 Makefile
 *.bak
-nf-test.config
 docs/TODO.md
 .git.bak
