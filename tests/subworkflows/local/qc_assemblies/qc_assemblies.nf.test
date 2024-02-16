@@ -23,16 +23,13 @@ nextflow_workflow {
 
                 skip_checkm = true
                 skip_mlst = true
-
-                max_memory = "2.GB"
-                max_cpus = 1
             }
         }
 
         then {
             assert workflow.success
 
-            
+
         }
     }
 }
