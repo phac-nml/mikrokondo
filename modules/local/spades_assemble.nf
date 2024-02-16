@@ -27,7 +27,7 @@ but does not contain paired end reads. Currently only metaspades is \
 implemented and requires paired end reads. Therefore typical De-Novo assembly will be performed"
         }else{
             log.info "Using metaspades for sample ${meta.id}"
-            args = args + "--meta"
+            args = args + " --meta"
         }
     }else if (!meta.single_end){
         args = args + " --isolate"
