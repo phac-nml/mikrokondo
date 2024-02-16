@@ -19,6 +19,8 @@ Added option to force sample to be implemented as an isolate
 
 Changed salmonella default default coverage to 40
 
+Added integration testing using [nf-test](https://www.nf-test.com/).
+
 ### `Fixed`
 
 ### `Dependencies`
