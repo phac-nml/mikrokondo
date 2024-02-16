@@ -95,6 +95,28 @@ Three test profile with example data are provided and can be run like so:
 - Pacbio test profile: `nextflow run main.nf -profile test_pacbio,<docker/singularity> --outdir <OUTDIR>`
   - The pacbio workflow has only been partially tested as it fails at Flye due to not enough reads being present.
 
+## Testing
+
+Integration tests are implemented using [nf-test](https://www.nf-test.com/). In order to run tests locally, please do the following:
+
+### Install nf-test
+
+```bash
+# Only need to install package nf-test. Below is only for
+# if you want to have nextflow and nf-test in a separate environment
+conda create --name nextflow-testing nextflow nf-test
+conda activate nextflow-testing
+```
+
+### Run tests
+
+```bash
+# From mikrokondo root directory
+nf-test test
+```
+
+Add `--profile singularity` to switch from using docker by default to using singularity.
+
 ## TODOs
 
 - [ ] Add Shigella detection to GTDB sketch

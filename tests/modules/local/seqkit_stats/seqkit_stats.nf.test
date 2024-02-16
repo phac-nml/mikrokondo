@@ -1,0 +1,34 @@
+nextflow_process {
+    name "Test Process SEQKIT_STATS"
+    script "modules/local/seqkit_stats.nf"
+    process "SEQKIT_STATS"
+    tag "modules"
+    tag "seqkit_stats"
+
+    test("Test seqkit_stats") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [id: "SAMPLE1"],
+                    file("$baseDir/tests/data/sample1.fasta", checkIfExists: true),
+                    file("$baseDir/tests/data/reads.fastq", checkIfExists: true)
+                ])
+                """
+            }
+
+            params {
+                outdir = "seqkit_stats_test1"
+            }
+        }
+
+        then {
+            assert process.success
+            def stats_data = path("$launchDir/seqkit_stats_test1/assembly/quality/seqkit_stats/SAMPLE1.tsv").readLines()
+
+            assert stats_data.contains("file\tformat\ttype\tnum_seqs\tsum_len\tmin_len\tavg_len\tmax_len")
+            assert stats_data.contains("sample1.fasta\tFASTA\tDNA\t4\t10\t1\t2.5\t4")
+        }
+    }
+}
