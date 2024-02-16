@@ -19,9 +19,6 @@ nextflow_process {
             }
 
             params {
-                seqkit = ["report_ext": ".tsv"]
-                spades = ["outdir": "assembly"]
-
                 outdir = "seqkit_stats_test1"
             }
         }
