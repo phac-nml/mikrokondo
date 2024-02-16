@@ -1,6 +1,6 @@
 .nextflow*
 work/
-data/
+/data/
 test_data/
 test_data/*
 results/

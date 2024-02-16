@@ -12,8 +12,8 @@ nextflow_process {
                 """
                 input[0] = Channel.of([
                     [id: "SAMPLE1"],
-                    file("$baseDir/tests/data/sample1.fasta", checkIfExists: true),
-                    file("$baseDir/tests/data/reads.fastq", checkIfExists: true)
+                    file("$baseDir/tests/test_data/sample1.fasta", checkIfExists: true),
+                    file("$baseDir/tests/test_data/reads.fastq", checkIfExists: true)
                 ])
                 """
             }
