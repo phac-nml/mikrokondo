@@ -1,4 +1,5 @@
 .nextflow*
+/.nf-test
 work/
 /data/
 test_data/
@@ -10,8 +11,6 @@ testing*
 *.pyc
 *log
 .devcontainer
-.github
-.*
 slurm*
 *.fasta
 FutureLabelNotes.txt
