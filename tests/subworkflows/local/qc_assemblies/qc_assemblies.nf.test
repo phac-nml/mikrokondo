@@ -29,7 +29,7 @@ nextflow_workflow {
         then {
             assert workflow.success
 
-
+            snapshot(workflow.out).match()
         }
     }
 }

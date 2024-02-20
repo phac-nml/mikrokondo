@@ -1,0 +1,77 @@
+{
+    "Test qc_assemblies": {
+        "content": [
+            {
+                "0": [
+                    
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "SAMPLE1"
+                        },
+                        {
+                            "report_tag": "MaxContigToShort"
+                        },
+                        true
+                    ],
+                    [
+                        {
+                            "id": "SAMPLE1"
+                        },
+                        {
+                            "singularity": "https://depot.galaxyproject.org/singularity/seqkit:2.2.0--h9ee0642_0",
+                            "docker": "quay.io/biocontainers/seqkit:2.2.0--h9ee0642_0",
+                            "report_ext": ".tsv",
+                            "fasta_ext": "_filtered.fasta.gz",
+                            "filter_field": "max_len",
+                            "report_tag": "Seqkit_stats",
+                            "header_p": true
+                        },
+                        "SAMPLE1.tsv:md5,81d4a687ec1a3695bd369f7423955167"
+                    ]
+                ],
+                "2": [
+                    "versions.yml:md5,af079a3d8ae9ebd777f169eb697dcfd1"
+                ],
+                "quast_data": [
+                    
+                ],
+                "reports": [
+                    [
+                        {
+                            "id": "SAMPLE1"
+                        },
+                        {
+                            "report_tag": "MaxContigToShort"
+                        },
+                        true
+                    ],
+                    [
+                        {
+                            "id": "SAMPLE1"
+                        },
+                        {
+                            "singularity": "https://depot.galaxyproject.org/singularity/seqkit:2.2.0--h9ee0642_0",
+                            "docker": "quay.io/biocontainers/seqkit:2.2.0--h9ee0642_0",
+                            "report_ext": ".tsv",
+                            "fasta_ext": "_filtered.fasta.gz",
+                            "filter_field": "max_len",
+                            "report_tag": "Seqkit_stats",
+                            "header_p": true
+                        },
+                        "SAMPLE1.tsv:md5,81d4a687ec1a3695bd369f7423955167"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,af079a3d8ae9ebd777f169eb697dcfd1"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-02-16T14:28:35.6895908"
+    }
+}
