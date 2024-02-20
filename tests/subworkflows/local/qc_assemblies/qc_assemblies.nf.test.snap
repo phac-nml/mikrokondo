@@ -1,12 +1,11 @@
 {
-    "Test qc_assemblies": {
+    "Test qc_assemblies one assembly too short": {
         "content": [
             {
                 "0": [
                     [
                         {
-                            "id": "SAMPLE2",
-                            "single_end": true
+                            "id": "SAMPLE2"
                         },
                         "transposed_SAMPLE2.tsv:md5,a454f4ed93ec0e3968b7bb00d8c4d6bf",
                         "sample2.fasta:md5,bbf20af42bce1ffbbadb0cc79fb32034"
@@ -15,8 +14,7 @@
                 "1": [
                     [
                         {
-                            "id": "SAMPLE1",
-                            "single_end": true
+                            "id": "SAMPLE1"
                         },
                         {
                             "report_tag": "MaxContigToShort"
@@ -25,8 +23,7 @@
                     ],
                     [
                         {
-                            "id": "SAMPLE1",
-                            "single_end": true
+                            "id": "SAMPLE1"
                         },
                         {
                             "singularity": "https://depot.galaxyproject.org/singularity/seqkit:2.2.0--h9ee0642_0",
@@ -41,8 +38,7 @@
                     ],
                     [
                         {
-                            "id": "SAMPLE2",
-                            "single_end": true
+                            "id": "SAMPLE2"
                         },
                         {
                             "report_tag": "MaxContigToShort"
@@ -51,8 +47,7 @@
                     ],
                     [
                         {
-                            "id": "SAMPLE2",
-                            "single_end": true
+                            "id": "SAMPLE2"
                         },
                         {
                             "singularity": "https://depot.galaxyproject.org/singularity/quast%3A5.2.0--py39pl5321h4e691d4_3",
@@ -73,8 +68,7 @@
                     ],
                     [
                         {
-                            "id": "SAMPLE2",
-                            "single_end": true
+                            "id": "SAMPLE2"
                         },
                         {
                             "singularity": "https://depot.galaxyproject.org/singularity/seqkit:2.2.0--h9ee0642_0",
@@ -97,8 +91,7 @@
                 "quast_data": [
                     [
                         {
-                            "id": "SAMPLE2",
-                            "single_end": true
+                            "id": "SAMPLE2"
                         },
                         "transposed_SAMPLE2.tsv:md5,a454f4ed93ec0e3968b7bb00d8c4d6bf",
                         "sample2.fasta:md5,bbf20af42bce1ffbbadb0cc79fb32034"
@@ -107,8 +100,7 @@
                 "reports": [
                     [
                         {
-                            "id": "SAMPLE1",
-                            "single_end": true
+                            "id": "SAMPLE1"
                         },
                         {
                             "report_tag": "MaxContigToShort"
@@ -117,8 +109,7 @@
                     ],
                     [
                         {
-                            "id": "SAMPLE1",
-                            "single_end": true
+                            "id": "SAMPLE1"
                         },
                         {
                             "singularity": "https://depot.galaxyproject.org/singularity/seqkit:2.2.0--h9ee0642_0",
@@ -133,8 +124,7 @@
                     ],
                     [
                         {
-                            "id": "SAMPLE2",
-                            "single_end": true
+                            "id": "SAMPLE2"
                         },
                         {
                             "report_tag": "MaxContigToShort"
@@ -143,8 +133,7 @@
                     ],
                     [
                         {
-                            "id": "SAMPLE2",
-                            "single_end": true
+                            "id": "SAMPLE2"
                         },
                         {
                             "singularity": "https://depot.galaxyproject.org/singularity/quast%3A5.2.0--py39pl5321h4e691d4_3",
@@ -165,8 +154,7 @@
                     ],
                     [
                         {
-                            "id": "SAMPLE2",
-                            "single_end": true
+                            "id": "SAMPLE2"
                         },
                         {
                             "singularity": "https://depot.galaxyproject.org/singularity/seqkit:2.2.0--h9ee0642_0",
@@ -192,6 +180,6 @@
             "nf-test": "0.8.4",
             "nextflow": "23.10.1"
         },
-        "timestamp": "2024-02-20T15:19:04.2460749"
+        "timestamp": "2024-02-20T15:31:57.7645185"
     }
 }
