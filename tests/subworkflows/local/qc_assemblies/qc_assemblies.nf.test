@@ -90,6 +90,8 @@ nextflow_workflow {
                 assert contains([["id": "SAMPLE1"], ["report_tag": "MaxContigToShort"], true])
                 assert contains([["id": "SAMPLE2"], ["report_tag": "MaxContigToShort"], true])
             }
+
+            snapshot(workflow.out).match()
         }
     }
 
@@ -133,6 +135,8 @@ nextflow_workflow {
                 assert contains([["id": "SAMPLE1"], ["report_tag": "MaxContigToShort"], false])
                 assert contains([["id": "SAMPLE2"], ["report_tag": "MaxContigToShort"], false])
             }
+
+            snapshot(workflow.out).match()
         }
     }
 }
