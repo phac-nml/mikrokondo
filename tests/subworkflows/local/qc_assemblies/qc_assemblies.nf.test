@@ -26,8 +26,6 @@ nextflow_workflow {
             }
 
             params {
-                outdir = "qc_assemblies_test1"
-
                 quast {
                     min_contig_length = 5
                 }
@@ -73,8 +71,6 @@ nextflow_workflow {
             }
 
             params {
-                outdir = "qc_assemblies_test1"
-
                 quast {
                     min_contig_length = 50
                 }
@@ -118,8 +114,6 @@ nextflow_workflow {
             }
 
             params {
-                outdir = "qc_assemblies_test1"
-
                 quast {
                     min_contig_length = 4
                 }
