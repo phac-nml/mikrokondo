@@ -5,51 +5,30 @@ nextflow_workflow {
     tag "subworkflows"
     tag "qc_assemblies"
 
-    test("Test qc_assemblies") {
+    test("Test qc_assemblies one assembly too short") {
 
         when {
             workflow {
                 """
-                input[0] = Channel.of([
-                    [id: "SAMPLE1"],
-                    file("$baseDir/tests/data/sample1.fasta", checkIfExists: true),
-                    file("$baseDir/tests/data/reads.fastq", checkIfExists: true)
-                ])
+                input[0] = Channel.of(
+                    [
+                        [id: "SAMPLE1", single_end: true],
+                        file("$baseDir/tests/data/sample1.fasta", checkIfExists: true),
+                        []
+                    ],
+                    [
+                        [id: "SAMPLE2", single_end: true],
+                        file("$baseDir/tests/data/sample2.fasta", checkIfExists: true),
+                        []
+                    ],
+                )
                 """
             }
 
             params {
                 outdir = "qc_assemblies_test1"
 
-                skip_checkm = true
-                skip_mlst = true
-            }
-        }
-
-        then {
-            assert workflow.success
-
-            snapshot(workflow.out).match()
-        }
-    }
-
-    test("Test qc_assemblies smaller contig length") {
-
-        when {
-            workflow {
-                """
-                input[0] = Channel.of([
-                    [id: "SAMPLE1", single_end: true],
-                    file("$baseDir/tests/data/sample1.fasta", checkIfExists: true),
-                    []
-                ])
-                """
-            }
-
-            params {
-                outdir = "qc_assemblies_test1"
-
-                quast = ["min_contig_length": 2]
+                quast = ["min_contig_length": 5]
 
                 skip_checkm = true
                 skip_mlst = true
