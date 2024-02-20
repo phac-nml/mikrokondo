@@ -18,32 +18,29 @@
                 "pattern": "^\\S+\\.f(ast)?q\\.gz$",
                 "errorMessage": "FastQ file for reads 1 (forward reads) must be provided, cannot contain spaces and must have extension '.fq.gz' or '.fastq.gz'. If this is meant to be a run of mikrokondo with long read data please specify the paths under long_reads",
                 "dependentRequired": ["fastq_2"],
-                "meta": ["fastq_1"],
-                "unique": true
+                "meta": ["fastq_1"]
             },
             "fastq_2": {
                 "type": "string",
                 "pattern": "^\\S+\\.f(ast)?q\\.gz$",
                 "errorMessage": "FastQ file for reads 2 (reverse reads) cannot contain spaces and must have extension '.fq.gz' or '.fastq.gz'",
-                "meta": ["fastq_2"],
-                "unique": true
+                "meta": ["fastq_2"]
             },
             "long_reads": {
                 "type": "string",
                 "pattern": "^\\S+\\.f(ast)?q\\.gz$",
                 "errorMessage": "FastQ file for long reads must be provided, cannot contain spaces and must have extension '.fq.gz' or '.fastq.gz'.",
-                "meta": ["long_reads"],
-                "unique": true
+                "meta": ["long_reads"]
             },
             "assembly": {
                 "type": "string",
                 "pattern": "^\\S+\\.f(ast)?n?a\\.gz$",
                 "errorMessage": "Fasta file, cannot contain spaces and must have extension '.fa.gz' or '.fasta.gz'.",
-                "meta": ["assembly"],
-                "unique": true
+                "meta": ["assembly"]
             }
         },
-        "required": ["sample"]
+        "required": ["sample"],
+        "uniqueEntries": ["fastq_1", "fastq_2", "long_reads", "assembly"]
     }
 }
 
