@@ -51,10 +51,6 @@ workflow QC_READS {
         failed: true
     }
 
-    // TODO add this to the reports
-    //passed_read_count = fastp_data.read_count.filter{
-    //    it[1] >= params.min_reads // Read counts are at position 1
-    //}
 
     // This can be condensed to one line...
     reports = reports.mix(reads_passed.failed.map{
@@ -68,10 +64,6 @@ workflow QC_READS {
     total_base_counts = fastp_data.base_count.map{
         meta, bases -> tuple(meta, bases)
     }
-
-    //filtered_samples = ch_meta_cleaned_reads.reads.join(passed_read_count).map{
-    //    meta, reads, count -> tuple(meta, reads) // Only keeping reads that pass a threshold
-    //}
 
     filtered_samples = ch_meta_cleaned_reads.reads.join(reads_passed.passed).map{
         meta, reads, count -> tuple(meta, reads) // Only keeping reads that pass a threshold
@@ -109,9 +101,8 @@ workflow QC_READS {
         reads_and_fractions = filtered_samples.join(sample_fractions)
 
         // Branch to take reads for sampling from here
-        //reads_sample = sample_fractions.branch{
-        def sample_frac_pos = 2
 
+        def sample_frac_pos = 2
         reads_sample = reads_and_fractions.branch{
             sub_sample: it[sample_frac_pos] < 1.0 // less than 1 (double) the data should be sub sampled otherwise there is not enough data to hit depth requirements anyway
             other: true
@@ -162,7 +153,12 @@ workflow QC_READS {
                 meta, fastq -> tuple(add_meta_tag(meta, "true"), fastq)
             }
 
-        }else{
+        }else if(params.skip_metagenomic_detection){
+            ch_cleaned_reads = ch_prepped_reads.map {
+                meta, fastq -> tuple(add_meta_tag(meta, "false"), fastq)
+            }
+        }
+        else{
             parsed_mash = PARSE_MASH(mash_screen_out.mash_data, Channel.value("classify")) // Classify is passed to tell the script to determine if the sample is metagenomic or not
 
             // Update file metadata
@@ -234,6 +230,9 @@ def add_meta_tag(meta_map, meta_flag){
     Add a boolean flag for if data is metagenomic or not
     */
     def meta = [:] + meta_map
+    if(params.skip_metagenomic_detection){
+        log.info "Forcing ${meta_map.id} to be analysed as an isolate as 'skip_metagenomic_detection' is set to true."
+    }
 
 
     meta.metagenomic = meta_flag.toBoolean()

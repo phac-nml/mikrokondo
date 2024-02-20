@@ -55,13 +55,11 @@ include { CLEAN_ASSEMBLE_READS } from './workflows/CleanAssemble.nf'
 include { POST_ASSEMBLY } from './workflows/PostAssembly.nf'
 include { INPUT_CHECK } from './subworkflows/local/input_check.nf'
 include { REPORT } from './modules/local/report.nf'
-include { REPORT_TO_TSV } from './modules/local/report_to_tsv.nf'
+include { REPORT_SUMMARIES } from './modules/local/report_splitter.nf'
 
 //import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-//import ch.qos.logback.core.ConsoleAppender;
-//import ch.qos.logback.core.read.ListAppender;
-//import nextflow.util.LoggerHelper;
+
 
 //
 // WORKFLOW: Run main mk-kondo/mikrokondo analysis pipeline
@@ -70,13 +68,12 @@ workflow MIKROKONDO {
 
     if(params.validate_params){
         //====Temporarily turn of logging for ScriptBinding process that throws warns
-        // Probes better to disable the console appender briefly https://github.com/nextflow-io/nextflow/blob/6a0626f72455dfdef4135a119f48c3950bc6d9c6/modules/nextflow/src/main/groovy/nextflow/util/LoggerHelper.groovy#L110
+        // Probably better to disable the console appender briefly https://github.com/nextflow-io/nextflow/blob/6a0626f72455dfdef4135a119f48c3950bc6d9c6/modules/nextflow/src/main/groovy/nextflow/util/LoggerHelper.groovy#L110
         def logger2 = LoggerFactory.getLogger(nextflow.script.ScriptBinding)
         // This is working but if things get messy a better solution would be to look for a way to detach the console appender
         logger2.setLevel(ch.qos.logback.classic.Level.ERROR)
         validateParameters(monochrome_logs: true)
         logger2.setLevel(ch.qos.logback.classic.Level.DEBUG)
-        //logger2.setAdditive(true)
     }
 
 
@@ -104,7 +101,7 @@ workflow MIKROKONDO {
     base_count_data = ps_out.quast_table.map{
         meta, reports, contigs -> tuple(meta, reports)
     }.join(mk_out.base_counts)
-    
+
 
     ch_reports = ch_reports.mix(mk_out.reports)
     ch_reports = ch_reports.mix(ps_out.reports)
@@ -112,7 +109,7 @@ workflow MIKROKONDO {
 
     if(!params.skip_report){
         REPORT(ch_reports_all)
-        REPORT_TO_TSV(REPORT.out.final_report)
+        REPORT_SUMMARIES(REPORT.out.final_report)
     }
 }
 

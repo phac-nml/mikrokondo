@@ -108,8 +108,6 @@ workflow HYBRID_ASSEMBLY {
     reports = reports
     versions = versions
 
-    //versions = UNICYCLER_ASSEMBLE.out.versions
-
 }
 
 

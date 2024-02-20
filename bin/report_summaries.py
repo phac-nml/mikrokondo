@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-"""Convert the summary report json into a CSV
+"""Convert the summary report json into a CSV, create a flattened json summary for individual data points as well
 TODO code base for this script needs to be cleaned up quite a bit
 TODO add static html table output
 
@@ -17,18 +17,72 @@ import sys
 class JsonImport:
     """Intake json report to convert to CSV"""
 
-    __depth_limit = 10
+    __depth_limit = 15
     __keep_keys = set(["meta", "QualityAnalysis", "QCSummary", "QCStatus"])
     __delimiter = "\t"
 
     def __init__(self, report_fp, output_name):
         self.output_name = output_name
+        self.output_dir = os.path.dirname(self.output_name)
+        self.flat_json = os.path.splitext(os.path.basename(self.output_name))[0] + "_flattened.json"
         self.qc_paths = []
         self.report_fp = report_fp
         self.data = self.ingest_report(self.report_fp)
+
+        self.flat_data = self.create_flat_json(self.data) # this could probably replace alot of other methods
+        self.output_indv_json(self.flat_data)
+        self.output_flat_json(self.flat_data)
+
         self.normalized, self.rows = self.flatten_groups(self.data)
         self.formatted_data = self.format_for_csv(self.normalized, self.rows)
         self.to_file()
+
+    def output_flat_json(self, flattened_data):
+        with open(os.path.join(self.output_dir, self.flat_json), "w") as output:
+            d_out = json.dumps(flattened_data, indent=2)
+            output.write(d_out)
+
+    def output_indv_json(self, flattened_data):
+        for k, v in flattened_data.items():
+            with open(os.path.join(self.output_dir, f"{k}_flattened.json"), "w") as output:
+                json_data = json.dumps(v, indent=2)
+                output.write(json_data)
+
+    def create_flat_json(self, data):
+        """ Create independent outputs for each sample
+        """
+        final_dict = dict()
+        for key, value in data.items():
+            root_data = value[key]
+            keys = [k for k in value.keys() if key == k[:len(key)]]
+            qc_data = {k: value[k] for k in value.keys() if key != k[:len(key)] and key != k}
+            if keys:
+                for k in keys:
+                    aggregated_data = copy.deepcopy(qc_data)
+                    aggregated_data.update({k: v for k, v in root_data.items()})
+                    aggregated_data.update({k: v for k, v in value[k].items()})
+                    values = []
+                    self.flatten_json(aggregated_data, None, values)
+                    output = {k[0]: k[1] for k in values}
+                    final_dict[k] = output
+
+        return final_dict
+
+    def flatten_json(self, data, p_key, values):
+        if isinstance(data, dict):
+            for k, v in data.items():
+                if p_key is None:
+                    out_str = f"{k}"
+                else:
+                    out_str = f"{p_key}.{k}"
+                if isinstance(v, dict):
+                    self.flatten_json(v, out_str, values)
+                else:
+                    values.append((out_str, v))
+        else:
+            values.append((p_key, v))
+        return values
+
 
     def to_file(self):
         with open(self.output_name, "w") as out_file:
@@ -119,16 +173,31 @@ class JsonImport:
         qc_status_rows.extend(list(qc_analysis_rows))
         qc_status_rows.append("QCSummary")
         qc_status_rows.extend(list(meta_data_rows))
-        # meta_data_rows = list(meta_data_rows)
-        # meta_data_rows.extend(list(qc_analysis_rows))
-        # meta_data_rows.append("QCSummary")
-        rows = list(rows)
-        rows.sort(reverse=True)
-        qc_status_rows.extend(rows)
-        # meta_data_rows.extend(rows)
 
-        # return (sample_data_overview, meta_data_rows)
+        rows = list(rows)
+        rows.sort()
+
+        short_keys, rows = self.move_keys_front(rows, ".")
+        qc_status_rows.extend(short_keys)
+        qc_status_rows.extend(rows)
         return (sample_data_overview, qc_status_rows)
+
+
+    def move_keys_front(self, values, excl_key):
+        """Get group of keys to move to the front
+
+        Args:
+            values (_type_): list of rows
+            excl_key (_type_): Value to check for inclusion to move to the front
+        """
+        out_values = []
+        values = values
+        for v in values:
+            if excl_key not in v:
+                out_values.append(v)
+                values.remove(v)
+        return out_values, values
+
 
     def get_quality_analysis_fields(self, qc_fields):
         fields = []
@@ -211,7 +280,7 @@ class JsonImport:
             path (_type_): _description_
         """
         depth += 1
-        if depth < 10:
+        if depth < self.__depth_limit:
             for k, v in dict_.items():
                 if type(v) is dict:
                     new_path = copy.deepcopy(path)

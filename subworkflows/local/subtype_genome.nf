@@ -7,9 +7,8 @@ This creates an output similar to the kraken report
 2023-06-05: Matthew Wells
 */
 
-// TODO add spatyper and staramr
-// TODO shigeifinder does not type shigella, that is shigatyper which will be added
-//include { PARSE_MASH } from "../../modules/local/parse_mash.nf"
+
+// TODO shigeifinder does not type shigella, that is shigatyper which will be added"
 include { ECTYPER } from "../../modules/local/ectyper.nf"
 include { SISTR } from "../../modules/local/sistr.nf"
 include { LISSERO } from "../../modules/local/lissero.nf"
@@ -24,16 +23,12 @@ workflow SUBTYPE_GENOME{
 
     take:
     contigs // val(meta), path(contigs),
-    //taxon_data // val(meta) path(taxon info [mash]) adding kraken support in the future
     top_hit // val(meta) path(taxon info [mash]) adding kraken support in the future
 
     main:
     reports = Channel.empty()
     versions = Channel.empty()
 
-    //top_hit = PARSE_MASH(taxon_data, Channel.value("top"))
-    //reports = reports.mix(add_report_tag(top_hit.mash_out, params.mash_species))
-    //versions = versions.mix(top_hit.versions)
 
     ch_contigs_mash = top_hit.join(contigs)
 
@@ -90,7 +85,6 @@ workflow SUBTYPE_GENOME{
                 SISTR.out.versions,
                 LISSERO.out.versions,
                 SHIGEIFINDER.out.versions)
-                //SHIGATYPER.out.versions)
 
     isolates.fallthrough.subscribe{
         log.info "Sample ${it[0].id} could not be serotyped, sample identified as: ${it[1]}"
@@ -103,7 +97,6 @@ workflow SUBTYPE_GENOME{
         add_report_tag(sistr_results.tsv, params.sistr),
         add_report_tag(lissero_results.tsv, params.lissero),
         add_report_tag(shigeifinder_results.tsv, params.shigeifinder))
-        //add_report_tag(shigatyper_results.tsv, params.shigeifinder))
 
     emit:
     reports = reports
