@@ -1,4 +1,145 @@
 {
+    "Test qc_assemblies smaller contig length": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "SAMPLE1",
+                            "single_end": true
+                        },
+                        "transposed_SAMPLE1.tsv:md5,863a88efb1a001d680a676f14d979857",
+                        "sample1.fasta:md5,3a558f38623eeb525361f892f2e6c659"
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "SAMPLE1",
+                            "single_end": true
+                        },
+                        {
+                            "report_tag": "MaxContigToShort"
+                        },
+                        false
+                    ],
+                    [
+                        {
+                            "id": "SAMPLE1",
+                            "single_end": true
+                        },
+                        {
+                            "singularity": "https://depot.galaxyproject.org/singularity/quast%3A5.2.0--py39pl5321h4e691d4_3",
+                            "docker": "quay.io/biocontainers/quast:5.2.0--py39pl5321h4e691d4_3",
+                            "suffix": "quast",
+                            "report_base": "report",
+                            "report_prefix": "transposed_",
+                            "report_ext": ".tsv",
+                            "report_tag": "QUAST",
+                            "min_contig_length": 2,
+                            "contigs_field": "# contigs",
+                            "args": {
+                                
+                            },
+                            "header_p": true
+                        },
+                        "transposed_SAMPLE1.tsv:md5,863a88efb1a001d680a676f14d979857"
+                    ],
+                    [
+                        {
+                            "id": "SAMPLE1",
+                            "single_end": true
+                        },
+                        {
+                            "singularity": "https://depot.galaxyproject.org/singularity/seqkit:2.2.0--h9ee0642_0",
+                            "docker": "quay.io/biocontainers/seqkit:2.2.0--h9ee0642_0",
+                            "report_ext": ".tsv",
+                            "fasta_ext": "_filtered.fasta.gz",
+                            "filter_field": "max_len",
+                            "report_tag": "Seqkit_stats",
+                            "header_p": true
+                        },
+                        "SAMPLE1.tsv:md5,81d4a687ec1a3695bd369f7423955167"
+                    ]
+                ],
+                "2": [
+                    "versions.yml:md5,7531e2c7e3f82f40f432af6b47f2879b",
+                    "versions.yml:md5,af079a3d8ae9ebd777f169eb697dcfd1",
+                    "versions.yml:md5,b08afc3129cf0e1dddee612ed2eaceb8"
+                ],
+                "quast_data": [
+                    [
+                        {
+                            "id": "SAMPLE1",
+                            "single_end": true
+                        },
+                        "transposed_SAMPLE1.tsv:md5,863a88efb1a001d680a676f14d979857",
+                        "sample1.fasta:md5,3a558f38623eeb525361f892f2e6c659"
+                    ]
+                ],
+                "reports": [
+                    [
+                        {
+                            "id": "SAMPLE1",
+                            "single_end": true
+                        },
+                        {
+                            "report_tag": "MaxContigToShort"
+                        },
+                        false
+                    ],
+                    [
+                        {
+                            "id": "SAMPLE1",
+                            "single_end": true
+                        },
+                        {
+                            "singularity": "https://depot.galaxyproject.org/singularity/quast%3A5.2.0--py39pl5321h4e691d4_3",
+                            "docker": "quay.io/biocontainers/quast:5.2.0--py39pl5321h4e691d4_3",
+                            "suffix": "quast",
+                            "report_base": "report",
+                            "report_prefix": "transposed_",
+                            "report_ext": ".tsv",
+                            "report_tag": "QUAST",
+                            "min_contig_length": 2,
+                            "contigs_field": "# contigs",
+                            "args": {
+                                
+                            },
+                            "header_p": true
+                        },
+                        "transposed_SAMPLE1.tsv:md5,863a88efb1a001d680a676f14d979857"
+                    ],
+                    [
+                        {
+                            "id": "SAMPLE1",
+                            "single_end": true
+                        },
+                        {
+                            "singularity": "https://depot.galaxyproject.org/singularity/seqkit:2.2.0--h9ee0642_0",
+                            "docker": "quay.io/biocontainers/seqkit:2.2.0--h9ee0642_0",
+                            "report_ext": ".tsv",
+                            "fasta_ext": "_filtered.fasta.gz",
+                            "filter_field": "max_len",
+                            "report_tag": "Seqkit_stats",
+                            "header_p": true
+                        },
+                        "SAMPLE1.tsv:md5,81d4a687ec1a3695bd369f7423955167"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,7531e2c7e3f82f40f432af6b47f2879b",
+                    "versions.yml:md5,af079a3d8ae9ebd777f169eb697dcfd1",
+                    "versions.yml:md5,b08afc3129cf0e1dddee612ed2eaceb8"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-02-20T10:49:40.033536"
+    },
     "Test qc_assemblies": {
         "content": [
             {

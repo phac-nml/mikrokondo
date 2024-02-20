@@ -32,4 +32,34 @@ nextflow_workflow {
             snapshot(workflow.out).match()
         }
     }
+
+    test("Test qc_assemblies smaller contig length") {
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [id: "SAMPLE1", single_end: true],
+                    file("$baseDir/tests/data/sample1.fasta", checkIfExists: true),
+                    []
+                ])
+                """
+            }
+
+            params {
+                outdir = "qc_assemblies_test1"
+
+                quast = ["min_contig_length": 2]
+
+                skip_checkm = true
+                skip_mlst = true
+            }
+        }
+
+        then {
+            assert workflow.success
+
+            snapshot(workflow.out).match()
+        }
+    }
 }
