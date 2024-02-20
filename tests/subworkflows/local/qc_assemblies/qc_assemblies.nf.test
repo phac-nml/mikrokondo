@@ -28,7 +28,9 @@ nextflow_workflow {
             params {
                 outdir = "qc_assemblies_test1"
 
-                quast = ["min_contig_length": 5]
+                quast {
+                    min_contig_length = 5
+                }
 
                 skip_checkm = true
                 skip_mlst = true
@@ -73,7 +75,9 @@ nextflow_workflow {
             params {
                 outdir = "qc_assemblies_test1"
 
-                quast = ["min_contig_length": 50]
+                quast {
+                    min_contig_length = 50
+                }
 
                 skip_checkm = true
                 skip_mlst = true
@@ -116,7 +120,9 @@ nextflow_workflow {
             params {
                 outdir = "qc_assemblies_test1"
 
-                quast = ["min_contig_length": 4]
+                quast {
+                    min_contig_length = 4
+                }
 
                 skip_checkm = true
                 skip_mlst = true
