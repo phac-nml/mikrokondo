@@ -29,7 +29,7 @@ process FLYE_ASSEMBLE{
     script:
     def args = task.ext.args ?: ""
     if(meta.metagenomic){
-        args = args + "--meta "
+        args = args + " --meta "
     }
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
