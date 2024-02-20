@@ -20,6 +20,7 @@ process REMOVE_CONTAMINANTS {
     def mapping_setting = null
     // traditional if/else as I find it more readable
     def platform_comp = platform.toString()
+
     if(platform_comp == params.opt_platforms.illumina){
         mapping_setting = params.r_contaminants.mm2_illumina;
     }else if(platform_comp == params.opt_platforms.ont){
