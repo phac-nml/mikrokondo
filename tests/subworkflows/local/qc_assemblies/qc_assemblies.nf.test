@@ -48,6 +48,15 @@ nextflow_workflow {
                 assert contains([["id": "SAMPLE2"], ["report_tag": "MaxContigToShort"], false])
             }
 
+            assert !file("$launchDir/results/assembly/quality/quast/SAMPLE1/SAMPLE1.tsv").exists()
+
+            with(path("$launchDir/results/assembly/quality/quast/SAMPLE2/SAMPLE2.tsv").readLines()) {
+                assert contains("Assembly\tsample2")
+                assert contains("# contigs (>= 0 bp)\t3")
+                assert contains("Total length (>= 0 bp)\t60")
+                assert contains("N50\t30")
+            }
+
             snapshot(workflow.out).match()
         }
     }
@@ -94,6 +103,9 @@ nextflow_workflow {
                 assert contains([["id": "SAMPLE1"], ["report_tag": "MaxContigToShort"], true])
                 assert contains([["id": "SAMPLE2"], ["report_tag": "MaxContigToShort"], true])
             }
+            
+            assert !file("$launchDir/results/assembly/quality/quast/SAMPLE1/SAMPLE1.tsv").exists()
+            assert !file("$launchDir/results/assembly/quality/quast/SAMPLE2/SAMPLE2.tsv").exists()
         }
     }
 
@@ -138,6 +150,20 @@ nextflow_workflow {
                 // Both assemblies should be good
                 assert contains([["id": "SAMPLE1"], ["report_tag": "MaxContigToShort"], false])
                 assert contains([["id": "SAMPLE2"], ["report_tag": "MaxContigToShort"], false])
+            }
+
+            with(path("$launchDir/results/assembly/quality/quast/SAMPLE1/SAMPLE1.tsv").readLines()) {
+                assert contains("Assembly\tsample1")
+                assert contains("# contigs (>= 0 bp)\t4")
+                assert contains("Total length (>= 0 bp)\t10")
+                assert contains("N50\t4")
+            }
+
+            with(path("$launchDir/results/assembly/quality/quast/SAMPLE2/SAMPLE2.tsv").readLines()) {
+                assert contains("Assembly\tsample2")
+                assert contains("# contigs (>= 0 bp)\t3")
+                assert contains("Total length (>= 0 bp)\t60")
+                assert contains("N50\t30")
             }
         }
     }
