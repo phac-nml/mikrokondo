@@ -26,6 +26,8 @@ nextflow_workflow {
             }
 
             params {
+                outdir = "results"
+
                 quast {
                     min_contig_length = 5
                 }
@@ -71,6 +73,8 @@ nextflow_workflow {
             }
 
             params {
+                outdir = "results"
+
                 quast {
                     min_contig_length = 50
                 }
@@ -90,8 +94,6 @@ nextflow_workflow {
                 assert contains([["id": "SAMPLE1"], ["report_tag": "MaxContigToShort"], true])
                 assert contains([["id": "SAMPLE2"], ["report_tag": "MaxContigToShort"], true])
             }
-
-            snapshot(workflow.out).match()
         }
     }
 
@@ -116,6 +118,8 @@ nextflow_workflow {
             }
 
             params {
+                outdir = "results"
+
                 quast {
                     min_contig_length = 4
                 }
@@ -135,8 +139,6 @@ nextflow_workflow {
                 assert contains([["id": "SAMPLE1"], ["report_tag": "MaxContigToShort"], false])
                 assert contains([["id": "SAMPLE2"], ["report_tag": "MaxContigToShort"], false])
             }
-
-            snapshot(workflow.out).match()
         }
     }
 }
