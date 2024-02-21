@@ -4,12 +4,14 @@
 
 
 ## Steps
-1. Intake Sample sheet CSV and group samples with same ID. Sample metadata specific to the pipeline is added. A metadata field will additionally be created for samples containing the read data and sample information such as the samples name, and if the sample contains paired reads (Illumina) or long reads (Nanopore or Pacbio).
-2. If there are samples that contain duplicate ID's the **samples will be combined**.
+1. Reads in the sample sheet and groups samples with shared IDs. 
 
+2. Pipeline specific tags are added to each sample.
+
+3. If there are samples that have duplicate ID's the **samples will be combined**.
 
 ## Input
 - CSV formatted sample sheet
 
 ## Outputs
-- A channel of reads and their associated metadata
+- A channel of reads and their associated tags
