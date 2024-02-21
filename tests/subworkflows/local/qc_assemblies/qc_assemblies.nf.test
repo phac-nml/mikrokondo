@@ -1,0 +1,170 @@
+nextflow_workflow {
+    name "Test Workflow QC_ASSEMBLIES"
+    script "subworkflows/local/qc_assemblies.nf"
+    workflow "QC_ASSEMBLIES"
+    tag "subworkflows"
+    tag "qc_assemblies"
+
+    test("Test qc_assemblies one assembly too short") {
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of(
+                    [
+                        [id: "SAMPLE1"],
+                        file("$baseDir/tests/data/sample1.fasta", checkIfExists: true),
+                        []
+                    ],
+                    [
+                        [id: "SAMPLE2"],
+                        file("$baseDir/tests/data/sample2.fasta", checkIfExists: true),
+                        []
+                    ],
+                )
+                """
+            }
+
+            params {
+                outdir = "results"
+
+                quast {
+                    min_contig_length = 5
+                }
+
+                skip_checkm = true
+                skip_mlst = true
+            }
+        }
+
+        then {
+            assert workflow.success
+
+            with(workflow.out.reports) {
+                assert size() == 5
+
+                // One assembly should be too short, one assembly should not
+                assert contains([["id": "SAMPLE1"], ["report_tag": "MaxContigToShort"], true])
+                assert contains([["id": "SAMPLE2"], ["report_tag": "MaxContigToShort"], false])
+            }
+
+            assert !file("$launchDir/results/assembly/quality/quast/SAMPLE1/SAMPLE1.tsv").exists()
+
+            with(path("$launchDir/results/assembly/quality/quast/SAMPLE2/SAMPLE2.tsv").readLines()) {
+                assert contains("Assembly\tsample2")
+                assert contains("# contigs (>= 0 bp)\t3")
+                assert contains("Total length (>= 0 bp)\t60")
+                assert contains("N50\t30")
+            }
+
+            snapshot(workflow.out).match()
+        }
+    }
+
+    test("Test qc_assemblies both assemblies too short") {
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of(
+                    [
+                        [id: "SAMPLE1"],
+                        file("$baseDir/tests/data/sample1.fasta", checkIfExists: true),
+                        []
+                    ],
+                    [
+                        [id: "SAMPLE2"],
+                        file("$baseDir/tests/data/sample2.fasta", checkIfExists: true),
+                        []
+                    ],
+                )
+                """
+            }
+
+            params {
+                outdir = "results"
+
+                quast {
+                    min_contig_length = 50
+                }
+
+                skip_checkm = true
+                skip_mlst = true
+            }
+        }
+
+        then {
+            assert workflow.success
+
+            with(workflow.out.reports) {
+                assert size() == 4
+
+                // Both assemblies should be too short
+                assert contains([["id": "SAMPLE1"], ["report_tag": "MaxContigToShort"], true])
+                assert contains([["id": "SAMPLE2"], ["report_tag": "MaxContigToShort"], true])
+            }
+            
+            assert !file("$launchDir/results/assembly/quality/quast/SAMPLE1/SAMPLE1.tsv").exists()
+            assert !file("$launchDir/results/assembly/quality/quast/SAMPLE2/SAMPLE2.tsv").exists()
+        }
+    }
+
+    test("Test qc_assemblies both assemblies good") {
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of(
+                    [
+                        [id: "SAMPLE1"],
+                        file("$baseDir/tests/data/sample1.fasta", checkIfExists: true),
+                        []
+                    ],
+                    [
+                        [id: "SAMPLE2"],
+                        file("$baseDir/tests/data/sample2.fasta", checkIfExists: true),
+                        []
+                    ],
+                )
+                """
+            }
+
+            params {
+                outdir = "results"
+
+                quast {
+                    min_contig_length = 4
+                }
+
+                skip_checkm = true
+                skip_mlst = true
+            }
+        }
+
+        then {
+            assert workflow.success
+
+            with(workflow.out.reports) {
+                assert size() == 6
+
+                // Both assemblies should be good
+                assert contains([["id": "SAMPLE1"], ["report_tag": "MaxContigToShort"], false])
+                assert contains([["id": "SAMPLE2"], ["report_tag": "MaxContigToShort"], false])
+            }
+
+            with(path("$launchDir/results/assembly/quality/quast/SAMPLE1/SAMPLE1.tsv").readLines()) {
+                assert contains("Assembly\tsample1")
+                assert contains("# contigs (>= 0 bp)\t4")
+                assert contains("Total length (>= 0 bp)\t10")
+                assert contains("N50\t4")
+            }
+
+            with(path("$launchDir/results/assembly/quality/quast/SAMPLE2/SAMPLE2.tsv").readLines()) {
+                assert contains("Assembly\tsample2")
+                assert contains("# contigs (>= 0 bp)\t3")
+                assert contains("Total length (>= 0 bp)\t60")
+                assert contains("N50\t30")
+            }
+        }
+    }
+}
