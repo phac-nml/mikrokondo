@@ -72,7 +72,7 @@ workflow MIKROKONDO {
         def logger2 = LoggerFactory.getLogger(nextflow.script.ScriptBinding)
         // This is working but if things get messy a better solution would be to look for a way to detach the console appender
         logger2.setLevel(ch.qos.logback.classic.Level.ERROR)
-        validateParameters(monochrome_logs: true)
+        validateParameters(monochrome_logs: params.monochrome_logs, monochromeLogs: params.monochrome_logs)
         logger2.setLevel(ch.qos.logback.classic.Level.DEBUG)
     }
 

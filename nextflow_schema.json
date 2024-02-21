@@ -1,5 +1,5 @@
 {
-    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$schema": "http://json-schema.org/draft-07/schema",
     "$id": "https://raw.githubusercontent.com/phac-nml/mikrokondo/master/nextflow_schema.json",
     "title": "mikrokondo pipeline parameters",
     "description": "mikrokondo schema",
@@ -119,7 +119,7 @@
                 },
                 "QCReport.escherichia.max_checkm_contamination": {
                     "type": "number",
-                    "default": 3,
+                    "default": 3.0,
                     "hidden": true
                 },
                 "QCReport.escherichia.min_average_coverage": {
@@ -169,7 +169,7 @@
                 },
                 "QCReport.salmonella.max_checkm_contamination": {
                     "type": "number",
-                    "default": 3,
+                    "default": 3.0,
                     "hidden": true
                 },
                 "QCReport.salmonella.min_average_coverage": {
@@ -219,7 +219,7 @@
                 },
                 "QCReport.shigella.max_checkm_contamination": {
                     "type": "number",
-                    "default": 3,
+                    "default": 3.0,
                     "hidden": true
                 },
                 "QCReport.shigella.min_average_coverage": {
@@ -269,7 +269,7 @@
                 },
                 "QCReport.listeria.max_checkm_contamination": {
                     "type": "number",
-                    "default": 3,
+                    "default": 3.0,
                     "hidden": true
                 },
                 "QCReport.listeria.min_average_coverage": {
@@ -319,7 +319,7 @@
                 },
                 "QCReport.klebsiella.max_checkm_contamination": {
                     "type": "number",
-                    "default": 3,
+                    "default": 3.0,
                     "hidden": true
                 },
                 "QCReport.klebsiella.min_average_coverage": {
@@ -369,7 +369,7 @@
                 },
                 "QCReport.staphylococcus.max_checkm_contamination": {
                     "type": "number",
-                    "default": 3,
+                    "default": 3.0,
                     "hidden": true
                 },
                 "QCReport.staphylococcus.min_average_coverage": {
@@ -413,7 +413,7 @@
                 },
                 "QCReport.fallthrough.max_checkm_contamination": {
                     "type": "number",
-                    "default": 3,
+                    "default": 3.0,
                     "hidden": true
                 },
                 "QCReport.fallthrough.min_average_coverage": {
@@ -707,7 +707,7 @@
                 },
                 "QCReport.campylobacter_jejuni.max_checkm_contamination": {
                     "type": "number",
-                    "default": 3,
+                    "default": 3.0,
                     "hidden": true
                 },
                 "QCReport.campylobacter_jejuni.min_average_coverage": {
@@ -762,7 +762,7 @@
                 },
                 "QCReport.campylobacter_coli.max_checkm_contamination": {
                     "type": "number",
-                    "default": 3,
+                    "default": 3.0,
                     "hidden": true
                 },
                 "QCReport.campylobacter_coli.min_average_coverage": {
@@ -817,7 +817,7 @@
                 },
                 "QCReport.vibrio_cholerae.max_checkm_contamination": {
                     "type": "number",
-                    "default": 3,
+                    "default": 3.0,
                     "hidden": true
                 },
                 "QCReport.vibrio_cholerae.min_average_coverage": {
@@ -1568,8 +1568,8 @@
                 "validate_params": {
                     "type": "boolean",
                     "description": "Boolean whether to validate parameters against the schema at runtime",
-                    "default": true,
                     "fa_icon": "fas fa-check-square",
+                    "default": true,
                     "hidden": true
                 },
                 "show_hidden_params": {
