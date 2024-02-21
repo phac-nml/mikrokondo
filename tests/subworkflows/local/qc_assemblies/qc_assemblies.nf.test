@@ -88,7 +88,7 @@ nextflow_workflow {
             assert workflow.success
 
             with(workflow.out.reports) {
-                //assert size() == 5
+                assert size() == 4
 
                 // Both assemblies should be too short
                 assert contains([["id": "SAMPLE1"], ["report_tag": "MaxContigToShort"], true])
@@ -133,7 +133,7 @@ nextflow_workflow {
             assert workflow.success
 
             with(workflow.out.reports) {
-                //assert size() == 5
+                assert size() == 6
 
                 // Both assemblies should be good
                 assert contains([["id": "SAMPLE1"], ["report_tag": "MaxContigToShort"], false])
