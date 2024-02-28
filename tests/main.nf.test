@@ -1,0 +1,39 @@
+nextflow_workflow {
+
+    name "Full Integration Tests for MIKROKONDO"
+    script "main.nf"
+    workflow "MIKROKONDO"
+
+    test("Should run without failures") {
+
+        when {
+            params {
+                input = "samplesheet-staph.csv"
+                platform = "illumina"
+                outdir = "results"
+                mash.mash_sketch = "campy-staph-ecoli.msh"
+                r_contaminants.mega_mm2_idx = "campy.mmi"
+                skip_bakta = true
+                skip_staramr = true
+                skip_mobrecon = true
+                skip_checkm = true
+                skip_raw_read_metrics = true
+                skip_polishing = true
+                max_memory = "4.GB"
+                max_cpus = 2
+            }
+            workflow {
+                """
+                // define inputs of the workflow here. Example:
+                // input[0] = file("test-file.txt")
+                """
+            }
+        }
+
+        then {
+            assert workflow.success
+        }
+
+    }
+
+}
