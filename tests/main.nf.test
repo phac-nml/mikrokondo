@@ -32,6 +32,17 @@ nextflow_workflow {
 
         then {
             assert workflow.success
+            assert path("$launchDir/results").exists()
+
+            // parse output json file
+            def json_string = path("$launchDir/results/SummaryReport/final_report.json").readLines().join("\n")
+            def json_parser = new groovy.json.JsonSlurper()
+            def json = json_parser.parseText(json_string)
+
+            assert json.CSE.CSE.FastP.summary.sequencing.equals("paired end (150 cycles + 150 cycles)")
+            assert json.CSE.CSE.FastP.summary.before_filtering.total_reads.equals(248)
+            assert json.CSE.CSE.FastP.filtering_result.passed_filter_reads.equals(248)
+            assert json.CSE.CSE.FastP.insert_size.peak.equals(196)
         }
 
     }
