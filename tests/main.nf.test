@@ -9,10 +9,13 @@ nextflow_workflow {
         when {
             params {
                 input = "https://github.com/phac-nml/mikrokondo/raw/integration-testing/tests/data/samplesheets/samplesheet-campy-staph.csv"
-                platform = "illumina"
                 outdir = "results"
-                mash.mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/integration-testing/tests/data/databases/campy-staph-ecoli.msh"
-                r_contaminants.mega_mm2_idx = "https://github.com/phac-nml/mikrokondo/raw/integration-testing/tests/data/databases/campy.mmi"
+
+                platform = "illumina"
+
+                mash { mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/integration-testing/tests/data/databases/campy-staph-ecoli.msh" }
+                r_contaminants { mega_mm2_idx = "https://github.com/phac-nml/mikrokondo/raw/integration-testing/tests/data/databases/campy.mmi" }
+
                 skip_bakta = true
                 skip_staramr = true
                 skip_mobrecon = true
@@ -22,8 +25,7 @@ nextflow_workflow {
             }
             workflow {
                 """
-                // define inputs of the workflow here. Example:
-                // input[0] = file("test-file.txt")
+                // define inputs of the workflow here.
                 """
             }
         }
