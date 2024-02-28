@@ -20,7 +20,6 @@ workflow INPUT_CHECK {
             meta -> tuple(meta.id[0], meta[0])
         }
 
-
     if(params.opt_platforms.ont == params.platform && params.nanopore_chemistry == null){
         exit 1, "ERROR: Nanopore data was selected without a model being specified."
     }
@@ -116,10 +115,8 @@ def format_reads(ArrayList sheet_data){
     }
     def ret_val = null
 
-
-
     // A map could probably clean this up
-    if(sequencing_data.fastq_1 && sequencing_data.fastq_2 && sequencing_data.long_reads && sequencing_data.assembly == null){
+    if(sequencing_data.fastq_1 && sequencing_data.fastq_2 && sequencing_data.long_reads && !sequencing_data.assembly){
         if(params.platform != params.opt_platforms.hybrid){
             log.warn "Short and long reads have been specified for ${meta.id} but a hybrid assembly has not been specified. Exiting now."
             error_occured = true
@@ -133,14 +130,14 @@ def format_reads(ArrayList sheet_data){
     }else if(sequencing_data.long_reads){
         meta.single_end = true
         if(![params.opt_platforms.ont, params.opt_platforms.pacbio].contains(params.platform)){
-            log.warn "Long reads have been specified for ${meta.id} but a single end read platform ($params.opt_platforms.ont or $params.opt_platforms.pacbio) exiting now."
+            log.warn "Long reads have been specified for ${meta.id} but no single end read platform has been ($params.opt_platforms.ont or $params.opt_platforms.pacbio) exiting now."
             error_occured = true
         }
         check_file_exists(sequencing_data.long_reads)
         ret_val = tuple(meta, file(sequencing_data.long_reads))
 
     }else if(sequencing_data.assembly){
-        if(sequencing_data.fastq_1 != null || sequencing_data.fastq_2 != null || sequencing_data.long_reads != null){
+        if(sequencing_data.fastq_1 || sequencing_data.fastq_2 || sequencing_data.long_reads){
             log.warn "Additional sequencing data has been provided alongside assembly $meta.id, but reference guided assemblies are not currently supported."
             error_occured = true
         }
@@ -189,12 +186,12 @@ def group_reads(ArrayList read_data){
             if(!reads_combine.containsKey(item)){
                 reads_combine[item] = []
             }
-            if(group[item] != null && check_file_exists(group[item])){
+            if(group[item] && check_file_exists(group[item])){
                 reads_combine[item] << group[item]
             }
         }
     }
-
+    log.info "Merging ${reads_combine}"
     return reads_combine
 }
 

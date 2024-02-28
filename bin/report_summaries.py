@@ -174,11 +174,30 @@ class JsonImport:
         qc_status_rows.append("QCSummary")
         qc_status_rows.extend(list(meta_data_rows))
 
-
         rows = list(rows)
-        rows.sort(reverse=True)
+        rows.sort()
+
+        short_keys, rows = self.move_keys_front(rows, ".")
+        qc_status_rows.extend(short_keys)
         qc_status_rows.extend(rows)
         return (sample_data_overview, qc_status_rows)
+
+
+    def move_keys_front(self, values, excl_key):
+        """Get group of keys to move to the front
+
+        Args:
+            values (_type_): list of rows
+            excl_key (_type_): Value to check for inclusion to move to the front
+        """
+        out_values = []
+        values = values
+        for v in values:
+            if excl_key not in v:
+                out_values.append(v)
+                values.remove(v)
+        return out_values, values
+
 
     def get_quality_analysis_fields(self, qc_fields):
         fields = []

@@ -54,7 +54,7 @@ workflow ASSEMBLE_READS{
     // For determining what assemblies failed if failure is ignored
     assembly_status = ch_assembled.contigs.join(sample_data, remainder: true).branch {
         meta, contigs, reads -> failed: contigs == null
-                                    passed: true}
+                                passed: true}
 
     reports = reports.mix(assembly_status.failed.map{
         meta, contigs, reads -> tuple(meta, params.assembly_status, false)

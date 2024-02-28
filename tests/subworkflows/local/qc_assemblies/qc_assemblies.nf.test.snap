@@ -1,0 +1,185 @@
+{
+    "Test qc_assemblies one assembly too short": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "SAMPLE2"
+                        },
+                        "transposed_SAMPLE2.tsv:md5,64e3ddbb01183b22ae234e490637a3b7",
+                        "sample2.fasta:md5,ec16731b69a71e32d686b3a006127ba6"
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "SAMPLE1"
+                        },
+                        {
+                            "report_tag": "MaxContigToShort"
+                        },
+                        true
+                    ],
+                    [
+                        {
+                            "id": "SAMPLE1"
+                        },
+                        {
+                            "singularity": "https://depot.galaxyproject.org/singularity/seqkit:2.2.0--h9ee0642_0",
+                            "docker": "quay.io/biocontainers/seqkit:2.2.0--h9ee0642_0",
+                            "report_ext": ".tsv",
+                            "fasta_ext": "_filtered.fasta.gz",
+                            "filter_field": "max_len",
+                            "report_tag": "Seqkit_stats",
+                            "header_p": true
+                        },
+                        "SAMPLE1.tsv:md5,81d4a687ec1a3695bd369f7423955167"
+                    ],
+                    [
+                        {
+                            "id": "SAMPLE2"
+                        },
+                        {
+                            "report_tag": "MaxContigToShort"
+                        },
+                        false
+                    ],
+                    [
+                        {
+                            "id": "SAMPLE2"
+                        },
+                        {
+                            "singularity": "https://depot.galaxyproject.org/singularity/quast%3A5.2.0--py39pl5321h4e691d4_3",
+                            "docker": "quay.io/biocontainers/quast:5.2.0--py39pl5321h4e691d4_3",
+                            "suffix": "quast",
+                            "report_base": "report",
+                            "report_prefix": "transposed_",
+                            "report_ext": ".tsv",
+                            "report_tag": "QUAST",
+                            "min_contig_length": 5,
+                            "contigs_field": "# contigs",
+                            "args": {
+                                
+                            },
+                            "header_p": true
+                        },
+                        "transposed_SAMPLE2.tsv:md5,64e3ddbb01183b22ae234e490637a3b7"
+                    ],
+                    [
+                        {
+                            "id": "SAMPLE2"
+                        },
+                        {
+                            "singularity": "https://depot.galaxyproject.org/singularity/seqkit:2.2.0--h9ee0642_0",
+                            "docker": "quay.io/biocontainers/seqkit:2.2.0--h9ee0642_0",
+                            "report_ext": ".tsv",
+                            "fasta_ext": "_filtered.fasta.gz",
+                            "filter_field": "max_len",
+                            "report_tag": "Seqkit_stats",
+                            "header_p": true
+                        },
+                        "SAMPLE2.tsv:md5,d0ef267769bfd788c8d484fd6e63fb35"
+                    ]
+                ],
+                "2": [
+                    "versions.yml:md5,7531e2c7e3f82f40f432af6b47f2879b",
+                    "versions.yml:md5,af079a3d8ae9ebd777f169eb697dcfd1",
+                    "versions.yml:md5,af079a3d8ae9ebd777f169eb697dcfd1",
+                    "versions.yml:md5,b08afc3129cf0e1dddee612ed2eaceb8"
+                ],
+                "quast_data": [
+                    [
+                        {
+                            "id": "SAMPLE2"
+                        },
+                        "transposed_SAMPLE2.tsv:md5,64e3ddbb01183b22ae234e490637a3b7",
+                        "sample2.fasta:md5,ec16731b69a71e32d686b3a006127ba6"
+                    ]
+                ],
+                "reports": [
+                    [
+                        {
+                            "id": "SAMPLE1"
+                        },
+                        {
+                            "report_tag": "MaxContigToShort"
+                        },
+                        true
+                    ],
+                    [
+                        {
+                            "id": "SAMPLE1"
+                        },
+                        {
+                            "singularity": "https://depot.galaxyproject.org/singularity/seqkit:2.2.0--h9ee0642_0",
+                            "docker": "quay.io/biocontainers/seqkit:2.2.0--h9ee0642_0",
+                            "report_ext": ".tsv",
+                            "fasta_ext": "_filtered.fasta.gz",
+                            "filter_field": "max_len",
+                            "report_tag": "Seqkit_stats",
+                            "header_p": true
+                        },
+                        "SAMPLE1.tsv:md5,81d4a687ec1a3695bd369f7423955167"
+                    ],
+                    [
+                        {
+                            "id": "SAMPLE2"
+                        },
+                        {
+                            "report_tag": "MaxContigToShort"
+                        },
+                        false
+                    ],
+                    [
+                        {
+                            "id": "SAMPLE2"
+                        },
+                        {
+                            "singularity": "https://depot.galaxyproject.org/singularity/quast%3A5.2.0--py39pl5321h4e691d4_3",
+                            "docker": "quay.io/biocontainers/quast:5.2.0--py39pl5321h4e691d4_3",
+                            "suffix": "quast",
+                            "report_base": "report",
+                            "report_prefix": "transposed_",
+                            "report_ext": ".tsv",
+                            "report_tag": "QUAST",
+                            "min_contig_length": 5,
+                            "contigs_field": "# contigs",
+                            "args": {
+                                
+                            },
+                            "header_p": true
+                        },
+                        "transposed_SAMPLE2.tsv:md5,64e3ddbb01183b22ae234e490637a3b7"
+                    ],
+                    [
+                        {
+                            "id": "SAMPLE2"
+                        },
+                        {
+                            "singularity": "https://depot.galaxyproject.org/singularity/seqkit:2.2.0--h9ee0642_0",
+                            "docker": "quay.io/biocontainers/seqkit:2.2.0--h9ee0642_0",
+                            "report_ext": ".tsv",
+                            "fasta_ext": "_filtered.fasta.gz",
+                            "filter_field": "max_len",
+                            "report_tag": "Seqkit_stats",
+                            "header_p": true
+                        },
+                        "SAMPLE2.tsv:md5,d0ef267769bfd788c8d484fd6e63fb35"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,7531e2c7e3f82f40f432af6b47f2879b",
+                    "versions.yml:md5,af079a3d8ae9ebd777f169eb697dcfd1",
+                    "versions.yml:md5,af079a3d8ae9ebd777f169eb697dcfd1",
+                    "versions.yml:md5,b08afc3129cf0e1dddee612ed2eaceb8"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-02-21T09:36:25.2768567"
+    }
+}

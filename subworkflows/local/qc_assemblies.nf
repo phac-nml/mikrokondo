@@ -30,6 +30,15 @@ workflow QC_ASSEMBLIES {
                                     failed: true
                             }
 
+    reports = reports.mix(seqkit_stats_checked.passed.map{
+        meta, contigs, reads, passed -> tuple(meta, params.contigs_too_short, false)
+    })
+
+    reports = reports.mix(seqkit_stats_checked.failed.map{
+        meta, contigs, reads, passed -> tuple(meta, params.contigs_too_short, true)
+    })
+
+
     // TODO need to add in QC message channel so failed messages are collated together
     pre_checked_data = seqkit_stats_checked.passed.map{
         meta, contigs, reads, contig_length -> tuple(meta, contigs, reads)
