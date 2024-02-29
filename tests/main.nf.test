@@ -1,8 +1,7 @@
-nextflow_workflow {
+nextflow_pipeline {
 
     name "Full Integration Tests for MIKROKONDO"
     script "main.nf"
-    workflow "MIKROKONDO"
 
     test("Should run without failures") {
 
@@ -22,11 +21,9 @@ nextflow_workflow {
                 skip_checkm = true
                 skip_raw_read_metrics = true
                 skip_polishing = true
-            }
-            workflow {
-                """
-                // define inputs of the workflow here.
-                """
+
+                max_memory = "2.GB"
+                max_cpus = 1
             }
         }
 
