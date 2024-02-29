@@ -1,0 +1,2 @@
+sample,fastq_1,fastq_2,long_reads,assembly
+CSE,https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/reads/campy-staph1.fq.gz,https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/reads/campy-staph2.fq.gz,,
