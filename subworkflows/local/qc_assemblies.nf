@@ -1,5 +1,7 @@
 // Run annotate and apply QC metrics
 include { QUAST } from "../../modules/local/quast_assembly.nf"
+include { SEQKIT_STATS } from "../../modules/local/seqkit_stats.nf"
+include { SEQKIT_FILTER } from "../../modules/local/seqkit_filter.nf"
 include { CHECKM_LINEAGEWF } from "../../modules/local/checkm_lineagewf.nf"
 include { MLST } from "../../modules/local/mlst.nf"
 
@@ -13,13 +15,44 @@ workflow QC_ASSEMBLIES {
     versions = Channel.empty()
     reports = Channel.empty()
 
-    quast_data = QUAST(assembled_reads)
-    versions = versions.mix(quast_data.versions)
+    seqkit_stats = SEQKIT_STATS(assembled_reads)
 
+    versions = versions.mix(seqkit_stats.versions)
+    reports = reports.mix(seqkit_stats.stats.map{
+        meta, contigs, reads, report -> tuple(meta, params.seqkit, report)
+    })
+
+    seqkit_stats_checked = seqkit_stats.stats.map{
+                                meta, contigs, reads, report -> tuple(meta, contigs, reads, check_contig_length(meta, report))
+                            }.branch{
+                                meta, contigs, reads, passed_p ->
+                                    passed: passed_p
+                                    failed: true
+                            }
+
+    reports = reports.mix(seqkit_stats_checked.passed.map{
+        meta, contigs, reads, passed -> tuple(meta, params.contigs_too_short, false)
+    })
+
+    reports = reports.mix(seqkit_stats_checked.failed.map{
+        meta, contigs, reads, passed -> tuple(meta, params.contigs_too_short, true)
+    })
+
+
+    // TODO need to add in QC message channel so failed messages are collated together
+    pre_checked_data = seqkit_stats_checked.passed.map{
+        meta, contigs, reads, contig_length -> tuple(meta, contigs, reads)
+    }
+
+    quast_data = QUAST(pre_checked_data)
+    versions = versions.mix(quast_data.versions)
     reports = reports.mix(quast_data.quast_table.map{
         meta, report, contigs -> tuple(meta, params.quast, report)
     })
 
+    min_length = Channel.value(params.quast.min_contig_length)
+    filterd_contigs = SEQKIT_FILTER(pre_checked_data, min_length)
+    versions = versions.mix(filterd_contigs.versions)
 
 
 
@@ -43,20 +76,27 @@ workflow QC_ASSEMBLIES {
         versions = versions.mix(MLST.out.versions)
     }
 
-
-
-    // Filter out assemvlies that do not meet quast criteria
-    //// TODO update meta tag to hold fail or pass value, hard stop should be nothing there
-    //// TODO add in do not bother processing further for e.g. when something only has 10,000 bases
-    //ch_assembly_filtered = quast_data.quast_table.filter {
-    //    meta, report, contigs -> filter_quast_assembly(meta, report)
-    //}
-
-
     emit:
     quast_data = quast_data.quast_table
     reports = reports
     versions = versions
+}
+
+
+def check_contig_length(meta, report){
+    def rows = report.splitCsv(header: true, sep: '\t')
+    def row = rows[0] // Only one row out as only one sample in
+    if(rows.size > 1){
+        log.error "${meta.id} had multiple entries present for contig stats"
+        exit 1
+    }
+
+    if(row[params.seqkit.filter_field].toLong() < params.quast.min_contig_length){
+        log.warn "${meta.id} Max contig length is less than the minimum contig length specified for quast (${params.quast.min_contig_length}). Sample will not progress through the rest of the workflow."
+        return false
+    }
+    return true
+
 }
 
 

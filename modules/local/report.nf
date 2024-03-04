@@ -74,6 +74,7 @@ process REPORT{
 
 
     def search_phrases = qc_params_species()
+
     // Add in quality information in place
     generate_qc_data(sample_data, search_phrases)
     create_action_call(sample_data)
@@ -152,49 +153,29 @@ def n50_nrcontigs_decision(qual_data, nr_cont_p, n50_p, qual_message, reisolate,
         // both fialed :(
         if(qual_data && qual_data.containsKey("nr_contigs") && qual_data.nr_contigs.low){
             if(qual_data.n50_value.low){
-                //qual_message.add(params.QCReportFields.nr_contigs.low_msg)
-                //qual_message.add(params.QCReportFields.n50_value.low_msg)
+
                 reseqeunce += 1
             }
-            //if(!qual_data.n50_value.low){
-            //    // This is good!!
-            //    qual_message.add(params.QCReportFields.nr_contigs.low_msg)
-            //    qual_message.add(params.QCReportFields.n50_value.high_msg)
-            //}else{
-            //    //qual_message.add(params.QCReportFields.nr_contigs.low_msg)
-            //    //qual_message.add(params.QCReportFields.n50_value.low_msg)
-            //    resequence += 1
-            //}
+
         }else{
             if(!qual_data.n50_value.low){
-                //qual_message.add(params.QCReportFields.nr_contigs.high_msg)
-                //qual_message.add(params.QCReportFields.n50_value.high_msg)
                 reisolate += 1
                 resequence += 1
             }else{
-                //qual_message.add(params.QCReportFields.nr_contigs.high_msg)
-                //qual_message.add(params.QCReportFields.n50_value.low_msg)
                 resequence += 1
             }
         }
     }else if(nr_cont_p){
         if(qual_data.nr_contigs.low){
-            //qual_message.add(params.QCReportFields.nr_contigs.low_msg)
             resequence += 1
         }else{
-            //qual_message.add(params.QCReportFields.nr_contigs.high_msg)
             resequence += 1
         }
     }else if(n50_p){
         if(!qual_data.n50_value.low){
-            //qual_message.add(params.QCReportFields.n50_value.low_msg)
             resequence += 1
-        }else{
-            //qual_message.add(params.QCReportFields.n50_value.high_msg)
-            // No increment here, as higher n50 means its a good assembly
         }
     }
-    // return the values
     return [reisolate, resequence]
 
 }
@@ -284,7 +265,6 @@ def create_action_call(sample_data){
 
             // ! TODO Summing of ignored checks is messy and the logic can likely be cleaned up
             if(qual_data && qual_data.containsKey("checkm_contamination") && !qual_data.checkm_contamination.status){
-                //qual_message.add(params.QCReportFields.checkm_contamination.high_msg)
                 reisolate = reisolate + contamination_fail
                 resequence += 1
                 failed_p = true
@@ -326,11 +306,9 @@ def create_action_call(sample_data){
 
             if(qual_data && qual_data.containsKey("length") && !qual_data.length.status){
                 if(qual_data.length.low){
-                    //qual_message.add(params.QCReportFields.length.low_msg)
                     resequence += 1
                     checks_failed += 1
                 }else{
-                    //qual_message.add(params.QCReportFields.length.high_msg)
                     resequence += 1
                     reisolate = reisolate + contamination_fail
                     checks_failed += 1
@@ -367,11 +345,6 @@ def create_action_call(sample_data){
             (reisolate, resequence) = n50_nrcontigs_decision(qual_data, nr_contigs_failed, n50_failed, qual_message, reisolate, resequence)
             //qual_message.add("Quality Conclusion")
 
-            //if(val.value.containsKey(params.assembly_status.report_tag)){
-            //    if(!val.value[params.assembly_status.report_tag]){
-            //        qual_message.add("Assembly failed, this may be an issue with your data or the pipeline. Please check the log or the outputs in the samples work directory.")
-            //    }
-            //}
             add_secondary_message(params.assembly_status.report_tag,
                                 "Assembly failed, this may be an issue with your data or the pipeline. Please check the log or the outputs in the samples work directory.",
                                 val.value)
@@ -462,21 +435,6 @@ def recurse_keys(value, keys_rk){
         value_found = false;
     }
 
-    //for(key_rk in keys_rk.path){
-    //    def key_val
-    //    if(key_rk.isNumber()){
-    //        // ! This is a potential source of error as nextflow is numeric strings to int
-    //        key_val = key_rk.toInteger()
-    //    }else{
-    //        key_val = key_rk
-    //    }
-    //    if (temp.containsKey(key_val)){
-    //        temp = temp[key_val]
-    //    }else{
-    //        value_found = false
-    //        break
-    //    }
-    //}
     def ret_val = null
     if(value_found){
         ret_val = convert_type(keys_rk.coerce_type, temp)
@@ -620,7 +578,7 @@ def prep_qc_vals(qc_vals, qc_data, comp_val, field_val){
 
 def get_shortest_token(search_params){
 
-    def overly_large_number = 10000000;
+    def overly_large_number = 1000000000000;
     def shortest_entry = overly_large_number;
     for(i in search_params){
         def i_toks = i[0].split('_|\s')
@@ -647,8 +605,6 @@ def get_species(value, search_phrases, shortest_token){
     // search_term_val used to be 0...
     def search_term_val = 0 // location of where the search key is in the search phrases array
 
-
-
     // TODO matching here can likely be enhanced. wait for issue perhaps
     def comp_val_tokens = value.toLowerCase().split('_|\s').findAll{it.size() >= shortest_token};
     def comp_val = comp_val_tokens.join(" ")
@@ -663,8 +619,6 @@ def get_species(value, search_phrases, shortest_token){
 
 def get_qc_data_species(value_data, qc_data){
     def quality_messages = [:]
-
-    //def qc_data = get_species(value, search_phrases)
 
 
     params.QCReportFields.each{
@@ -717,8 +671,7 @@ def generate_qc_data(data, search_phrases){
 
 def update_map_values(data, meta_data, tag){
     //TODO need to update values that exist if another one exists
-    //log.info "${data[meta_data.sample]["meta"]} $meta_data $tag ${!data[meta_data.sample]["meta"].containsKey(tag)}"
-    // remove log.info "Before ${data[meta_data.sample]["meta"]} ${meta_data} $tag"
+
     if(!data[meta_data.sample]["meta"].containsKey(tag)){
         data[meta_data.sample]["meta"][tag] = meta_data[tag]
     }else if(data[meta_data.sample]["meta"][tag] == null){ // is a specific case for null needed?
@@ -726,7 +679,6 @@ def update_map_values(data, meta_data, tag){
     }else if(data[meta_data.sample]["meta"][tag] != meta_data[tag]){
         data[meta_data.sample]["meta"][tag] = meta_data[tag] // update to latest value if it does not match
     }
-    //log.info "After ${data[meta_data.sample]["meta"]} $meta_data $tag"
 }
 
 
@@ -754,24 +706,19 @@ def parse_data(file_path, extension, report_data, headers_key){
     /*Select the correct parse based on the passed file type
     */
     // ? TODO should a check of existence be passed here?
-    //println "${file_path} extension is ${extension}"
     def headers = report_data.containsKey(headers_key) ? report_data[headers_key] : null
     def return_text = null
     switch(extension){
         case "tsv":
-            //println "${file_path.getSimpleName()} is tsv"
             return_text = table_values(file_path, report_data.header_p, '\t', headers)
             break
         case "tab":
-            //println "${file_path.getSimpleName()} is tsv"
             return_text = table_values(file_path, report_data.header_p, '\t', headers)
             break
         case "txt":
-            //println "${file_path.getSimpleName()} is txt"
             return_text = table_values(file_path, report_data.header_p, '\t', headers)
             break
         case "csv":
-            //println "${file_path.getSimpleName()} is csv"
             return_text = table_values(file_path, report_data.header_p, ',', headers)
             break
         case "json":
@@ -788,7 +735,6 @@ def parse_data(file_path, extension, report_data, headers_key){
 Or the report module text parser."
             break
     }
-    //println return_text
     return return_text
 }
 
@@ -823,7 +769,7 @@ def trim_json(json_data, paths, delimiter){
 }
 
 def gather_json_paths(json_data, parents, delimiter, list_paths, exclude_paths){
-    /*Trim json fields
+    /*Trim json fields that should be excluded to prevent generating a massive yaml
 
     */
 
