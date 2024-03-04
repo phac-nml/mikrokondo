@@ -3,7 +3,7 @@ nextflow_pipeline {
     name "Full Integration Tests for MIKROKONDO"
     script "main.nf"
 
-    test("Should run without failures") {
+    test("Should fail to assembly due to too few reads.") {
 
         when {
             params {
@@ -14,6 +14,10 @@ nextflow_pipeline {
 
                 mash { mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh" }
                 r_contaminants { mega_mm2_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi" }
+
+                fastp { args { illumina = "-Q"} }
+                min_reads = 100
+                mash { min_kmer = 1 }
 
                 skip_bakta = true
                 skip_staramr = true
@@ -38,6 +42,14 @@ nextflow_pipeline {
             assert json.CSE.CSE.FastP.summary.before_filtering.total_reads.equals(248)
             assert json.CSE.CSE.FastP.filtering_result.passed_filter_reads.equals(248)
             assert json.CSE.CSE.FastP.insert_size.peak.equals(196)
+            assert json.CSE.CSE.FastP.filtering_result.low_quality_reads.equals(0)
+
+            //assert json.CSE.meta.metagenomic.equals(false)  // Currently, this is "null".
+            assert json.CSE.meta.assembly.equals(false)
+            assert json.CSE.meta.hybrid.equals(false)
+            assert json.CSE.meta.single_end.equals(false)
+            assert json.CSE.meta.merge.equals(false)
+            assert json.CSE.meta.downsampled.equals(false)
         }
 
     }
