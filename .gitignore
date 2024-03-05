@@ -20,3 +20,5 @@ Makefile
 *.bak
 docs/TODO.md
 .git.bak
+assets/schema_input_nfv2.0.0.json
+nextflow_schema_nfv2.json

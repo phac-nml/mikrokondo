@@ -115,7 +115,6 @@ def format_reads(ArrayList sheet_data){
     }
     def ret_val = null
 
-
     // A map could probably clean this up
     if(sequencing_data.fastq_1 && sequencing_data.fastq_2 && sequencing_data.long_reads && !sequencing_data.assembly){
         if(params.platform != params.opt_platforms.hybrid){
