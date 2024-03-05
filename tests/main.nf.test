@@ -103,6 +103,10 @@ nextflow_pipeline {
             assert json.short.meta.downsampled.equals(false)
 
             assert json.short.short.AssemblyCompleted.equals(true)
+            assert json.short.short.QUAST."0"."Total length (>= 0 bp)".equals("4949")
+            assert json.short.short.QUAST."0"."Largest contig".equals("4949")
+            assert json.short.short.QUAST."0"."GC (%)".equals("52.96")
+            assert json.short.short.QUAST."0"."Avg. coverage depth".equals("47")
         }
 
     }
