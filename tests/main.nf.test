@@ -49,7 +49,60 @@ nextflow_pipeline {
             assert json.CSE.meta.hybrid.equals(false)
             assert json.CSE.meta.single_end.equals(false)
             assert json.CSE.meta.merge.equals(false)
-            assert json.CSE.meta.downsampled.equals(false)
+            assert json.CSE.meta.downsampled.equals(false)            
+        }
+
+    }
+
+    test("Should run without failure.") {
+
+        when {
+            params {
+                input = "https://raw.githubusercontent.com/phac-nml/mikrokondo/integration-testing/tests/data/samplesheets/samplesheet-small-assembly.csv"
+                outdir = "results"
+
+                platform = "illumina"
+
+                mash { mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh" }
+                r_contaminants { mega_mm2_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi" }
+
+                fastp { args { illumina = "-Q"} }
+                min_reads = 100
+                mash { min_kmer = 1 }
+
+                skip_bakta = true
+                skip_staramr = true
+                skip_mobrecon = true
+                skip_checkm = true
+                skip_raw_read_metrics = true
+                skip_polishing = true
+
+                max_memory = "2.GB"
+                max_cpus = 1
+            }
+        }
+
+        then {
+            assert workflow.success
+            assert path("$launchDir/results").exists()
+
+            // parse output json file
+            def json = path("$launchDir/results/SummaryReport/final_report.json").json
+
+            assert json.short.short.FastP.summary.sequencing.equals("paired end (250 cycles + 250 cycles)")
+            assert json.short.short.FastP.summary.before_filtering.total_reads.equals(950)
+            assert json.short.short.FastP.filtering_result.passed_filter_reads.equals(950)
+            assert json.short.short.FastP.filtering_result.low_quality_reads.equals(0)
+            assert json.short.short.FastP.insert_size.peak.equals(347)            
+
+            //assert json.short.meta.metagenomic.equals(false)  // Currently, this is "null".
+            assert json.short.meta.assembly.equals(false)
+            assert json.short.meta.hybrid.equals(false)
+            assert json.short.meta.single_end.equals(false)
+            assert json.short.meta.merge.equals(false)
+            assert json.short.meta.downsampled.equals(false)
+
+            assert json.short.short.AssemblyCompleted.equals(true)
         }
 
     }
