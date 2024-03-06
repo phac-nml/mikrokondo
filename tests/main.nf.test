@@ -1,37 +1,125 @@
-nextflow_workflow {
+nextflow_pipeline {
 
     name "Full Integration Tests for MIKROKONDO"
     script "main.nf"
-    workflow "MIKROKONDO"
 
-    test("Should run without failures") {
+    test("Should fail to assembly due to too few reads.") {
 
         when {
             params {
-                input = "samplesheet-staph.csv"
-                platform = "illumina"
+                input = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/samplesheets/samplesheet-campy-staph.csv"
                 outdir = "results"
-                mash.mash_sketch = "campy-staph-ecoli.msh"
-                r_contaminants.mega_mm2_idx = "campy.mmi"
+
+                platform = "illumina"
+
+                mash { mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh" }
+                r_contaminants { mega_mm2_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi" }
+
+                fastp { args { illumina = "-Q"} }
+                min_reads = 100
+                mash { min_kmer = 1 }
+
                 skip_bakta = true
                 skip_staramr = true
                 skip_mobrecon = true
                 skip_checkm = true
                 skip_raw_read_metrics = true
                 skip_polishing = true
-                max_memory = "4.GB"
-                max_cpus = 2
-            }
-            workflow {
-                """
-                // define inputs of the workflow here. Example:
-                // input[0] = file("test-file.txt")
-                """
+
+                max_memory = "2.GB"
+                max_cpus = 1
             }
         }
 
         then {
             assert workflow.success
+            assert path("$launchDir/results").exists()
+
+            // parse output json file
+            def json = path("$launchDir/results/SummaryReport/final_report.json").json
+
+            assert json.CSE.CSE.FastP.summary.sequencing.equals("paired end (150 cycles + 150 cycles)")
+            assert json.CSE.CSE.FastP.summary.before_filtering.total_reads.equals(248)
+            assert json.CSE.CSE.FastP.filtering_result.passed_filter_reads.equals(248)
+            assert json.CSE.CSE.FastP.insert_size.peak.equals(196)
+            assert json.CSE.CSE.FastP.filtering_result.low_quality_reads.equals(0)
+
+            //assert json.CSE.meta.metagenomic.equals(false)  // Currently, this is "null".
+            assert json.CSE.meta.assembly.equals(false)
+            assert json.CSE.meta.hybrid.equals(false)
+            assert json.CSE.meta.single_end.equals(false)
+            assert json.CSE.meta.merge.equals(false)
+            assert json.CSE.meta.downsampled.equals(false)
+            
+            def assembly_path = "$launchDir/results/assembly/length_filtered_contigs/CSE_filtered.fasta.gz"
+            assert path(assembly_path).exists().equals(false)
+
+            def contigs_path = "$launchDir/results/assembly/length_filtered_contigs"
+            assert path(contigs_path).exists().equals(false)
+        }
+
+    }
+
+    test("Should run without failure.") {
+
+        when {
+            params {
+                input = "https://raw.githubusercontent.com/phac-nml/mikrokondo/dev/tests/data/samplesheets/samplesheet-small-assembly.csv"
+                outdir = "results"
+
+                platform = "illumina"
+
+                mash { mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh" }
+                r_contaminants { mega_mm2_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi" }
+
+                fastp { args { illumina = "-Q"} }
+                min_reads = 100
+                mash { min_kmer = 1 }
+
+                skip_bakta = true
+                skip_staramr = true
+                skip_mobrecon = true
+                skip_checkm = true
+                skip_raw_read_metrics = true
+                skip_polishing = true
+
+                max_memory = "2.GB"
+                max_cpus = 1
+            }
+        }
+
+        then {
+            assert workflow.success
+            assert path("$launchDir/results").exists()
+
+            // parse output json file
+            def json = path("$launchDir/results/SummaryReport/final_report.json").json
+
+            assert json.short.short.FastP.summary.sequencing.equals("paired end (250 cycles + 250 cycles)")
+            assert json.short.short.FastP.summary.before_filtering.total_reads.equals(950)
+            assert json.short.short.FastP.filtering_result.passed_filter_reads.equals(950)
+            assert json.short.short.FastP.filtering_result.low_quality_reads.equals(0)
+            assert json.short.short.FastP.insert_size.peak.equals(347)            
+
+            //assert json.short.meta.metagenomic.equals(false)  // Currently, this is "null".
+            assert json.short.meta.assembly.equals(false)
+            assert json.short.meta.hybrid.equals(false)
+            assert json.short.meta.single_end.equals(false)
+            assert json.short.meta.merge.equals(false)
+            assert json.short.meta.downsampled.equals(false)
+
+            assert json.short.short.AssemblyCompleted.equals(true)
+            assert json.short.short.QUAST."0"."Total length (>= 0 bp)".equals("4949")
+            assert json.short.short.QUAST."0"."Largest contig".equals("4949")
+            assert json.short.short.QUAST."0"."GC (%)".equals("52.96")
+            assert json.short.short.QUAST."0"."Avg. coverage depth".equals("47")
+
+            def assembly_path = "$launchDir/results/assembly/length_filtered_contigs/short_filtered.fasta.gz"
+            assert path(assembly_path).exists()
+
+            // parse assembly file
+            def assembly_header = path(assembly_path).linesGzip[0]
+            assert assembly_header.equals(">NODE_1_length_4949_cov_23.917254")
         }
 
     }
