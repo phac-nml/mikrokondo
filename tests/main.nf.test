@@ -64,7 +64,7 @@ nextflow_pipeline {
 
         when {
             params {
-                input = "https://raw.githubusercontent.com/phac-nml/mikrokondo/integration-testing/tests/data/samplesheets/samplesheet-small-assembly.csv"
+                input = "https://raw.githubusercontent.com/phac-nml/mikrokondo/dev/tests/data/samplesheets/samplesheet-small-assembly.csv"
                 outdir = "results"
 
                 platform = "illumina"
