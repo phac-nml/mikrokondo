@@ -51,8 +51,11 @@ nextflow_pipeline {
             assert json.CSE.meta.merge.equals(false)
             assert json.CSE.meta.downsampled.equals(false)
             
-            def assembly_path = "$launchDir/results/assembly/length_filtered_contigs/short_filtered.fasta.gz"
+            def assembly_path = "$launchDir/results/assembly/length_filtered_contigs/CSE_filtered.fasta.gz"
             assert path(assembly_path).exists().equals(false)
+
+            def contigs_path = "$launchDir/results/assembly/length_filtered_contigs"
+            assert path(contigs_path).exists().equals(false)
         }
 
     }
