@@ -49,7 +49,10 @@ nextflow_pipeline {
             assert json.CSE.meta.hybrid.equals(false)
             assert json.CSE.meta.single_end.equals(false)
             assert json.CSE.meta.merge.equals(false)
-            assert json.CSE.meta.downsampled.equals(false)            
+            assert json.CSE.meta.downsampled.equals(false)
+            
+            def assembly_path = "$launchDir/results/assembly/length_filtered_contigs/short_filtered.fasta.gz"
+            assert path(assembly_path).exists().equals(false)
         }
 
     }
@@ -107,6 +110,13 @@ nextflow_pipeline {
             assert json.short.short.QUAST."0"."Largest contig".equals("4949")
             assert json.short.short.QUAST."0"."GC (%)".equals("52.96")
             assert json.short.short.QUAST."0"."Avg. coverage depth".equals("47")
+
+            def assembly_path = "$launchDir/results/assembly/length_filtered_contigs/short_filtered.fasta.gz"
+            assert path(assembly_path).exists()
+
+            // parse assembly file
+            def assembly_header = path(assembly_path).linesGzip[0]
+            assert assembly_header.equals(">NODE_1_length_4949_cov_23.917254")
         }
 
     }
