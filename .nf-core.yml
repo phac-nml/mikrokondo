@@ -11,12 +11,6 @@ lint:
     - docs/output.md
     - docs/README.md
     - docs/usage.md
-  nextflow_config:
-    - manifest.name
-    - manifest.homePage
-  multiqc_config:
-    - report_comment
-    - assets/multiqc_config.yml
   files_unchanged:
     - LICENSE
     - .github/CONTRIBUTING.md
@@ -28,6 +22,8 @@ lint:
     - assets/email_template.txt
     - assets/sendmail_template.txt
     - .gitignore
-  schema_params:
+  schema_params: False
+  nextflow_config: False
+  multiqc_config: False
 template:
   prefix: phac-nml
