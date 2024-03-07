@@ -4,6 +4,7 @@ nextflow_pipeline {
     script "main.nf"
 
     test("Should fail to assembly due to too few reads.") {
+        tag "fail_assembly"
 
         when {
             params {
@@ -61,6 +62,7 @@ nextflow_pipeline {
     }
 
     test("Should run without failure.") {
+        tag "succeed_assembly"
 
         when {
             params {
@@ -120,6 +122,16 @@ nextflow_pipeline {
             // parse assembly file
             def assembly_header = path(assembly_path).linesGzip[0]
             assert assembly_header.equals(">NODE_1_length_4949_cov_23.917254")
+
+            // compare IRIDA Next JSON output
+            def iridanext_json = path("$launchDir/results/iridanext.output.json").json
+            def iridanext_global = iridanext_json.files.global
+            def iridanext_samples = iridanext_json.files.samples
+            def iridanext_metadata = iridanext_json.metadata.samples
+            assert iridanext_global.findAll { it.path == "SummaryReport/final_report.json" }.size() == 1
+            assert iridanext_samples.short.findAll { it.path == "assembly/length_filtered_contigs/short_filtered.fasta.gz" }.size() == 1
+            assert iridanext_metadata.short."QUAST.0.Total length" == "4949"
+            assert iridanext_metadata.short."QUAST.0.N50" == "4949"
         }
 
     }
