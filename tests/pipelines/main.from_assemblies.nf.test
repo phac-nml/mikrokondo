@@ -15,7 +15,7 @@ nextflow_pipeline {
 
                 mash { mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh" }
                 r_contaminants { mega_mm2_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi" }
-                quast.min_contig_length = 1
+                quast { min_contig_length = 1 }
 
                 skip_bakta = true
                 skip_staramr = true
