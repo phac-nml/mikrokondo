@@ -77,3 +77,8 @@ Sometimes the resume features of Nextflow don't work completely. The above error
 
 - CheckM exit code 1, could not find concatenated.tree or concatentated.pplacer.json
   - This is a sign that CheckM has run out of memory, make sure you are using your desired executor. You may need to adjust configuration settings.
+
+### QUAST fails with a read-only error
+
+- `[Errno 30] Read-only file system: '/usr/local/lib/python3.9/site-packages/quast_libs/gridss'`
+  - This issue appears to be related to QUAST trying to download GRIDSS for structural variant detection and this action being incompatible with the container used to run QUAST. You may be able to resolve this be adding `--no-sv` as a QUAST command-line flag in Mikrokondo's `nextflow.config`, or by switching your container platform to singularity. Errors were observed with `apptainer version 1.2.3`, which were resolved by switching to singularity (`singularity-ce version 3.9.5` and `singularity-ce version a948062` resolved the issue).
