@@ -1,0 +1,52 @@
+nextflow_pipeline {
+
+    name "Integration Tests from assemblies for MIKROKONDO"
+    script "main.nf"
+
+    test("Test starting from assemblies") {
+        tag "from_assemblies"
+
+        when {
+            params {
+                input = "$baseDir/tests/data/samplesheets/samplesheet-test-from-assemblies.csv"
+                outdir = "results"
+
+                platform = "illumina"
+
+                mash { mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh" }
+                r_contaminants { mega_mm2_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi" }
+
+                skip_bakta = true
+                skip_staramr = true
+                skip_mobrecon = true
+                skip_checkm = true
+                skip_raw_read_metrics = true
+                skip_polishing = true
+
+                max_memory = "2.GB"
+                max_cpus = 1
+            }
+        }
+
+        then {
+            assert workflow.success
+            assert path("$launchDir/results").exists()
+
+            // compare IRIDA Next JSON output
+            def iridanext_json = path("$launchDir/results/iridanext.output.json").json
+            def iridanext_global = iridanext_json.files.global
+            def iridanext_samples = iridanext_json.files.samples
+            def iridanext_metadata = iridanext_json.metadata.samples
+
+            // output files
+            assert iridanext_global.findAll { it.path == "SummaryReport/final_report.json" }.size() == 1
+
+            // output metadata
+            //assert iridanext_metadata.ecoli_GCA_000947975."AssemblyCompleted" == true
+            //assert iridanext_metadata.ecoli_GCA_000947975."QUAST.0.Total length" == "5333525"
+            assert iridanext_metadata.ecoli_GCA_000947975."QUAST.0.Largest contig" == "300823"
+            //assert iridanext_metadata.ecoli_GCA_000947975."QUAST.0.# contigs" == "187"
+            //assert iridanext_metadata.ecoli_GCA_000947975."QUAST.0.N50" == "122025"
+        }
+    }
+}
