@@ -57,6 +57,19 @@ nextflow_pipeline {
 
             def contigs_path = "$launchDir/results/assembly/length_filtered_contigs"
             assert path(contigs_path).exists().equals(false)
+
+            // compare IRIDA Next JSON output
+            def iridanext_json = path("$launchDir/results/iridanext.output.json").json
+            def iridanext_global = iridanext_json.files.global
+            def iridanext_samples = iridanext_json.files.samples
+            def iridanext_metadata = iridanext_json.metadata.samples
+
+            // output files
+            assert iridanext_global.findAll { it.path == "SummaryReport/final_report.json" }.size() == 1
+            assert iridanext_samples.CSE.findAll { it.path.contains("assembly/length_filtered_contigs") }.size() == 0
+
+            // output metadata
+            //assert iridanext_metadata.CSE."AssemblyCompleted" == false
         }
 
     }
@@ -128,9 +141,16 @@ nextflow_pipeline {
             def iridanext_global = iridanext_json.files.global
             def iridanext_samples = iridanext_json.files.samples
             def iridanext_metadata = iridanext_json.metadata.samples
+
+            // output files
             assert iridanext_global.findAll { it.path == "SummaryReport/final_report.json" }.size() == 1
             assert iridanext_samples.short.findAll { it.path == "assembly/length_filtered_contigs/short_filtered.fasta.gz" }.size() == 1
+
+            // output metadata
+            assert iridanext_metadata.short."AssemblyCompleted" == true
             assert iridanext_metadata.short."QUAST.0.Total length" == "4949"
+            assert iridanext_metadata.short."QUAST.0.Largest contig" == "4949"
+            assert iridanext_metadata.short."QUAST.0.# contigs" == "1"
             assert iridanext_metadata.short."QUAST.0.N50" == "4949"
         }
 
