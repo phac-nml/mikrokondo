@@ -15,6 +15,7 @@ nextflow_pipeline {
 
                 mash { mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh" }
                 r_contaminants { mega_mm2_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi" }
+                quast.min_contig_length = 1
 
                 skip_bakta = true
                 skip_staramr = true
@@ -42,11 +43,10 @@ nextflow_pipeline {
             assert iridanext_global.findAll { it.path == "SummaryReport/final_report.json" }.size() == 1
 
             // output metadata
-            //assert iridanext_metadata.ecoli_GCA_000947975."AssemblyCompleted" == true
-            //assert iridanext_metadata.ecoli_GCA_000947975."QUAST.0.Total length" == "5333525"
+            assert iridanext_metadata.ecoli_GCA_000947975."QUAST.0.Total length" == "5333525"
             assert iridanext_metadata.ecoli_GCA_000947975."QUAST.0.Largest contig" == "300823"
-            //assert iridanext_metadata.ecoli_GCA_000947975."QUAST.0.# contigs" == "187"
-            //assert iridanext_metadata.ecoli_GCA_000947975."QUAST.0.N50" == "122025"
+            assert iridanext_metadata.ecoli_GCA_000947975."QUAST.0.# contigs" == "187"
+            assert iridanext_metadata.ecoli_GCA_000947975."QUAST.0.N50" == "122025"
         }
     }
 }
