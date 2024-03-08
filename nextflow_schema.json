@@ -2043,7 +2043,6 @@
             "properties": {
                 "kraken.db": {
                     "type": "string",
-                    "default": "/Drives/W/Projects/Project_Matthew_Wells/GSP/MikroKondo/mikrokondo/databases/k2_standard_20220607/",
                     "description": "Path to Kraken2 database (do not use symlinks)"
                 },
                 "kraken.classified_suffix": {
@@ -2216,7 +2215,6 @@
         },
         "mash.mash_sketch": {
             "type": "string",
-            "default": "/Drives/W/Projects/Project_Matthew_Wells/GSP/MikroKondo/mikrokondo/databases/GTDBSketch_20231003.msh",
             "hidden": true
         },
         "mash.sketch_ext": {
@@ -2253,7 +2251,6 @@
         },
         "r_contaminants.mega_mm2_idx": {
             "type": "string",
-            "default": "/Drives/W/Projects/Project_Matthew_Wells/GSP/MikroKondo/mikrokondo/databases/PhiPacHum_m2.idx",
             "hidden": true
         },
         "r_contaminants.mm2_illumina": {
@@ -2792,7 +2789,6 @@
         },
         "bakta.db": {
             "type": "string",
-            "default": "/Drives/W/Projects/Project_Matthew_Wells/GSP/MikroKondo/mikrokondo/databases/db-light",
             "hidden": true
         },
         "bakta.args": {
