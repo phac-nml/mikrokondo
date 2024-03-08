@@ -127,7 +127,18 @@ For more information see the [useage docs](https://phac-nml.github.io/mikrokondo
  
 ### Output/Results
 
-Explanation of how to interpret and/or export data. Include an example table of output if applicable with columns explained.
+All output files will be written into the `outdir` (specified by the user). More explicit tool results can be found in both the [Workflow](workflows/CleanAssemble/) and [Subworkflow](subworkflows/) sections of the docs. Here is a brief description of the outdir structure:
+
+- **annotations** - dir containing all annotation tool output.
+- **assembly** - dir containing all assembly tool related output, including quality, 7 gene MLST and taxon determination.
+- **pipeline_info** - dir containing all pipeline related information including software versions used and execution reports.
+- **ReadQuality** - dir containing all read tool related output, including contamination, fastq, mash, and subsampled read sets (when present)
+- **subtyping** - dir containing all subtyping tool related output, including SISTR, ECtyper, etc.
+- **SummaryReport** - dir containing collated results files for all tools, including: 
+   - Individual sample flatted json reports
+   - **final_report** - All tool results for all samples in both .json (including a flattened version) and .tsv format
+- **bco.json** - data providence file generated from the nf-prov plug-in
+- **manifest.json** - data providence file generated from the nf-prov plug-in
 
 ## Run example data
 

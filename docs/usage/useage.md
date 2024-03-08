@@ -1,6 +1,20 @@
 # Running MikroKondo
 
-### Samplesheet
+## Useage
+
+MikroKondo can be run like most other nextflow pipelines. The most basic usage is as follows:
+`nextflow run main.nf --input PATH_TO_SAMPLE_SHEET --outdir OUTPUT_DIR --platform SEQUENCING_PLATFORM  -profile CONTAINER_TYPE`
+
+Many parameters can be altered or accessed from the command line. For a full list of parameters to be altered please refer to the `nextflow.config` file in the repo. 
+
+## Input
+
+This pipeline requires the following as input:
+
+### Sample files (gzip)
+This pipeline requires sample files to be gzipped (symlinks may be problematic).
+
+### Samplesheet (CSV)
 Mikrokondo requires a sample sheet to be run. This FOFN (file of file names) contains the samples names and allows a user to combine read-sets based on that name if provided. The sample-sheet can utilize the following header fields: 
 
 - sample   
@@ -9,7 +23,6 @@ Mikrokondo requires a sample sheet to be run. This FOFN (file of file names) con
 - long_reads   
 - assembly   
 
-**The sample sheet must be in csv format and sample files must be gzipped**
 
 Example layouts for different sample-sheets include:
 
@@ -37,20 +50,14 @@ _Starting with assembly only_
 |------|--------|
 |sample_name|path_to_assembly|
 
-## Useage
 
-MikroKondo can be run like most other nextflow pipelines. The most basic usage is as follows:
-`nextflow run main.nf --input PATH_TO_SAMPLE_SHEET --outdir OUTPUT_DIR --platform SEQUENCING_PLATFORM  -profile CONTAINER_TYPE`
-
-Many parameters can be altered or accessed from the command line. For a full list of parameters to be altered please refer to the `nextflow.config` file in the repo. 
+## Command line arguments
 
 > **Note:** All the below settings can be permanently changed in the `nextflow.config` file within the `params` section. For example, to permanently set a nanopore chemistry and use Kraken for speciation:
 ```
 --run_kraken = true // Note the lack of quotes
 --nanopore_chemistry "r1041_e82_400bps_hac_v4.2.0" // Note the quotes used here
 ```
-
-### Common command line arguments
 
 #### Nf-core boiler plate options
 
@@ -118,3 +125,18 @@ Different container services can be specified from the command line when running
 
 - `slurm_p true`: slurm execurtor will be used.
 - `slurm_profile STRING`: a string to allow the user to specify which slurm partition to use.
+
+## Output
+
+All output files will be written into the `outdir` (specified by the user). More explicit tool results can be found in both the [Workflow](/workflows/CleanAssemble/) and [Subworkflow](/subworkflows/assemble_reads/) sections of the docs. Here is a brief description of the outdir structure:
+
+- **annotations** - dir containing all annotation tool output.
+- **assembly** - dir containing all assembly tool related output, including quality, 7 gene MLST and taxon determination.
+- **pipeline_info** - dir containing all pipeline related information including software versions used and execution reports.
+- **ReadQuality** - dir containing all read tool related output, including contamination, fastq, mash, and subsampled read sets (when present)
+- **subtyping** - dir containing all subtyping tool related output, including SISTR, ECtyper, etc.
+- **SummaryReport** - dir containing collated results files for all tools, including: 
+   - Individual sample flatted json reports
+   - **final_report** - All tool results for all samples in both .json (including a flattened version) and .tsv format
+- **bco.json** - data providence file generated from the nf-prov plug-in
+- **manifest.json** - data providence file generated from the nf-prov plug-in

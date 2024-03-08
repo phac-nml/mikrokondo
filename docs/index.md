@@ -15,4 +15,4 @@ This workflow will detect what pathogen(s) is present and apply the applicable m
 
 ## Workflow Schematics (Subject to change)
 
-![Pipeline](images/20230921_Mikrokondo-worflow2.png "Workflow")
+![Pipeline](images/mikrokondo_mermaid.svg "Workflow")
