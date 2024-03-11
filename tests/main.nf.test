@@ -97,6 +97,11 @@ nextflow_pipeline {
             // parse output json file
             def json = path("$launchDir/results/SummaryReport/final_report.json").json
 
+            assert json.short.short.RawReadSummary.R1."total_bp".equals(118750)
+            assert json.short.short.RawReadSummary.R1."total_reads".equals(475)
+            assert json.short.short.RawReadSummary.R1."read_qual_mean".equals(40.0)
+            assert json.short.short.RawReadSummary.R1."mean_sequence_length".equals(250.0)
+
             assert json.short.short.FastP.summary.sequencing.equals("paired end (250 cycles + 250 cycles)")
             assert json.short.short.FastP.summary.before_filtering.total_reads.equals(950)
             assert json.short.short.FastP.filtering_result.passed_filter_reads.equals(950)
@@ -115,6 +120,23 @@ nextflow_pipeline {
             assert json.short.short.QUAST."0"."Largest contig".equals("4949")
             assert json.short.short.QUAST."0"."GC (%)".equals("52.96")
             assert json.short.short.QUAST."0"."Avg. coverage depth".equals("47")
+
+            assert json.short.short.StarAMR."0"."Isolate ID".equals("short_polished")
+            assert json.short.short.StarAMR."0"."Data Type".equals("MLST")
+            assert json.short.short.StarAMR."1"."Isolate ID".equals("short_polished")
+            assert json.short.short.StarAMR."1"."Data Type".equals("Plasmid")
+            assert json.short.short.StarAMR."2"."Isolate ID".equals("short_polished")
+            assert json.short.short.StarAMR."2"."Data Type".equals("Resistance")
+            assert json.short.short.StarAMR."2"."Predicted Phenotype".equals("Sensitive")
+
+            assert json.short.short.CheckM."0"."# genomes".equals("5656")
+            assert json.short.short.CheckM."0"."# markers".equals("56")
+            assert json.short.short.CheckM."0"."# marker sets".equals("24")
+            assert json.short.short.CheckM."0".Contamination.equals("0.00")
+
+            assert json.short.short.SevenGeneMLSTReport[0].filename.equals("short_polished.fasta.gz")
+
+            assert json.short.short.Abricate."0".RESISTANCE.equals("NoData")  // All Abricate results for this are "NoData".
 
             def assembly_path = "$launchDir/results/assembly/length_filtered_contigs/short_filtered.fasta.gz"
             assert path(assembly_path).exists()
