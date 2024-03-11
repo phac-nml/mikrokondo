@@ -18,11 +18,13 @@ nextflow_pipeline {
                 quast { min_contig_length = 1 }
 
                 skip_bakta = true
-                skip_staramr = true
                 skip_mobrecon = true
                 skip_checkm = true
                 skip_raw_read_metrics = true
                 skip_polishing = true
+                
+                skip_staramr = false
+                skip_subtyping = false
 
                 max_memory = "2.GB"
                 max_cpus = 1
