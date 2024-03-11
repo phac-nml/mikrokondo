@@ -27,7 +27,7 @@ jobs:
 
       - name: Run pre-commit
         #run: pre-commit run --all-files
-        run: pre-commit run --files README.md
+        run: pre-commit run --files nf-test.config
 
   nf-core:
     runs-on: ubuntu-latest
