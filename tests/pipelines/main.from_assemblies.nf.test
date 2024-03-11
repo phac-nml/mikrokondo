@@ -44,6 +44,12 @@ nextflow_pipeline {
             assert ecoli_json.StarAMR."0".Scheme.equals("ecoli")
             assert ecoli_json.StarAMR."0"."Sequence Type".equals("678")
             assert ecoli_json.PointfinderDB.equals("escherichia_coli")
+            assert ecoli_json.ECTyperSubtyping."0".Species.equals("Escherichia coli")
+            assert ecoli_json.ECTyperSubtyping."0"."O-type".equals("O104")
+            assert ecoli_json.ECTyperSubtyping."0"."H-type".equals("H4")
+            assert ecoli_json.ECTyperSubtyping."0".Serotype.equals("O104:H4")
+            assert ecoli_json.ECTyperSubtyping."0".Database.equals("v1.0 (11-03-2020)")
+            assert ecoli_json.ECTyperSubtyping."0".QC.equals("PASS (REPORTABLE)")
 
             // compare IRIDA Next JSON output
             def iridanext_json = path("$launchDir/results/iridanext.output.json").json
@@ -65,6 +71,12 @@ nextflow_pipeline {
             assert ecoli_metadata."StarAMR.0.Plasmid" == "IncQ1"
             assert ecoli_metadata."StarAMR.0.Scheme" == "ecoli"
             assert ecoli_metadata."StarAMR.0.Sequence Type" == "678"
+            assert ecoli_metadata."ECTyperSubtyping.0.Species" == "Escherichia coli"
+            assert ecoli_metadata."ECTyperSubtyping.0.O-type" == "O104"
+            assert ecoli_metadata."ECTyperSubtyping.0.H-type" == "H4"
+            assert ecoli_metadata."ECTyperSubtyping.0.Serotype" == "O104:H4"
+            assert ecoli_metadata."ECTyperSubtyping.0.Database" == "v1.0 (11-03-2020)"
+            assert ecoli_metadata."ECTyperSubtyping.0.QC" == "PASS (REPORTABLE)"
         }
     }
 }
