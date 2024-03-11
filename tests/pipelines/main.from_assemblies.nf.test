@@ -55,10 +55,16 @@ nextflow_pipeline {
             assert iridanext_global.findAll { it.path == "SummaryReport/final_report.json" }.size() == 1
 
             // output metadata
-            assert iridanext_metadata.ecoli_GCA_000947975."QUAST.0.Total length" == "5333525"
-            assert iridanext_metadata.ecoli_GCA_000947975."QUAST.0.Largest contig" == "300823"
-            assert iridanext_metadata.ecoli_GCA_000947975."QUAST.0.# contigs" == "187"
-            assert iridanext_metadata.ecoli_GCA_000947975."QUAST.0.N50" == "122025"
+            def ecoli_metadata = iridanext_metadata.ecoli_GCA_000947975
+            assert ecoli_metadata."QUAST.0.Total length" == "5333525"
+            assert ecoli_metadata."QUAST.0.Largest contig" == "300823"
+            assert ecoli_metadata."QUAST.0.# contigs" == "187"
+            assert ecoli_metadata."QUAST.0.N50" == "122025"
+            assert ecoli_metadata."StarAMR.0.Genotype" == "aph(3'')-Ib, aph(6)-Id, blaCTX-M-15, blaTEM-1B, dfrA7, gyrA (S83A), qacE, sul1, sul2, tet(A)"
+            assert ecoli_metadata."StarAMR.0.Predicted Phenotype" == "streptomycin, kanamycin, ampicillin, ceftriaxone, trimethoprim, ciprofloxacin I/R, nalidixic acid, unknown[qacE_1_X68232], sulfisoxazole, tetracycline"
+            assert ecoli_metadata."StarAMR.0.Plasmid" == "IncQ1"
+            assert ecoli_metadata."StarAMR.0.Scheme" == "ecoli"
+            assert ecoli_metadata."StarAMR.0.Sequence Type" == "678"
         }
     }
 }
