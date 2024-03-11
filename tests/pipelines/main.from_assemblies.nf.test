@@ -35,6 +35,16 @@ nextflow_pipeline {
             assert workflow.success
             assert path("$launchDir/results").exists()
 
+            // parse final report json file
+            def final_report = path("$launchDir/results/SummaryReport/final_report.json").json
+            def ecoli_json = final_report.ecoli_GCA_000947975.ecoli_GCA_000947975
+            assert ecoli_json.StarAMR."0".Genotype.equals("aph(3'')-Ib, aph(6)-Id, blaCTX-M-15, blaTEM-1B, dfrA7, gyrA (S83A), qacE, sul1, sul2, tet(A)")
+            assert ecoli_json.StarAMR."0"."Predicted Phenotype".equals("streptomycin, kanamycin, ampicillin, ceftriaxone, trimethoprim, ciprofloxacin I/R, nalidixic acid, unknown[qacE_1_X68232], sulfisoxazole, tetracycline")
+            assert ecoli_json.StarAMR."0".Plasmid.equals("IncQ1")
+            assert ecoli_json.StarAMR."0".Scheme.equals("ecoli")
+            assert ecoli_json.StarAMR."0"."Sequence Type".equals("678")
+            assert ecoli_json.PointfinderDB.equals("escherichia_coli")
+
             // compare IRIDA Next JSON output
             def iridanext_json = path("$launchDir/results/iridanext.output.json").json
             def iridanext_global = iridanext_json.files.global
