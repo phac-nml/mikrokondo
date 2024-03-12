@@ -13,12 +13,16 @@ nextflow_pipeline {
 
                 platform = "illumina"
 
-                mash { mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh" }
+                mash
+                {
+                    mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
+                    min_kmer = 1
+                }
+
                 r_contaminants { mega_mm2_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi" }
 
                 fastp { args { illumina = "-Q"} }
                 min_reads = 100
-                mash { min_kmer = 1 }
 
                 skip_bakta = true
                 skip_staramr = true
@@ -71,12 +75,16 @@ nextflow_pipeline {
 
                 platform = "illumina"
 
-                mash { mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh" }
+                mash
+                {
+                    mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
+                    min_kmer = 1
+                }
+
                 r_contaminants { mega_mm2_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi" }
 
                 fastp { args { illumina = "-Q"} }
                 min_reads = 100
-                mash { min_kmer = 1 }
 
                 skip_bakta = true
                 skip_staramr = false
