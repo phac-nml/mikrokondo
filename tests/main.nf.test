@@ -61,6 +61,20 @@ nextflow_pipeline {
 
             def contigs_path = "$launchDir/results/assembly/length_filtered_contigs"
             assert path(contigs_path).exists().equals(false)
+
+            // compare IRIDA Next JSON output
+            def iridanext_json = path("$launchDir/results/iridanext.output.json").json
+            def iridanext_global = iridanext_json.files.global
+            def iridanext_samples = iridanext_json.files.samples
+            def iridanext_metadata = iridanext_json.metadata.samples
+
+            // output files
+            assert iridanext_global.findAll { it.path == "SummaryReport/final_report.json" }.size() == 1
+            assert iridanext_global.findAll { it.path == "SummaryReport/final_report.tsv" }.size() == 1
+            assert iridanext_samples.CSE.findAll { it.path.contains("assembly/length_filtered_contigs") }.size() == 0
+
+            // output metadata
+            //assert iridanext_metadata.CSE."AssemblyCompleted" == false
         }
 
     }
@@ -129,13 +143,10 @@ nextflow_pipeline {
             assert json.short.short.QUAST."0"."GC (%)".equals("52.96")
             assert json.short.short.QUAST."0"."Avg. coverage depth".equals("47")
 
-            assert json.short.short.StarAMR."0"."Isolate ID".equals("short_polished")
-            assert json.short.short.StarAMR."0"."Data Type".equals("MLST")
-            assert json.short.short.StarAMR."1"."Isolate ID".equals("short_polished")
-            assert json.short.short.StarAMR."1"."Data Type".equals("Plasmid")
-            assert json.short.short.StarAMR."2"."Isolate ID".equals("short_polished")
-            assert json.short.short.StarAMR."2"."Data Type".equals("Resistance")
-            assert json.short.short.StarAMR."2"."Predicted Phenotype".equals("Sensitive")
+            // Below two values should be empty
+            assert json.short.short.StarAMR."0"."Genotype".equals("None")
+            assert json.short.short.StarAMR."0"."Predicted Phenotype".equals("Sensitive")
+            assert json.short.short.StarAMR."0"."Genome Length".equals("4949")
 
             assert json.short.short.CheckM."0"."# genomes".equals("5656")
             assert json.short.short.CheckM."0"."# markers".equals("56")
@@ -158,9 +169,17 @@ nextflow_pipeline {
             def iridanext_global = iridanext_json.files.global
             def iridanext_samples = iridanext_json.files.samples
             def iridanext_metadata = iridanext_json.metadata.samples
+
+            // output files
             assert iridanext_global.findAll { it.path == "SummaryReport/final_report.json" }.size() == 1
+            assert iridanext_global.findAll { it.path == "SummaryReport/final_report.tsv" }.size() == 1
             assert iridanext_samples.short.findAll { it.path == "assembly/length_filtered_contigs/short_filtered.fasta.gz" }.size() == 1
+
+            // output metadata
+            assert iridanext_metadata.short."AssemblyCompleted" == true
             assert iridanext_metadata.short."QUAST.0.Total length" == "4949"
+            assert iridanext_metadata.short."QUAST.0.Largest contig" == "4949"
+            assert iridanext_metadata.short."QUAST.0.# contigs" == "1"
             assert iridanext_metadata.short."QUAST.0.N50" == "4949"
         }
 
