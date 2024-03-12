@@ -13,12 +13,16 @@ nextflow_pipeline {
 
                 platform = "illumina"
 
-                mash { mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh" }
+                mash
+                {
+                    mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
+                    min_kmer = 1
+                }
+
                 r_contaminants { mega_mm2_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi" }
 
                 fastp { args { illumina = "-Q"} }
                 min_reads = 100
-                mash { min_kmer = 1 }
 
                 skip_bakta = true
                 skip_staramr = true
@@ -85,19 +89,23 @@ nextflow_pipeline {
 
                 platform = "illumina"
 
-                mash { mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh" }
+                mash
+                {
+                    mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
+                    min_kmer = 1
+                }
+
                 r_contaminants { mega_mm2_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi" }
 
                 fastp { args { illumina = "-Q"} }
                 min_reads = 100
-                mash { min_kmer = 1 }
 
                 skip_bakta = true
-                skip_staramr = true
-                skip_mobrecon = true
-                skip_checkm = true
-                skip_raw_read_metrics = true
-                skip_polishing = true
+                skip_staramr = false
+                skip_mobrecon = false
+                skip_checkm = false
+                skip_raw_read_metrics = false
+                skip_polishing = false
 
                 max_memory = "2.GB"
                 max_cpus = 1
@@ -110,6 +118,11 @@ nextflow_pipeline {
 
             // parse output json file
             def json = path("$launchDir/results/SummaryReport/final_report.json").json
+
+            assert json.short.short.RawReadSummary.R1."total_bp".equals(118750)
+            assert json.short.short.RawReadSummary.R1."total_reads".equals(475)
+            assert json.short.short.RawReadSummary.R1."read_qual_mean".equals(40.0)
+            assert json.short.short.RawReadSummary.R1."mean_sequence_length".equals(250.0)
 
             assert json.short.short.FastP.summary.sequencing.equals("paired end (250 cycles + 250 cycles)")
             assert json.short.short.FastP.summary.before_filtering.total_reads.equals(950)
@@ -130,12 +143,29 @@ nextflow_pipeline {
             assert json.short.short.QUAST."0"."GC (%)".equals("52.96")
             assert json.short.short.QUAST."0"."Avg. coverage depth".equals("47")
 
+            assert json.short.short.StarAMR."0"."Isolate ID".equals("short_polished")
+            assert json.short.short.StarAMR."0"."Data Type".equals("MLST")
+            assert json.short.short.StarAMR."1"."Isolate ID".equals("short_polished")
+            assert json.short.short.StarAMR."1"."Data Type".equals("Plasmid")
+            assert json.short.short.StarAMR."2"."Isolate ID".equals("short_polished")
+            assert json.short.short.StarAMR."2"."Data Type".equals("Resistance")
+            assert json.short.short.StarAMR."2"."Predicted Phenotype".equals("Sensitive")
+
+            assert json.short.short.CheckM."0"."# genomes".equals("5656")
+            assert json.short.short.CheckM."0"."# markers".equals("56")
+            assert json.short.short.CheckM."0"."# marker sets".equals("24")
+            assert json.short.short.CheckM."0".Contamination.equals("0.00")
+
+            assert json.short.short.SevenGeneMLSTReport[0].filename.equals("short_polished.fasta.gz")
+
+            assert json.short.short.Abricate."0".RESISTANCE.equals("NoData")  // All Abricate results for this are "NoData".
+
             def assembly_path = "$launchDir/results/assembly/length_filtered_contigs/short_filtered.fasta.gz"
             assert path(assembly_path).exists()
 
             // parse assembly file
             def assembly_header = path(assembly_path).linesGzip[0]
-            assert assembly_header.equals(">NODE_1_length_4949_cov_23.917254")
+            assert assembly_header.startsWith(">NODE_1_length_4949_cov_23.917254")  // _pilon_pilon_pilon gets appended
 
             // compare IRIDA Next JSON output
             def iridanext_json = path("$launchDir/results/iridanext.output.json").json
