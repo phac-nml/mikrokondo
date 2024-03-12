@@ -55,11 +55,11 @@ include { CLEAN_ASSEMBLE_READS } from './workflows/CleanAssemble.nf'
 include { POST_ASSEMBLY } from './workflows/PostAssembly.nf'
 include { INPUT_CHECK } from './subworkflows/local/input_check.nf'
 include { REPORT } from './modules/local/report.nf'
-include { REPORT_SUMMARIES } from './modules/local/report_splitter.nf'
+include { REPORT_AGGREGATE } from './modules/local/report_aggregate.nf'
+include { GZIP_FILES } from './modules/local/gzip_files.nf'
+include { CUSTOM_DUMPSOFTWAREVERSIONS } from './modules/nf-core/custom/dumpsoftwareversions/main'
 
-//import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 
 //
 // WORKFLOW: Run main mk-kondo/mikrokondo analysis pipeline
@@ -102,6 +102,7 @@ workflow MIKROKONDO {
         meta, reports, contigs -> tuple(meta, reports)
     }.join(mk_out.base_counts)
 
+    ch_versions = ps_out.versions
 
     ch_reports = ch_reports.mix(mk_out.reports)
     ch_reports = ch_reports.mix(ps_out.reports)
@@ -109,7 +110,32 @@ workflow MIKROKONDO {
 
     if(!params.skip_report){
         REPORT(ch_reports_all)
-        REPORT_SUMMARIES(REPORT.out.final_report)
+        REPORT_AGGREGATE(REPORT.out.final_report)
+        ch_versions = ch_versions.mix(REPORT_AGGREGATE.out.versions)
+
+        def suffix_trim = null
+        REPORT_AGGREGATE.out.sample_suffix.map {
+            it -> suffix_trim = it // no decent way to pull a value out of a value channel currently
+        }
+
+        updated_samples = REPORT_AGGREGATE.out.flat_samples.flatten().map{
+                    sample ->
+                        def name_trim = sample.getName()
+                        def trimmed_name = name_trim.substring(0, name_trim.length() - suffix_trim.length())
+                        tuple([
+                            "id": trimmed_name,
+                            "sample": trimmed_name],
+                            sample)
+                    }
+
+        GZIP_FILES(updated_samples)
+        ch_versions = ch_versions.mix(GZIP_FILES.out.versions)
+    }
+
+    if(!params.skip_version_gathering){
+        CUSTOM_DUMPSOFTWAREVERSIONS (
+            ch_versions.unique().collectFile(name: 'collated_versions.yml')
+        )
     }
 }
 

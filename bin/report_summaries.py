@@ -6,35 +6,48 @@ TODO add static html table output
 Matthew Wells: 2023-09-22
 """
 from dataclasses import dataclass
-from typing import Dict
-from collections import defaultdict, Counter
-import itertools
+from typing import Dict, Union
+from collections import defaultdict
 import os
 import argparse
 import json
 import copy
-import re
 import sys
 
+@dataclass
+class CleaningInfo:
+    """Info about how to parse certain common fields from Mikrokondo
+    field str: The fields name
+    keep str|None: if multiple fields are associated with the value specify one to keep, or None to keep all
+    trim_field int: when split on a delimiter which section of the list to keep
+    """
+    field: str
+    keep: Union[str, None] = None
+    trim_field: Union[int, None] = None
 
 class JsonImport:
     """Intake json report to convert to CSV"""
 
-    __key_order = ["QCStatus", "QCSummary", "QualityAnalysis", "meta",]
-    __keep_keys = frozenset(__key_order)
-    __qa_keep_field = "message" # The quality analysis field outputs alot of information per a tool, only the field that ends in message need to be kept
+    __key_order = {v.field: v for v in [CleaningInfo(field="QCStatus"),
+                CleaningInfo(field="QCSummary"),
+                CleaningInfo(field="QualityAnalysis", keep="message", trim_field=1),
+                CleaningInfo(field="meta")]}
+    __keep_keys = frozenset(__key_order.keys())
     __delimiter = "\t"
     __key_delimiter = "."
 
-    def __init__(self, report_fp, output_name):
+    def __init__(self, report_fp, output_name, sample_suffix):
         self.tool_data = None # TODO set this in output of group tool fields
         self.output_name = output_name
+        self.output_transposed = os.path.splitext(os.path.basename(self.output_name))[0] + "_transposed.tsv"
         self.output_dir = os.path.dirname(self.output_name)
         self.flat_json = os.path.splitext(os.path.basename(self.output_name))[0] + "_flattened.json"
         self.qc_paths = []
         self.report_fp = report_fp
+        self.flat_sample_string = sample_suffix
         self.data = self.ingest_report(self.report_fp)
         self.flat_data, self.common_fields, self.tool_fields, self.table = self.flatten_json(self.data)
+        self.output_indv_json(self.flat_data)
         self.output_flat_json(self.flat_data)
         self.write_table(self.table)
 
@@ -51,16 +64,35 @@ class JsonImport:
         ordered_keys = []
 
         # Get the wanted information to the top of the page
+        poisoned_keys = set()
         for option in self.__key_order:
-            keep = filter(lambda x: x.startswith(option), keys)
-            keep = sorted(keep)
+            option_criteria = self.__key_order[option]
+            keep = filter(lambda x: x.startswith(option_criteria.field), keys)
+            keep, poisoned = self.update_table_labels(table_data, list(keep), option_criteria)
+            poisoned_keys.update(poisoned)
             ordered_keys.extend(keep)
 
-        scalar_keys = sorted(filter(lambda x: self.__key_delimiter not in x and x not in ordered_keys, keys))
+        poisoned_keys = frozenset(poisoned_keys)
+        scalar_keys = sorted(filter(lambda x: self.__key_delimiter not in x and x not in ordered_keys and x not in poisoned_keys, keys))
         ordered_keys.extend(scalar_keys)
-        ordered_keys.extend(sorted([i for i in keys if i not in ordered_keys]))
+        ordered_keys.extend(sorted([i for i in keys if i not in ordered_keys and i not in poisoned_keys]))
         row_labels = sorted([i for i in next(iter(table_data.values()))])
 
+        self.write_tsv(table_data, row_labels, ordered_keys)
+        self.write_transposed_tsv(table_data, row_labels, ordered_keys)
+
+    def write_transposed_tsv(self, table_data, row_labels, ordered_keys):
+        with open(self.output_transposed, "w") as output_table:
+            output_table.write(f"{self.__delimiter}{self.__delimiter.join(ordered_keys)}")
+            output_table.write("\n")
+            for i in row_labels:
+                output_table.write(f"{i}")
+                for row in ordered_keys:
+                    fixed_output = str(table_data[row][i]).replace("\n", " ")
+                    output_table.write(f"{self.__delimiter}{fixed_output}")
+                output_table.write("\n")
+
+    def write_tsv(self, table_data, row_labels, ordered_keys):
         with open(self.output_name, "w") as output_table:
             output_table.write(f"{self.__delimiter}{self.__delimiter.join(row_labels)}")
             output_table.write("\n")
@@ -71,7 +103,34 @@ class JsonImport:
                     output_table.write(f"{self.__delimiter}{fixed_output}")
                 output_table.write("\n")
 
+    def update_table_labels(self, table, keys, info: CleaningInfo):
+        """Update table values to use new trimmed keys
 
+        Args:
+            table (_type_): _description_
+            keys (_type_): _description_
+        """
+        split_keys = [i.split(self.__key_delimiter) for i in keys]
+        processed_keys = []
+        poisoned_keys = set()
+        for previous, split_k in zip(keys, split_keys):
+            if info.keep and info.keep in split_k:
+                new_key = split_k[info.trim_field]
+                processed_keys.append(new_key)
+                table[new_key] = table[previous]
+                poisoned_keys.add(previous)
+                del table[previous]
+            elif not info.keep:
+                new_key = previous
+                if info.trim_field is not None:
+                    new_key = split_k[info.trim_field]
+                    table[new_key] = table[previous]
+                    del table[previous]
+                processed_keys.append(new_key)
+            else:
+                poisoned_keys.add(previous)
+                del table[previous]
+        return sorted(processed_keys), poisoned_keys
 
 
     def make_table(self, data):
@@ -202,7 +261,7 @@ class JsonImport:
             flattened_data (json: Dict[sample_id: Dict[tool_info: value]]):
         """
         for k, v in flattened_data.items():
-            with open(os.path.join(self.output_dir, f"{k}_flattened.json"), "w") as output:
+            with open(os.path.join(self.output_dir, k + self.flat_sample_string), "w") as output:
                 json_data = json.dumps({k: v}, indent=2)
                 output.write(json_data)
 
@@ -225,97 +284,20 @@ class JsonImport:
                     out_file.write(self.__delimiter)
                 out_file.write("\n")
 
-    def format_for_csv(self, results, rows):
-        row = {k: "" for k in rows}
-        data = []
-        for k, v in results.items():
-            n_row = copy.deepcopy(row)
-            sample_data = [key for key in v.keys() if key != "summary"]
-            for item in v["summary"]:
-                n_row[item[0]] = item[1]
-            n_row_samp = copy.deepcopy(n_row)
-            for key in sample_data:
-                n_row_samp = copy.deepcopy(n_row)
-                for k1 in v[key]:
-                    n_row_samp[k1[0]] = k1[1]
-                data.append((key, n_row_samp))
-        return data
-
-    @staticmethod
-    def check_field(dict_, value):
-        if dict_.get(value) is None:
-            return False
-        return True
-
-    def flatten_groups(self, data):
-        """Use known output structure to format groups, if metagenomic some fields will be missing
-        Args:
-            data (_type_): _description_
-        """
-        sample_data_overview = dict()
-        rows = set()
-        meta_data_rows = set()
-        qc_analysis_rows = set()
-        qc_status_rows = set()
-        for k, v in data.items():
-            results = []
-
-            if self.check_field(v, "QCStatus"):
-                qc_status_p = True
-                qc_status = v["QCStatus"]
-                qc_status_rows.add("QCStatus")
-                results.append(("QCStatus", qc_status))
-
-            if self.check_field(v, "meta"):
-                meta_data = v["meta"]
-                for field, outcome in meta_data.items():
-                    meta_data_rows.add(field)
-                    results.append((field, outcome))
-
-            if self.check_field(v, "QualityAnalysis"):
-                qc_data = v["QualityAnalysis"]
-                for i in qc_data:
-                    qc_analysis_rows.add(i)
-                results.extend(self.get_quality_analysis_fields(qc_data))
-
-            if self.check_field(v, "QCSummary"):
-                qc_summary = v["QCSummary"]
-                sample_data = [d_key for d_key in v.keys() if d_key not in self.__keep_keys]
-                results.append(("QCSummary", qc_summary.replace("\n", ". ")))
-
-            sample_data_overview[k] = dict()
-            sample_data_overview[k]["summary"] = copy.deepcopy(results)
-            for key in sample_data:
-                sample_level_data = []
-                for k1, v1 in v[key].items():
-                    self.recurse_json(v1, k1, sample_level_data)
-                [rows.add(key[0]) for key in sample_level_data]
-                sample_data_overview[k][key] = sample_level_data
-
-        qc_status_rows = list(qc_status_rows)
-        qc_status_rows.extend(list(qc_analysis_rows))
-        qc_status_rows.append("QCSummary")
-        qc_status_rows.extend(list(meta_data_rows))
-
-        rows = list(rows)
-        rows.sort()
-
-        short_keys, rows = self.move_keys_front(rows, ".")
-        qc_status_rows.extend(short_keys)
-        qc_status_rows.extend(rows)
-        return (sample_data_overview, qc_status_rows)
 
 
 
 
 
 def main_(args_in):
+    default_samp_suffix = "_flat_sample.json"
     parser = argparse.ArgumentParser("Table Summary")
     parser.add_argument("-f", "--file-in", help="Path to the mikrokondo json summary")
+    parser.add_argument("-s", "--sample-tag", help="Optional suffix and extension to name output samples.", default=default_samp_suffix)
     parser.add_argument("-o", "--out-file", help="output name plus the .tsv extension e.g. prefix.tsv")
     args = parser.parse_args(args_in)
     if os.path.isfile(args.file_in):
-        JsonImport(args.file_in, args.out_file)
+        JsonImport(args.file_in, args.out_file, args.sample_tag)
     else:
         sys.stderr.write(f"{args.file_in} does not exist.\n")
         sys.exit(-1)
