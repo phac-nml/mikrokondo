@@ -12,7 +12,8 @@
             "description": "Define where the pipeline should find input data and save output data.",
             "required": [
                 "input",
-                "outdir"
+                "outdir",
+                "platform"
             ],
             "properties": {
                 "input": {
@@ -30,6 +31,17 @@
                     "format": "directory-path",
                     "description": "The output directory where the results will be saved. You have to use absolute paths to storage on Cloud infrastructure.",
                     "fa_icon": "fas fa-folder-open"
+                },
+                "platform": {
+                    "type": "string",
+                    "enum": [
+                        "illumina",
+                        "nanopore",
+                        "pacbio",
+                        "hybrid"
+                    ],
+                    "description": "Sequencing platform used.",
+                    "default": "illumina"
                 },
                 "email": {
                     "type": "string",
@@ -1618,17 +1630,6 @@
                     "type": "string",
                     "hidden": true
                 },
-                "platform": {
-                    "type": "string",
-                    "enum": [
-                        "illumina",
-                        "nanopore",
-                        "pacbio",
-                        "hybrid"
-                    ],
-                    "description": "Sequencing platform used.",
-                    "default": "illumina"
-                },
                 "nanopore_chemistry": {
                     "type": "string",
                     "description": "The guppy base calling model. See the docs for a link of valid options."
@@ -1692,10 +1693,7 @@
                     "default": true,
                     "description": "Validate s3 sample sheet."
                 }
-            },
-            "required": [
-                "platform"
-            ]
+            }
         },
         "kat": {
             "title": "Kat",
