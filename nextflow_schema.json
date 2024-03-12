@@ -974,7 +974,8 @@
                 "medaka.batch_size": {
                     "type": "integer",
                     "default": 5,
-                    "description": "Batch size for medaka to use for processing."
+                    "description": "Batch size for medaka to use for processing.",
+                    "hidden": true
                 }
             }
         },
@@ -1557,12 +1558,14 @@
                 "help": {
                     "type": "boolean",
                     "description": "Display help text.",
-                    "fa_icon": "fas fa-question-circle"
+                    "fa_icon": "fas fa-question-circle",
+                    "hidden": true
                 },
                 "version": {
                     "type": "boolean",
                     "description": "Display version and exit.",
-                    "fa_icon": "fas fa-question-circle"
+                    "fa_icon": "fas fa-question-circle",
+                    "hidden": true
                 },
                 "publish_dir_mode": {
                     "type": "string",
@@ -1585,12 +1588,14 @@
                     "description": "Email address for completion summary, only when pipeline fails.",
                     "fa_icon": "fas fa-exclamation-triangle",
                     "pattern": "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$",
-                    "help_text": "An email address to send a summary email to when the pipeline is completed - ONLY sent if the pipeline does not exit successfully."
+                    "help_text": "An email address to send a summary email to when the pipeline is completed - ONLY sent if the pipeline does not exit successfully.",
+                    "hidden": true
                 },
                 "plaintext_email": {
                     "type": "boolean",
                     "description": "Send plain-text email instead of HTML.",
-                    "fa_icon": "fas fa-remove-format"
+                    "fa_icon": "fas fa-remove-format",
+                    "hidden": true
                 },
                 "monochrome_logs": {
                     "type": "boolean",
@@ -1667,11 +1672,13 @@
                 },
                 "slurm_p": {
                     "type": "boolean",
-                    "description": "Use slurm to execute your pipeline"
+                    "description": "Use slurm to execute your pipeline",
+                    "hidden": true
                 },
                 "slurm_profile": {
                     "type": "string",
-                    "description": "Slurm partition"
+                    "description": "Slurm partition",
+                    "hidden": true
                 },
                 "target_depth": {
                     "type": "integer",
