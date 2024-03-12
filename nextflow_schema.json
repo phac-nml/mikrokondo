@@ -46,25 +46,36 @@
             "fa_icon": "fas fa-terminal",
             "description": "Define the databases used by mikrokondo for data analysis.",
             "properties": {
-                "bakta.db": {
-                    "type": "string",
-                    "hidden": true
-                },
                 "r_contaminants.mega_mm2_idx": {
                     "type": "string",
-                    "hidden": true
-                },
-                "kraken.db": {
-                    "type": "string",
-                    "description": "Path to Kraken2 database (do not use symlinks)"
+                    "pattern": "^\S+$",
+                    "format": "file-path",
+                    "description": "The minimap2 index used for contamination detection."
                 },
                 "mash.mash_sketch": {
                     "type": "string",
-                    "hidden": true
+                    "pattern": "^\S+$",
+                    "format": "file-path",
+                    "description": "The mash sketch used for species identification."
+                },
+                "kraken.db": {
+                    "type": "string",
+                    "pattern": "^\S+$",
+                    "format": "directory-path",
+                    "description": "Path to Kraken2 database."
+                },
+                "bakta.db": {
+                    "type": "string",
+                    "pattern": "^\S+$",
+                    "format": "directory-path",
+                    "description": "Bakta database used for genome annotation."
                 },
                 "staramr.db": {
                     "type": "string",
-                    "description": "Path to a StarAMR database, a database is included in the container."
+                    "pattern": "^\S+$",
+                    "format": "directory-path",
+                    "description": "Path to a StarAMR database, a database is included in the container.",
+                    "hidden": true
                 }
             }
         },
