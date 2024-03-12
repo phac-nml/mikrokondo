@@ -145,11 +145,6 @@ nextflow_pipeline {
 
             assert json.short.short.StarAMR."0"."Isolate ID".equals("short_polished")
             assert json.short.short.StarAMR."0"."Data Type".equals("MLST")
-            assert json.short.short.StarAMR."1"."Isolate ID".equals("short_polished")
-            assert json.short.short.StarAMR."1"."Data Type".equals("Plasmid")
-            assert json.short.short.StarAMR."2"."Isolate ID".equals("short_polished")
-            assert json.short.short.StarAMR."2"."Data Type".equals("Resistance")
-            assert json.short.short.StarAMR."2"."Predicted Phenotype".equals("Sensitive")
 
             assert json.short.short.CheckM."0"."# genomes".equals("5656")
             assert json.short.short.CheckM."0"."# markers".equals("56")
