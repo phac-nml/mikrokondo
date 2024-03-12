@@ -40,6 +40,34 @@
                 }
             }
         },
+        "database_options": {
+            "title": "Mikrokondo databases",
+            "type": "object",
+            "fa_icon": "fas fa-terminal",
+            "description": "Define the databases used by mikrokondo for data analysis.",
+            "properties": {
+                "bakta.db": {
+                    "type": "string",
+                    "hidden": true
+                },
+                "r_contaminants.mega_mm2_idx": {
+                    "type": "string",
+                    "hidden": true
+                },
+                "kraken.db": {
+                    "type": "string",
+                    "description": "Path to Kraken2 database (do not use symlinks)"
+                },
+                "mash.mash_sketch": {
+                    "type": "string",
+                    "hidden": true
+                },
+                "staramr.db": {
+                    "type": "string",
+                    "description": "Path to a StarAMR database, a database is included in the container."
+                }
+            }
+        },
         "seqkit": {
             "title": "SeqKit",
             "type": "object",
@@ -1264,10 +1292,6 @@
                     "default": "quay.io/biocontainers/staramr:0.9.1--pyhdfd78af_0",
                     "hidden": true
                 },
-                "staramr.db": {
-                    "type": "string",
-                    "description": "Path to a StarAMR database, a database is included in the container."
-                },
                 "staramr.tsv_ext": {
                     "type": "string",
                     "default": ".tsv",
@@ -2041,10 +2065,6 @@
             "description": "",
             "default": "",
             "properties": {
-                "kraken.db": {
-                    "type": "string",
-                    "description": "Path to Kraken2 database (do not use symlinks)"
-                },
                 "kraken.classified_suffix": {
                     "type": "string",
                     "default": "classified",
@@ -2213,10 +2233,6 @@
             "default": "contamination",
             "hidden": true
         },
-        "mash.mash_sketch": {
-            "type": "string",
-            "hidden": true
-        },
         "mash.sketch_ext": {
             "type": "string",
             "default": ".msh",
@@ -2247,10 +2263,6 @@
         "r_contaminants.output_ext": {
             "type": "string",
             "default": ".fastq.gz",
-            "hidden": true
-        },
-        "r_contaminants.mega_mm2_idx": {
-            "type": "string",
             "hidden": true
         },
         "r_contaminants.mm2_illumina": {
@@ -2785,10 +2797,6 @@
         "kraken_bin.fasta_ext": {
             "type": "string",
             "default": "_binned.fasta.gz",
-            "hidden": true
-        },
-        "bakta.db": {
-            "type": "string",
             "hidden": true
         },
         "bakta.args": {
