@@ -143,8 +143,10 @@ nextflow_pipeline {
             assert json.short.short.QUAST."0"."GC (%)".equals("52.96")
             assert json.short.short.QUAST."0"."Avg. coverage depth".equals("47")
 
-            assert json.short.short.StarAMR."0"."Isolate ID".equals("short_polished")
-            assert json.short.short.StarAMR."0"."Data Type".equals("MLST")
+            // Below two values should be empty
+            assert json.short.short.StarAMR."0"."Geneotype".equals("")
+            assert json.short.short.StarAMR."0"."Predicted Phenotype".equals("")
+            assert json.short.short.StarAMR."0"."Genome Length".equals("4949")
 
             assert json.short.short.CheckM."0"."# genomes".equals("5656")
             assert json.short.short.CheckM."0"."# markers".equals("56")
