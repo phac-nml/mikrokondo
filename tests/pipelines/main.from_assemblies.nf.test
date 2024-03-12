@@ -3,8 +3,8 @@ nextflow_pipeline {
     name "Integration Tests from assemblies for MIKROKONDO"
     script "main.nf"
 
-    test("Test starting from assemblies") {
-        tag "from_assemblies"
+    test("Test starting from assemblies ecoli") {
+        tag "from_assemblies_ecoli"
 
         when {
             params {
@@ -77,6 +77,52 @@ nextflow_pipeline {
             assert ecoli_metadata."ECTyperSubtyping.0.Serotype" == "O104:H4"
             assert ecoli_metadata."ECTyperSubtyping.0.Database" == "v1.0 (11-03-2020)"
             assert ecoli_metadata."ECTyperSubtyping.0.QC" == "PASS (REPORTABLE)"
+        }
+    }
+
+    test("Test starting from assemblies salmonella") {
+        tag "from_assemblies_salmonella"
+
+        when {
+            params {
+                input = "$baseDir/tests/data/samplesheets/samplesheet-test-from-assemblies-salmonella.csv"
+                outdir = "results"
+
+                platform = "illumina"
+
+                mash { mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh" }
+                r_contaminants { mega_mm2_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi" }
+                quast { min_contig_length = 1 }
+
+                skip_bakta = true
+                skip_mobrecon = true
+                skip_checkm = true
+                skip_raw_read_metrics = true
+                skip_polishing = true
+                
+                skip_staramr = false
+                skip_subtyping = false
+
+                max_memory = "2.GB"
+                max_cpus = 1
+            }
+        }
+
+        then {
+            assert workflow.success
+            assert path("$launchDir/results").exists()
+
+            // parse final report json file
+            def final_report = path("$launchDir/results/SummaryReport/final_report.json").json
+
+            // compare IRIDA Next JSON output
+            def iridanext_json = path("$launchDir/results/iridanext.output.json").json
+            def iridanext_global = iridanext_json.files.global
+            def iridanext_samples = iridanext_json.files.samples
+            def iridanext_metadata = iridanext_json.metadata.samples
+
+            // output files
+            assert iridanext_global.findAll { it.path == "SummaryReport/final_report.json" }.size() == 1
         }
     }
 }
