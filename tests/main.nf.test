@@ -145,7 +145,7 @@ nextflow_pipeline {
 
             // Below two values should be empty
             assert json.short.short.StarAMR."0"."Genotype".equals("None")
-            assert json.short.short.StarAMR."0"."Predicted Phenotype".equals("None")
+            assert json.short.short.StarAMR."0"."Predicted Phenotype".equals("Sensitive")
             assert json.short.short.StarAMR."0"."Genome Length".equals("4949")
 
             assert json.short.short.CheckM."0"."# genomes".equals("5656")
