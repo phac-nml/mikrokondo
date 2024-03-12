@@ -51,6 +51,30 @@ nextflow_pipeline {
             assert ecoli_json.ECTyperSubtyping."0".Database.equals("v1.0 (11-03-2020)")
             assert ecoli_json.ECTyperSubtyping."0".QC.equals("PASS (REPORTABLE)")
 
+            // parse final report tsv file
+            def final_report_tmap = [:]
+            def final_report_tsv = path("$launchDir/results/SummaryReport/final_report.tsv").readLines()
+            final_report_tsv.each {
+                def tokens = it.split("\t")
+                final_report_tmap[tokens[0]] = tokens[1]
+            }
+            assert final_report_tsv[0] == "\tecoli_GCA_000947975\t"
+            assert final_report_tmap."QUAST.0.Total length" == "5333525"
+            assert final_report_tmap."QUAST.0.Largest contig" == "300823"
+            assert final_report_tmap."QUAST.0.# contigs" == "187"
+            assert final_report_tmap."QUAST.0.N50" == "122025"
+            assert final_report_tmap."StarAMR.0.Genotype" == "\"aph(3'')-Ib, aph(6)-Id, blaCTX-M-15, blaTEM-1B, dfrA7, gyrA (S83A), qacE, sul1, sul2, tet(A)\""
+            assert final_report_tmap."StarAMR.0.Predicted Phenotype" == "\"streptomycin, kanamycin, ampicillin, ceftriaxone, trimethoprim, ciprofloxacin I/R, nalidixic acid, unknown[qacE_1_X68232], sulfisoxazole, tetracycline\""
+            assert final_report_tmap."StarAMR.0.Plasmid" == "IncQ1"
+            assert final_report_tmap."StarAMR.0.Scheme" == "ecoli"
+            assert final_report_tmap."StarAMR.0.Sequence Type" == "678"
+            assert final_report_tmap."ECTyperSubtyping.0.Species" == "\"Escherichia coli\""
+            assert final_report_tmap."ECTyperSubtyping.0.O-type" == "O104"
+            assert final_report_tmap."ECTyperSubtyping.0.H-type" == "H4"
+            assert final_report_tmap."ECTyperSubtyping.0.Serotype" == "O104:H4"
+            assert final_report_tmap."ECTyperSubtyping.0.Database" == "\"v1.0 (11-03-2020)\""
+            assert final_report_tmap."ECTyperSubtyping.0.QC" == "\"PASS (REPORTABLE)\""
+
             // compare IRIDA Next JSON output
             def iridanext_json = path("$launchDir/results/iridanext.output.json").json
             def iridanext_global = iridanext_json.files.global
