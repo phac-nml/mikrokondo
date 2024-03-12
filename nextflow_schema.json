@@ -48,31 +48,31 @@
             "properties": {
                 "r_contaminants.mega_mm2_idx": {
                     "type": "string",
-                    "pattern": "^\S+$",
+                    "pattern": "^\\S+$",
                     "format": "file-path",
                     "description": "The minimap2 index used for contamination detection."
                 },
                 "mash.mash_sketch": {
                     "type": "string",
-                    "pattern": "^\S+$",
+                    "pattern": "^\\S+$",
                     "format": "file-path",
                     "description": "The mash sketch used for species identification."
                 },
                 "kraken.db": {
                     "type": "string",
-                    "pattern": "^\S+$",
+                    "pattern": "^\\S+$",
                     "format": "directory-path",
                     "description": "Path to Kraken2 database."
                 },
                 "bakta.db": {
                     "type": "string",
-                    "pattern": "^\S+$",
+                    "pattern": "^\\S+$",
                     "format": "directory-path",
                     "description": "Bakta database used for genome annotation."
                 },
                 "staramr.db": {
                     "type": "string",
-                    "pattern": "^\S+$",
+                    "pattern": "^\\S+$",
                     "format": "directory-path",
                     "description": "Path to a StarAMR database, a database is included in the container.",
                     "hidden": true
