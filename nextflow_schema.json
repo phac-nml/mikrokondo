@@ -3004,7 +3004,7 @@
         },
         "kraken2_db": {
             "type": "string",
-            "default": "/Drives/W/Projects/Project_Matthew_Wells/GSP/MikroKondo/mikrokondo/databases/k2_standard_20220607/"
+            "default": "databases/k2_standard_20220607/"
         }
     }
 }
