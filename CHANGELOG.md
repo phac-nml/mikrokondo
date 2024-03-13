@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Initial release of mk-kondo/mikrokondo, created with the [nf-core](https://nf-co.re/) template.
 
 ### `Added`
+Incorporated IRIDANext plug-in
 
 Upgraded nf-validation to latest version 2.0.0
 

@@ -91,8 +91,7 @@ def reset_combined_map(LinkedHashMap meta, sun.nio.fs.UnixPath f_reads, sun.nio.
 
 }
 
-def check_file_exists(String file_path){
-
+def check_file_exists(def file_path){
     if(!file(file_path).exists()){
         exit 1, "ERROR: Please check input samplesheet -> $file_path does not exist. If your file in you sample sheet does not exist make sure you do not have spaces in your path name."
     }
