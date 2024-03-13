@@ -5,6 +5,649 @@
     "description": "mikrokondo schema",
     "type": "object",
     "definitions": {
+        "input_output_options": {
+            "title": "Input/output options",
+            "type": "object",
+            "fa_icon": "fas fa-terminal",
+            "description": "Define where the pipeline should find input data and save output data.",
+            "required": [
+                "input",
+                "outdir"
+            ],
+            "properties": {
+                "input": {
+                    "type": "string",
+                    "format": "file-path",
+                    "mimetype": "text/csv",
+                    "pattern": "^\\S+\\.csv$",
+                    "schema": "assets/schema_input.json",
+                    "description": "Path to comma-separated file containing information about the samples in the experiment.",
+                    "help_text": "You will need to create a design file with information about the samples in your experiment before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 3 columns, and a header row.",
+                    "fa_icon": "fas fa-file-csv"
+                },
+                "outdir": {
+                    "type": "string",
+                    "format": "directory-path",
+                    "description": "The output directory where the results will be saved. You have to use absolute paths to storage on Cloud infrastructure.",
+                    "fa_icon": "fas fa-folder-open"
+                },
+                "email": {
+                    "type": "string",
+                    "description": "Email address for completion summary.",
+                    "fa_icon": "fas fa-envelope",
+                    "help_text": "Set this parameter to your e-mail address to get a summary e-mail with details of the run sent to you when the workflow exits. If set in your user config file (`~/.nextflow/config`) then you don't need to specify this on the command line for every run.",
+                    "pattern": "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$"
+                }
+            }
+        },
+        "bakta": {
+            "title": "Bakta",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "properties": {
+                "bakta.output_dir": {
+                    "type": "string",
+                    "default": "bakta",
+                    "hidden": true
+                },
+                "bakta.embl_ext": {
+                    "type": "string",
+                    "default": ".embl",
+                    "hidden": true
+                },
+                "bakta.faa_ext": {
+                    "type": "string",
+                    "default": ".faa",
+                    "hidden": true
+                },
+                "bakta.ffn_ext": {
+                    "type": "string",
+                    "default": ".ffn",
+                    "hidden": true
+                },
+                "bakta.fna_ext": {
+                    "type": "string",
+                    "default": ".fna",
+                    "hidden": true
+                },
+                "bakta.gbff_ext": {
+                    "type": "string",
+                    "default": ".gbff",
+                    "hidden": true
+                },
+                "bakta.gff_ext": {
+                    "type": "string",
+                    "default": ".gff3",
+                    "hidden": true
+                },
+                "bakta.threads": {
+                    "type": "integer",
+                    "default": 12,
+                    "hidden": true
+                },
+                "bakta.hypotheticals_tsv_ext": {
+                    "type": "string",
+                    "default": ".hypotheticals.tsv",
+                    "hidden": true
+                },
+                "bakta.hypotheticals_faa_ext": {
+                    "type": "string",
+                    "default": ".hypotheticals.faa",
+                    "hidden": true
+                },
+                "bakta.tsv_ext": {
+                    "type": "string",
+                    "default": ".tsv",
+                    "hidden": true
+                },
+                "bakta.txt_ext": {
+                    "type": "string",
+                    "default": ".txt",
+                    "hidden": true
+                },
+                "bakta.min_contig_length": {
+                    "type": "integer",
+                    "default": 200,
+                    "hidden": true
+                },
+                "bakta.db": {
+                    "type": "string",
+                    "hidden": true
+                },
+                "bakta.args": {
+                    "type": "string",
+                    "hidden": true,
+                    "description": "Additional arguments to pass to bakta"
+                },
+                "ba_min_conting_length": {
+                    "type": "integer",
+                    "default": 200,
+                    "description": "Minimum contig length for processing in Bakta"
+                }
+            },
+            "fa_icon": "fas fa-address-card"
+        },
+        "fastp": {
+            "title": "FastP",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "properties": {
+                "fastp.html_ext": {
+                    "type": "string",
+                    "default": ".html",
+                    "hidden": true
+                },
+                "fastp.average_quality_e": {
+                    "type": "integer",
+                    "default": 25,
+                    "description": "Average quality of a read to be included (read pair is discarded if it is below this value)",
+                    "hidden": true
+                },
+                "fastp.json_ext": {
+                    "type": "string",
+                    "default": ".json",
+                    "hidden": true
+                },
+                "fastp.qualified_quality_phred": {
+                    "type": "integer",
+                    "default": 15,
+                    "description": "Phred score to be considered qualified. See FastP docs for more details.",
+                    "hidden": true
+                },
+                "fastp.unqualified_percent_limit": {
+                    "type": "integer",
+                    "default": 40,
+                    "description": "Percent of bases in a read to be qualified for the read to be included. See FastP docs for more details.",
+                    "hidden": true
+                },
+                "fastp.fastq_ext": {
+                    "type": "string",
+                    "default": ".trimmed.fastq.gz",
+                    "hidden": true
+                },
+                "fastp.report_tag": {
+                    "type": "string",
+                    "default": "FastP",
+                    "hidden": true
+                },
+                "fastp.illumina_length_min": {
+                    "type": "integer",
+                    "default": 35,
+                    "description": "Minimum length of a read to be included in later analysis for illumina data.",
+                    "hidden": true
+                },
+                "fastp.single_end_length_min": {
+                    "type": "integer",
+                    "default": 1000,
+                    "description": "Minimum leng of a read to be used in later analysis (for Nanopore or Pacbio)",
+                    "hidden": true
+                },
+                "fastp.dedup_reads": {
+                    "type": "boolean",
+                    "description": "Option to turn on read de-duplication.",
+                    "hidden": true
+                },
+                "fastp.args.illumina": {
+                    "type": "string",
+                    "default": "--overrepresentation_analysis --trim_poly_g --poly_g_min_len 10 --trim_poly_x --poly_x_min_len 10 --cut_tail --cut_tail_window_size 4 --cut_tail_mean_quality 15 --low_complexity_filter --complexity_threshold 20 --average_qual 25 --qualified_quality_phred 15 --unqualified_percent_limit 40 --length_limit 400 --length_required 35 --detect_adapter_for_pe",
+                    "hidden": true
+                },
+                "fastp.args.single_end": {
+                    "type": "string",
+                    "default": "--overrepresentation_analysis -Q --length_required 1000",
+                    "hidden": true
+                },
+                "fp_average_quality": {
+                    "type": "integer",
+                    "default": 25
+                },
+                "fp_cut_tail_mean_quality": {
+                    "type": "integer",
+                    "default": 15
+                },
+                "fp_cut_tail_window_size": {
+                    "type": "integer",
+                    "default": 4
+                },
+                "fp_complexity_threshold": {
+                    "type": "integer",
+                    "default": 20
+                },
+                "fp_qualified_phred": {
+                    "type": "integer",
+                    "default": 15
+                },
+                "fp_unqualified_precent_limit": {
+                    "type": "integer",
+                    "default": 40
+                },
+                "fp_polyg_min_len": {
+                    "type": "integer",
+                    "default": 10
+                },
+                "fp_polyx_min_len": {
+                    "type": "integer",
+                    "default": 10
+                },
+                "fp_illumina_length_min": {
+                    "type": "integer",
+                    "default": 35
+                },
+                "fp_illumina_length_max": {
+                    "type": "integer",
+                    "default": 400
+                },
+                "fp_single_end_length_min": {
+                    "type": "integer",
+                    "default": 1000
+                },
+                "fp_dedup_reads": {
+                    "type": "boolean"
+                }
+            },
+            "fa_icon": "fas fa-filter"
+        },
+        "quast": {
+            "title": "QUAST",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "properties": {
+                "quast.suffix": {
+                    "type": "string",
+                    "default": "quast",
+                    "hidden": true
+                },
+                "quast.report_base": {
+                    "type": "string",
+                    "default": "report",
+                    "hidden": true
+                },
+                "quast.report_prefix": {
+                    "type": "string",
+                    "default": "transposed_",
+                    "hidden": true
+                },
+                "quast.report_ext": {
+                    "type": "string",
+                    "default": ".tsv",
+                    "hidden": true
+                },
+                "quast.report_tag": {
+                    "type": "string",
+                    "default": "QUAST",
+                    "hidden": true
+                },
+                "quast.min_contig_length": {
+                    "type": "integer",
+                    "default": 1000,
+                    "description": "Minimum contig length to be used my Quast.",
+                    "hidden": true
+                },
+                "quast.args": {
+                    "type": "string",
+                    "default": "{ \"--min-contig ${params.quast.min_contig_length} --report-all-metrics\" }",
+                    "hidden": true
+                },
+                "quast.contigs_field": {
+                    "type": "string",
+                    "default": "# contigs",
+                    "hidden": true
+                },
+                "qt_min_contig_length": {
+                    "type": "integer",
+                    "default": 1000
+                }
+            },
+            "fa_icon": "fas fa-check-circle"
+        },
+        "generic_options": {
+            "title": "Generic options",
+            "type": "object",
+            "fa_icon": "fas fa-file-import",
+            "description": "Less common options for the pipeline, typically set in a config file.",
+            "help_text": "These options are common to all nf-core pipelines and allow you to customise some of the core preferences for how the pipeline runs.\n\nTypically these options would be set in a Nextflow config file loaded for all pipeline runs, such as `~/.nextflow/config`.",
+            "properties": {
+                "target_depth": {
+                    "type": "integer",
+                    "default": 100,
+                    "description": "Target depth to sub-sample reads to."
+                },
+                "platform": {
+                    "type": "string",
+                    "enum": [
+                        "illumina",
+                        "nanopore",
+                        "pacbio",
+                        "hybrid"
+                    ],
+                    "description": "Sequencing platform used.",
+                    "default": "illumina"
+                },
+                "nanopore_chemistry": {
+                    "type": "string",
+                    "description": "The guppy base calling model. See the docs for a link of valid options."
+                },
+                "run_kraken": {
+                    "type": "boolean",
+                    "description": "Use Kraken2 instead of Mash for sample speciation (Useful if you have Eukaryotic data or Archae)"
+                },
+                "help": {
+                    "type": "boolean",
+                    "description": "Display help text.",
+                    "fa_icon": "fas fa-question-circle"
+                },
+                "hybrid_unicycler": {
+                    "type": "boolean",
+                    "description": "Use unicycler for hybrid assembly."
+                },
+                "long_read_opt": {
+                    "type": "string",
+                    "default": "nanopore",
+                    "enum": [
+                        "nanopore",
+                        "pacbio"
+                    ],
+                    "description": "Specify which longread platform your data is from (nanopore or pacbio). This option must be specified if performing a hybrid assembly."
+                },
+                "min_reads": {
+                    "type": "integer",
+                    "default": 1000,
+                    "description": "Minimum number of reads a sample requires to move forward for assembly."
+                },
+                "output_idx_name": {
+                    "type": "string",
+                    "hidden": true
+                },
+                "metagenomic_run": {
+                    "type": "boolean",
+                    "description": "Label all samples as metagenomic (Skip autodetection)"
+                },
+                "flye_read_type": {
+                    "type": "string",
+                    "default": "hq",
+                    "enum": [
+                        "hq",
+                        "corr",
+                        "raw"
+                    ],
+                    "description": "Read type for flye to use. hq corresponds to hifi for Pacbio data."
+                },
+                "stage_in_mode": {
+                    "type": "string",
+                    "default": "symlink",
+                    "hidden": true
+                },
+                "version": {
+                    "type": "boolean",
+                    "description": "Display version and exit.",
+                    "fa_icon": "fas fa-question-circle"
+                },
+                "publish_dir_mode": {
+                    "type": "string",
+                    "default": "copy",
+                    "description": "Method used to save pipeline results to output directory.",
+                    "help_text": "The Nextflow `publishDir` option specifies which intermediate files should be saved to the output directory. This option tells the pipeline what method should be used to move these files. See [Nextflow docs](https://www.nextflow.io/docs/latest/process.html#publishdir) for details.",
+                    "fa_icon": "fas fa-copy",
+                    "enum": [
+                        "symlink",
+                        "rellink",
+                        "link",
+                        "copy",
+                        "copyNoFollow",
+                        "move"
+                    ],
+                    "hidden": true
+                },
+                "email_on_fail": {
+                    "type": "string",
+                    "description": "Email address for completion summary, only when pipeline fails.",
+                    "fa_icon": "fas fa-exclamation-triangle",
+                    "pattern": "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$",
+                    "help_text": "An email address to send a summary email to when the pipeline is completed - ONLY sent if the pipeline does not exit successfully."
+                },
+                "plaintext_email": {
+                    "type": "boolean",
+                    "description": "Send plain-text email instead of HTML.",
+                    "fa_icon": "fas fa-remove-format"
+                },
+                "monochrome_logs": {
+                    "type": "boolean",
+                    "description": "Do not use coloured log outputs.",
+                    "fa_icon": "fas fa-palette",
+                    "hidden": true
+                },
+                "hook_url": {
+                    "type": "string",
+                    "description": "Incoming hook URL for messaging service",
+                    "fa_icon": "fas fa-people-group",
+                    "help_text": "Incoming hook URL for messaging service. Currently, MS Teams and Slack are supported.",
+                    "hidden": true
+                },
+                "tracedir": {
+                    "type": "string",
+                    "description": "Directory to keep pipeline Nextflow logs and reports.",
+                    "default": "null/pipeline_info",
+                    "fa_icon": "fas fa-cogs",
+                    "hidden": true
+                },
+                "validate_params": {
+                    "type": "boolean",
+                    "description": "Boolean whether to validate parameters against the schema at runtime",
+                    "fa_icon": "fas fa-check-square",
+                    "default": true,
+                    "hidden": true
+                },
+                "show_hidden_params": {
+                    "type": "boolean",
+                    "fa_icon": "far fa-eye-slash",
+                    "description": "Show all params when using `--help`",
+                    "hidden": true,
+                    "help_text": "By default, parameters set as _hidden_ in the schema are not shown on the command line when a user runs with `--help`. Specifying this option will tell the pipeline to show all parameters."
+                },
+                "slurm_p": {
+                    "type": "boolean",
+                    "description": "Use slurm to execute your pipeline"
+                },
+                "slurm_profile": {
+                    "type": "string",
+                    "description": "Slurm partition"
+                },
+                "validationS3PathCheck": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Validate s3 sample sheet."
+                }
+            },
+            "required": [
+                "platform"
+            ]
+        },
+        "skip_options": {
+            "title": "Skip Options",
+            "type": "object",
+            "description": "Options to alter control flow of the pipeline",
+            "default": "",
+            "properties": {
+                "skip_depth_sampling": {
+                    "type": "boolean",
+                    "description": "Skip down sampling of data to a target depth. This is not supported for metagenomic samples or hybrid assemblies."
+                },
+                "skip_subtyping": {
+                    "type": "boolean",
+                    "description": "Do not enter the subtyping workflow, e.g. ECTyper, SISTR etc will not be ran."
+                },
+                "skip_polishing": {
+                    "type": "boolean",
+                    "description": "Skip polishing of assemblies, useful in case of errors or for metagenomic samples that fail."
+                },
+                "skip_ont_header_cleaning": {
+                    "type": "boolean",
+                    "description": "Make nanopore headers unique. Only turn this on if you are worried about duplicate id's e.g. from errors in running sequencing.",
+                    "default": true
+                },
+                "skip_checkm": {
+                    "type": "boolean",
+                    "description": "Skip running CheckM"
+                },
+                "skip_report": {
+                    "type": "boolean",
+                    "description": "Skip summary report generation"
+                },
+                "skip_raw_read_metrics": {
+                    "type": "boolean",
+                    "description": "Skip generating raw-read metrics. e.g. when data first enters the pipeline"
+                },
+                "skip_version_gathering": {
+                    "type": "boolean",
+                    "description": "Skip creating a report of the final versions of tools used in mikrokondo."
+                },
+                "skip_metagenomic_detection": {
+                    "type": "boolean",
+                    "description": "For samples to be analyzed as isolates."
+                },
+                "skip_abricate": {
+                    "type": "boolean",
+                    "description": "Skip running abricate for annotation"
+                },
+                "skip_bakta": {
+                    "type": "boolean",
+                    "description": "Skip annotation with Bakta"
+                },
+                "skip_species_classification": {
+                    "type": "boolean",
+                    "description": "Skip determining what your species is (with Kraken2 or Mash)"
+                },
+                "skip_mlst": {
+                    "type": "boolean",
+                    "description": "Skip classic 7gene MLST (Uses Torstein Tseemann's mlst)"
+                },
+                "skip_mobrecon": {
+                    "type": "boolean",
+                    "description": "Skip running mob recon for plasmid identification."
+                },
+                "skip_staramr": {
+                    "type": "boolean",
+                    "description": "Skip running StarAMR"
+                }
+            }
+        },
+        "databases_and_pre_computed_files": {
+            "title": "Databases and Pre-Computed Files",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "properties": {
+                "dehosting_idx": {
+                    "type": "string",
+                    "default": "databases/PhiPacHum_m2.idx",
+                    "description": "Minimpa2 index for dehosting and kitome removal"
+                },
+                "mash_sketch": {
+                    "type": "string",
+                    "default": "databases/GTDBSketch_20231003.msh",
+                    "description": "Mash sketch used for contamination detection and speciation (Sketch comments must be a taxonomic string similar to what Kraken2 outputs)"
+                },
+                "bakta_db": {
+                    "type": "string",
+                    "default": "databases/db-light",
+                    "description": "Database use for bakta, this value is optional as bakta can be skipped"
+                },
+                "staramr_db": {
+                    "type": "string",
+                    "description": "It is recommended to use the StarAMR database in the StarAMR container however, an external option can be specified"
+                }
+            },
+            "required": [
+                "dehosting_idx",
+                "mash_sketch"
+            ]
+        },
+        "max_job_request_options": {
+            "title": "Max job request options",
+            "type": "object",
+            "fa_icon": "fab fa-acquisitions-incorporated",
+            "description": "Set the top limit for requested resources for any single job.",
+            "help_text": "If you are running on a smaller system, a pipeline step requesting more resources than are available may cause the Nextflow to stop the run with an error. These options allow you to cap the maximum resources requested by any single job so that the pipeline will run on your system.\n\nNote that you can not _increase_ the resources requested by any job using these options. For that you will need your own configuration file. See [the nf-core website](https://nf-co.re/usage/configuration) for details.",
+            "properties": {
+                "max_cpus": {
+                    "type": "integer",
+                    "description": "Maximum number of CPUs that can be requested for any single job.",
+                    "default": 16,
+                    "fa_icon": "fas fa-microchip",
+                    "hidden": true,
+                    "help_text": "Use to set an upper-limit for the CPU requirement for each process. Should be an integer e.g. `--max_cpus 1`"
+                },
+                "max_memory": {
+                    "type": "string",
+                    "description": "Maximum amount of memory that can be requested for any single job.",
+                    "default": "2000.GB",
+                    "fa_icon": "fas fa-memory",
+                    "pattern": "^\\d+(\\.\\d+)?\\.?\\s*(K|M|G|T)?B$",
+                    "hidden": true,
+                    "help_text": "Use to set an upper-limit for the memory requirement for each process. Should be a string in the format integer-unit e.g. `--max_memory '8.GB'`"
+                },
+                "max_time": {
+                    "type": "string",
+                    "description": "Maximum amount of time that can be requested for any single job.",
+                    "default": "240.h",
+                    "fa_icon": "far fa-clock",
+                    "pattern": "^(\\d+\\.?\\s*(s|m|h|day)\\s*)+$",
+                    "hidden": true,
+                    "help_text": "Use to set an upper-limit for the time requirement for each process. Should be a string in the format integer-unit e.g. `--max_time '2.h'`"
+                }
+            }
+        },
+        "institutional_config_options": {
+            "title": "Institutional config options",
+            "type": "object",
+            "fa_icon": "fas fa-university",
+            "description": "Parameters used to describe centralised config profiles. These should not be edited.",
+            "help_text": "The centralised nf-core configuration profiles use a handful of pipeline parameters to describe themselves. This information is then printed to the Nextflow log when you run a pipeline. You should not need to change these values when you run a pipeline.",
+            "properties": {
+                "custom_config_version": {
+                    "type": "string",
+                    "description": "Git commit id for Institutional configs.",
+                    "default": "master",
+                    "fa_icon": "fas fa-users-cog",
+                    "hidden": true
+                },
+                "custom_config_base": {
+                    "type": "string",
+                    "description": "Base directory for Institutional configs.",
+                    "default": "https://raw.githubusercontent.com/nf-core/configs/master",
+                    "help_text": "If you're running offline, Nextflow will not be able to fetch the institutional config files from the internet. If you don't need them, then this is not a problem. If you do need them, you should download the files from the repo and tell Nextflow where to find them with this parameter.",
+                    "fa_icon": "fas fa-users-cog",
+                    "hidden": true
+                },
+                "config_profile_name": {
+                    "type": "string",
+                    "description": "Institutional config name.",
+                    "fa_icon": "fas fa-users-cog",
+                    "hidden": true
+                },
+                "config_profile_description": {
+                    "type": "string",
+                    "description": "Institutional config description.",
+                    "fa_icon": "fas fa-users-cog",
+                    "hidden": true
+                },
+                "config_profile_contact": {
+                    "type": "string",
+                    "description": "Institutional config contact information.",
+                    "fa_icon": "fas fa-users-cog",
+                    "hidden": true
+                },
+                "config_profile_url": {
+                    "type": "string",
+                    "description": "Institutional config URL link.",
+                    "fa_icon": "fas fa-users-cog",
+                    "hidden": true
+                }
+            }
+        },
         "seqkit": {
             "title": "SeqKit",
             "type": "object",
@@ -89,7 +732,7 @@
                 },
                 "QCReport.escherichia.min_n50": {
                     "type": "integer",
-                    "default": 95000,
+                    "default": 50000,
                     "hidden": true
                 },
                 "QCReport.escherichia.max_n50": {
@@ -119,12 +762,12 @@
                 },
                 "QCReport.escherichia.max_checkm_contamination": {
                     "type": "number",
-                    "default": 3.0,
+                    "default": 3,
                     "hidden": true
                 },
                 "QCReport.escherichia.min_average_coverage": {
                     "type": "integer",
-                    "default": 30,
+                    "default": 40,
                     "hidden": true
                 },
                 "QCReport.salmonella.search": {
@@ -139,7 +782,7 @@
                 },
                 "QCReport.salmonella.min_n50": {
                     "type": "integer",
-                    "default": 95000,
+                    "default": 90000,
                     "hidden": true
                 },
                 "QCReport.salmonella.max_n50": {
@@ -169,7 +812,7 @@
                 },
                 "QCReport.salmonella.max_checkm_contamination": {
                     "type": "number",
-                    "default": 3.0,
+                    "default": 3,
                     "hidden": true
                 },
                 "QCReport.salmonella.min_average_coverage": {
@@ -189,7 +832,7 @@
                 },
                 "QCReport.shigella.min_n50": {
                     "type": "integer",
-                    "default": 17500,
+                    "default": 18000,
                     "hidden": true
                 },
                 "QCReport.shigella.max_n50": {
@@ -219,12 +862,12 @@
                 },
                 "QCReport.shigella.max_checkm_contamination": {
                     "type": "number",
-                    "default": 3.0,
+                    "default": 3,
                     "hidden": true
                 },
                 "QCReport.shigella.min_average_coverage": {
                     "type": "integer",
-                    "default": 30,
+                    "default": 40,
                     "hidden": true
                 },
                 "QCReport.listeria.search": {
@@ -239,7 +882,7 @@
                 },
                 "QCReport.listeria.min_n50": {
                     "type": "integer",
-                    "default": 45000,
+                    "default": 50000,
                     "hidden": true
                 },
                 "QCReport.listeria.max_n50": {
@@ -269,7 +912,7 @@
                 },
                 "QCReport.listeria.max_checkm_contamination": {
                     "type": "number",
-                    "default": 3.0,
+                    "default": 3,
                     "hidden": true
                 },
                 "QCReport.listeria.min_average_coverage": {
@@ -319,7 +962,7 @@
                 },
                 "QCReport.klebsiella.max_checkm_contamination": {
                     "type": "number",
-                    "default": 3.0,
+                    "default": 3,
                     "hidden": true
                 },
                 "QCReport.klebsiella.min_average_coverage": {
@@ -369,7 +1012,7 @@
                 },
                 "QCReport.staphylococcus.max_checkm_contamination": {
                     "type": "number",
-                    "default": 3.0,
+                    "default": 3,
                     "hidden": true
                 },
                 "QCReport.staphylococcus.min_average_coverage": {
@@ -413,7 +1056,7 @@
                 },
                 "QCReport.fallthrough.max_checkm_contamination": {
                     "type": "number",
-                    "default": 3.0,
+                    "default": 3,
                     "hidden": true
                 },
                 "QCReport.fallthrough.min_average_coverage": {
@@ -672,7 +1315,7 @@
                 },
                 "QCReport.campylobacter_jejuni.min_n50": {
                     "type": "integer",
-                    "default": 9500,
+                    "default": 100000,
                     "hidden": true
                 },
                 "QCReport.campylobacter_jejuni.max_n50": {
@@ -707,7 +1350,7 @@
                 },
                 "QCReport.campylobacter_jejuni.max_checkm_contamination": {
                     "type": "number",
-                    "default": 3.0,
+                    "default": 3,
                     "hidden": true
                 },
                 "QCReport.campylobacter_jejuni.min_average_coverage": {
@@ -727,7 +1370,7 @@
                 },
                 "QCReport.campylobacter_coli.min_n50": {
                     "type": "integer",
-                    "default": 9500,
+                    "default": 100000,
                     "hidden": true
                 },
                 "QCReport.campylobacter_coli.max_n50": {
@@ -762,7 +1405,7 @@
                 },
                 "QCReport.campylobacter_coli.max_checkm_contamination": {
                     "type": "number",
-                    "default": 3.0,
+                    "default": 3,
                     "hidden": true
                 },
                 "QCReport.campylobacter_coli.min_average_coverage": {
@@ -782,7 +1425,7 @@
                 },
                 "QCReport.vibrio_cholerae.min_n50": {
                     "type": "integer",
-                    "default": 95000,
+                    "default": 100000,
                     "hidden": true
                 },
                 "QCReport.vibrio_cholerae.max_n50": {
@@ -817,12 +1460,12 @@
                 },
                 "QCReport.vibrio_cholerae.max_checkm_contamination": {
                     "type": "number",
-                    "default": 3.0,
+                    "default": 3,
                     "hidden": true
                 },
                 "QCReport.vibrio_cholerae.min_average_coverage": {
                     "type": "integer",
-                    "default": 30,
+                    "default": 40,
                     "hidden": true
                 },
                 "QCReport.klebsiella.fixed_genome_size": {
@@ -888,7 +1531,8 @@
                 "medaka.batch_size": {
                     "type": "integer",
                     "default": 5,
-                    "description": "Batch size for medaka to use for processing."
+                    "description": "Batch size for medaka to use for processing.",
+                    "hidden": true
                 }
             }
         },
@@ -1270,75 +1914,6 @@
                 }
             }
         },
-        "skip_options": {
-            "title": "Skip Options",
-            "type": "object",
-            "description": "Options to alter control flow of the pipeline",
-            "default": "",
-            "properties": {
-                "skip_depth_sampling": {
-                    "type": "boolean",
-                    "description": "Skip down sampling of data to a target depth. This is not supported for metagenomic samples or hybrid assemblies."
-                },
-                "skip_subtyping": {
-                    "type": "boolean",
-                    "description": "Do not enter the subtyping workflow, e.g. ECTyper, SISTR etc will not be ran."
-                },
-                "skip_polishing": {
-                    "type": "boolean",
-                    "description": "Skip polishing of assemblies, useful in case of errors or for metagenomic samples that fail."
-                },
-                "skip_ont_header_cleaning": {
-                    "type": "boolean",
-                    "description": "Make nanopore headers unique. Only turn this on if you are worried about duplicate id's e.g. from errors in running sequencing.",
-                    "default": true
-                },
-                "skip_checkm": {
-                    "type": "boolean",
-                    "description": "Skip running CheckM"
-                },
-                "skip_report": {
-                    "type": "boolean",
-                    "description": "Skip summary report generation"
-                },
-                "skip_raw_read_metrics": {
-                    "type": "boolean",
-                    "description": "Skip generating raw-read metrics. e.g. when data first enters the pipeline"
-                },
-                "skip_version_gathering": {
-                    "type": "boolean",
-                    "description": "Skip creating a report of the final versions of tools used in mikrokondo."
-                },
-                "skip_metagenomic_detection": {
-                    "type": "boolean",
-                    "description": "For samples to be analyzed as isolates."
-                },
-                "skip_abricate": {
-                    "type": "boolean",
-                    "description": "Skip running abricate for annotation"
-                },
-                "skip_bakta": {
-                    "type": "boolean",
-                    "description": "Skip annotation with Bakta"
-                },
-                "skip_species_classification": {
-                    "type": "boolean",
-                    "description": "Skip determining what your species is (with Kraken2 or Mash)"
-                },
-                "skip_mlst": {
-                    "type": "boolean",
-                    "description": "Skip classic 7gene MLST (Uses Torstein Tseemann's mlst)"
-                },
-                "skip_mobrecon": {
-                    "type": "boolean",
-                    "description": "Skip running mob recon for plasmid identification."
-                },
-                "skip_staramr": {
-                    "type": "boolean",
-                    "description": "Skip running StarAMR"
-                }
-            }
-        },
         "mobrecon": {
             "title": "mobrecon",
             "type": "object",
@@ -1381,286 +1956,6 @@
                     "hidden": true
                 }
             }
-        },
-        "input_output_options": {
-            "title": "Input/output options",
-            "type": "object",
-            "fa_icon": "fas fa-terminal",
-            "description": "Define where the pipeline should find input data and save output data.",
-            "required": [
-                "input",
-                "outdir"
-            ],
-            "properties": {
-                "input": {
-                    "type": "string",
-                    "format": "file-path",
-                    "mimetype": "text/csv",
-                    "pattern": "^\\S+\\.csv$",
-                    "schema": "assets/schema_input.json",
-                    "description": "Path to comma-separated file containing information about the samples in the experiment.",
-                    "help_text": "You will need to create a design file with information about the samples in your experiment before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 3 columns, and a header row.",
-                    "fa_icon": "fas fa-file-csv"
-                },
-                "outdir": {
-                    "type": "string",
-                    "format": "directory-path",
-                    "description": "The output directory where the results will be saved. You have to use absolute paths to storage on Cloud infrastructure.",
-                    "fa_icon": "fas fa-folder-open"
-                },
-                "email": {
-                    "type": "string",
-                    "description": "Email address for completion summary.",
-                    "fa_icon": "fas fa-envelope",
-                    "help_text": "Set this parameter to your e-mail address to get a summary e-mail with details of the run sent to you when the workflow exits. If set in your user config file (`~/.nextflow/config`) then you don't need to specify this on the command line for every run.",
-                    "pattern": "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$"
-                }
-            }
-        },
-        "institutional_config_options": {
-            "title": "Institutional config options",
-            "type": "object",
-            "fa_icon": "fas fa-university",
-            "description": "Parameters used to describe centralised config profiles. These should not be edited.",
-            "help_text": "The centralised nf-core configuration profiles use a handful of pipeline parameters to describe themselves. This information is then printed to the Nextflow log when you run a pipeline. You should not need to change these values when you run a pipeline.",
-            "properties": {
-                "custom_config_version": {
-                    "type": "string",
-                    "description": "Git commit id for Institutional configs.",
-                    "default": "master",
-                    "fa_icon": "fas fa-users-cog",
-                    "hidden": true
-                },
-                "custom_config_base": {
-                    "type": "string",
-                    "description": "Base directory for Institutional configs.",
-                    "default": "https://raw.githubusercontent.com/nf-core/configs/master",
-                    "help_text": "If you're running offline, Nextflow will not be able to fetch the institutional config files from the internet. If you don't need them, then this is not a problem. If you do need them, you should download the files from the repo and tell Nextflow where to find them with this parameter.",
-                    "fa_icon": "fas fa-users-cog",
-                    "hidden": true
-                },
-                "config_profile_name": {
-                    "type": "string",
-                    "description": "Institutional config name.",
-                    "fa_icon": "fas fa-users-cog",
-                    "hidden": true
-                },
-                "config_profile_description": {
-                    "type": "string",
-                    "description": "Institutional config description.",
-                    "fa_icon": "fas fa-users-cog",
-                    "hidden": true
-                },
-                "config_profile_contact": {
-                    "type": "string",
-                    "description": "Institutional config contact information.",
-                    "fa_icon": "fas fa-users-cog",
-                    "hidden": true
-                },
-                "config_profile_url": {
-                    "type": "string",
-                    "description": "Institutional config URL link.",
-                    "fa_icon": "fas fa-users-cog",
-                    "hidden": true
-                }
-            }
-        },
-        "max_job_request_options": {
-            "title": "Max job request options",
-            "type": "object",
-            "fa_icon": "fab fa-acquisitions-incorporated",
-            "description": "Set the top limit for requested resources for any single job.",
-            "help_text": "If you are running on a smaller system, a pipeline step requesting more resources than are available may cause the Nextflow to stop the run with an error. These options allow you to cap the maximum resources requested by any single job so that the pipeline will run on your system.\n\nNote that you can not _increase_ the resources requested by any job using these options. For that you will need your own configuration file. See [the nf-core website](https://nf-co.re/usage/configuration) for details.",
-            "properties": {
-                "max_cpus": {
-                    "type": "integer",
-                    "description": "Maximum number of CPUs that can be requested for any single job.",
-                    "default": 16,
-                    "fa_icon": "fas fa-microchip",
-                    "hidden": true,
-                    "help_text": "Use to set an upper-limit for the CPU requirement for each process. Should be an integer e.g. `--max_cpus 1`"
-                },
-                "max_memory": {
-                    "type": "string",
-                    "description": "Maximum amount of memory that can be requested for any single job.",
-                    "default": "2000.GB",
-                    "fa_icon": "fas fa-memory",
-                    "pattern": "^\\d+(\\.\\d+)?\\.?\\s*(K|M|G|T)?B$",
-                    "hidden": true,
-                    "help_text": "Use to set an upper-limit for the memory requirement for each process. Should be a string in the format integer-unit e.g. `--max_memory '8.GB'`"
-                },
-                "max_time": {
-                    "type": "string",
-                    "description": "Maximum amount of time that can be requested for any single job.",
-                    "default": "240.h",
-                    "fa_icon": "far fa-clock",
-                    "pattern": "^(\\d+\\.?\\s*(s|m|h|day)\\s*)+$",
-                    "hidden": true,
-                    "help_text": "Use to set an upper-limit for the time requirement for each process. Should be a string in the format integer-unit e.g. `--max_time '2.h'`"
-                }
-            }
-        },
-        "generic_options": {
-            "title": "Generic options",
-            "type": "object",
-            "fa_icon": "fas fa-file-import",
-            "description": "Less common options for the pipeline, typically set in a config file.",
-            "help_text": "These options are common to all nf-core pipelines and allow you to customise some of the core preferences for how the pipeline runs.\n\nTypically these options would be set in a Nextflow config file loaded for all pipeline runs, such as `~/.nextflow/config`.",
-            "properties": {
-                "help": {
-                    "type": "boolean",
-                    "description": "Display help text.",
-                    "fa_icon": "fas fa-question-circle"
-                },
-                "version": {
-                    "type": "boolean",
-                    "description": "Display version and exit.",
-                    "fa_icon": "fas fa-question-circle"
-                },
-                "publish_dir_mode": {
-                    "type": "string",
-                    "default": "copy",
-                    "description": "Method used to save pipeline results to output directory.",
-                    "help_text": "The Nextflow `publishDir` option specifies which intermediate files should be saved to the output directory. This option tells the pipeline what method should be used to move these files. See [Nextflow docs](https://www.nextflow.io/docs/latest/process.html#publishdir) for details.",
-                    "fa_icon": "fas fa-copy",
-                    "enum": [
-                        "symlink",
-                        "rellink",
-                        "link",
-                        "copy",
-                        "copyNoFollow",
-                        "move"
-                    ],
-                    "hidden": true
-                },
-                "email_on_fail": {
-                    "type": "string",
-                    "description": "Email address for completion summary, only when pipeline fails.",
-                    "fa_icon": "fas fa-exclamation-triangle",
-                    "pattern": "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$",
-                    "help_text": "An email address to send a summary email to when the pipeline is completed - ONLY sent if the pipeline does not exit successfully."
-                },
-                "plaintext_email": {
-                    "type": "boolean",
-                    "description": "Send plain-text email instead of HTML.",
-                    "fa_icon": "fas fa-remove-format"
-                },
-                "monochrome_logs": {
-                    "type": "boolean",
-                    "description": "Do not use coloured log outputs.",
-                    "fa_icon": "fas fa-palette",
-                    "hidden": true
-                },
-                "hook_url": {
-                    "type": "string",
-                    "description": "Incoming hook URL for messaging service",
-                    "fa_icon": "fas fa-people-group",
-                    "help_text": "Incoming hook URL for messaging service. Currently, MS Teams and Slack are supported.",
-                    "hidden": true
-                },
-                "tracedir": {
-                    "type": "string",
-                    "description": "Directory to keep pipeline Nextflow logs and reports.",
-                    "default": "null/pipeline_info",
-                    "fa_icon": "fas fa-cogs",
-                    "hidden": true
-                },
-                "validate_params": {
-                    "type": "boolean",
-                    "description": "Boolean whether to validate parameters against the schema at runtime",
-                    "fa_icon": "fas fa-check-square",
-                    "default": true,
-                    "hidden": true
-                },
-                "show_hidden_params": {
-                    "type": "boolean",
-                    "fa_icon": "far fa-eye-slash",
-                    "description": "Show all params when using `--help`",
-                    "hidden": true,
-                    "help_text": "By default, parameters set as _hidden_ in the schema are not shown on the command line when a user runs with `--help`. Specifying this option will tell the pipeline to show all parameters."
-                },
-                "output_idx_name": {
-                    "type": "string",
-                    "hidden": true
-                },
-                "platform": {
-                    "type": "string",
-                    "enum": [
-                        "illumina",
-                        "nanopore",
-                        "pacbio",
-                        "hybrid"
-                    ],
-                    "description": "Sequencing platform used.",
-                    "default": "illumina"
-                },
-                "nanopore_chemistry": {
-                    "type": "string",
-                    "description": "The guppy base calling model. See the docs for a link of valid options."
-                },
-                "run_kraken": {
-                    "type": "boolean",
-                    "description": "Use Kraken2 instead of Mash for sample speciation (Useful if you have Eukaryotic data or Archae)"
-                },
-                "hybrid_unicycler": {
-                    "type": "boolean",
-                    "description": "Use unicycler for hybrid assembly."
-                },
-                "long_read_opt": {
-                    "type": "string",
-                    "default": "nanopore",
-                    "enum": [
-                        "nanopore",
-                        "pacbio"
-                    ],
-                    "description": "Specify which longread platform your data is from (nanopore or pacbio). This option must be specified if performing a hybrid assembly."
-                },
-                "min_reads": {
-                    "type": "integer",
-                    "default": 1000,
-                    "description": "Minimum number of reads a sample requires to move forward for assembly."
-                },
-                "metagenomic_run": {
-                    "type": "boolean",
-                    "description": "Label all samples as metagenomic (Skip autodetection)"
-                },
-                "stage_in_mode": {
-                    "type": "string",
-                    "default": "symlink",
-                    "hidden": true
-                },
-                "slurm_p": {
-                    "type": "boolean",
-                    "description": "Use slurm to execute your pipeline"
-                },
-                "slurm_profile": {
-                    "type": "string",
-                    "description": "Slurm partition"
-                },
-                "target_depth": {
-                    "type": "integer",
-                    "default": 100,
-                    "description": "Target depth to sub-sample reads to."
-                },
-                "flye_read_type": {
-                    "type": "string",
-                    "default": "hq",
-                    "enum": [
-                        "hq",
-                        "corr",
-                        "raw"
-                    ],
-                    "description": "Read type for flye to use. hq corresponds to hifi for Pacbio data."
-                },
-                "validationS3PathCheck": {
-                    "type": "boolean",
-                    "default": true,
-                    "description": "Validate s3 sample sheet."
-                }
-            },
-            "required": [
-                "platform"
-            ]
         },
         "kat": {
             "title": "Kat",
@@ -1756,73 +2051,6 @@
                 }
             }
         },
-        "fastp": {
-            "title": "fastp",
-            "type": "object",
-            "description": "",
-            "default": "",
-            "properties": {
-                "fastp.html_ext": {
-                    "type": "string",
-                    "default": ".html",
-                    "hidden": true
-                },
-                "fastp.average_quality_e": {
-                    "type": "integer",
-                    "default": 25,
-                    "description": "Average quality of a read to be included (read pair is discarded if it is below this value)"
-                },
-                "fastp.json_ext": {
-                    "type": "string",
-                    "default": ".json",
-                    "hidden": true
-                },
-                "fastp.qualified_quality_phred": {
-                    "type": "integer",
-                    "default": 15,
-                    "description": "Phred score to be considered qualified. See FastP docs for more details."
-                },
-                "fastp.unqualified_percent_limit": {
-                    "type": "integer",
-                    "default": 25,
-                    "description": "Percent of bases in a read to be qualified for the read to be included. See FastP docs for more details."
-                },
-                "fastp.fastq_ext": {
-                    "type": "string",
-                    "default": ".trimmed.fastq.gz",
-                    "hidden": true
-                },
-                "fastp.report_tag": {
-                    "type": "string",
-                    "default": "FastP",
-                    "hidden": true
-                },
-                "fastp.illumina_length_min": {
-                    "type": "integer",
-                    "default": 35,
-                    "description": "Minimum length of a read to be included in later analysis for illumina data."
-                },
-                "fastp.single_end_length_min": {
-                    "type": "integer",
-                    "default": 1000,
-                    "description": "Minimum leng of a read to be used in later analysis (for Nanopore or Pacbio)"
-                },
-                "fastp.dedup_reads": {
-                    "type": "boolean",
-                    "description": "Option to turn on read de-duplication."
-                },
-                "fastp.args.illumina": {
-                    "type": "string",
-                    "default": "--overrepresentation_analysis --trim_poly_g --poly_g_min_len 10 --trim_poly_x --poly_x_min_len 10 --cut_tail --cut_tail_window_size 4 --cut_tail_mean_quality 15 --low_complexity_filter --complexity_threshold 20 --average_qual 25 --qualified_quality_phred 15 --unqualified_percent_limit 25 --length_limit 400 --length_required 35 --detect_adapter_for_pe",
-                    "hidden": true
-                },
-                "fastp.args.single_end": {
-                    "type": "string",
-                    "default": "--overrepresentation_analysis -Q --length_required 1000",
-                    "hidden": true
-                }
-            }
-        },
         "flye": {
             "title": "flye",
             "type": "object",
@@ -1897,54 +2125,6 @@
                 "flye.args": {
                     "type": "string",
                     "default": "{ \"--iterations ${params.flye.polishing_iterations}\" }",
-                    "hidden": true
-                }
-            }
-        },
-        "quast": {
-            "title": "quast",
-            "type": "object",
-            "description": "",
-            "default": "",
-            "properties": {
-                "quast.suffix": {
-                    "type": "string",
-                    "default": "quast",
-                    "hidden": true
-                },
-                "quast.report_base": {
-                    "type": "string",
-                    "default": "report",
-                    "hidden": true
-                },
-                "quast.report_prefix": {
-                    "type": "string",
-                    "default": "transposed_",
-                    "hidden": true
-                },
-                "quast.report_ext": {
-                    "type": "string",
-                    "default": ".tsv",
-                    "hidden": true
-                },
-                "quast.report_tag": {
-                    "type": "string",
-                    "default": "QUAST",
-                    "hidden": true
-                },
-                "quast.min_contig_length": {
-                    "type": "integer",
-                    "default": 1000,
-                    "description": "Minimum contig length to be used my Quast."
-                },
-                "quast.args": {
-                    "type": "string",
-                    "default": "{ \"--min-contig ${params.quast.min_contig_length} --report-all-metrics\" }",
-                    "hidden": true
-                },
-                "quast.contigs_field": {
-                    "type": "string",
-                    "default": "# contigs",
                     "hidden": true
                 }
             }
@@ -2098,6 +2278,33 @@
     },
     "allOf": [
         {
+            "$ref": "#/definitions/input_output_options"
+        },
+        {
+            "$ref": "#/definitions/bakta"
+        },
+        {
+            "$ref": "#/definitions/fastp"
+        },
+        {
+            "$ref": "#/definitions/quast"
+        },
+        {
+            "$ref": "#/definitions/generic_options"
+        },
+        {
+            "$ref": "#/definitions/skip_options"
+        },
+        {
+            "$ref": "#/definitions/databases_and_pre_computed_files"
+        },
+        {
+            "$ref": "#/definitions/max_job_request_options"
+        },
+        {
+            "$ref": "#/definitions/institutional_config_options"
+        },
+        {
             "$ref": "#/definitions/seqkit"
         },
         {
@@ -2122,22 +2329,7 @@
             "$ref": "#/definitions/staramr"
         },
         {
-            "$ref": "#/definitions/skip_options"
-        },
-        {
             "$ref": "#/definitions/mobrecon"
-        },
-        {
-            "$ref": "#/definitions/input_output_options"
-        },
-        {
-            "$ref": "#/definitions/institutional_config_options"
-        },
-        {
-            "$ref": "#/definitions/max_job_request_options"
-        },
-        {
-            "$ref": "#/definitions/generic_options"
         },
         {
             "$ref": "#/definitions/kat"
@@ -2149,13 +2341,7 @@
             "$ref": "#/definitions/seqtk"
         },
         {
-            "$ref": "#/definitions/fastp"
-        },
-        {
             "$ref": "#/definitions/flye"
-        },
-        {
-            "$ref": "#/definitions/quast"
         },
         {
             "$ref": "#/definitions/spades"
@@ -2478,71 +2664,6 @@
             "default": 1,
             "hidden": true
         },
-        "bakta.output_dir": {
-            "type": "string",
-            "default": "bakta",
-            "hidden": true
-        },
-        "bakta.embl_ext": {
-            "type": "string",
-            "default": ".embl",
-            "hidden": true
-        },
-        "bakta.faa_ext": {
-            "type": "string",
-            "default": ".faa",
-            "hidden": true
-        },
-        "bakta.ffn_ext": {
-            "type": "string",
-            "default": ".ffn",
-            "hidden": true
-        },
-        "bakta.fna_ext": {
-            "type": "string",
-            "default": ".fna",
-            "hidden": true
-        },
-        "bakta.gbff_ext": {
-            "type": "string",
-            "default": ".gbff",
-            "hidden": true
-        },
-        "bakta.gff_ext": {
-            "type": "string",
-            "default": ".gff3",
-            "hidden": true
-        },
-        "bakta.threads": {
-            "type": "integer",
-            "default": 12,
-            "hidden": true
-        },
-        "bakta.hypotheticals_tsv_ext": {
-            "type": "string",
-            "default": ".hypotheticals.tsv",
-            "hidden": true
-        },
-        "bakta.hypotheticals_faa_ext": {
-            "type": "string",
-            "default": ".hypotheticals.faa",
-            "hidden": true
-        },
-        "bakta.tsv_ext": {
-            "type": "string",
-            "default": ".tsv",
-            "hidden": true
-        },
-        "bakta.txt_ext": {
-            "type": "string",
-            "default": ".txt",
-            "hidden": true
-        },
-        "bakta.min_contig_length": {
-            "type": "integer",
-            "default": 200,
-            "hidden": true
-        },
         "bandage.svg_ext": {
             "type": "string",
             "default": ".svg",
@@ -2787,16 +2908,6 @@
             "default": "_binned.fasta.gz",
             "hidden": true
         },
-        "bakta.db": {
-            "type": "string",
-            "hidden": true
-        },
-        "bakta.args": {
-            "type": "string",
-            "hidden": true,
-            "description": "Additional arguments to pass to bakta",
-            "default": "{ \"\" }"
-        },
         "pointfinder_db_tag.report_tag": {
             "type": "string",
             "default": "PointfinderDB",
@@ -2872,6 +2983,10 @@
         "contigs_too_short.report_tag": {
             "type": "string",
             "default": "MaxContigToShort"
+        },
+        "kraken2_db": {
+            "type": "string",
+            "default": "/Drives/W/Projects/Project_Matthew_Wells/GSP/MikroKondo/mikrokondo/databases/k2_standard_20220607/"
         }
     }
 }
