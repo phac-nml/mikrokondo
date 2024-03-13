@@ -132,7 +132,7 @@ nextflow_workflow {
             params {
                 outdir = "results"
 
-                qt_min_contig_length = 5
+                qt_min_contig_length = 4
 
                 skip_checkm = true
                 skip_mlst = true

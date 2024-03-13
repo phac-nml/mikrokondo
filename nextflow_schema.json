@@ -118,7 +118,8 @@
                 "bakta.args": {
                     "type": "string",
                     "hidden": true,
-                    "description": "Additional arguments to pass to bakta"
+                    "description": "Additional arguments to pass to bakta",
+                    "default": "{ \"\" }"
                 },
                 "ba_min_conting_length": {
                     "type": "integer",
@@ -248,6 +249,83 @@
                 }
             },
             "fa_icon": "fas fa-filter"
+        },
+        "mash": {
+            "title": "Mash",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "fa_icon": "fas fa-align-left",
+            "properties": {
+                "mash.mash_ext": {
+                    "type": "string",
+                    "default": ".screen",
+                    "hidden": true
+                },
+                "mash.output_reads_ext": {
+                    "type": "string",
+                    "default": ".reads.screen",
+                    "hidden": true
+                },
+                "mash.output_taxa_ext": {
+                    "type": "string",
+                    "default": ".taxa.screen",
+                    "hidden": true
+                },
+                "mash.output_dir": {
+                    "type": "string",
+                    "default": "contamination",
+                    "hidden": true
+                },
+                "mash.mash_sketch": {
+                    "type": "string",
+                    "hidden": true
+                },
+                "mash.sketch_ext": {
+                    "type": "string",
+                    "default": ".msh",
+                    "hidden": true
+                },
+                "mash.sketch_kmer_size": {
+                    "type": "integer",
+                    "default": 21,
+                    "hidden": true
+                },
+                "mash.final_sketch_name": {
+                    "type": "string",
+                    "default": "GTDB_sketch",
+                    "hidden": true
+                },
+                "mash.json_ext": {
+                    "type": "string",
+                    "default": ".json",
+                    "hidden": true
+                },
+                "mash.min_kmer": {
+                    "type": "integer",
+                    "default": 10,
+                    "hidden": true
+                },
+                "mash.report_tag": {
+                    "type": "string",
+                    "default": "Mash",
+                    "hidden": true
+                },
+                "mash.header_p": {
+                    "type": "boolean",
+                    "hidden": true
+                },
+                "mash.headers": {
+                    "type": "string",
+                    "default": "['identity', 'Shared Hashes', 'Median Multiplicity', 'P-Value', 'Query ID', 'Query Note']",
+                    "hidden": true
+                },
+                "mh_min_kmer": {
+                    "type": "integer",
+                    "default": 10,
+                    "description": "Minimum Kmer count needed for a unique kmer to be used in genome size estimation"
+                }
+            }
         },
         "quast": {
             "title": "QUAST",
@@ -2287,6 +2365,9 @@
             "$ref": "#/definitions/fastp"
         },
         {
+            "$ref": "#/definitions/mash"
+        },
+        {
             "$ref": "#/definitions/quast"
         },
         {
@@ -2377,45 +2458,6 @@
         "fastqc.zip_ext": {
             "type": "string",
             "default": ".zip",
-            "hidden": true
-        },
-        "mash.mash_ext": {
-            "type": "string",
-            "default": ".screen",
-            "hidden": true
-        },
-        "mash.output_reads_ext": {
-            "type": "string",
-            "default": ".reads.screen",
-            "hidden": true
-        },
-        "mash.output_taxa_ext": {
-            "type": "string",
-            "default": ".taxa.screen",
-            "hidden": true
-        },
-        "mash.output_dir": {
-            "type": "string",
-            "default": "contamination",
-            "hidden": true
-        },
-        "mash.mash_sketch": {
-            "type": "string",
-            "hidden": true
-        },
-        "mash.sketch_ext": {
-            "type": "string",
-            "default": ".msh",
-            "hidden": true
-        },
-        "mash.sketch_kmer_size": {
-            "type": "integer",
-            "default": 21,
-            "hidden": true
-        },
-        "mash.final_sketch_name": {
-            "type": "string",
-            "default": "GTDB_sketch",
             "hidden": true
         },
         "r_contaminants.phix_fa": {
@@ -2794,30 +2836,6 @@
         "mlst.report_tag": {
             "type": "string",
             "default": "SevenGeneMLSTReport",
-            "hidden": true
-        },
-        "mash.json_ext": {
-            "type": "string",
-            "default": ".json",
-            "hidden": true
-        },
-        "mash.min_kmer": {
-            "type": "integer",
-            "default": 10,
-            "hidden": true
-        },
-        "mash.report_tag": {
-            "type": "string",
-            "default": "Mash",
-            "hidden": true
-        },
-        "mash.header_p": {
-            "type": "boolean",
-            "hidden": true
-        },
-        "mash.headers": {
-            "type": "string",
-            "default": "['identity', 'Shared Hashes', 'Median Multiplicity', 'P-Value', 'Query ID', 'Query Note']",
             "hidden": true
         },
         "mash_meta.report_tag": {

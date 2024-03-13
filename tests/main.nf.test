@@ -14,11 +14,10 @@ nextflow_pipeline {
                 platform = "illumina"
 
                 mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
-                mash { min_kmer = 1 }
+                mh_min_kmer = 1
 
                 dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
 
-                fastp { args { illumina = "-Q"} }
                 min_reads = 100
 
                 skip_bakta = true
@@ -87,11 +86,10 @@ nextflow_pipeline {
                 platform = "illumina"
 
                 mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
-                mash { min_kmer = 1 }
+                mh_min_kmer = 1
 
                 dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
 
-                fastp { args { illumina = "-Q"} }
                 min_reads = 100
 
                 skip_bakta = true
