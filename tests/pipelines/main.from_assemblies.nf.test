@@ -13,16 +13,16 @@ nextflow_pipeline {
 
                 platform = "illumina"
 
-                mash { mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh" }
-                r_contaminants { mega_mm2_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi" }
-                quast { min_contig_length = 1 }
+                mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
+                dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+                qt_min_contig_length = 1
 
                 skip_bakta = true
                 skip_mobrecon = true
                 skip_checkm = true
                 skip_raw_read_metrics = true
                 skip_polishing = true
-                
+
                 skip_staramr = false
                 skip_subtyping = false
 

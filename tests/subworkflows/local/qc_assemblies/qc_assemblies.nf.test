@@ -28,9 +28,9 @@ nextflow_workflow {
             params {
                 outdir = "results"
 
-                quast {
-                    min_contig_length = 5
-                }
+
+                qt_min_contig_length = 5
+
 
                 skip_checkm = true
                 skip_mlst = true
@@ -84,9 +84,9 @@ nextflow_workflow {
             params {
                 outdir = "results"
 
-                quast {
-                    min_contig_length = 50
-                }
+
+                qt_min_contig_length = 50
+
 
                 skip_checkm = true
                 skip_mlst = true
@@ -103,7 +103,7 @@ nextflow_workflow {
                 assert contains([["id": "SAMPLE1"], ["report_tag": "MaxContigToShort"], true])
                 assert contains([["id": "SAMPLE2"], ["report_tag": "MaxContigToShort"], true])
             }
-            
+
             assert !file("$launchDir/results/assembly/quality/quast/SAMPLE1/SAMPLE1.tsv").exists()
             assert !file("$launchDir/results/assembly/quality/quast/SAMPLE2/SAMPLE2.tsv").exists()
         }
@@ -132,9 +132,7 @@ nextflow_workflow {
             params {
                 outdir = "results"
 
-                quast {
-                    min_contig_length = 4
-                }
+                qt_min_contig_length = 5
 
                 skip_checkm = true
                 skip_mlst = true
