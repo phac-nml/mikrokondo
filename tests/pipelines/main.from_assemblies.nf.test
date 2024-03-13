@@ -58,7 +58,7 @@ nextflow_pipeline {
                 def tokens = it.split("\t")
                 final_report_tmap[tokens[0]] = tokens[1]
             }
-            assert final_report_tsv[0] == "\tecoli_GCA_000947975\t"
+            assert final_report_tsv[0] == "\tecoli_GCA_000947975"
             assert final_report_tmap."QUAST.0.Total length" == "5333525"
             assert final_report_tmap."QUAST.0.Largest contig" == "300823"
             assert final_report_tmap."QUAST.0.# contigs" == "187"
