@@ -68,12 +68,12 @@ nextflow_pipeline {
             assert final_report_tmap."StarAMR.0.Plasmid" == "IncQ1"
             assert final_report_tmap."StarAMR.0.Scheme" == "ecoli"
             assert final_report_tmap."StarAMR.0.Sequence Type" == "678"
-            assert final_report_tmap."ECTyperSubtyping.0.Species" == "\"Escherichia coli\""
+            assert final_report_tmap."ECTyperSubtyping.0.Species" == "Escherichia coli"
             assert final_report_tmap."ECTyperSubtyping.0.O-type" == "O104"
             assert final_report_tmap."ECTyperSubtyping.0.H-type" == "H4"
             assert final_report_tmap."ECTyperSubtyping.0.Serotype" == "O104:H4"
-            assert final_report_tmap."ECTyperSubtyping.0.Database" == "\"v1.0 (11-03-2020)\""
-            assert final_report_tmap."ECTyperSubtyping.0.QC" == "\"PASS (REPORTABLE)\""
+            assert final_report_tmap."ECTyperSubtyping.0.Database" == "v1.0 (11-03-2020)"
+            assert final_report_tmap."ECTyperSubtyping.0.QC" == "PASS (REPORTABLE)"
 
             // compare IRIDA Next JSON output
             def iridanext_json = path("$launchDir/results/iridanext.output.json").json
