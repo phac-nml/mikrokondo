@@ -115,18 +115,22 @@ nextflow_pipeline {
 
                 platform = "illumina"
 
-                mash { mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/mash.msh" }
+                mash
+                {
+                    mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/mash.msh"
+                    min_kmer = 1
+                }
                 r_contaminants { mega_mm2_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi" }
                 quast { min_contig_length = 1 }
 
+                fastp { args { illumina = "-Q"} }
+                min_reads = 100
+
                 skip_bakta = true
-                skip_mobrecon = true
+                skip_mobrecon = false
                 skip_checkm = true
-                skip_raw_read_metrics = true
-                skip_polishing = true
-                
-                skip_staramr = false
-                skip_subtyping = false
+                skip_raw_read_metrics = false
+                skip_polishing = false
 
                 max_memory = "2.GB"
                 max_cpus = 1
