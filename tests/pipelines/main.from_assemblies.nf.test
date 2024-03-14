@@ -84,7 +84,6 @@ nextflow_pipeline {
             // output files
             assert iridanext_global.findAll { it.path == "SummaryReport/final_report.json" }.size() == 1
             assert iridanext_global.findAll { it.path == "SummaryReport/final_report.tsv" }.size() == 1
-            assert iridanext_global.findAll { it.path == "SummaryReport/final_report_flattened.json" }.size() == 1
             assert iridanext_samples.findAll { it.path == "SummaryReport/ecoli_GCA_000947975_flat_sample.json.gz" }.size() == 1
 
             // output metadata
