@@ -15,11 +15,10 @@ process REPORT_AGGREGATE{
     path("final_report_transposed.tsv"), emit: final_report_transposed
     path("final_report_flattened.json"), emit: flattened_files
     path("*${sample_flat_suffix}"), emit: flat_samples
-    val sample_flat_suffix, emit: sample_suffix
     path "versions.yml", emit: versions
 
     script:
-    sample_flat_suffix = "_flat_sample.json"
+    sample_flat_suffix = params.report_aggregate.sample_flat_suffix
     """
     report_summaries.py -f ${summary_report} -o final_report.tsv -s ${sample_flat_suffix}
     cat <<-END_VERSIONS > versions.yml

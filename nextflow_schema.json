@@ -633,6 +633,10 @@
                     "default": "databases/db-light",
                     "description": "Database use for bakta, this value is optional as bakta can be skipped"
                 },
+                "kraken2_db": {
+                    "type": "string",
+                    "default": "databases/k2_standard_20220607/"
+                },
                 "staramr_db": {
                     "type": "string",
                     "description": "It is recommended to use the StarAMR database in the StarAMR container however, an external option can be specified"
@@ -3002,9 +3006,10 @@
             "type": "string",
             "default": "MaxContigToShort"
         },
-        "kraken2_db": {
+        "report_aggregate.sample_flat_suffix": {
             "type": "string",
-            "default": "databases/k2_standard_20220607/"
+            "default": "_flat_sample.json",
+            "hidden": true
         }
     }
 }

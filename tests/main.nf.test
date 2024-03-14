@@ -68,6 +68,7 @@ nextflow_pipeline {
             assert iridanext_global.findAll { it.path == "SummaryReport/final_report.json" }.size() == 1
             assert iridanext_global.findAll { it.path == "SummaryReport/final_report.tsv" }.size() == 1
             assert iridanext_samples.CSE.findAll { it.path.contains("assembly/length_filtered_contigs") }.size() == 0
+            assert iridanext_samples.CSE.findAll { it.path.contains("assembly/CSE_flat_sample.json.gz") }.size() == 0
 
             // output metadata
             //assert iridanext_metadata.CSE."AssemblyCompleted" == false
@@ -166,6 +167,7 @@ nextflow_pipeline {
             assert iridanext_global.findAll { it.path == "SummaryReport/final_report.json" }.size() == 1
             assert iridanext_global.findAll { it.path == "SummaryReport/final_report.tsv" }.size() == 1
             assert iridanext_samples.short.findAll { it.path == "assembly/length_filtered_contigs/short_filtered.fasta.gz" }.size() == 1
+            assert iridanext_samples.short.findAll { it.path == "SummaryReport/short_flat_sample.json.gz" }.size() == 1
 
             // output metadata
             assert iridanext_metadata.short."AssemblyCompleted" == true

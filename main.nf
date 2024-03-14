@@ -113,15 +113,11 @@ workflow MIKROKONDO {
         REPORT_AGGREGATE(REPORT.out.final_report)
         ch_versions = ch_versions.mix(REPORT_AGGREGATE.out.versions)
 
-        def suffix_trim = null
-        REPORT_AGGREGATE.out.sample_suffix.map {
-            it -> suffix_trim = it // no decent way to pull a value out of a value channel currently
-        }
 
         updated_samples = REPORT_AGGREGATE.out.flat_samples.flatten().map{
                     sample ->
                         def name_trim = sample.getName()
-                        def trimmed_name = name_trim.substring(0, name_trim.length() - suffix_trim.length())
+                        def trimmed_name = name_trim.substring(0, name_trim.length() - params.report_aggregate.sample_flat_suffix.length())
                         tuple([
                             "id": trimmed_name,
                             "sample": trimmed_name],
