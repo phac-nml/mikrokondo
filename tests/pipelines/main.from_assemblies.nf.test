@@ -118,19 +118,18 @@ nextflow_pipeline {
                 mash
                 {
                     mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/mash.msh"
-                    min_kmer = 1
                 }
                 r_contaminants { mega_mm2_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi" }
                 quast { min_contig_length = 1 }
 
-                fastp { args { illumina = "-Q"} }
-                min_reads = 100
-
                 skip_bakta = true
-                skip_mobrecon = false
+                skip_mobrecon = true
                 skip_checkm = true
-                skip_raw_read_metrics = false
-                skip_polishing = false
+                skip_raw_read_metrics = true
+                skip_polishing = true
+                
+                skip_staramr = false
+                skip_subtyping = false
 
                 max_memory = "2.GB"
                 max_cpus = 1
@@ -167,10 +166,9 @@ nextflow_pipeline {
             assert salmonella_json.StarAMR."0".Scheme == "senterica"
             assert salmonella_json.StarAMR."0"."Sequence Type" == "66"
 
-            // TODO: There's seems to be no SISTR output for some reason...
-            //assert salmonella_json."SISTRSubtyping"."0".serovar == "Choleraesuis"
-            //assert salmonella_json.SISTRSubtyping."0".serogroup == "C1"
-            //assert salmonella_json.SISTRSubtyping."0".serovar_antigen == "Hissar|Choleraesuis|Paratyphi C|Typhisuis|Chiredzi"
+            assert salmonella_json.SISTRSubtyping."0".serovar == "Choleraesuis"
+            assert salmonella_json.SISTRSubtyping."0".serogroup == "C1"
+            assert salmonella_json.SISTRSubtyping."0".serovar_antigen == "Hissar|Choleraesuis|Paratyphi C|Typhisuis|Chiredzi"
         }
     }
 }
