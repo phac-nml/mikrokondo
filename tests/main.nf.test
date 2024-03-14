@@ -20,8 +20,6 @@ nextflow_pipeline {
 
                 min_reads = 100
 
-                fastp { args { illumina = "-Q"} }
-
                 skip_bakta = true
                 skip_staramr = true
                 skip_mobrecon = true
@@ -95,7 +93,6 @@ nextflow_pipeline {
 
                 min_reads = 100
 
-                fastp { args { illumina = "-Q"} }
 
                 skip_bakta = true
                 skip_staramr = false
