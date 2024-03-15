@@ -8,14 +8,15 @@ process GROUPBY_OUTPUT {
     val key
 
     output:
-    tuple val(meta), path("*.txt"), emit: report
+    tuple val(meta), path("groupby/*"), emit: grouped_tabular_file
     path "versions.yml", emit: versions
 
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    groupby_output.py $args -k '${key}' -i ${tabular_file} -o ${prefix}.grouped.tsv
+    mkdir -p groupby
+    groupby_output.py $args -k '${key}' -i ${tabular_file} -o groupby/${prefix}.grouped.tsv
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         python: \$(python --version | sed 's/Python //g')
