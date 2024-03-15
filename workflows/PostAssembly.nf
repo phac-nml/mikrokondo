@@ -6,7 +6,7 @@
 
 
 // nf-core modules
-include { CUSTOM_DUMPSOFTWAREVERSIONS } from '../modules/nf-core/custom/dumpsoftwareversions/main'
+
 
 
 
@@ -95,22 +95,12 @@ workflow POST_ASSEMBLY {
     ch_reports = ch_reports.mix(ANNOTATE_GENOMES.out.reports)
     ch_versions = ch_versions.mix(ANNOTATE_GENOMES.out.versions)
 
-    if(!params.skip_version_gathering){
-        CUSTOM_DUMPSOFTWAREVERSIONS (
-            ch_versions.unique().collectFile(name: 'collated_versions.yml')
-        )
-    }
 
 
-
-    //ch_reports.subscribe { println "reports: $it" }
-    //ch_reports.groupTuple().subscribe{
-    //    println "reports: $it"
-    //}
 
 
     emit:
     quast_table = QC_ASSEMBLY.out.quast_data
     reports = ch_reports
-
+    versions = ch_versions
 }

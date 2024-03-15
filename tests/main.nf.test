@@ -13,15 +13,11 @@ nextflow_pipeline {
 
                 platform = "illumina"
 
-                mash
-                {
-                    mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
-                    min_kmer = 1
-                }
+                mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
+                mh_min_kmer = 1
 
-                r_contaminants { mega_mm2_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi" }
+                dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
 
-                fastp { args { illumina = "-Q"} }
                 min_reads = 100
 
                 skip_bakta = true
@@ -55,7 +51,7 @@ nextflow_pipeline {
             assert json.CSE.meta.single_end.equals(false)
             assert json.CSE.meta.merge.equals(false)
             assert json.CSE.meta.downsampled.equals(false)
-            
+
             def assembly_path = "$launchDir/results/assembly/length_filtered_contigs/CSE_filtered.fasta.gz"
             assert path(assembly_path).exists().equals(false)
 
@@ -72,6 +68,7 @@ nextflow_pipeline {
             assert iridanext_global.findAll { it.path == "SummaryReport/final_report.json" }.size() == 1
             assert iridanext_global.findAll { it.path == "SummaryReport/final_report.tsv" }.size() == 1
             assert iridanext_samples.CSE.findAll { it.path.contains("assembly/length_filtered_contigs") }.size() == 0
+            assert iridanext_samples.CSE.findAll { it.path.contains("assembly/CSE_flat_sample.json.gz") }.size() == 0
 
             // output metadata
             //assert iridanext_metadata.CSE."AssemblyCompleted" == false
@@ -89,16 +86,13 @@ nextflow_pipeline {
 
                 platform = "illumina"
 
-                mash
-                {
-                    mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
-                    min_kmer = 1
-                }
+                mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
+                mh_min_kmer = 1
 
-                r_contaminants { mega_mm2_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi" }
+                dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
 
-                fastp { args { illumina = "-Q"} }
                 min_reads = 100
+
 
                 skip_bakta = true
                 skip_staramr = false
@@ -128,7 +122,7 @@ nextflow_pipeline {
             assert json.short.short.FastP.summary.before_filtering.total_reads.equals(950)
             assert json.short.short.FastP.filtering_result.passed_filter_reads.equals(950)
             assert json.short.short.FastP.filtering_result.low_quality_reads.equals(0)
-            assert json.short.short.FastP.insert_size.peak.equals(347)            
+            assert json.short.short.FastP.insert_size.peak.equals(347)
 
             //assert json.short.meta.metagenomic.equals(false)  // Currently, this is "null".
             assert json.short.meta.assembly.equals(false)
@@ -174,6 +168,7 @@ nextflow_pipeline {
             assert iridanext_global.findAll { it.path == "SummaryReport/final_report.json" }.size() == 1
             assert iridanext_global.findAll { it.path == "SummaryReport/final_report.tsv" }.size() == 1
             assert iridanext_samples.short.findAll { it.path == "assembly/length_filtered_contigs/short_filtered.fasta.gz" }.size() == 1
+            assert iridanext_samples.short.findAll { it.path == "SummaryReport/short_flat_sample.json.gz" }.size() == 1
 
             // output metadata
             assert iridanext_metadata.short."AssemblyCompleted" == true
