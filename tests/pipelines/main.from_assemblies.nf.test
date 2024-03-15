@@ -226,4 +226,72 @@ nextflow_pipeline {
 
         }
     }
+
+    test("Test starting from assemblies listeria") {
+        tag "from_assemblies_listeria"
+
+        when {
+            params {
+                input = "https://raw.githubusercontent.com/phac-nml/mikrokondo/dev/tests/data/samplesheets/samplesheet-test-from-assemblies-listeria.csv"
+                outdir = "results"
+
+                platform = "illumina"
+
+                mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/mash.msh"
+                dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+                qt_min_contig_length = 1
+
+                skip_bakta = true
+                skip_mobrecon = true
+                skip_checkm = true
+                skip_raw_read_metrics = true
+                skip_polishing = true
+                
+                skip_staramr = false
+                skip_subtyping = false
+
+                max_memory = "2.GB"
+                max_cpus = 1
+            }
+        }
+
+        then {
+            assert workflow.success
+            assert path("$launchDir/results").exists()
+
+            assert path("$launchDir/results/subtyping/lissero/listeria_GCF_000196035.tsv").exists()
+
+            assert path("$launchDir/results/annotations/StarAMR/listeria_GCF_000196035/plasmidfinder.tsv").exists()
+            assert path("$launchDir/results/annotations/StarAMR/listeria_GCF_000196035/resfinder.tsv").exists()
+            assert path("$launchDir/results/annotations/StarAMR/listeria_GCF_000196035/detailed_summary.tsv").exists()
+
+            // compare IRIDA Next JSON output
+            assert path("$launchDir/results/iridanext.output.json").exists()
+            def iridanext_json = path("$launchDir/results/iridanext.output.json").json
+            def iridanext_global = iridanext_json.files.global
+            def iridanext_samples = iridanext_json.files.samples
+            def iridanext_metadata = iridanext_json.metadata.samples
+
+            assert iridanext_metadata.listeria_GCF_000196035."meta.assembly" == true
+            assert iridanext_metadata.listeria_GCF_000196035."meta.hybrid" == false
+            assert iridanext_metadata.listeria_GCF_000196035."meta.single_end" == false
+
+            // parse final report tsv file
+            def final_report_tmap = [:]
+            def final_report_tsv = path("$launchDir/results/SummaryReport/final_report.tsv").readLines()
+            final_report_tsv.each {
+                def tokens = it.split("\t")
+                final_report_tmap[tokens[0]] = tokens[1]
+            }
+
+            // output files
+            assert iridanext_global.findAll { it.path == "SummaryReport/final_report.json" }.size() == 1
+            assert iridanext_global.findAll { it.path == "SummaryReport/final_report.tsv" }.size() == 1
+
+            // parse final report json file
+            def final_report = path("$launchDir/results/SummaryReport/final_report.json").json
+            def listeria_json = final_report.listeria_GCF_000196035.listeria_GCF_000196035
+        }
+    }
+
 }
