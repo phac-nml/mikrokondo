@@ -5,7 +5,7 @@ include { MOBSUITE_RECON } from "../../modules/local/mob_recon.nf"
 include { STARAMR } from "../../modules/local/staramr.nf"
 include { STARAMR_DUMP_DB_VERSIONS } from "../../modules/local/staramr_version.nf"
 include { IDENTIFY_POINTDB } from "../../modules/local/select_pointfinder.nf"
-include { GROUPBY_OUTPUT } from "../../modules/local/groupby_output.nf"
+include { GROUPBY_OUTPUT as ABRICATE_GROUPBY; GROUPBY_OUTPUT as MOBRECON_GROUPBY } from "../../modules/local/groupby_output.nf"
 
 workflow ANNOTATE_GENOMES {
     take:
@@ -48,7 +48,7 @@ workflow ANNOTATE_GENOMES {
 
     if(!params.skip_abricate){
         abricated = ABRICATE(contig_data)
-        abricate_report_group = GROUPBY_OUTPUT(abricated.report, '#FILE')
+        abricate_report_group = ABRICATE_GROUPBY(abricated.report, '#FILE')
         abricate_report = abricate_report_group.report
         versions = versions.mix(abricated.versions)
         versions = versions.mix(abricate_report_group.versions)
@@ -59,9 +59,10 @@ workflow ANNOTATE_GENOMES {
 
     if(!params.skip_mobrecon){
         mobrecon = MOBSUITE_RECON(contig_data)
-        mobrecon_group_group = GROUPBY_OUTPUT(mobrecon.contig_report, 'sample_id')
+        mobrecon_groupby_report = MOBRECON_GROUPBY(mobrecon.contig_report, 'sample_id')
         versions = versions.mix(mobrecon.versions)
-        reports = reports.mix(mobrecon.mobtyper_results.map{
+        versions = versions.mix(mobrecon_groupby_report.versions)
+        reports = reports.mix(mobrecon_groupby_report.report.map{
             meta, report -> tuple(meta, params.mobsuite_recon, report)
         })
     }
