@@ -291,6 +291,55 @@ nextflow_pipeline {
             // parse final report json file
             def final_report = path("$launchDir/results/SummaryReport/final_report.json").json
             def listeria_json = final_report.listeria_GCF_000196035.listeria_GCF_000196035
+
+            // Tests
+            assert listeria_json.QUAST."0"."Total length" == "2944528"
+            assert iridanext_metadata.listeria_GCF_000196035."QUAST.0.Total length" == "2944528"
+            assert final_report_tmap."QUAST.0.Total length" == "2944528"
+
+            assert listeria_json.QUAST."0"."Largest contig" == "2944528"
+            assert iridanext_metadata.listeria_GCF_000196035."QUAST.0.Largest contig" == "2944528"
+            assert final_report_tmap."QUAST.0.Largest contig" == "2944528"
+
+            assert listeria_json.QUAST."0"."# contigs" == "1"
+            assert iridanext_metadata.listeria_GCF_000196035."QUAST.0.# contigs" == "1"
+            assert final_report_tmap."QUAST.0.# contigs" == "1"
+
+            assert listeria_json.QUAST."0"."N50" == "2944528"
+            assert iridanext_metadata.listeria_GCF_000196035."QUAST.0.N50" == "2944528"
+            assert final_report_tmap."QUAST.0.N50" == "2944528"
+
+            assert listeria_json.StarAMR."0".Genotype == "fosX"
+            assert iridanext_metadata.listeria_GCF_000196035."StarAMR.0.Genotype" == "fosX"
+            assert final_report_tmap."StarAMR.0.Genotype" == "fosX"
+
+            assert listeria_json.StarAMR."0"."Predicted Phenotype" == "fosfomycin"
+            assert iridanext_metadata.listeria_GCF_000196035."StarAMR.0.Predicted Phenotype" == "fosfomycin"
+            assert final_report_tmap."StarAMR.0.Predicted Phenotype" == "fosfomycin"
+
+            assert listeria_json.StarAMR."0".Plasmid == "None"
+            assert iridanext_metadata.listeria_GCF_000196035."StarAMR.0.Plasmid" == "None"
+            assert final_report_tmap."StarAMR.0.Plasmid" == "None"
+
+            assert listeria_json.StarAMR."0".Scheme == "lmonocytogenes"
+            assert iridanext_metadata.listeria_GCF_000196035."StarAMR.0.Scheme" == "lmonocytogenes"
+            assert final_report_tmap."StarAMR.0.Scheme" == "lmonocytogenes"
+
+            assert listeria_json.StarAMR."0"."Sequence Type" == "35"
+            assert iridanext_metadata.listeria_GCF_000196035."StarAMR.0.Sequence Type" == "35"
+            assert final_report_tmap."StarAMR.0.Sequence Type" == "35"
+
+            assert listeria_json.LISSEROSubtyping."0".SEROTYPE == "1/2c, 3c"
+            assert iridanext_metadata.listeria_GCF_000196035."LISSEROSubtyping.0.SEROTYPE" == "1/2c, 3c"
+            assert final_report_tmap."LISSEROSubtyping.0.SEROTYPE" == "1/2c, 3c"
+
+            assert listeria_json.LISSEROSubtyping."0".PRS == "FULL"
+            assert iridanext_metadata.listeria_GCF_000196035."LISSEROSubtyping.0.PRS" == "FULL"
+            assert final_report_tmap."LISSEROSubtyping.0.PRS" == "FULL"
+
+            assert listeria_json.LISSEROSubtyping."0".ORF2110 == "NONE"
+            assert iridanext_metadata.listeria_GCF_000196035."LISSEROSubtyping.0.ORF2110" == "NONE"
+            assert final_report_tmap."LISSEROSubtyping.0.ORF2110" == "NONE"
         }
     }
 
