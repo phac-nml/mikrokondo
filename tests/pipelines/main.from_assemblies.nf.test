@@ -140,12 +140,34 @@ nextflow_pipeline {
             assert workflow.success
             assert path("$launchDir/results").exists()
 
+            assert path("$launchDir/results/subtyping/sistr/salmonella_GCA_000008105-allele.fasta").exists()
+            assert path("$launchDir/results/subtyping/sistr/salmonella_GCA_000008105-allele.json").exists()
+            assert path("$launchDir/results/subtyping/sistr/salmonella_GCA_000008105-cgmlst.csv").exists()
+            assert path("$launchDir/results/subtyping/sistr/salmonella_GCA_000008105.tab").exists()
+
+            assert path("$launchDir/results/annotations/StarAMR/salmonella_GCA_000008105/plasmidfinder.tsv").exists()
+            assert path("$launchDir/results/annotations/StarAMR/salmonella_GCA_000008105/pointfinder.tsv").exists()
+            assert path("$launchDir/results/annotations/StarAMR/salmonella_GCA_000008105/resfinder.tsv").exists()
+            assert path("$launchDir/results/annotations/StarAMR/salmonella_GCA_000008105/detailed_summary.tsv").exists()
+
             // compare IRIDA Next JSON output
             assert path("$launchDir/results/iridanext.output.json").exists()
             def iridanext_json = path("$launchDir/results/iridanext.output.json").json
             def iridanext_global = iridanext_json.files.global
             def iridanext_samples = iridanext_json.files.samples
             def iridanext_metadata = iridanext_json.metadata.samples
+
+            assert iridanext_metadata.salmonella_GCA_000008105."meta.assembly" == true
+            assert iridanext_metadata.salmonella_GCA_000008105."meta.hybrid" == false
+            assert iridanext_metadata.salmonella_GCA_000008105."meta.single_end" == false
+
+            // parse final report tsv file
+            def final_report_tmap = [:]
+            def final_report_tsv = path("$launchDir/results/SummaryReport/final_report.tsv").readLines()
+            final_report_tsv.each {
+                def tokens = it.split("\t")
+                final_report_tmap[tokens[0]] = tokens[1]
+            }
 
             // output files
             assert iridanext_global.findAll { it.path == "SummaryReport/final_report.json" }.size() == 1
@@ -155,20 +177,55 @@ nextflow_pipeline {
             def final_report = path("$launchDir/results/SummaryReport/final_report.json").json
             def salmonella_json = final_report.salmonella_GCA_000008105.salmonella_GCA_000008105
 
+            // Tests
             assert salmonella_json.QUAST."0"."Total length" == "4944000"
+            assert iridanext_metadata.salmonella_GCA_000008105."QUAST.0.Total length" == "4944000"
+            assert final_report_tmap."QUAST.0.Total length" == "4944000"
+
             assert salmonella_json.QUAST."0"."Largest contig" == "4755700"
+            assert iridanext_metadata.salmonella_GCA_000008105."QUAST.0.Largest contig" == "4755700"
+            assert final_report_tmap."QUAST.0.Largest contig" == "4755700"
+
             assert salmonella_json.QUAST."0"."# contigs" == "3"
+            assert iridanext_metadata.salmonella_GCA_000008105."QUAST.0.# contigs" == "3"
+            assert final_report_tmap."QUAST.0.# contigs" == "3"
+
             assert salmonella_json.QUAST."0"."N50" == "4755700"
+            assert iridanext_metadata.salmonella_GCA_000008105."QUAST.0.N50" == "4755700"
+            assert final_report_tmap."QUAST.0.N50" == "4755700"
 
             assert salmonella_json.StarAMR."0".Genotype == "aadA1, aadA2, aadA2, aph(3'')-Ib, aph(3')-Ia, blaCMY-2, blaTEM-1B, cmlA1, dfrA12, gyrA (D87N), gyrA (S83F), qacE, sul1, sul3, tet(A)"
+            assert iridanext_metadata.salmonella_GCA_000008105."StarAMR.0.Genotype" == "aadA1, aadA2, aadA2, aph(3'')-Ib, aph(3')-Ia, blaCMY-2, blaTEM-1B, cmlA1, dfrA12, gyrA (D87N), gyrA (S83F), qacE, sul1, sul3, tet(A)"
+            assert final_report_tmap."StarAMR.0.Genotype".contains("aadA1, aadA2, aadA2, aph(3'')-Ib, aph(3')-Ia, blaCMY-2, blaTEM-1B, cmlA1, dfrA12, gyrA (D87N), gyrA (S83F), qacE, sul1, sul3, tet(A)")  // the parsing causes double quotes (' and ")
+
             assert salmonella_json.StarAMR."0"."Predicted Phenotype" == "streptomycin, kanamycin, ampicillin, amoxicillin/clavulanic acid, cefoxitin, ceftriaxone, chloramphenicol, trimethoprim, ciprofloxacin I/R, nalidixic acid, unknown[qacE_1_X68232], sulfisoxazole, tetracycline"
+            assert iridanext_metadata.salmonella_GCA_000008105."StarAMR.0.Predicted Phenotype" == "streptomycin, kanamycin, ampicillin, amoxicillin/clavulanic acid, cefoxitin, ceftriaxone, chloramphenicol, trimethoprim, ciprofloxacin I/R, nalidixic acid, unknown[qacE_1_X68232], sulfisoxazole, tetracycline"
+            assert final_report_tmap."StarAMR.0.Predicted Phenotype".contains("streptomycin, kanamycin, ampicillin, amoxicillin/clavulanic acid, cefoxitin, ceftriaxone, chloramphenicol, trimethoprim, ciprofloxacin I/R, nalidixic acid, unknown[qacE_1_X68232], sulfisoxazole, tetracycline")  // the parsing causes double quotes (' and ")
+
             assert salmonella_json.StarAMR."0".Plasmid == "IncFIB(K), IncFIB(S), IncFII(S)"
+            assert iridanext_metadata.salmonella_GCA_000008105."StarAMR.0.Plasmid" == "IncFIB(K), IncFIB(S), IncFII(S)"
+            assert final_report_tmap."StarAMR.0.Plasmid".contains("IncFIB(K), IncFIB(S), IncFII(S)")  // the parsing causes double quotes (' and ")
+
             assert salmonella_json.StarAMR."0".Scheme == "senterica"
+            assert iridanext_metadata.salmonella_GCA_000008105."StarAMR.0.Scheme" == "senterica"
+            assert final_report_tmap."StarAMR.0.Scheme" == "senterica"
+
             assert salmonella_json.StarAMR."0"."Sequence Type" == "66"
+            assert iridanext_metadata.salmonella_GCA_000008105."StarAMR.0.Sequence Type" == "66"
+            assert final_report_tmap."StarAMR.0.Sequence Type" == "66"
 
             assert salmonella_json.SISTRSubtyping."0".serovar == "Choleraesuis"
+            assert iridanext_metadata.salmonella_GCA_000008105."SISTRSubtyping.0.serovar" == "Choleraesuis"
+            assert final_report_tmap."SISTRSubtyping.0.serovar" == "Choleraesuis"
+
             assert salmonella_json.SISTRSubtyping."0".serogroup == "C1"
+            assert iridanext_metadata.salmonella_GCA_000008105."SISTRSubtyping.0.serogroup" == "C1"
+            assert final_report_tmap."SISTRSubtyping.0.serogroup" == "C1"
+
             assert salmonella_json.SISTRSubtyping."0".serovar_antigen == "Hissar|Choleraesuis|Paratyphi C|Typhisuis|Chiredzi"
+            assert iridanext_metadata.salmonella_GCA_000008105."SISTRSubtyping.0.serovar_antigen" == "Hissar|Choleraesuis|Paratyphi C|Typhisuis|Chiredzi"
+            assert final_report_tmap."SISTRSubtyping.0.serovar_antigen".contains("Hissar|Choleraesuis|Paratyphi C|Typhisuis|Chiredzi")  // the parsing causes double quotes (' and ")
+
         }
     }
 }
