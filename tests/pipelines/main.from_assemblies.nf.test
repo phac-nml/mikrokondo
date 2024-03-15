@@ -259,6 +259,9 @@ nextflow_pipeline {
             assert workflow.success
             assert path("$launchDir/results").exists()
 
+            def test_files = path("$launchDir/results").list()
+            print test_files
+
             assert path("$launchDir/results/subtyping/lissero/listeria_GCF_000196035.tsv").exists()
 
             assert path("$launchDir/results/annotations/StarAMR/listeria_GCF_000196035/plasmidfinder.tsv").exists()
