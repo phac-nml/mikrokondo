@@ -49,15 +49,17 @@ workflow ANNOTATE_GENOMES {
     if(!params.skip_abricate){
         abricated = ABRICATE(contig_data)
         abricate_report_group = GROUPBY_OUTPUT(abricated.report, '#FILE')
-        abricate_report = abricated.report
+        abricate_report = abricate_report_group.report
         versions = versions.mix(abricated.versions)
-        reports = reports.mix(abricated.report.map{
+        versions = versions.mix(abricate_report_group.versions)
+        reports = reports.mix(abricate_report_group.report.map{
             meta, report -> tuple(meta, params.abricate, report);
         })
     }
 
     if(!params.skip_mobrecon){
         mobrecon = MOBSUITE_RECON(contig_data)
+        mobrecon_group_group = GROUPBY_OUTPUT(mobrecon.contig_report, 'sample_id')
         versions = versions.mix(mobrecon.versions)
         reports = reports.mix(mobrecon.mobtyper_results.map{
             meta, report -> tuple(meta, params.mobsuite_recon, report)

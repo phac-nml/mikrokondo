@@ -8,7 +8,7 @@ process GROUPBY_OUTPUT {
     val key
 
     output:
-    tuple val(meta), path("groupby/*"), emit: grouped_tabular_file
+    tuple val(meta), path("groupby/*"), emit: report
     path "versions.yml", emit: versions
 
     script:
