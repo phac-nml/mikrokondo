@@ -5,6 +5,7 @@ include { MOBSUITE_RECON } from "../../modules/local/mob_recon.nf"
 include { STARAMR } from "../../modules/local/staramr.nf"
 include { STARAMR_DUMP_DB_VERSIONS } from "../../modules/local/staramr_version.nf"
 include { IDENTIFY_POINTDB } from "../../modules/local/select_pointfinder.nf"
+include { GROUPBY_OUTPUT } from "../../modules/local/groupby_output.nf"
 
 workflow ANNOTATE_GENOMES {
     take:
@@ -47,6 +48,7 @@ workflow ANNOTATE_GENOMES {
 
     if(!params.skip_abricate){
         abricated = ABRICATE(contig_data)
+        abricate_report_group = GROUPBY_OUTPUT(abricated.report, '#FILE')
         abricate_report = abricated.report
         versions = versions.mix(abricated.versions)
         reports = reports.mix(abricated.report.map{
