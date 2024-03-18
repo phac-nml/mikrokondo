@@ -23,7 +23,7 @@ lint:
     - assets/email_template.txt
     - assets/sendmail_template.txt
     - .gitignore
-  schema_params: False
+  schema_params: True
   nextflow_config: False
   multiqc_config: False
 template:
