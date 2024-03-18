@@ -264,6 +264,31 @@ nextflow_pipeline {
 
             path("$launchDir/meta/nextflow.log").eachLine { line ->
                 println line
+
+                if (line.contains("MIKROKONDO:POST_ASSEMBLY:SUBTYPE_GENOME:LISSERO (listeria_GCF_000196035); status: COMPLETED;")) {
+                    def lissero_dir = line.split("; workDir: ")[1].replace("]", "")
+                    print "\n\nLISSERO DIR: "
+                    print lissero_dir
+                    print "\n\n"
+
+                    print "\n\n.command.err\n\n"
+                    path("$lissero_dir/.command.err").eachLine { line2 -> println line2 }
+
+                    print "\n\n.command.log\n\n"
+                    path("$lissero_dir/.command.log").eachLine { line2 -> println line2 }
+
+                    print "\n\n.command.out\n\n"
+                    path("$lissero_dir/.command.out").eachLine { line2 -> println line2 }
+
+                    print "\n\n.command.sh\n\n"
+                    path("$lissero_dir/.command.sh").eachLine { line2 -> println line2 }
+
+                    print "\n\n.command.trace\n\n"
+                    path("$lissero_dir/.command.trace").eachLine { line2 -> println line2 }
+
+                    print "\n\ncontents\n\n"
+                    print path("$lissero_dir").list()
+                }                
             }
 
             assert path("$launchDir/results/subtyping/lissero/listeria_GCF_000196035.tsv").exists()
