@@ -566,6 +566,12 @@
           "default": true,
           "hidden": true
         },
+        "validationFailUnrecognisedParams": {
+            "type": "boolean",
+            "description": "Validation of parameters fails when an unrecognised parameter is found.",
+            "fa_icon": "far fa-check-circle",
+            "hidden": true
+          },
         "show_hidden_params": {
           "type": "boolean",
           "fa_icon": "far fa-eye-slash",
@@ -1587,9 +1593,6 @@
       "$ref": "#/definitions/kraken2"
     }
   ],
-  "validationFailUnrecognisedParams": {
-    "type": "boolean"
-  },
   "chopper": {
     "quality": {
       "type": "integer",
