@@ -262,6 +262,10 @@ nextflow_pipeline {
             def test_files = path("$launchDir/results").list()
             print test_files
 
+            path("$launchDir/meta/nextflow.log").eachLine { line ->
+                println line
+            }
+
             assert path("$launchDir/results/subtyping/lissero/listeria_GCF_000196035.tsv").exists()
 
             assert path("$launchDir/results/annotations/StarAMR/listeria_GCF_000196035/plasmidfinder.tsv").exists()
