@@ -3112,14 +3112,14 @@
     },
     "report_aggregate": {
       "type": "object",
+      "hidden": true,
       "properties": {
         "sample_flat_suffix": {
           "type": "string",
           "default": "_flat_sample.json",
           "hidden": true
         }
-      },
-      "hidden": true
+      }
     }
   }
 }
