@@ -5,14 +5,16 @@ Reformat a mikrokondo json to un-nest dotter parameters
 """
 
 from __future__ import annotations
-import argparse
+
 import json
 import logging
 import os
 import sys
+import argparse
 from dataclasses import dataclass
 
 logger = logging.getLogger(__name__)
+
 
 @dataclass(frozen=True)
 class Constants:
@@ -54,12 +56,18 @@ def denested_information(keys: list[str], last_value: dict) -> dict:
 
     new_chain: dict = {}
     temp = new_chain
-
-    for i in keys[1:-1]:
+    for i in keys[0:-1]:
         temp[i] = {}
-        temp = temp[i]
-    temp[keys[-1]] = last_value
+        temp[i][Constants.type_field] = Constants.properties_type
+        temp[i][Constants.extraction_field] = {}
+        temp = temp[i][Constants.extraction_field]
+
+    temp[Constants.type_field] = Constants.properties_type
+    temp[Constants.extraction_field] = {keys[-1]: last_value}
+
     return new_chain
+
+
 
 
 def nest_schema(properties: dict) -> dict:
@@ -87,15 +95,36 @@ def nest_schema(properties: dict) -> dict:
         if Constants.delimiter not in key:
             continue
         split_key = key.split(Constants.delimiter)
+
         if new_dict.get(split_key[0]) is None:
             new_dict[split_key[0]] = {}
+            new_dict[split_key[0]][Constants.type_field] = Constants.properties_type
+            new_dict[split_key[0]][Constants.extraction_field] = {}
+
         denested_data = denested_information(split_key[1:], values)
-        new_dict[split_key[0]][split_key[1]] = denested_data
+        if denested_data != values:
+            # multiple fields to be set, update the properties instead of overwriting it
+
+            temp = denested_data
+            nd_temp = new_dict[split_key[0]][Constants.extraction_field]
+            for i in split_key[1:-1]:
+                if nd_temp.get(i) is None:
+                    nd_temp[i] = {}
+                    nd_temp[i][Constants.type_field] = temp[i][Constants.type_field]
+                    nd_temp[i][Constants.extraction_field] = {}
+
+                nd_temp = nd_temp[i][Constants.extraction_field]
+                temp = temp[i][Constants.extraction_field]
+
+            nd_temp[split_key[-1]] = temp[Constants.extraction_field][split_key[-1]]
+
+        else:
+            new_dict[split_key[0]][Constants.extraction_field][split_key[1]] = denested_data
+
         poisoned_keys.append(key)
 
     for i in poisoned_keys:
         del properties[i]
-
     properties.update(new_dict)
     return properties
 
@@ -129,32 +158,62 @@ def nest_properties(schema: dict) -> dict:
         del schema[Constants.nesting_field][k][Constants.extraction_field]
         schema[Constants.nesting_field][k][Constants.extraction_field] = new_properties
 
+
     new_properties = nest_schema(properties=properties)
     del schema[Constants.extraction_field]
-    schema.update(new_properties)
-    drop_keys = reorganize_schema(schema[Constants.nesting_field])
+    schema[Constants.extraction_field] = new_properties
+    drop_keys = reorganize_schema(schema)
     schema[Constants.allof_field] = drop_all_of_fields(schema[Constants.allof_field], drop_keys)
+
     return schema
 
+def drop_keys_repeated(schema):
+    """
+    Keys in the properties section need may be repeated in the definitions, those in the definitions
+    need to be removed from the properties field
+    """
+    common_keys = schema[Constants.nesting_field].keys() & schema[Constants.extraction_field].keys()
+    for key in common_keys:
+        del schema[Constants.extraction_field][key]
+    return schema
 
-def reorganize_schema(definitions) -> set:
+def reorganize_schema(schema) -> set:
     """Take a newly nested schema and merge paramter definitions together to prevent errors
+    TODO break this function up into smaller sections
 
     definitions dict: Updated definitions field in a json schema
     return drop_keys set: Additional fields to delete from the schema after processing
     """
-    sub_key_fields = []
-    for k, v in definitions.items():
-        sub_key_fields.extend([(k, i) for i in v[Constants.extraction_field].keys()])
-    main_keys = {i[0] for i in sub_key_fields}
-    drop_keys: set = set()
-    for i in sub_key_fields:
-        if i[1] in main_keys and i[1] != i[0]:
-            drop_keys.add(i[0])
-            definitions[i[1]][Constants.extraction_field][i[1]].update(definitions[i[0]][Constants.extraction_field][i[1]])
 
-    for i in drop_keys:
-        del definitions[i]
+
+    definitions = schema[Constants.nesting_field]
+    top_lvl_keys = frozenset(definitions.keys())
+    properties_keys = frozenset(schema[Constants.extraction_field].keys())
+    drop_keys = set()
+    for k, v in definitions.items():
+        tpl_keys = [i for i in v[Constants.extraction_field].keys() if i in top_lvl_keys]
+        if not tpl_keys or len(tpl_keys) == 1:
+            continue
+        for i in tpl_keys:
+            definitions[i][Constants.extraction_field][i].update(v[Constants.extraction_field][i][Constants.extraction_field])
+            del v[Constants.extraction_field][i]
+            if schema[Constants.extraction_field].get(i):
+                del schema[Constants.extraction_field][i]
+        drop_keys.add(k)
+
+    for k in drop_keys:
+        del definitions[k]
+
+    for k, v in definitions.items():
+        common_keys = v[Constants.extraction_field].keys() & properties_keys
+        if not common_keys:
+            continue
+        for i in common_keys:
+            props = schema[Constants.extraction_field].get(i)
+            if props:
+                v[Constants.extraction_field][i].update(props[Constants.extraction_field])
+                del schema[Constants.extraction_field][i]
+
     return drop_keys
 
 def dump_schema(schema: dict, output_fp: str):

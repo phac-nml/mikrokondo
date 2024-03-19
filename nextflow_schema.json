@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema",
   "$id": "https://raw.githubusercontent.com/phac-nml/mikrokondo/master/nextflow_schema.json",
   "title": "phac-nml/mikrokondo pipeline parameters",
-  "description": "mikrokondo Beta",
+  "description": "mikrokondo schema",
   "type": "object",
   "definitions": {
     "input_output_options": {
@@ -53,80 +53,83 @@
           "description": "Minimum contig length for processing in Bakta"
         },
         "bakta": {
-          "output_dir": {
-            "type": "string",
-            "default": "bakta",
-            "hidden": true
-          },
-          "embl_ext": {
-            "type": "string",
-            "default": ".embl",
-            "hidden": true
-          },
-          "faa_ext": {
-            "type": "string",
-            "default": ".faa",
-            "hidden": true
-          },
-          "ffn_ext": {
-            "type": "string",
-            "default": ".ffn",
-            "hidden": true
-          },
-          "fna_ext": {
-            "type": "string",
-            "default": ".fna",
-            "hidden": true
-          },
-          "gbff_ext": {
-            "type": "string",
-            "default": ".gbff",
-            "hidden": true
-          },
-          "gff_ext": {
-            "type": "string",
-            "default": ".gff3",
-            "hidden": true
-          },
-          "threads": {
-            "type": "integer",
-            "default": 12,
-            "hidden": true
-          },
-          "hypotheticals_tsv_ext": {
-            "type": "string",
-            "default": ".hypotheticals.tsv",
-            "hidden": true
-          },
-          "hypotheticals_faa_ext": {
-            "type": "string",
-            "default": ".hypotheticals.faa",
-            "hidden": true
-          },
-          "tsv_ext": {
-            "type": "string",
-            "default": ".tsv",
-            "hidden": true
-          },
-          "txt_ext": {
-            "type": "string",
-            "default": ".txt",
-            "hidden": true
-          },
-          "min_contig_length": {
-            "type": "integer",
-            "default": 200,
-            "hidden": true
-          },
-          "db": {
-            "type": "string",
-            "hidden": true
-          },
-          "args": {
-            "type": "string",
-            "hidden": true,
-            "description": "Additional arguments to pass to bakta",
-            "default": "{ \"\" }"
+          "type": "object",
+          "properties": {
+            "output_dir": {
+              "type": "string",
+              "default": "bakta",
+              "hidden": true
+            },
+            "embl_ext": {
+              "type": "string",
+              "default": ".embl",
+              "hidden": true
+            },
+            "faa_ext": {
+              "type": "string",
+              "default": ".faa",
+              "hidden": true
+            },
+            "ffn_ext": {
+              "type": "string",
+              "default": ".ffn",
+              "hidden": true
+            },
+            "fna_ext": {
+              "type": "string",
+              "default": ".fna",
+              "hidden": true
+            },
+            "gbff_ext": {
+              "type": "string",
+              "default": ".gbff",
+              "hidden": true
+            },
+            "gff_ext": {
+              "type": "string",
+              "default": ".gff3",
+              "hidden": true
+            },
+            "threads": {
+              "type": "integer",
+              "default": 12,
+              "hidden": true
+            },
+            "hypotheticals_tsv_ext": {
+              "type": "string",
+              "default": ".hypotheticals.tsv",
+              "hidden": true
+            },
+            "hypotheticals_faa_ext": {
+              "type": "string",
+              "default": ".hypotheticals.faa",
+              "hidden": true
+            },
+            "tsv_ext": {
+              "type": "string",
+              "default": ".tsv",
+              "hidden": true
+            },
+            "txt_ext": {
+              "type": "string",
+              "default": ".txt",
+              "hidden": true
+            },
+            "min_contig_length": {
+              "type": "integer",
+              "default": 200,
+              "hidden": true
+            },
+            "db": {
+              "type": "string",
+              "hidden": true
+            },
+            "args": {
+              "type": "string",
+              "hidden": true,
+              "description": "Additional arguments to pass to bakta",
+              "default": "{ \"\" }"
+            }
           },
           "docker": {
             "type": "string",
@@ -196,66 +199,77 @@
           "type": "boolean"
         },
         "fastp": {
-          "html_ext": {
-            "type": "string",
-            "default": ".html",
-            "hidden": true
-          },
-          "average_quality_e": {
-            "type": "integer",
-            "default": 25,
-            "description": "Average quality of a read to be included (read pair is discarded if it is below this value)",
-            "hidden": true
-          },
-          "json_ext": {
-            "type": "string",
-            "default": ".json",
-            "hidden": true
-          },
-          "qualified_quality_phred": {
-            "type": "integer",
-            "default": 15,
-            "description": "Phred score to be considered qualified. See FastP docs for more details.",
-            "hidden": true
-          },
-          "unqualified_percent_limit": {
-            "type": "integer",
-            "default": 40,
-            "description": "Percent of bases in a read to be qualified for the read to be included. See FastP docs for more details.",
-            "hidden": true
-          },
-          "fastq_ext": {
-            "type": "string",
-            "default": ".trimmed.fastq.gz",
-            "hidden": true
-          },
-          "report_tag": {
-            "type": "string",
-            "default": "FastP",
-            "hidden": true
-          },
-          "illumina_length_min": {
-            "type": "integer",
-            "default": 35,
-            "description": "Minimum length of a read to be included in later analysis for illumina data.",
-            "hidden": true
-          },
-          "single_end_length_min": {
-            "type": "integer",
-            "default": 1000,
-            "description": "Minimum leng of a read to be used in later analysis (for Nanopore or Pacbio)",
-            "hidden": true
-          },
-          "dedup_reads": {
-            "type": "boolean",
-            "description": "Option to turn on read de-duplication.",
-            "hidden": true
-          },
-          "args": {
-            "single_end": {
+          "type": "object",
+          "properties": {
+            "html_ext": {
               "type": "string",
-              "default": "--overrepresentation_analysis -Q --length_required 1000",
+              "default": ".html",
               "hidden": true
+            },
+            "average_quality_e": {
+              "type": "integer",
+              "default": 25,
+              "description": "Average quality of a read to be included (read pair is discarded if it is below this value)",
+              "hidden": true
+            },
+            "json_ext": {
+              "type": "string",
+              "default": ".json",
+              "hidden": true
+            },
+            "qualified_quality_phred": {
+              "type": "integer",
+              "default": 15,
+              "description": "Phred score to be considered qualified. See FastP docs for more details.",
+              "hidden": true
+            },
+            "unqualified_percent_limit": {
+              "type": "integer",
+              "default": 40,
+              "description": "Percent of bases in a read to be qualified for the read to be included. See FastP docs for more details.",
+              "hidden": true
+            },
+            "fastq_ext": {
+              "type": "string",
+              "default": ".trimmed.fastq.gz",
+              "hidden": true
+            },
+            "report_tag": {
+              "type": "string",
+              "default": "FastP",
+              "hidden": true
+            },
+            "illumina_length_min": {
+              "type": "integer",
+              "default": 35,
+              "description": "Minimum length of a read to be included in later analysis for illumina data.",
+              "hidden": true
+            },
+            "single_end_length_min": {
+              "type": "integer",
+              "default": 1000,
+              "description": "Minimum leng of a read to be used in later analysis (for Nanopore or Pacbio)",
+              "hidden": true
+            },
+            "dedup_reads": {
+              "type": "boolean",
+              "description": "Option to turn on read de-duplication.",
+              "hidden": true
+            },
+            "args": {
+              "type": "object",
+              "properties": {
+                "illumina": {
+                  "type": "string",
+                  "default": "--overrepresentation_analysis --trim_poly_g --poly_g_min_len 10 --trim_poly_x --poly_x_min_len 10 --cut_tail --cut_tail_window_size 4 --cut_tail_mean_quality 15 --low_complexity_filter --complexity_threshold 20 --average_qual 25 --qualified_quality_phred 15 --unqualified_percent_limit 40 --length_limit 400 --length_required 35 --detect_adapter_for_pe",
+                  "hidden": true
+                },
+                "single_end": {
+                  "type": "string",
+                  "default": "--overrepresentation_analysis -Q --length_required 1000",
+                  "hidden": true
+                }
+              }
             }
           },
           "docker": {
@@ -284,68 +298,71 @@
           "description": "Minimum Kmer count needed for a unique kmer to be used in genome size estimation"
         },
         "mash": {
-          "mash_ext": {
-            "type": "string",
-            "default": ".screen",
-            "hidden": true
-          },
-          "output_reads_ext": {
-            "type": "string",
-            "default": ".reads.screen",
-            "hidden": true
-          },
-          "output_taxa_ext": {
-            "type": "string",
-            "default": ".taxa.screen",
-            "hidden": true
-          },
-          "output_dir": {
-            "type": "string",
-            "default": "contamination",
-            "hidden": true
-          },
-          "mash_sketch": {
-            "type": "string",
-            "hidden": true
-          },
-          "sketch_ext": {
-            "type": "string",
-            "default": ".msh",
-            "hidden": true
-          },
-          "sketch_kmer_size": {
-            "type": "integer",
-            "default": 21,
-            "hidden": true
-          },
-          "final_sketch_name": {
-            "type": "string",
-            "default": "GTDB_sketch",
-            "hidden": true
-          },
-          "json_ext": {
-            "type": "string",
-            "default": ".json",
-            "hidden": true
-          },
-          "min_kmer": {
-            "type": "integer",
-            "default": 10,
-            "hidden": true
-          },
-          "report_tag": {
-            "type": "string",
-            "default": "Mash",
-            "hidden": true
-          },
-          "header_p": {
-            "type": "boolean",
-            "hidden": true
-          },
-          "headers": {
-            "type": "string",
-            "default": "['identity', 'Shared Hashes', 'Median Multiplicity', 'P-Value', 'Query ID', 'Query Note']",
-            "hidden": true
+          "type": "object",
+          "properties": {
+            "mash_ext": {
+              "type": "string",
+              "default": ".screen",
+              "hidden": true
+            },
+            "output_reads_ext": {
+              "type": "string",
+              "default": ".reads.screen",
+              "hidden": true
+            },
+            "output_taxa_ext": {
+              "type": "string",
+              "default": ".taxa.screen",
+              "hidden": true
+            },
+            "output_dir": {
+              "type": "string",
+              "default": "contamination",
+              "hidden": true
+            },
+            "mash_sketch": {
+              "type": "string",
+              "hidden": true
+            },
+            "sketch_ext": {
+              "type": "string",
+              "default": ".msh",
+              "hidden": true
+            },
+            "sketch_kmer_size": {
+              "type": "integer",
+              "default": 21,
+              "hidden": true
+            },
+            "final_sketch_name": {
+              "type": "string",
+              "default": "GTDB_sketch",
+              "hidden": true
+            },
+            "json_ext": {
+              "type": "string",
+              "default": ".json",
+              "hidden": true
+            },
+            "min_kmer": {
+              "type": "integer",
+              "default": 10,
+              "hidden": true
+            },
+            "report_tag": {
+              "type": "string",
+              "default": "Mash",
+              "hidden": true
+            },
+            "header_p": {
+              "type": "boolean",
+              "hidden": true
+            },
+            "headers": {
+              "type": "string",
+              "default": "['identity', 'Shared Hashes', 'Median Multiplicity', 'P-Value', 'Query ID', 'Query Note']",
+              "hidden": true
+            }
           },
           "docker": {
             "type": "string",
@@ -372,46 +389,49 @@
           "default": 1000
         },
         "quast": {
-          "suffix": {
-            "type": "string",
-            "default": "quast",
-            "hidden": true
-          },
-          "report_base": {
-            "type": "string",
-            "default": "report",
-            "hidden": true
-          },
-          "report_prefix": {
-            "type": "string",
-            "default": "transposed_",
-            "hidden": true
-          },
-          "report_ext": {
-            "type": "string",
-            "default": ".tsv",
-            "hidden": true
-          },
-          "report_tag": {
-            "type": "string",
-            "default": "QUAST",
-            "hidden": true
-          },
-          "min_contig_length": {
-            "type": "integer",
-            "default": 1000,
-            "description": "Minimum contig length to be used my Quast.",
-            "hidden": true
-          },
-          "args": {
-            "type": "string",
-            "default": "{ \"--min-contig ${params.quast.min_contig_length} --report-all-metrics\" }",
-            "hidden": true
-          },
-          "contigs_field": {
-            "type": "string",
-            "default": "# contigs",
-            "hidden": true
+          "type": "object",
+          "properties": {
+            "suffix": {
+              "type": "string",
+              "default": "quast",
+              "hidden": true
+            },
+            "report_base": {
+              "type": "string",
+              "default": "report",
+              "hidden": true
+            },
+            "report_prefix": {
+              "type": "string",
+              "default": "transposed_",
+              "hidden": true
+            },
+            "report_ext": {
+              "type": "string",
+              "default": ".tsv",
+              "hidden": true
+            },
+            "report_tag": {
+              "type": "string",
+              "default": "QUAST",
+              "hidden": true
+            },
+            "min_contig_length": {
+              "type": "integer",
+              "default": 1000,
+              "description": "Minimum contig length to be used my Quast.",
+              "hidden": true
+            },
+            "args": {
+              "type": "string",
+              "default": "{ \"--min-contig ${params.quast.min_contig_length} --report-all-metrics\" }",
+              "hidden": true
+            },
+            "contigs_field": {
+              "type": "string",
+              "default": "# contigs",
+              "hidden": true
+            }
           },
           "docker": {
             "type": "string",
@@ -566,12 +586,6 @@
           "default": true,
           "hidden": true
         },
-        "validationFailUnrecognisedParams": {
-            "type": "boolean",
-            "description": "Validation of parameters fails when an unrecognised parameter is found.",
-            "fa_icon": "far fa-check-circle",
-            "hidden": true
-          },
         "show_hidden_params": {
           "type": "boolean",
           "fa_icon": "far fa-eye-slash",
@@ -788,40 +802,43 @@
       "default": "",
       "properties": {
         "seqkit": {
-          "singularity": {
-            "type": "string",
-            "default": "https://depot.galaxyproject.org/singularity/seqkit:2.2.0--h9ee0642_0",
-            "hidden": true
-          },
-          "docker": {
-            "type": "string",
-            "default": "quay.io/biocontainers/seqkit:2.2.0--h9ee0642_0",
-            "hidden": true
-          },
-          "report_ext": {
-            "type": "string",
-            "default": ".tsv",
-            "hidden": true
-          },
-          "fasta_ext": {
-            "type": "string",
-            "default": "_filtered.fasta.gz",
-            "hidden": true
-          },
-          "filter_field": {
-            "type": "string",
-            "default": "max_len",
-            "hidden": true
-          },
-          "report_tag": {
-            "type": "string",
-            "default": "Seqkit_stats",
-            "hidden": true
-          },
-          "header_p": {
-            "type": "boolean",
-            "default": true,
-            "hidden": true
+          "type": "object",
+          "properties": {
+            "singularity": {
+              "type": "string",
+              "default": "https://depot.galaxyproject.org/singularity/seqkit:2.2.0--h9ee0642_0",
+              "hidden": true
+            },
+            "docker": {
+              "type": "string",
+              "default": "quay.io/biocontainers/seqkit:2.2.0--h9ee0642_0",
+              "hidden": true
+            },
+            "report_ext": {
+              "type": "string",
+              "default": ".tsv",
+              "hidden": true
+            },
+            "fasta_ext": {
+              "type": "string",
+              "default": "_filtered.fasta.gz",
+              "hidden": true
+            },
+            "filter_field": {
+              "type": "string",
+              "default": "max_len",
+              "hidden": true
+            },
+            "report_tag": {
+              "type": "string",
+              "default": "Seqkit_stats",
+              "hidden": true
+            },
+            "header_p": {
+              "type": "boolean",
+              "default": true,
+              "hidden": true
+            }
           }
         }
       }
@@ -833,20 +850,23 @@
       "default": "",
       "properties": {
         "coverage_calc_fields": {
-          "fixed_cov": {
-            "type": "string",
-            "default": "FixedGenomeSizeDepth",
-            "hidden": true
-          },
-          "auto_cov": {
-            "type": "string",
-            "default": "DetectedGenomeSizeDepth",
-            "hidden": true
-          },
-          "bp_field": {
-            "type": "string",
-            "default": "['RawReadSummary', 'combined', 'total_bp']",
-            "hidden": true
+          "type": "object",
+          "properties": {
+            "fixed_cov": {
+              "type": "string",
+              "default": "FixedGenomeSizeDepth",
+              "hidden": true
+            },
+            "auto_cov": {
+              "type": "string",
+              "default": "DetectedGenomeSizeDepth",
+              "hidden": true
+            },
+            "bp_field": {
+              "type": "string",
+              "default": "['RawReadSummary', 'combined', 'total_bp']",
+              "hidden": true
+            }
           }
         }
       }
@@ -858,123 +878,859 @@
       "default": "",
       "properties": {
         "QCReport": {
-          "escherichia": {
-            "fixed_genome_size": {
-              "type": "integer",
-              "default": 5000000,
-              "hidden": true
-            }
-          },
-          "salmonella": {
-            "fixed_genome_size": {
-              "type": "integer",
-              "default": 5000000,
-              "hidden": true
-            }
-          },
-          "shigella": {
-            "fixed_genome_size": {
-              "type": "integer",
-              "default": 5000000,
-              "hidden": true
-            }
-          },
-          "listeria": {
-            "fixed_genome_size": {
-              "type": "integer",
-              "default": 3000000,
-              "hidden": true
-            }
-          },
-          "klebsiella": {
-            "fixed_genome_size": {
-              "type": "integer",
-              "default": 6000000,
-              "hidden": true
-            }
-          },
-          "staphylococcus": {
-            "fixed_genome_size": {
-              "type": "integer",
-              "default": 3500000,
-              "hidden": true
-            }
-          },
-          "fallthrough": {
-            "fixed_genome_size": {
-              "type": "string",
-              "hidden": true
-            }
-          },
-          "campylobacter_jejuni": {
-            "min_average_coverage": {
-              "type": "integer",
-              "default": 30,
-              "hidden": true
-            }
-          },
-          "campylobacter_coli": {
-            "min_average_coverage": {
-              "type": "integer",
-              "default": 30,
-              "hidden": true
-            }
-          },
-          "vibrio_cholerae": {
-            "min_average_coverage": {
-              "type": "integer",
-              "default": 40,
-              "hidden": true
+          "type": "object",
+          "properties": {
+            "escherichia": {
+              "type": "object",
+              "properties": {
+                "search": {
+                  "type": "string",
+                  "default": "Escherichia coli",
+                  "hidden": true
+                },
+                "raw_average_quality": {
+                  "type": "integer",
+                  "default": 30,
+                  "hidden": true
+                },
+                "min_n50": {
+                  "type": "integer",
+                  "default": 50000,
+                  "hidden": true
+                },
+                "max_n50": {
+                  "type": "integer",
+                  "default": 6000000,
+                  "hidden": true
+                },
+                "min_nr_contigs": {
+                  "type": "integer",
+                  "default": 1,
+                  "hidden": true
+                },
+                "max_nr_contigs": {
+                  "type": "integer",
+                  "default": 500,
+                  "hidden": true
+                },
+                "min_length": {
+                  "type": "integer",
+                  "default": 4500000,
+                  "hidden": true
+                },
+                "max_length": {
+                  "type": "integer",
+                  "default": 6000000,
+                  "hidden": true
+                },
+                "max_checkm_contamination": {
+                  "type": "number",
+                  "default": 3,
+                  "hidden": true
+                },
+                "min_average_coverage": {
+                  "type": "integer",
+                  "default": 40,
+                  "hidden": true
+                },
+                "fixed_genome_size": {
+                  "type": "integer",
+                  "default": 5000000,
+                  "hidden": true
+                }
+              }
+            },
+            "salmonella": {
+              "type": "object",
+              "properties": {
+                "search": {
+                  "type": "string",
+                  "default": "Salmonella",
+                  "hidden": true
+                },
+                "raw_average_quality": {
+                  "type": "integer",
+                  "default": 30,
+                  "hidden": true
+                },
+                "min_n50": {
+                  "type": "integer",
+                  "default": 90000,
+                  "hidden": true
+                },
+                "max_n50": {
+                  "type": "integer",
+                  "default": 6000000,
+                  "hidden": true
+                },
+                "min_nr_contigs": {
+                  "type": "integer",
+                  "default": 1,
+                  "hidden": true
+                },
+                "max_nr_contigs": {
+                  "type": "integer",
+                  "default": 200,
+                  "hidden": true
+                },
+                "min_length": {
+                  "type": "integer",
+                  "default": 4400000,
+                  "hidden": true
+                },
+                "max_length": {
+                  "type": "integer",
+                  "default": 6000000,
+                  "hidden": true
+                },
+                "max_checkm_contamination": {
+                  "type": "number",
+                  "default": 3,
+                  "hidden": true
+                },
+                "min_average_coverage": {
+                  "type": "integer",
+                  "default": 40,
+                  "hidden": true
+                },
+                "fixed_genome_size": {
+                  "type": "integer",
+                  "default": 5000000,
+                  "hidden": true
+                }
+              }
+            },
+            "shigella": {
+              "type": "object",
+              "properties": {
+                "search": {
+                  "type": "string",
+                  "default": "Shigella",
+                  "hidden": true
+                },
+                "raw_average_quality": {
+                  "type": "integer",
+                  "default": 30,
+                  "hidden": true
+                },
+                "min_n50": {
+                  "type": "integer",
+                  "default": 18000,
+                  "hidden": true
+                },
+                "max_n50": {
+                  "type": "integer",
+                  "default": 5000000,
+                  "hidden": true
+                },
+                "min_nr_contigs": {
+                  "type": "integer",
+                  "default": 1,
+                  "hidden": true
+                },
+                "max_nr_contigs": {
+                  "type": "integer",
+                  "default": 500,
+                  "hidden": true
+                },
+                "min_length": {
+                  "type": "integer",
+                  "default": 4300000,
+                  "hidden": true
+                },
+                "max_length": {
+                  "type": "integer",
+                  "default": 5000000,
+                  "hidden": true
+                },
+                "max_checkm_contamination": {
+                  "type": "number",
+                  "default": 3,
+                  "hidden": true
+                },
+                "min_average_coverage": {
+                  "type": "integer",
+                  "default": 40,
+                  "hidden": true
+                },
+                "fixed_genome_size": {
+                  "type": "integer",
+                  "default": 5000000,
+                  "hidden": true
+                }
+              }
+            },
+            "listeria": {
+              "type": "object",
+              "properties": {
+                "search": {
+                  "type": "string",
+                  "default": "Listeria",
+                  "hidden": true
+                },
+                "raw_average_quality": {
+                  "type": "integer",
+                  "default": 30,
+                  "hidden": true
+                },
+                "min_n50": {
+                  "type": "integer",
+                  "default": 50000,
+                  "hidden": true
+                },
+                "max_n50": {
+                  "type": "integer",
+                  "default": 3200000,
+                  "hidden": true
+                },
+                "min_nr_contigs": {
+                  "type": "integer",
+                  "default": 1,
+                  "hidden": true
+                },
+                "max_nr_contigs": {
+                  "type": "integer",
+                  "default": 200,
+                  "hidden": true
+                },
+                "min_length": {
+                  "type": "integer",
+                  "default": 2700000,
+                  "hidden": true
+                },
+                "max_length": {
+                  "type": "integer",
+                  "default": 3200000,
+                  "hidden": true
+                },
+                "max_checkm_contamination": {
+                  "type": "number",
+                  "default": 3,
+                  "hidden": true
+                },
+                "min_average_coverage": {
+                  "type": "integer",
+                  "default": 30,
+                  "hidden": true
+                },
+                "fixed_genome_size": {
+                  "type": "integer",
+                  "default": 3000000,
+                  "hidden": true
+                }
+              }
+            },
+            "klebsiella": {
+              "type": "object",
+              "properties": {
+                "search": {
+                  "type": "string",
+                  "default": "Klebsiella",
+                  "hidden": true
+                },
+                "raw_average_quality": {
+                  "type": "integer",
+                  "default": 30,
+                  "hidden": true
+                },
+                "min_n50": {
+                  "type": "integer",
+                  "default": 100000,
+                  "hidden": true
+                },
+                "max_n50": {
+                  "type": "integer",
+                  "default": 6000000,
+                  "hidden": true
+                },
+                "min_nr_contigs": {
+                  "type": "integer",
+                  "default": 1,
+                  "hidden": true
+                },
+                "max_nr_contigs": {
+                  "type": "integer",
+                  "default": 500,
+                  "hidden": true
+                },
+                "min_length": {
+                  "type": "integer",
+                  "default": 4500000,
+                  "hidden": true
+                },
+                "max_length": {
+                  "type": "integer",
+                  "default": 6000000,
+                  "hidden": true
+                },
+                "max_checkm_contamination": {
+                  "type": "number",
+                  "default": 3,
+                  "hidden": true
+                },
+                "min_average_coverage": {
+                  "type": "integer",
+                  "default": 30,
+                  "hidden": true
+                },
+                "fixed_genome_size": {
+                  "type": "integer",
+                  "default": 6000000,
+                  "hidden": true
+                }
+              }
+            },
+            "staphylococcus": {
+              "type": "object",
+              "properties": {
+                "search": {
+                  "type": "string",
+                  "default": "Staphylococcus",
+                  "hidden": true
+                },
+                "raw_average_quality": {
+                  "type": "integer",
+                  "default": 30,
+                  "hidden": true
+                },
+                "min_n50": {
+                  "type": "integer",
+                  "default": 100000,
+                  "hidden": true
+                },
+                "max_n50": {
+                  "type": "integer",
+                  "default": 3500000,
+                  "hidden": true
+                },
+                "min_nr_contigs": {
+                  "type": "integer",
+                  "default": 1,
+                  "hidden": true
+                },
+                "max_nr_contigs": {
+                  "type": "integer",
+                  "default": 550,
+                  "hidden": true
+                },
+                "min_length": {
+                  "type": "integer",
+                  "default": 2000000,
+                  "hidden": true
+                },
+                "max_length": {
+                  "type": "integer",
+                  "default": 3500000,
+                  "hidden": true
+                },
+                "max_checkm_contamination": {
+                  "type": "number",
+                  "default": 3,
+                  "hidden": true
+                },
+                "min_average_coverage": {
+                  "type": "integer",
+                  "default": 30,
+                  "hidden": true
+                },
+                "fixed_genome_size": {
+                  "type": "integer",
+                  "default": 3500000,
+                  "hidden": true
+                }
+              }
+            },
+            "fallthrough": {
+              "type": "object",
+              "properties": {
+                "search": {
+                  "type": "string",
+                  "default": "No organism specific QC data available.",
+                  "hidden": true
+                },
+                "raw_average_quality": {
+                  "type": "integer",
+                  "default": 30,
+                  "hidden": true
+                },
+                "min_n50": {
+                  "type": "integer",
+                  "hidden": true
+                },
+                "max_n50": {
+                  "type": "integer",
+                  "hidden": true
+                },
+                "min_nr_contigs": {
+                  "type": "integer",
+                  "hidden": true
+                },
+                "max_nr_contigs": {
+                  "type": "integer",
+                  "hidden": true
+                },
+                "min_length": {
+                  "type": "integer",
+                  "hidden": true
+                },
+                "max_length": {
+                  "type": "integer",
+                  "hidden": true
+                },
+                "max_checkm_contamination": {
+                  "type": "number",
+                  "default": 3,
+                  "hidden": true
+                },
+                "min_average_coverage": {
+                  "type": "integer",
+                  "default": 30,
+                  "hidden": true
+                },
+                "fixed_genome_size": {
+                  "type": "string",
+                  "hidden": true
+                }
+              }
+            },
+            "campylobacter_jejuni": {
+              "type": "object",
+              "properties": {
+                "search": {
+                  "type": "string",
+                  "default": "Campylobacter jejuni",
+                  "hidden": true
+                },
+                "raw_average_quality": {
+                  "type": "integer",
+                  "default": 30,
+                  "hidden": true
+                },
+                "min_n50": {
+                  "type": "integer",
+                  "default": 100000,
+                  "hidden": true
+                },
+                "max_n50": {
+                  "type": "integer",
+                  "default": 2000000,
+                  "hidden": true
+                },
+                "min_nr_contigs": {
+                  "type": "integer",
+                  "default": 1,
+                  "hidden": true
+                },
+                "max_nr_contigs": {
+                  "type": "integer",
+                  "default": 150,
+                  "hidden": true
+                },
+                "fixed_genome_size": {
+                  "type": "integer",
+                  "default": 1800000,
+                  "hidden": true
+                },
+                "min_length": {
+                  "type": "integer",
+                  "default": 1400000,
+                  "hidden": true
+                },
+                "max_length": {
+                  "type": "integer",
+                  "default": 2000000,
+                  "hidden": true
+                },
+                "max_checkm_contamination": {
+                  "type": "number",
+                  "default": 3,
+                  "hidden": true
+                },
+                "min_average_coverage": {
+                  "type": "integer",
+                  "default": 30,
+                  "hidden": true
+                }
+              }
+            },
+            "campylobacter_coli": {
+              "type": "object",
+              "properties": {
+                "search": {
+                  "type": "string",
+                  "default": "Campylobacter coli",
+                  "hidden": true
+                },
+                "raw_average_quality": {
+                  "type": "integer",
+                  "default": 30,
+                  "hidden": true
+                },
+                "min_n50": {
+                  "type": "integer",
+                  "default": 100000,
+                  "hidden": true
+                },
+                "max_n50": {
+                  "type": "integer",
+                  "default": 2000000,
+                  "hidden": true
+                },
+                "min_nr_contigs": {
+                  "type": "integer",
+                  "default": 1,
+                  "hidden": true
+                },
+                "max_nr_contigs": {
+                  "type": "integer",
+                  "default": 150,
+                  "hidden": true
+                },
+                "fixed_genome_size": {
+                  "type": "integer",
+                  "default": 1800000,
+                  "hidden": true
+                },
+                "min_length": {
+                  "type": "integer",
+                  "default": 1400000,
+                  "hidden": true
+                },
+                "max_length": {
+                  "type": "integer",
+                  "default": 2000000,
+                  "hidden": true
+                },
+                "max_checkm_contamination": {
+                  "type": "number",
+                  "default": 3,
+                  "hidden": true
+                },
+                "min_average_coverage": {
+                  "type": "integer",
+                  "default": 30,
+                  "hidden": true
+                }
+              }
+            },
+            "vibrio_cholerae": {
+              "type": "object",
+              "properties": {
+                "search": {
+                  "type": "string",
+                  "default": "Vibrio cholerae",
+                  "hidden": true
+                },
+                "raw_average_quality": {
+                  "type": "integer",
+                  "default": 30,
+                  "hidden": true
+                },
+                "min_n50": {
+                  "type": "integer",
+                  "default": 100000,
+                  "hidden": true
+                },
+                "max_n50": {
+                  "type": "integer",
+                  "default": 4300000,
+                  "hidden": true
+                },
+                "min_nr_contigs": {
+                  "type": "integer",
+                  "default": 1,
+                  "hidden": true
+                },
+                "max_nr_contigs": {
+                  "type": "integer",
+                  "default": 150,
+                  "hidden": true
+                },
+                "fixed_genome_size": {
+                  "type": "integer",
+                  "default": 4000000,
+                  "hidden": true
+                },
+                "min_length": {
+                  "type": "integer",
+                  "default": 3800000,
+                  "hidden": true
+                },
+                "max_length": {
+                  "type": "integer",
+                  "default": 4300000,
+                  "hidden": true
+                },
+                "max_checkm_contamination": {
+                  "type": "number",
+                  "default": 3,
+                  "hidden": true
+                },
+                "min_average_coverage": {
+                  "type": "integer",
+                  "default": 40,
+                  "hidden": true
+                }
+              }
             }
           }
         },
         "QCReportFields": {
-          "raw_average_quality": {
-            "low_msg": {
-              "type": "string",
-              "default": "Base quality is poor, resequencing is recommended.",
-              "hidden": true
-            }
-          },
-          "average_coverage": {
-            "low_msg": {
-              "type": "string",
-              "default": "Depth of coverage from assembly is lower than than expected. A top-up run is likely needed.",
-              "hidden": true
-            }
-          },
-          "metagenomic": {
-            "on": {
-              "type": "boolean",
-              "hidden": true
-            }
-          },
-          "n50_value": {
-            "high_msg": {
-              "type": "string",
-              "default": "N50 value is high, this is likely a good thing if you have fewer contigs than expected.",
-              "hidden": true
-            }
-          },
-          "nr_contigs": {
-            "high_msg": {
-              "type": "string",
-              "default": "More contigs are present than expected, if your N50 is low and your genome length is shorter than expected you likely need to potentially need to reisolate and resequence/top-up your sample.",
-              "hidden": true
-            }
-          },
-          "length": {
-            "high_msg": {
-              "type": "string",
-              "default": "Genome length is higher than expected, contmination is potentially present.",
-              "hidden": true
-            }
-          },
-          "checkm_contamination": {
-            "high_msg": {
-              "type": "string",
-              "default": "Potential contamination is present in your sample. You may need to reisolate and resequence your sample.",
-              "hidden": true
+          "type": "object",
+          "properties": {
+            "raw_average_quality": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string",
+                  "default": "['RawReadSummary', 'combined', 'qual_mean']",
+                  "hidden": true
+                },
+                "coerce_type": {
+                  "type": "string",
+                  "default": "Float",
+                  "hidden": true
+                },
+                "compare_fields": {
+                  "type": "string",
+                  "default": "['raw_average_quality']",
+                  "hidden": true
+                },
+                "comp_type": {
+                  "type": "string",
+                  "default": "ge",
+                  "hidden": true
+                },
+                "on": {
+                  "type": "boolean",
+                  "default": true,
+                  "hidden": true
+                },
+                "low_msg": {
+                  "type": "string",
+                  "default": "Base quality is poor, resequencing is recommended.",
+                  "hidden": true
+                }
+              }
+            },
+            "average_coverage": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string",
+                  "default": "['FixedGenomeSizeDepth']",
+                  "hidden": true
+                },
+                "coerce_type": {
+                  "type": "string",
+                  "default": "Float",
+                  "hidden": true
+                },
+                "compare_fields": {
+                  "type": "string",
+                  "default": "['min_average_coverage']",
+                  "hidden": true
+                },
+                "comp_type": {
+                  "type": "string",
+                  "default": "ge",
+                  "hidden": true
+                },
+                "on": {
+                  "type": "boolean",
+                  "default": true,
+                  "hidden": true
+                },
+                "low_msg": {
+                  "type": "string",
+                  "default": "Depth of coverage from assembly is lower than than expected. A top-up run is likely needed.",
+                  "hidden": true
+                }
+              }
+            },
+            "metagenomic": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string",
+                  "default": "['MashMeta']",
+                  "hidden": true
+                },
+                "coerce_type": {
+                  "type": "string",
+                  "default": "Bool",
+                  "hidden": true
+                },
+                "compare_fields": {
+                  "type": "string",
+                  "default": "[]",
+                  "hidden": true
+                },
+                "comp_type": {
+                  "type": "string",
+                  "default": "bool",
+                  "hidden": true
+                },
+                "on": {
+                  "type": "boolean",
+                  "hidden": true
+                }
+              }
+            },
+            "n50_value": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string",
+                  "default": "['QUAST', '0', 'N50']",
+                  "hidden": true
+                },
+                "coerce_type": {
+                  "type": "string",
+                  "default": "Integer",
+                  "hidden": true
+                },
+                "compare_fields": {
+                  "type": "string",
+                  "default": "['min_n50', 'max_n50']",
+                  "hidden": true
+                },
+                "comp_type": {
+                  "type": "string",
+                  "default": "range",
+                  "hidden": true
+                },
+                "on": {
+                  "type": "boolean",
+                  "default": true,
+                  "hidden": true
+                },
+                "low_msg": {
+                  "type": "string",
+                  "default": "N50 value is low, this could be due to many reasons involving contamination, poor template quality or insufficient template quantity. Reisolation and reseqeuncing may be needed.",
+                  "hidden": true
+                },
+                "high_msg": {
+                  "type": "string",
+                  "default": "N50 value is high, this is likely a good thing if you have fewer contigs than expected.",
+                  "hidden": true
+                }
+              }
+            },
+            "nr_contigs": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string",
+                  "default": "['QUAST', '0', '# contigs']",
+                  "hidden": true
+                },
+                "coerce_type": {
+                  "type": "string",
+                  "default": "Integer",
+                  "hidden": true
+                },
+                "compare_fields": {
+                  "type": "string",
+                  "default": "['min_nr_contigs', 'max_nr_contigs']",
+                  "hidden": true
+                },
+                "comp_type": {
+                  "type": "string",
+                  "default": "range",
+                  "hidden": true
+                },
+                "on": {
+                  "type": "boolean",
+                  "default": true,
+                  "hidden": true
+                },
+                "low_msg": {
+                  "type": "string",
+                  "default": "Fewer contigs than expected, if your genome length is of an expected size and you have a high N50 you likely just have a high quality assembly.",
+                  "hidden": true
+                },
+                "high_msg": {
+                  "type": "string",
+                  "default": "More contigs are present than expected, if your N50 is low and your genome length is shorter than expected you likely need to potentially need to reisolate and resequence/top-up your sample.",
+                  "hidden": true
+                }
+              }
+            },
+            "length": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string",
+                  "default": "['QUAST', '0', 'Total length']",
+                  "hidden": true
+                },
+                "coerce_type": {
+                  "type": "string",
+                  "default": "Integer",
+                  "hidden": true
+                },
+                "compare_fields": {
+                  "type": "string",
+                  "default": "['min_length', 'max_length']",
+                  "hidden": true
+                },
+                "comp_type": {
+                  "type": "string",
+                  "default": "range",
+                  "hidden": true
+                },
+                "on": {
+                  "type": "boolean",
+                  "default": true,
+                  "hidden": true
+                },
+                "low_msg": {
+                  "type": "string",
+                  "default": "Genome length lower than expected, you may need to resequence the sample.",
+                  "hidden": true
+                },
+                "high_msg": {
+                  "type": "string",
+                  "default": "Genome length is higher than expected, contmination is potentially present.",
+                  "hidden": true
+                }
+              }
+            },
+            "checkm_contamination": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string",
+                  "default": "['CheckM', '0', 'Contamination']",
+                  "hidden": true
+                },
+                "coerce_type": {
+                  "type": "string",
+                  "default": "Float",
+                  "hidden": true
+                },
+                "compare_fields": {
+                  "type": "string",
+                  "default": "['max_checkm_contamination']",
+                  "hidden": true
+                },
+                "comp_type": {
+                  "type": "string",
+                  "default": "le",
+                  "hidden": true
+                },
+                "on": {
+                  "type": "boolean",
+                  "default": true,
+                  "hidden": true
+                },
+                "high_msg": {
+                  "type": "string",
+                  "default": "Potential contamination is present in your sample. You may need to reisolate and resequence your sample.",
+                  "hidden": true
+                }
+              }
             }
           }
         }
@@ -987,20 +1743,23 @@
       "default": "",
       "properties": {
         "seqtk_size": {
-          "singularity": {
-            "type": "string",
-            "default": "https://depot.galaxyproject.org/singularity/seqtk%3A1.4--he4a0461_1",
-            "hidden": true
-          },
-          "docker": {
-            "type": "string",
-            "default": "quay.io/biocontainers/seqtk:1.4--he4a0461_1",
-            "hidden": true
-          },
-          "report_tag": {
-            "type": "string",
-            "default": "SeqtkBaseCount",
-            "hidden": true
+          "type": "object",
+          "properties": {
+            "singularity": {
+              "type": "string",
+              "default": "https://depot.galaxyproject.org/singularity/seqtk%3A1.4--he4a0461_1",
+              "hidden": true
+            },
+            "docker": {
+              "type": "string",
+              "default": "quay.io/biocontainers/seqtk:1.4--he4a0461_1",
+              "hidden": true
+            },
+            "report_tag": {
+              "type": "string",
+              "default": "SeqtkBaseCount",
+              "hidden": true
+            }
           }
         }
       }
@@ -1012,26 +1771,29 @@
       "default": "",
       "properties": {
         "medaka": {
-          "model": {
-            "type": "string",
-            "hidden": true,
-            "description": "This is set to the base calling model specified in the nanopore_chemistry param"
-          },
-          "fasta_ext": {
-            "type": "string",
-            "default": ".fa.gz",
-            "hidden": true
-          },
-          "outdir": {
-            "type": "string",
-            "default": "medaka",
-            "hidden": true
-          },
-          "batch_size": {
-            "type": "integer",
-            "default": 5,
-            "description": "Batch size for medaka to use for processing.",
-            "hidden": true
+          "type": "object",
+          "properties": {
+            "model": {
+              "type": "string",
+              "hidden": true,
+              "description": "This is set to the base calling model specified in the nanopore_chemistry param"
+            },
+            "fasta_ext": {
+              "type": "string",
+              "default": ".fa.gz",
+              "hidden": true
+            },
+            "outdir": {
+              "type": "string",
+              "default": "medaka",
+              "hidden": true
+            },
+            "batch_size": {
+              "type": "integer",
+              "default": 5,
+              "description": "Batch size for medaka to use for processing.",
+              "hidden": true
+            }
           },
           "docker": {
             "type": "string",
@@ -1053,54 +1815,57 @@
       "default": "",
       "properties": {
         "staramr": {
-          "singularity": {
-            "type": "string",
-            "default": "https://depot.galaxyproject.org/singularity/staramr%3A0.9.1--pyhdfd78af_0",
-            "hidden": true
-          },
-          "docker": {
-            "type": "string",
-            "default": "quay.io/biocontainers/staramr:0.9.1--pyhdfd78af_0",
-            "hidden": true
-          },
-          "db": {
-            "type": "string",
-            "description": "Path to a StarAMR database, a database is included in the container."
-          },
-          "tsv_ext": {
-            "type": "string",
-            "default": ".tsv",
-            "hidden": true
-          },
-          "txt_ext": {
-            "type": "string",
-            "default": ".txt",
-            "hidden": true
-          },
-          "xlsx_ext": {
-            "type": "string",
-            "default": ".xlsx",
-            "hidden": true
-          },
-          "args": {
-            "type": "string",
-            "hidden": true,
-            "default": "{ \"\" }"
-          },
-          "point_finder_dbs": {
-            "type": "string",
-            "default": "['salmonella', 'campylobacter', 'enterococcus_faecalis', 'enterococcus_faecium', 'escherichia_coli', 'helicobacter_pylori']",
-            "hidden": true
-          },
-          "report_tag": {
-            "type": "string",
-            "default": "StarAMR",
-            "hidden": true
-          },
-          "header_p": {
-            "type": "boolean",
-            "default": true,
-            "hidden": true
+          "type": "object",
+          "properties": {
+            "singularity": {
+              "type": "string",
+              "default": "https://depot.galaxyproject.org/singularity/staramr%3A0.9.1--pyhdfd78af_0",
+              "hidden": true
+            },
+            "docker": {
+              "type": "string",
+              "default": "quay.io/biocontainers/staramr:0.9.1--pyhdfd78af_0",
+              "hidden": true
+            },
+            "db": {
+              "type": "string",
+              "description": "Path to a StarAMR database, a database is included in the container."
+            },
+            "tsv_ext": {
+              "type": "string",
+              "default": ".tsv",
+              "hidden": true
+            },
+            "txt_ext": {
+              "type": "string",
+              "default": ".txt",
+              "hidden": true
+            },
+            "xlsx_ext": {
+              "type": "string",
+              "default": ".xlsx",
+              "hidden": true
+            },
+            "args": {
+              "type": "string",
+              "hidden": true,
+              "default": "{ \"\" }"
+            },
+            "point_finder_dbs": {
+              "type": "string",
+              "default": "['salmonella', 'campylobacter', 'enterococcus_faecalis', 'enterococcus_faecium', 'escherichia_coli', 'helicobacter_pylori']",
+              "hidden": true
+            },
+            "report_tag": {
+              "type": "string",
+              "default": "StarAMR",
+              "hidden": true
+            },
+            "header_p": {
+              "type": "boolean",
+              "default": true,
+              "hidden": true
+            }
           }
         }
       }
@@ -1112,40 +1877,43 @@
       "default": "",
       "properties": {
         "mobsuite_recon": {
-          "args": {
-            "type": "string",
-            "hidden": true,
-            "default": "{ \"\" }"
-          },
-          "fasta_ext": {
-            "type": "string",
-            "default": ".fasta",
-            "hidden": true
-          },
-          "results_ext": {
-            "type": "string",
-            "default": ".txt",
-            "hidden": true
-          },
-          "mob_results_file": {
-            "type": "string",
-            "default": "mobtyper_results.txt",
-            "hidden": true
-          },
-          "contig_report": {
-            "type": "string",
-            "default": "contig_report.txt",
-            "hidden": true
-          },
-          "report_tag": {
-            "type": "string",
-            "default": "MobRecon",
-            "hidden": true
-          },
-          "header_p": {
-            "type": "boolean",
-            "default": true,
-            "hidden": true
+          "type": "object",
+          "properties": {
+            "args": {
+              "type": "string",
+              "hidden": true,
+              "default": "{ \"\" }"
+            },
+            "fasta_ext": {
+              "type": "string",
+              "default": ".fasta",
+              "hidden": true
+            },
+            "results_ext": {
+              "type": "string",
+              "default": ".txt",
+              "hidden": true
+            },
+            "mob_results_file": {
+              "type": "string",
+              "default": "mobtyper_results.txt",
+              "hidden": true
+            },
+            "contig_report": {
+              "type": "string",
+              "default": "contig_report.txt",
+              "hidden": true
+            },
+            "report_tag": {
+              "type": "string",
+              "default": "MobRecon",
+              "hidden": true
+            },
+            "header_p": {
+              "type": "boolean",
+              "default": true,
+              "hidden": true
+            }
           }
         }
       }
@@ -1157,45 +1925,48 @@
       "default": "",
       "properties": {
         "kat": {
-          "hist_ext": {
-            "type": "string",
-            "default": ".hist",
-            "hidden": true
-          },
-          "json_ext": {
-            "type": "string",
-            "default": ".hist.dist_analysis.json",
-            "hidden": true
-          },
-          "png_ext": {
-            "type": "string",
-            "default": ".png",
-            "hidden": true
-          },
-          "postscript_ext": {
-            "type": "string",
-            "default": ".ps",
-            "hidden": true
-          },
-          "output_type": {
-            "type": "string",
-            "default": "png",
-            "hidden": true
-          },
-          "pdf_ext": {
-            "type": "string",
-            "default": ".pdf",
-            "hidden": true
-          },
-          "report_tag": {
-            "type": "string",
-            "default": "KatHist",
-            "hidden": true
-          },
-          "jfhash_ext": {
-            "type": "string",
-            "default": ".jf",
-            "hidden": true
+          "type": "object",
+          "properties": {
+            "hist_ext": {
+              "type": "string",
+              "default": ".hist",
+              "hidden": true
+            },
+            "json_ext": {
+              "type": "string",
+              "default": ".hist.dist_analysis.json",
+              "hidden": true
+            },
+            "png_ext": {
+              "type": "string",
+              "default": ".png",
+              "hidden": true
+            },
+            "postscript_ext": {
+              "type": "string",
+              "default": ".ps",
+              "hidden": true
+            },
+            "output_type": {
+              "type": "string",
+              "default": "png",
+              "hidden": true
+            },
+            "pdf_ext": {
+              "type": "string",
+              "default": ".pdf",
+              "hidden": true
+            },
+            "report_tag": {
+              "type": "string",
+              "default": "KatHist",
+              "hidden": true
+            },
+            "jfhash_ext": {
+              "type": "string",
+              "default": ".jf",
+              "hidden": true
+            }
           },
           "docker": {
             "type": "string",
@@ -1217,25 +1988,28 @@
       "default": "",
       "properties": {
         "opt_platforms": {
-          "ont": {
-            "type": "string",
-            "default": "nanopore",
-            "hidden": true
-          },
-          "pacbio": {
-            "type": "string",
-            "default": "pacbio",
-            "hidden": true
-          },
-          "hybrid": {
-            "type": "string",
-            "default": "hybrid",
-            "hidden": true
-          },
-          "illumina": {
-            "type": "string",
-            "default": "illumina",
-            "hidden": true
+          "type": "object",
+          "properties": {
+            "ont": {
+              "type": "string",
+              "default": "nanopore",
+              "hidden": true
+            },
+            "pacbio": {
+              "type": "string",
+              "default": "pacbio",
+              "hidden": true
+            },
+            "hybrid": {
+              "type": "string",
+              "default": "hybrid",
+              "hidden": true
+            },
+            "illumina": {
+              "type": "string",
+              "default": "illumina",
+              "hidden": true
+            }
           }
         }
       }
@@ -1247,15 +2021,18 @@
       "default": "",
       "properties": {
         "seqtk": {
-          "seed": {
-            "type": "integer",
-            "default": 42,
-            "hidden": true
-          },
-          "reads_ext": {
-            "type": "string",
-            "default": "_sampled.fastq.gz",
-            "hidden": true
+          "type": "object",
+          "properties": {
+            "seed": {
+              "type": "integer",
+              "default": 42,
+              "hidden": true
+            },
+            "reads_ext": {
+              "type": "string",
+              "default": "_sampled.fastq.gz",
+              "hidden": true
+            }
           },
           "docker": {
             "type": "string",
@@ -1277,59 +2054,88 @@
       "default": "",
       "properties": {
         "flye": {
-          "nanopore": {
-            "raw": {
+          "type": "object",
+          "properties": {
+            "nanopore": {
+              "type": "object",
+              "properties": {
+                "corr": {
+                  "type": "string",
+                  "default": "--nano-corr",
+                  "hidden": true
+                },
+                "hq": {
+                  "type": "string",
+                  "default": "--nano-hq",
+                  "hidden": true
+                },
+                "raw": {
+                  "type": "string",
+                  "default": "--nano-raw",
+                  "hidden": true
+                }
+              }
+            },
+            "pacbio": {
+              "type": "object",
+              "properties": {
+                "raw": {
+                  "type": "string",
+                  "default": "--pacbio-raw",
+                  "hidden": true
+                },
+                "corr": {
+                  "type": "string",
+                  "default": "--pacbio-corr",
+                  "hidden": true
+                },
+                "hq": {
+                  "type": "string",
+                  "default": "--pacbio-hifi",
+                  "hidden": true
+                }
+              }
+            },
+            "gfa_ext": {
               "type": "string",
-              "default": "--nano-raw",
+              "default": ".gfa.gz",
+              "hidden": true
+            },
+            "gv_ext": {
+              "type": "string",
+              "default": ".gv.gz",
+              "hidden": true
+            },
+            "txt_ext": {
+              "type": "string",
+              "default": ".txt",
+              "hidden": true
+            },
+            "log_ext": {
+              "type": "string",
+              "default": ".log",
+              "hidden": true
+            },
+            "json_ext": {
+              "type": "string",
+              "default": ".json",
+              "hidden": true
+            },
+            "polishing_iterations": {
+              "type": "integer",
+              "default": 1,
+              "hidden": true
+            },
+            "fasta_ext": {
+              "type": "string",
+              "default": ".fasta.gz",
+              "hidden": true
+            },
+            "args": {
+              "type": "string",
+              "default": "{ \"--iterations ${params.flye.polishing_iterations}\" }",
               "hidden": true
             }
-          },
-          "pacbio": {
-            "hq": {
-              "type": "string",
-              "default": "--pacbio-hifi",
-              "hidden": true
-            }
-          },
-          "gfa_ext": {
-            "type": "string",
-            "default": ".gfa.gz",
-            "hidden": true
-          },
-          "gv_ext": {
-            "type": "string",
-            "default": ".gv.gz",
-            "hidden": true
-          },
-          "txt_ext": {
-            "type": "string",
-            "default": ".txt",
-            "hidden": true
-          },
-          "log_ext": {
-            "type": "string",
-            "default": ".log",
-            "hidden": true
-          },
-          "json_ext": {
-            "type": "string",
-            "default": ".json",
-            "hidden": true
-          },
-          "polishing_iterations": {
-            "type": "integer",
-            "default": 1,
-            "hidden": true
-          },
-          "fasta_ext": {
-            "type": "string",
-            "default": ".fasta.gz",
-            "hidden": true
-          },
-          "args": {
-            "type": "string",
-            "default": "{ \"--iterations ${params.flye.polishing_iterations}\" }",
-            "hidden": true
           },
           "docker": {
             "type": "string",
@@ -1351,40 +2157,43 @@
       "default": "",
       "properties": {
         "spades": {
-          "scaffolds_ext": {
-            "type": "string",
-            "default": ".scaffolds.fasta.gz",
-            "hidden": true
-          },
-          "contigs_ext": {
-            "type": "string",
-            "default": ".contigs.fasta.gz",
-            "hidden": true
-          },
-          "transcripts_ext": {
-            "type": "string",
-            "default": ".transcripts.fasta.gz",
-            "hidden": true
-          },
-          "gene_clusters_ext": {
-            "type": "string",
-            "default": ".gene_clusters.fasta.gz",
-            "hidden": true
-          },
-          "assembly_graphs_ext": {
-            "type": "string",
-            "default": ".assembly.gfa.gz",
-            "hidden": true
-          },
-          "log_ext": {
-            "type": "string",
-            "default": ".log",
-            "hidden": true
-          },
-          "outdir": {
-            "type": "string",
-            "default": "assembly",
-            "hidden": true
+          "type": "object",
+          "properties": {
+            "scaffolds_ext": {
+              "type": "string",
+              "default": ".scaffolds.fasta.gz",
+              "hidden": true
+            },
+            "contigs_ext": {
+              "type": "string",
+              "default": ".contigs.fasta.gz",
+              "hidden": true
+            },
+            "transcripts_ext": {
+              "type": "string",
+              "default": ".transcripts.fasta.gz",
+              "hidden": true
+            },
+            "gene_clusters_ext": {
+              "type": "string",
+              "default": ".gene_clusters.fasta.gz",
+              "hidden": true
+            },
+            "assembly_graphs_ext": {
+              "type": "string",
+              "default": ".assembly.gfa.gz",
+              "hidden": true
+            },
+            "log_ext": {
+              "type": "string",
+              "default": ".log",
+              "hidden": true
+            },
+            "outdir": {
+              "type": "string",
+              "default": "assembly",
+              "hidden": true
+            }
           },
           "docker": {
             "type": "string",
@@ -1406,40 +2215,43 @@
       "default": "",
       "properties": {
         "checkm": {
-          "alignment_ext": {
-            "type": "string",
-            "default": "-genes.aln",
-            "hidden": true
-          },
-          "results_ext": {
-            "type": "string",
-            "default": "-results.txt",
-            "hidden": true
-          },
-          "tsv_ext": {
-            "type": "string",
-            "default": ".tsv",
-            "hidden": true
-          },
-          "folder_name": {
-            "type": "string",
-            "default": "checkm",
-            "hidden": true
-          },
-          "gzip_ext": {
-            "type": "string",
-            "default": ".gz",
-            "hidden": true
-          },
-          "lineage_ms": {
-            "type": "string",
-            "default": "lineage.ms",
-            "hidden": true
-          },
-          "report_tag": {
-            "type": "string",
-            "default": "CheckM",
-            "hidden": true
+          "type": "object",
+          "properties": {
+            "alignment_ext": {
+              "type": "string",
+              "default": "-genes.aln",
+              "hidden": true
+            },
+            "results_ext": {
+              "type": "string",
+              "default": "-results.txt",
+              "hidden": true
+            },
+            "tsv_ext": {
+              "type": "string",
+              "default": ".tsv",
+              "hidden": true
+            },
+            "folder_name": {
+              "type": "string",
+              "default": "checkm",
+              "hidden": true
+            },
+            "gzip_ext": {
+              "type": "string",
+              "default": ".gz",
+              "hidden": true
+            },
+            "lineage_ms": {
+              "type": "string",
+              "default": "lineage.ms",
+              "hidden": true
+            },
+            "report_tag": {
+              "type": "string",
+              "default": "CheckM",
+              "hidden": true
+            }
           },
           "docker": {
             "type": "string",
@@ -1461,59 +2273,79 @@
       "default": "",
       "properties": {
         "kraken": {
-          "db": {
-            "type": "string",
-            "description": "Path to Kraken2 database (do not use symlinks)"
+          "type": "object",
+          "properties": {
+            "db": {
+              "type": "string",
+              "description": "Path to Kraken2 database (do not use symlinks)"
+            },
+            "classified_suffix": {
+              "type": "string",
+              "default": "classified",
+              "hidden": true
+            },
+            "unclassified_suffix": {
+              "type": "string",
+              "default": "unclassified",
+              "hidden": true
+            },
+            "report_suffix": {
+              "type": "string",
+              "default": "report",
+              "hidden": true
+            },
+            "output_suffix": {
+              "type": "string",
+              "default": "output",
+              "hidden": true
+            },
+            "save_output_fastqs": {
+              "type": "boolean",
+              "hidden": true
+            },
+            "save_reads_assignments": {
+              "type": "boolean",
+              "default": true,
+              "hidden": true
+            },
+            "run_kraken_quick": {
+              "type": "boolean",
+              "hidden": true
+            },
+            "report_tag": {
+              "type": "string",
+              "default": "KrakenReport",
+              "hidden": true
+            },
+            "tophit_level": {
+              "type": "string",
+              "default": "S",
+              "hidden": true
+            }
           },
-          "classified_suffix": {
-            "type": "string",
-            "default": "classified",
-            "hidden": true
-          },
-          "unclassified_suffix": {
-            "type": "string",
-            "default": "unclassified",
-            "hidden": true
-          },
-          "report_suffix": {
-            "type": "string",
-            "default": "report",
-            "hidden": true
-          },
-          "output_suffix": {
-            "type": "string",
-            "default": "output",
-            "hidden": true
-          },
-          "save_output_fastqs": {
+          "header_p": {
             "type": "boolean",
             "hidden": true
           },
-          "save_reads_assignments": {
-            "type": "boolean",
-            "default": true,
-            "hidden": true
-          },
-          "run_kraken_quick": {
-            "type": "boolean",
-            "hidden": true
-          },
-          "report_tag": {
+          "headers": {
             "type": "string",
-            "default": "KrakenReport",
-            "hidden": true
-          },
-          "tophit_level": {
-            "type": "string",
-            "default": "S",
+            "default": "['PercentID', 'FragmentsRecovered', 'FragmentsAssignmentTaxon', 'RankCode']",
             "hidden": true
           }
         },
         "kraken_bin": {
-          "taxonomic_level": {
+          "type": "object",
+          "properties": {
+            "taxonomic_level": {
+              "type": "string",
+              "default": "G",
+              "description": "Taxonomic level to bin contigs at."
+            }
+          },
+          "fasta_ext": {
             "type": "string",
-            "default": "G",
-            "description": "Taxonomic level to bin contigs at."
+            "default": "_binned.fasta.gz",
+            "hidden": true
           }
         }
       }
@@ -1593,641 +2425,655 @@
       "$ref": "#/definitions/kraken2"
     }
   ],
-  "chopper": {
-    "quality": {
-      "type": "integer",
-      "default": 0,
-      "hidden": true
-    },
-    "minlength": {
-      "type": "integer",
-      "default": 100,
-      "hidden": true
-    },
-    "fastq_ext": {
-      "type": "string",
-      "default": ".fastq.gz",
-      "hidden": true
-    }
-  },
-  "fastqc": {
-    "html_ext": {
-      "type": "string",
-      "default": ".html",
-      "hidden": true
-    },
-    "zip_ext": {
-      "type": "string",
-      "default": ".zip",
-      "hidden": true
-    }
-  },
-  "r_contaminants": {
-    "phix_fa": {
-      "type": "string",
-      "hidden": true
-    },
-    "homo_sapiens_fa": {
-      "type": "string",
-      "hidden": true
-    },
-    "pacbio_mg": {
-      "type": "string",
-      "hidden": true
-    },
-    "output_ext": {
-      "type": "string",
-      "default": ".fastq.gz",
-      "hidden": true
-    },
-    "mega_mm2_idx": {
-      "type": "string",
-      "hidden": true
-    },
-    "mm2_illumina": {
-      "type": "string",
-      "default": "-x sr",
-      "hidden": true
-    },
-    "mm2_pac": {
-      "type": "string",
-      "default": "-x map-pb",
-      "hidden": true
-    },
-    "mm2_ont": {
-      "type": "string",
-      "default": "-x map-ont",
-      "hidden": true
-    },
-    "mm2_output_ext": {
-      "type": "string",
-      "default": ".sam",
-      "hidden": true
-    },
-    "samtools_output_ext": {
-      "type": "string",
-      "default": ".fastq",
-      "hidden": true
-    },
-    "samtools_singletons_ext": {
-      "type": "string",
-      "default": ".singleton.fq",
-      "hidden": true
-    },
-    "samtools_output_suffix": {
-      "type": "string",
-      "default": "deconned",
-      "hidden": true
-    },
-    "output_dir": {
-      "type": "string",
-      "default": "contamination/deconned_reads",
-      "hidden": true
-    }
-  },
-  "minimap2": {
-    "index_outdir": {
-      "type": "string",
-      "default": "indices",
-      "hidden": true
-    },
-    "index_ext": {
-      "type": "string",
-      "default": ".idx",
-      "hidden": true
-    },
-    "mapped_paf_ext": {
-      "type": "string",
-      "default": ".paf",
-      "hidden": true
-    },
-    "mapped_sam_ext": {
-      "type": "string",
-      "default": ".sam",
-      "hidden": true
-    },
-    "mapped_outdir": {
-      "type": "string",
-      "default": "mapped",
-      "hidden": true
-    }
-  },
-  "samtools": {
-    "bam_ext": {
-      "type": "string",
-      "default": ".bam",
-      "hidden": true
-    },
-    "bai_ext": {
-      "type": "string",
-      "default": ".bai",
-      "hidden": true
-    }
-  },
-  "racon": {
-    "consensus_suffix": {
-      "type": "string",
-      "default": "_assembly_consensus.fasta",
-      "hidden": true
-    },
-    "consensus_ext": {
-      "type": "string",
-      "default": ".fasta.gz",
-      "hidden": true
-    },
-    "outdir": {
-      "type": "string",
-      "default": "polished",
-      "hidden": true
-    }
-  },
-  "pilon": {
-    "outdir": {
-      "type": "string",
-      "default": "pilon",
-      "hidden": true
-    },
-    "fasta_ext": {
-      "type": "string",
-      "default": ".fasta.gz",
-      "hidden": true
-    },
-    "fasta_outdir": {
-      "type": "string",
-      "default": "fasta",
-      "hidden": true
-    },
-    "vcf_ext": {
-      "type": "string",
-      "default": ".vcf",
-      "hidden": true
-    },
-    "vcf_outdir": {
-      "type": "string",
-      "default": "vcf",
-      "hidden": true
-    },
-    "changes_ext": {
-      "type": "string",
-      "default": ".changes",
-      "hidden": true
-    },
-    "changes_outdir": {
-      "type": "string",
-      "default": "changes",
-      "hidden": true
-    },
-    "max_memory_multiplier": {
-      "type": "integer",
-      "default": 3,
-      "hidden": true
-    }
-  },
-  "pilon_iterative": {
-    "outdir": {
-      "type": "string",
-      "default": "pilon",
-      "hidden": true
-    },
-    "fasta_ext": {
-      "type": "string",
-      "default": ".fasta.gz",
-      "hidden": true
-    },
-    "fasta_outdir": {
-      "type": "string",
-      "default": "fasta",
-      "hidden": true
-    },
-    "vcf_ext": {
-      "type": "string",
-      "default": ".vcf",
-      "hidden": true
-    },
-    "vcf_outdir": {
-      "type": "string",
-      "default": "vcf",
-      "hidden": true
-    },
-    "bam_ext": {
-      "type": "string",
-      "default": ".bam",
-      "hidden": true
-    },
-    "bai_ext": {
-      "type": "string",
-      "default": ".bai",
-      "hidden": true
-    },
-    "changes_ext": {
-      "type": "string",
-      "default": ".changes",
-      "hidden": true
-    },
-    "changes_outdir": {
-      "type": "string",
-      "default": "changes",
-      "hidden": true
-    },
-    "max_memory_multiplier": {
-      "type": "integer",
-      "default": 3,
-      "hidden": true
-    },
-    "max_polishing_illumina": {
-      "type": "integer",
-      "default": 3,
-      "hidden": true
-    },
-    "max_polishing_pacbio": {
-      "type": "integer",
-      "default": 4,
-      "hidden": true
-    },
-    "max_polishing_nanopore": {
-      "type": "integer",
-      "default": 10,
-      "hidden": true
-    }
-  },
-  "unicycler": {
-    "scaffolds_ext": {
-      "type": "string",
-      "default": ".scaffolds.fa.gz",
-      "hidden": true
-    },
-    "assembly_ext": {
-      "type": "string",
-      "default": ".assembly.gfa.gz",
-      "hidden": true
-    },
-    "log_ext": {
-      "type": "string",
-      "default": ".unicycler.log",
-      "hidden": true
-    },
-    "outdir": {
-      "type": "string",
-      "default": "unicycler",
-      "hidden": true
-    },
-    "mem_modifier": {
-      "type": "integer",
-      "default": 1000,
-      "hidden": true
-    },
-    "threads_increase_factor": {
-      "type": "integer",
-      "default": 1,
-      "hidden": true
-    }
-  },
-  "bandage": {
-    "svg_ext": {
-      "type": "string",
-      "default": ".svg",
-      "hidden": true
-    },
-    "outdir": {
-      "type": "string",
-      "default": "bandage",
-      "hidden": true
-    }
-  },
-  "ectyper": {
-    "log_ext": {
-      "type": "string",
-      "default": ".log",
-      "hidden": true
-    },
-    "tsv_ext": {
-      "type": "string",
-      "default": ".tsv",
-      "hidden": true
-    },
-    "txt_ext": {
-      "type": "string",
-      "default": ".txt",
-      "hidden": true
-    },
-    "report_tag": {
-      "type": "string",
-      "default": "ECTyperSubtyping",
-      "hidden": true
-    },
-    "args": {
-      "type": "string",
-      "default": "{ \"--verify\" }",
-      "hidden": true
-    },
-    "header_p": {
-      "type": "boolean",
-      "default": true,
-      "hidden": true
-    }
-  },
-  "sistr": {
-    "tsv_ext": {
-      "type": "string",
-      "default": ".tab",
-      "hidden": true
-    },
-    "allele_fasta_ext": {
-      "type": "string",
-      "default": "-allele.fasta",
-      "hidden": true
-    },
-    "allele_json_ext": {
-      "type": "string",
-      "default": "-allele.json",
-      "hidden": true
-    },
-    "cgmlst_ext": {
-      "type": "string",
-      "default": "-cgmlst.csv",
-      "hidden": true
-    },
-    "report_tag": {
-      "type": "string",
-      "default": "SISTRSubtyping",
-      "hidden": true
-    },
-    "header_p": {
-      "type": "boolean",
-      "default": true,
-      "hidden": true
-    }
-  },
-  "lissero": {
-    "tsv_ext": {
-      "type": "string",
-      "default": ".tsv",
-      "hidden": true
-    },
-    "report_tag": {
-      "type": "string",
-      "default": "LISSEROSubtyping",
-      "hidden": true
-    },
-    "header_p": {
-      "type": "boolean",
-      "default": true,
-      "hidden": true
-    }
-  },
-  "shigeifinder": {
-    "tsv_ext": {
-      "type": "string",
-      "default": ".tsv",
-      "hidden": true
-    },
-    "header_p": {
-      "type": "boolean",
-      "default": true,
-      "hidden": true
-    },
-    "container_version": {
-      "type": "string",
-      "default": "1.3.2",
-      "hidden": true
-    },
-    "report_tag": {
-      "type": "string",
-      "default": "ShigeifinderSubtyping",
-      "hidden": true
-    }
-  },
-  "raw_reads": {
-    "high_precision": {
-      "type": "boolean",
-      "hidden": true
-    },
-    "report_tag": {
-      "type": "string",
-      "default": "RawReadSummary",
-      "hidden": true
-    }
-  },
-  "seqtk": {
-    "assembly_fastq": {
-      "type": "string",
-      "default": ".fastq.gz",
-      "hidden": true
-    },
-    "report_tag": {
-      "type": "string",
-      "default": "Seqtk",
-      "hidden": true
-    }
-  },
-  "fastp": {
-    "report_exclude_fields": {
-      "type": "string",
-      "default": "['content_curves', 'quality_curves', 'mean', 'kmer_count', 'histogram', 'overrepresented_sequences']",
-      "hidden": true
-    },
-    "cut_tail_mean_quality": {
-      "type": "integer",
-      "default": 15
-    },
-    "complexity_threshold": {
-      "type": "integer",
-      "default": 20
-    },
-    "polyg_min_len": {
-      "type": "integer",
-      "default": 10
-    },
-    "polyx_min_len": {
-      "type": "integer",
-      "default": 10
-    },
-    "illumina_length_max": {
-      "type": "integer",
-      "default": 400
-    },
-    "cut_tail_window_size": {
-      "type": "integer",
-      "default": 4
-    }
-  },
-  "quast": {
-    "header_p": {
-      "type": "boolean",
-      "default": true,
-      "hidden": true
-    }
-  },
-  "checkm": {
-    "header_p": {
-      "type": "boolean",
-      "default": true,
-      "hidden": true
-    }
-  },
-  "kraken": {
-    "header_p": {
-      "type": "boolean",
-      "hidden": true
-    },
-    "headers": {
-      "type": "string",
-      "default": "['PercentID', 'FragmentsRecovered', 'FragmentsAssignmentTaxon', 'RankCode']",
-      "hidden": true
-    }
-  },
-  "mlst": {
-    "args": {
-      "type": "string",
-      "hidden": true
-    },
-    "tsv_ext": {
-      "type": "string",
-      "default": ".tsv",
-      "hidden": true
-    },
-    "json_ext": {
-      "type": "string",
-      "default": ".json",
-      "hidden": true
-    },
-    "report_tag": {
-      "type": "string",
-      "default": "SevenGeneMLSTReport",
-      "hidden": true
-    }
-  },
-  "mash_meta": {
-    "report_tag": {
-      "type": "string",
-      "default": "MashMeta",
-      "hidden": true
-    }
-  },
-  "top_hit_species": {
-    "report_tag": {
-      "type": "string",
-      "default": "SpeciesTopHit",
-      "hidden": true
-    }
-  },
-  "kraken_species": {
-    "report_tag": {
-      "type": "string",
-      "default": "Kraken2TopHit",
-      "hidden": true
-    }
-  },
-  "subtyping_report": {
-    "report_tag": {
-      "type": "string",
-      "default": "Subtyping",
-      "hidden": true
-    }
-  },
-  "kleborate": {
-    "txt_ext": {
-      "type": "string",
-      "default": ".results.txt",
-      "hidden": true
-    },
-    "report_tag": {
-      "type": "string",
-      "default": "KleborateSubtyping",
-      "hidden": true
-    },
-    "header_p": {
-      "type": "boolean",
-      "default": true,
-      "hidden": true
-    }
-  },
-  "spatyper": {
-    "tsv_ext": {
-      "type": "string",
-      "default": ".tsv",
-      "hidden": true
-    },
-    "report_tag": {
-      "type": "string",
-      "default": "SpaTyperSubtyping",
-      "hidden": true
-    },
-    "header_p": {
-      "type": "boolean",
-      "default": true,
-      "hidden": true
-    },
-    "repeats": {
-      "type": "string",
-      "hidden": true
-    },
-    "repeat_order": {
-      "type": "string",
-      "hidden": true
-    }
-  },
-  "kraken_bin": {
-    "fasta_ext": {
-      "type": "string",
-      "default": "_binned.fasta.gz",
-      "hidden": true
-    }
-  },
-  "pointfinder_db_tag": {
-    "report_tag": {
-      "type": "string",
-      "default": "PointfinderDB",
-      "hidden": true
-    }
-  },
-  "abricate": {
-    "args": {
-      "type": "string",
-      "hidden": true,
-      "default": "{ \"\" }"
-    },
-    "report_tag": {
-      "type": "string",
-      "default": "Abricate",
-      "hidden": true
-    },
-    "header_p": {
-      "type": "boolean",
-      "default": true,
-      "hidden": true
-    }
-  },
-  "assembly_status": {
-    "report_tag": {
-      "type": "string",
-      "default": "AssemblyCompleted",
-      "hidden": true
-    }
-  },
-  "filtered_reads": {
-    "threshold": {
-      "type": "integer",
-      "default": 1000,
-      "hidden": true
-    },
-    "report_tag": {
-      "type": "string",
-      "default": "MeetsReadThreshold",
-      "hidden": true
-    }
-  },
-  "contigs_too_short": {
-    "report_tag": {
-      "type": "string",
-      "default": "MaxContigToShort"
-    }
-  },
-  "report_aggregate": {
-    "sample_flat_suffix": {
-      "type": "string",
-      "default": "_flat_sample.json",
-      "hidden": true
+  "properties": {
+    "validationFailUnrecognisedParams": {
+      "type": "boolean"
+    },
+    "chopper": {
+      "type": "object",
+      "properties": {
+        "quality": {
+          "type": "integer",
+          "default": 0,
+          "hidden": true
+        },
+        "minlength": {
+          "type": "integer",
+          "default": 100,
+          "hidden": true
+        },
+        "fastq_ext": {
+          "type": "string",
+          "default": ".fastq.gz",
+          "hidden": true
+        }
+      }
+    },
+    "fastqc": {
+      "type": "object",
+      "properties": {
+        "html_ext": {
+          "type": "string",
+          "default": ".html",
+          "hidden": true
+        },
+        "zip_ext": {
+          "type": "string",
+          "default": ".zip",
+          "hidden": true
+        }
+      }
+    },
+    "r_contaminants": {
+      "type": "object",
+      "properties": {
+        "phix_fa": {
+          "type": "string",
+          "hidden": true
+        },
+        "homo_sapiens_fa": {
+          "type": "string",
+          "hidden": true
+        },
+        "pacbio_mg": {
+          "type": "string",
+          "hidden": true
+        },
+        "output_ext": {
+          "type": "string",
+          "default": ".fastq.gz",
+          "hidden": true
+        },
+        "mega_mm2_idx": {
+          "type": "string",
+          "hidden": true
+        },
+        "mm2_illumina": {
+          "type": "string",
+          "default": "-x sr",
+          "hidden": true
+        },
+        "mm2_pac": {
+          "type": "string",
+          "default": "-x map-pb",
+          "hidden": true
+        },
+        "mm2_ont": {
+          "type": "string",
+          "default": "-x map-ont",
+          "hidden": true
+        },
+        "mm2_output_ext": {
+          "type": "string",
+          "default": ".sam",
+          "hidden": true
+        },
+        "samtools_output_ext": {
+          "type": "string",
+          "default": ".fastq",
+          "hidden": true
+        },
+        "samtools_singletons_ext": {
+          "type": "string",
+          "default": ".singleton.fq",
+          "hidden": true
+        },
+        "samtools_output_suffix": {
+          "type": "string",
+          "default": "deconned",
+          "hidden": true
+        },
+        "output_dir": {
+          "type": "string",
+          "default": "contamination/deconned_reads",
+          "hidden": true
+        }
+      }
+    },
+    "minimap2": {
+      "type": "object",
+      "properties": {
+        "index_outdir": {
+          "type": "string",
+          "default": "indices",
+          "hidden": true
+        },
+        "index_ext": {
+          "type": "string",
+          "default": ".idx",
+          "hidden": true
+        },
+        "mapped_paf_ext": {
+          "type": "string",
+          "default": ".paf",
+          "hidden": true
+        },
+        "mapped_sam_ext": {
+          "type": "string",
+          "default": ".sam",
+          "hidden": true
+        },
+        "mapped_outdir": {
+          "type": "string",
+          "default": "mapped",
+          "hidden": true
+        }
+      }
+    },
+    "samtools": {
+      "type": "object",
+      "properties": {
+        "bam_ext": {
+          "type": "string",
+          "default": ".bam",
+          "hidden": true
+        },
+        "bai_ext": {
+          "type": "string",
+          "default": ".bai",
+          "hidden": true
+        }
+      }
+    },
+    "racon": {
+      "type": "object",
+      "properties": {
+        "consensus_suffix": {
+          "type": "string",
+          "default": "_assembly_consensus.fasta",
+          "hidden": true
+        },
+        "consensus_ext": {
+          "type": "string",
+          "default": ".fasta.gz",
+          "hidden": true
+        },
+        "outdir": {
+          "type": "string",
+          "default": "polished",
+          "hidden": true
+        }
+      }
+    },
+    "pilon": {
+      "type": "object",
+      "properties": {
+        "outdir": {
+          "type": "string",
+          "default": "pilon",
+          "hidden": true
+        },
+        "fasta_ext": {
+          "type": "string",
+          "default": ".fasta.gz",
+          "hidden": true
+        },
+        "fasta_outdir": {
+          "type": "string",
+          "default": "fasta",
+          "hidden": true
+        },
+        "vcf_ext": {
+          "type": "string",
+          "default": ".vcf",
+          "hidden": true
+        },
+        "vcf_outdir": {
+          "type": "string",
+          "default": "vcf",
+          "hidden": true
+        },
+        "changes_ext": {
+          "type": "string",
+          "default": ".changes",
+          "hidden": true
+        },
+        "changes_outdir": {
+          "type": "string",
+          "default": "changes",
+          "hidden": true
+        },
+        "max_memory_multiplier": {
+          "type": "integer",
+          "default": 3,
+          "hidden": true
+        }
+      }
+    },
+    "pilon_iterative": {
+      "type": "object",
+      "properties": {
+        "outdir": {
+          "type": "string",
+          "default": "pilon",
+          "hidden": true
+        },
+        "fasta_ext": {
+          "type": "string",
+          "default": ".fasta.gz",
+          "hidden": true
+        },
+        "fasta_outdir": {
+          "type": "string",
+          "default": "fasta",
+          "hidden": true
+        },
+        "vcf_ext": {
+          "type": "string",
+          "default": ".vcf",
+          "hidden": true
+        },
+        "vcf_outdir": {
+          "type": "string",
+          "default": "vcf",
+          "hidden": true
+        },
+        "bam_ext": {
+          "type": "string",
+          "default": ".bam",
+          "hidden": true
+        },
+        "bai_ext": {
+          "type": "string",
+          "default": ".bai",
+          "hidden": true
+        },
+        "changes_ext": {
+          "type": "string",
+          "default": ".changes",
+          "hidden": true
+        },
+        "changes_outdir": {
+          "type": "string",
+          "default": "changes",
+          "hidden": true
+        },
+        "max_memory_multiplier": {
+          "type": "integer",
+          "default": 3,
+          "hidden": true
+        },
+        "max_polishing_illumina": {
+          "type": "integer",
+          "default": 3,
+          "hidden": true
+        },
+        "max_polishing_pacbio": {
+          "type": "integer",
+          "default": 4,
+          "hidden": true
+        },
+        "max_polishing_nanopore": {
+          "type": "integer",
+          "default": 10,
+          "hidden": true
+        }
+      }
+    },
+    "unicycler": {
+      "type": "object",
+      "properties": {
+        "scaffolds_ext": {
+          "type": "string",
+          "default": ".scaffolds.fa.gz",
+          "hidden": true
+        },
+        "assembly_ext": {
+          "type": "string",
+          "default": ".assembly.gfa.gz",
+          "hidden": true
+        },
+        "log_ext": {
+          "type": "string",
+          "default": ".unicycler.log",
+          "hidden": true
+        },
+        "outdir": {
+          "type": "string",
+          "default": "unicycler",
+          "hidden": true
+        },
+        "mem_modifier": {
+          "type": "integer",
+          "default": 1000,
+          "hidden": true
+        },
+        "threads_increase_factor": {
+          "type": "integer",
+          "default": 1,
+          "hidden": true
+        }
+      }
+    },
+    "bandage": {
+      "type": "object",
+      "properties": {
+        "svg_ext": {
+          "type": "string",
+          "default": ".svg",
+          "hidden": true
+        },
+        "outdir": {
+          "type": "string",
+          "default": "bandage",
+          "hidden": true
+        }
+      }
+    },
+    "ectyper": {
+      "type": "object",
+      "properties": {
+        "log_ext": {
+          "type": "string",
+          "default": ".log",
+          "hidden": true
+        },
+        "tsv_ext": {
+          "type": "string",
+          "default": ".tsv",
+          "hidden": true
+        },
+        "txt_ext": {
+          "type": "string",
+          "default": ".txt",
+          "hidden": true
+        },
+        "report_tag": {
+          "type": "string",
+          "default": "ECTyperSubtyping",
+          "hidden": true
+        },
+        "args": {
+          "type": "string",
+          "default": "{ \"--verify\" }",
+          "hidden": true
+        },
+        "header_p": {
+          "type": "boolean",
+          "default": true,
+          "hidden": true
+        }
+      }
+    },
+    "sistr": {
+      "type": "object",
+      "properties": {
+        "tsv_ext": {
+          "type": "string",
+          "default": ".tab",
+          "hidden": true
+        },
+        "allele_fasta_ext": {
+          "type": "string",
+          "default": "-allele.fasta",
+          "hidden": true
+        },
+        "allele_json_ext": {
+          "type": "string",
+          "default": "-allele.json",
+          "hidden": true
+        },
+        "cgmlst_ext": {
+          "type": "string",
+          "default": "-cgmlst.csv",
+          "hidden": true
+        },
+        "report_tag": {
+          "type": "string",
+          "default": "SISTRSubtyping",
+          "hidden": true
+        },
+        "header_p": {
+          "type": "boolean",
+          "default": true,
+          "hidden": true
+        }
+      }
+    },
+    "lissero": {
+      "type": "object",
+      "properties": {
+        "tsv_ext": {
+          "type": "string",
+          "default": ".tsv",
+          "hidden": true
+        },
+        "report_tag": {
+          "type": "string",
+          "default": "LISSEROSubtyping",
+          "hidden": true
+        },
+        "header_p": {
+          "type": "boolean",
+          "default": true,
+          "hidden": true
+        }
+      }
+    },
+    "shigeifinder": {
+      "type": "object",
+      "properties": {
+        "tsv_ext": {
+          "type": "string",
+          "default": ".tsv",
+          "hidden": true
+        },
+        "header_p": {
+          "type": "boolean",
+          "default": true,
+          "hidden": true
+        },
+        "container_version": {
+          "type": "string",
+          "default": "1.3.2",
+          "hidden": true
+        },
+        "report_tag": {
+          "type": "string",
+          "default": "ShigeifinderSubtyping",
+          "hidden": true
+        }
+      }
+    },
+    "raw_reads": {
+      "type": "object",
+      "properties": {
+        "high_precision": {
+          "type": "boolean",
+          "hidden": true
+        },
+        "report_tag": {
+          "type": "string",
+          "default": "RawReadSummary",
+          "hidden": true
+        }
+      }
+    },
+    "mlst": {
+      "type": "object",
+      "properties": {
+        "args": {
+          "type": "string",
+          "hidden": true
+        },
+        "tsv_ext": {
+          "type": "string",
+          "default": ".tsv",
+          "hidden": true
+        },
+        "json_ext": {
+          "type": "string",
+          "default": ".json",
+          "hidden": true
+        },
+        "report_tag": {
+          "type": "string",
+          "default": "SevenGeneMLSTReport",
+          "hidden": true
+        }
+      }
+    },
+    "mash_meta": {
+      "type": "object",
+      "properties": {
+        "report_tag": {
+          "type": "string",
+          "default": "MashMeta",
+          "hidden": true
+        }
+      }
+    },
+    "top_hit_species": {
+      "type": "object",
+      "properties": {
+        "report_tag": {
+          "type": "string",
+          "default": "SpeciesTopHit",
+          "hidden": true
+        }
+      }
+    },
+    "kraken_species": {
+      "type": "object",
+      "properties": {
+        "report_tag": {
+          "type": "string",
+          "default": "Kraken2TopHit",
+          "hidden": true
+        }
+      }
+    },
+    "subtyping_report": {
+      "type": "object",
+      "properties": {
+        "report_tag": {
+          "type": "string",
+          "default": "Subtyping",
+          "hidden": true
+        }
+      }
+    },
+    "kleborate": {
+      "type": "object",
+      "properties": {
+        "txt_ext": {
+          "type": "string",
+          "default": ".results.txt",
+          "hidden": true
+        },
+        "report_tag": {
+          "type": "string",
+          "default": "KleborateSubtyping",
+          "hidden": true
+        },
+        "header_p": {
+          "type": "boolean",
+          "default": true,
+          "hidden": true
+        }
+      }
+    },
+    "spatyper": {
+      "type": "object",
+      "properties": {
+        "tsv_ext": {
+          "type": "string",
+          "default": ".tsv",
+          "hidden": true
+        },
+        "report_tag": {
+          "type": "string",
+          "default": "SpaTyperSubtyping",
+          "hidden": true
+        },
+        "header_p": {
+          "type": "boolean",
+          "default": true,
+          "hidden": true
+        },
+        "repeats": {
+          "type": "string",
+          "hidden": true
+        },
+        "repeat_order": {
+          "type": "string",
+          "hidden": true
+        }
+      }
+    },
+    "pointfinder_db_tag": {
+      "type": "object",
+      "properties": {
+        "report_tag": {
+          "type": "string",
+          "default": "PointfinderDB",
+          "hidden": true
+        }
+      }
+    },
+    "abricate": {
+      "type": "object",
+      "properties": {
+        "args": {
+          "type": "string",
+          "hidden": true,
+          "default": "{ \"\" }"
+        },
+        "report_tag": {
+          "type": "string",
+          "default": "Abricate",
+          "hidden": true
+        },
+        "header_p": {
+          "type": "boolean",
+          "default": true,
+          "hidden": true
+        }
+      }
+    },
+    "assembly_status": {
+      "type": "object",
+      "properties": {
+        "report_tag": {
+          "type": "string",
+          "default": "AssemblyCompleted",
+          "hidden": true
+        }
+      }
+    },
+    "filtered_reads": {
+      "type": "object",
+      "properties": {
+        "threshold": {
+          "type": "integer",
+          "default": 1000,
+          "hidden": true
+        },
+        "report_tag": {
+          "type": "string",
+          "default": "MeetsReadThreshold",
+          "hidden": true
+        }
+      }
+    },
+    "contigs_too_short": {
+      "type": "object",
+      "properties": {
+        "report_tag": {
+          "type": "string",
+          "default": "MaxContigToShort"
+        }
+      }
+    },
+    "report_aggregate": {
+      "type": "object",
+      "properties": {
+        "sample_flat_suffix": {
+          "type": "string",
+          "default": "_flat_sample.json",
+          "hidden": true
+        }
+      }
     }
   }
 }
