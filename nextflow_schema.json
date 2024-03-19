@@ -131,6 +131,7 @@
               "default": "{ \"\" }"
             }
           },
+          "hidden": true,
           "docker": {
             "type": "string",
             "hidden": true,
@@ -272,6 +273,7 @@
               }
             }
           },
+          "hidden": true,
           "docker": {
             "type": "string",
             "default": "quay.io/biocontainers/fastp:0.23.2--hb7a2d85_2",
@@ -364,6 +366,7 @@
               "hidden": true
             }
           },
+          "hidden": true,
           "docker": {
             "type": "string",
             "default": "quay.io/biocontainers/mash:2.3--he348c14_1",
@@ -433,6 +436,7 @@
               "hidden": true
             }
           },
+          "hidden": true,
           "docker": {
             "type": "string",
             "default": "quay.io/biocontainers/quast:5.2.0--py39pl5321h4e691d4_3",
@@ -839,7 +843,8 @@
               "default": true,
               "hidden": true
             }
-          }
+          },
+          "hidden": true
         }
       }
     },
@@ -867,7 +872,8 @@
               "default": "['RawReadSummary', 'combined', 'total_bp']",
               "hidden": true
             }
-          }
+          },
+          "hidden": true
         }
       }
     },
@@ -1473,7 +1479,8 @@
                 }
               }
             }
-          }
+          },
+          "hidden": true
         },
         "QCReportFields": {
           "type": "object",
@@ -1732,7 +1739,8 @@
                 }
               }
             }
-          }
+          },
+          "hidden": true
         }
       }
     },
@@ -1760,7 +1768,8 @@
               "default": "SeqtkBaseCount",
               "hidden": true
             }
-          }
+          },
+          "hidden": true
         }
       }
     },
@@ -1795,6 +1804,7 @@
               "hidden": true
             }
           },
+          "hidden": true,
           "docker": {
             "type": "string",
             "default": "quay.io/biocontainers/medaka:1.8.0--py38hdaa7744_0",
@@ -1866,7 +1876,8 @@
               "default": true,
               "hidden": true
             }
-          }
+          },
+          "hidden": true
         }
       }
     },
@@ -1914,7 +1925,8 @@
               "default": true,
               "hidden": true
             }
-          }
+          },
+          "hidden": true
         }
       }
     },
@@ -1968,6 +1980,7 @@
               "hidden": true
             }
           },
+          "hidden": true,
           "docker": {
             "type": "string",
             "default": "quay.io/biocontainers/kat:2.4.2--py38hfc5f9d8_2",
@@ -2010,7 +2023,8 @@
               "default": "illumina",
               "hidden": true
             }
-          }
+          },
+          "hidden": true
         }
       }
     },
@@ -2034,6 +2048,7 @@
               "hidden": true
             }
           },
+          "hidden": true,
           "docker": {
             "type": "string",
             "default": "quay.io/biocontainers/seqtk:1.4--he4a0461_1",
@@ -2137,6 +2152,7 @@
               "hidden": true
             }
           },
+          "hidden": true,
           "docker": {
             "type": "string",
             "default": "quay.io/biocontainers/flye:2.9.2--py39h6935b12_0",
@@ -2195,6 +2211,7 @@
               "hidden": true
             }
           },
+          "hidden": true,
           "docker": {
             "type": "string",
             "default": "quay.io/biocontainers/spades:3.15.5--h95f258a_1",
@@ -2253,6 +2270,7 @@
               "hidden": true
             }
           },
+          "hidden": true,
           "docker": {
             "type": "string",
             "default": "quay.io/biocontainers/checkm-genome:1.2.2--pyhdfd78af_1",
@@ -2323,6 +2341,7 @@
               "hidden": true
             }
           },
+          "hidden": true,
           "header_p": {
             "type": "boolean",
             "hidden": true
@@ -2447,7 +2466,8 @@
           "default": ".fastq.gz",
           "hidden": true
         }
-      }
+      },
+      "hidden": true
     },
     "fastqc": {
       "type": "object",
@@ -2462,7 +2482,8 @@
           "default": ".zip",
           "hidden": true
         }
-      }
+      },
+      "hidden": true
     },
     "r_contaminants": {
       "type": "object",
@@ -2528,7 +2549,8 @@
           "default": "contamination/deconned_reads",
           "hidden": true
         }
-      }
+      },
+      "hidden": true
     },
     "minimap2": {
       "type": "object",
@@ -2558,7 +2580,8 @@
           "default": "mapped",
           "hidden": true
         }
-      }
+      },
+      "hidden": true
     },
     "samtools": {
       "type": "object",
@@ -2573,7 +2596,8 @@
           "default": ".bai",
           "hidden": true
         }
-      }
+      },
+      "hidden": true
     },
     "racon": {
       "type": "object",
@@ -2593,7 +2617,8 @@
           "default": "polished",
           "hidden": true
         }
-      }
+      },
+      "hidden": true
     },
     "pilon": {
       "type": "object",
@@ -2638,7 +2663,8 @@
           "default": 3,
           "hidden": true
         }
-      }
+      },
+      "hidden": true
     },
     "pilon_iterative": {
       "type": "object",
@@ -2708,7 +2734,8 @@
           "default": 10,
           "hidden": true
         }
-      }
+      },
+      "hidden": true
     },
     "unicycler": {
       "type": "object",
@@ -2743,7 +2770,8 @@
           "default": 1,
           "hidden": true
         }
-      }
+      },
+      "hidden": true
     },
     "bandage": {
       "type": "object",
@@ -2758,7 +2786,8 @@
           "default": "bandage",
           "hidden": true
         }
-      }
+      },
+      "hidden": true
     },
     "ectyper": {
       "type": "object",
@@ -2793,7 +2822,8 @@
           "default": true,
           "hidden": true
         }
-      }
+      },
+      "hidden": true
     },
     "sistr": {
       "type": "object",
@@ -2828,7 +2858,8 @@
           "default": true,
           "hidden": true
         }
-      }
+      },
+      "hidden": true
     },
     "lissero": {
       "type": "object",
@@ -2848,7 +2879,8 @@
           "default": true,
           "hidden": true
         }
-      }
+      },
+      "hidden": true
     },
     "shigeifinder": {
       "type": "object",
@@ -2873,7 +2905,8 @@
           "default": "ShigeifinderSubtyping",
           "hidden": true
         }
-      }
+      },
+      "hidden": true
     },
     "raw_reads": {
       "type": "object",
@@ -2887,7 +2920,8 @@
           "default": "RawReadSummary",
           "hidden": true
         }
-      }
+      },
+      "hidden": true
     },
     "mlst": {
       "type": "object",
@@ -2911,7 +2945,8 @@
           "default": "SevenGeneMLSTReport",
           "hidden": true
         }
-      }
+      },
+      "hidden": true
     },
     "mash_meta": {
       "type": "object",
@@ -2921,7 +2956,8 @@
           "default": "MashMeta",
           "hidden": true
         }
-      }
+      },
+      "hidden": true
     },
     "top_hit_species": {
       "type": "object",
@@ -2931,7 +2967,8 @@
           "default": "SpeciesTopHit",
           "hidden": true
         }
-      }
+      },
+      "hidden": true
     },
     "kraken_species": {
       "type": "object",
@@ -2941,7 +2978,8 @@
           "default": "Kraken2TopHit",
           "hidden": true
         }
-      }
+      },
+      "hidden": true
     },
     "subtyping_report": {
       "type": "object",
@@ -2951,7 +2989,8 @@
           "default": "Subtyping",
           "hidden": true
         }
-      }
+      },
+      "hidden": true
     },
     "kleborate": {
       "type": "object",
@@ -2971,7 +3010,8 @@
           "default": true,
           "hidden": true
         }
-      }
+      },
+      "hidden": true
     },
     "spatyper": {
       "type": "object",
@@ -2999,7 +3039,8 @@
           "type": "string",
           "hidden": true
         }
-      }
+      },
+      "hidden": true
     },
     "pointfinder_db_tag": {
       "type": "object",
@@ -3009,7 +3050,8 @@
           "default": "PointfinderDB",
           "hidden": true
         }
-      }
+      },
+      "hidden": true
     },
     "abricate": {
       "type": "object",
@@ -3029,7 +3071,8 @@
           "default": true,
           "hidden": true
         }
-      }
+      },
+      "hidden": true
     },
     "assembly_status": {
       "type": "object",
@@ -3039,7 +3082,8 @@
           "default": "AssemblyCompleted",
           "hidden": true
         }
-      }
+      },
+      "hidden": true
     },
     "filtered_reads": {
       "type": "object",
@@ -3054,7 +3098,8 @@
           "default": "MeetsReadThreshold",
           "hidden": true
         }
-      }
+      },
+      "hidden": true
     },
     "contigs_too_short": {
       "type": "object",
@@ -3073,7 +3118,8 @@
           "default": "_flat_sample.json",
           "hidden": true
         }
-      }
+      },
+      "hidden": true
     }
   }
 }

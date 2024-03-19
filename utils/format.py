@@ -25,6 +25,7 @@ class Constants:
     nesting_field: str = "definitions"
     allof_field: str = "allOf"
     ref_key: str = "$ref"
+    hidden: str = "hidden"
 
 
 def drop_all_of_fields(schema_all_of: list, fields: set):
@@ -68,8 +69,6 @@ def denested_information(keys: list[str], last_value: dict) -> dict:
     return new_chain
 
 
-
-
 def nest_schema(properties: dict) -> dict:
     """Convert a 'dotted' schema into a nested json
     e.g.
@@ -106,6 +105,7 @@ def nest_schema(properties: dict) -> dict:
             # multiple fields to be set, update the properties instead of overwriting it
 
             temp = denested_data
+
             nd_temp = new_dict[split_key[0]][Constants.extraction_field]
             for i in split_key[1:-1]:
                 if nd_temp.get(i) is None:
@@ -117,9 +117,13 @@ def nest_schema(properties: dict) -> dict:
                 temp = temp[i][Constants.extraction_field]
 
             nd_temp[split_key[-1]] = temp[Constants.extraction_field][split_key[-1]]
+            if hidden := nd_temp[split_key[-1]].get(Constants.hidden):
+                new_dict[split_key[0]][Constants.hidden] = hidden
 
         else:
             new_dict[split_key[0]][Constants.extraction_field][split_key[1]] = denested_data
+            if hidden := denested_data.get(Constants.hidden):
+                new_dict[split_key[0]][Constants.hidden] = hidden
 
         poisoned_keys.append(key)
 
