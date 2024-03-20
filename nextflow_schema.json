@@ -305,11 +305,19 @@
                 "slurm_profile": {
                     "type": "string",
                     "hidden": true
+                },
+                "validationS3PathCheck": {
+                    "type": "boolean",
+                    "default": true,
+                    "hidden": true
+                },
+                "output_idx_name": {
+                    "type": "string"
                 }
             }
         },
-        "skip_options": {
-            "title": "Skip Options",
+        "control_flow_options": {
+            "title": "Control flow options",
             "type": "object",
             "description": "Options to alter control flow of the pipeline",
             "default": "",
@@ -364,6 +372,10 @@
                 },
                 "skip_metagenomic_detection": {
                     "type": "boolean"
+                },
+                "skip_staramr": {
+                    "type": "boolean",
+                    "description": "Skip running StarAMR"
                 }
             }
         },
@@ -428,6 +440,11 @@
             "description": "Thresholds for processing or qa/qc of data",
             "default": "",
             "properties": {
+                "target_depth": {
+                    "type": "integer",
+                    "default": 100,
+                    "description": "Target depth to sub-sample reads to"
+                },
                 "min_reads": {
                     "type": "integer",
                     "default": 1000,
@@ -449,6 +466,24 @@
                     "description": "Minimum Kmer count needed for a unique kmer to be used in genome size estimation"
                 }
             }
+        },
+        "other": {
+            "title": "Other",
+            "type": "object",
+            "description": "Other parameters",
+            "default": "",
+            "properties": {
+                "flye_read_type": {
+                    "type": "string",
+                    "default": "hq",
+                    "description": "Read type for flye to use. hq corresponds to hifi for Pacbio data.",
+                    "enum": [
+                        "hq",
+                        "corr",
+                        "raw"
+                    ]
+                }
+            }
         }
     },
     "allOf": [
@@ -468,13 +503,16 @@
             "$ref": "#/definitions/generic_options"
         },
         {
-            "$ref": "#/definitions/skip_options"
+            "$ref": "#/definitions/control_flow_options"
         },
         {
             "$ref": "#/definitions/fastp_options"
         },
         {
             "$ref": "#/definitions/data_processing_thresholds"
+        },
+        {
+            "$ref": "#/definitions/other"
         }
     ]
 }
