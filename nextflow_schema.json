@@ -32,7 +32,8 @@
                     "format": "directory-path",
                     "description": "The output directory where the results will be saved. You have to use absolute paths to storage on Cloud infrastructure.",
                     "fa_icon": "fas fa-folder-open",
-                    "hidden": true
+                    "hidden": true,
+                    "pattern": "^\\S+$"
                 },
                 "platform": {
                     "type": "string",
@@ -57,10 +58,6 @@
                 "metagenomic_run": {
                     "type": "boolean",
                     "description": "Label all samples as metagenomic (Skip autodetection)"
-                },
-                "nanopore_chemistry": {
-                    "type": "string",
-                    "description": "The guppy base calling model. See the docs for a link of valid options"
                 },
                 "email": {
                     "type": "string",
@@ -312,7 +309,8 @@
                     "hidden": true
                 },
                 "output_idx_name": {
-                    "type": "string"
+                    "type": "string",
+                    "hidden": true
                 }
             }
         },
@@ -331,47 +329,61 @@
                     "description": "Use unicycler for hybrid assembly."
                 },
                 "skip_report": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Skip summary report generation"
                 },
                 "skip_raw_read_metrics": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Skip generating raw-read metrics. e.g. when data first enters the pipeline"
                 },
                 "skip_version_gathering": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Skip creating a report of the final versions of tools used in mikrokondo"
                 },
                 "skip_subtyping": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Do not enter the subtyping workflow, e.g. ECTyper, SISTR etc will not be ran."
                 },
                 "skip_bakta": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Skip annotation with Bakta"
                 },
                 "skip_abricate": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Skip running abricate for annotation"
                 },
                 "skip_checkm": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Skip running CheckM"
                 },
                 "skip_depth_sampling": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Skip down sampling of data to a target depth. This is not supported for metagenomic samples or hybrid assemblies."
                 },
                 "skip_ont_header_cleaning": {
                     "type": "boolean",
-                    "default": true
+                    "default": true,
+                    "description": "Make nanopore headers unique. Only turn this on if you are worried about duplicate id's e.g. from errors in running sequencing"
                 },
                 "skip_polishing": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Skip polishing of assemblies, useful in case of errors or for metagenomic samples that fail."
                 },
                 "skip_species_classification": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Skip determining what your species is (with Kraken2 or Mash)"
                 },
                 "skip_mlst": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Skip classic 7gene MLST (Uses Torsten Seemann's mlst)"
                 },
                 "skip_mobrecon": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Skip running mob recon for plasmid identification."
                 },
                 "skip_metagenomic_detection": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "For samples to be analyzed as isolates"
                 },
                 "skip_staramr": {
                     "type": "boolean",
@@ -387,7 +399,8 @@
             "properties": {
                 "fp_average_quality": {
                     "type": "integer",
-                    "default": 25
+                    "default": 25,
+                    "description": "Average quality of a read to be included (read pair is discarded if it is below this value)"
                 },
                 "fp_cut_tail_mean_quality": {
                     "type": "integer",
@@ -473,6 +486,10 @@
             "description": "Other parameters",
             "default": "",
             "properties": {
+                "nanopore_chemistry": {
+                    "type": "string",
+                    "description": "The guppy base calling model. See the docs for a link of valid options"
+                },
                 "flye_read_type": {
                     "type": "string",
                     "default": "hq",
