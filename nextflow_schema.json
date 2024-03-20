@@ -54,6 +54,10 @@
                         "pacbio"
                     ]
                 },
+                "metagenomic_run": {
+                    "type": "boolean",
+                    "description": "Label all samples as metagenomic (Skip autodetection)"
+                },
                 "nanopore_chemistry": {
                     "type": "string",
                     "description": "The guppy base calling model. See the docs for a link of valid options"
@@ -414,30 +418,31 @@
                 }
             }
         },
-        "other": {
-            "title": "Other",
+        "data_processing_thresholds": {
+            "title": "Data processing thresholds",
             "type": "object",
-            "description": "Other options",
+            "description": "Thresholds for processing or qa/qc of data",
             "default": "",
             "properties": {
                 "min_reads": {
                     "type": "integer",
-                    "default": 1000
-                },
-                "metagenomic_run": {
-                    "type": "boolean"
+                    "default": 1000,
+                    "description": "Minimum number of reads a sample requires to move forward for assembly"
                 },
                 "ba_min_conting_length": {
                     "type": "integer",
-                    "default": 200
+                    "default": 200,
+                    "description": "Minimum contig length for processing in Bakta"
                 },
                 "qt_min_contig_length": {
                     "type": "integer",
-                    "default": 1000
+                    "default": 1000,
+                    "description": "Minimum contig length for quast"
                 },
                 "mh_min_kmer": {
                     "type": "integer",
-                    "default": 10
+                    "default": 10,
+                    "description": "Minimum Kmer count needed for a unique kmer to be used in genome size estimation"
                 }
             }
         }
@@ -465,7 +470,7 @@
             "$ref": "#/definitions/fastp_options"
         },
         {
-            "$ref": "#/definitions/other"
+            "$ref": "#/definitions/data_processing_thresholds"
         }
     ]
 }
