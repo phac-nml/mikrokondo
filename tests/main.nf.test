@@ -180,4 +180,39 @@ nextflow_pipeline {
 
     }
 
+    test("Test validation of platform parameter") {
+        tag "fail_validation"
+
+        when {
+            params {
+                input = "https://raw.githubusercontent.com/phac-nml/mikrokondo/dev/tests/data/samplesheets/samplesheet-small-assembly.csv"
+                outdir = "results"
+
+                mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
+                mh_min_kmer = 1
+
+                dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+
+                min_reads = 100
+
+                skip_bakta = true
+                skip_staramr = false
+                skip_mobrecon = false
+                skip_checkm = false
+                skip_raw_read_metrics = false
+                skip_polishing = false
+
+                max_memory = "2.GB"
+                max_cpus = 1
+
+                // parameter to fail validation
+                platform = "invalid"
+            }
+        }
+
+        then {
+            assert workflow.failed
+            assert workflow.stderr.contains("* --platform: 'invalid' is not a valid choice (Available choices: illumina, nanopore, pacbio, hybrid)")
+        }
+    }
 }
