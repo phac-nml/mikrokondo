@@ -285,34 +285,41 @@
                 },
                 "show_hidden_params": {
                     "type": "boolean",
-                    "hidden": true
+                    "hidden": true,
+                    "description": "Show hidden parameters."
                 },
                 "tracedir": {
                     "type": "string",
                     "default": "null/pipeline_info",
-                    "hidden": true
+                    "hidden": true,
+                    "description": "Trace directory."
                 },
                 "stage_in_mode": {
                     "type": "string",
                     "default": "symlink",
-                    "hidden": true
+                    "hidden": true,
+                    "description": "Mode for staging files."
                 },
                 "slurm_p": {
                     "type": "boolean",
-                    "hidden": true
+                    "hidden": true,
+                    "description": "Enable running with slurm."
                 },
                 "slurm_profile": {
                     "type": "string",
-                    "hidden": true
+                    "hidden": true,
+                    "description": "Profile used for slurm."
                 },
                 "validationS3PathCheck": {
                     "type": "boolean",
                     "default": true,
-                    "hidden": true
+                    "hidden": true,
+                    "description": "Whether or not to validate S3 paths."
                 },
                 "output_idx_name": {
                     "type": "string",
-                    "hidden": true
+                    "hidden": true,
+                    "description": "Index creation output file name"
                 }
             }
         },
@@ -454,17 +461,20 @@
                 "fp_illumina_length_min": {
                     "type": "integer",
                     "default": 35,
-                    "minimum": 1
+                    "minimum": 0,
+                    "description": "reads shorter than length_required will be discarded"
                 },
                 "fp_illumina_length_max": {
                     "type": "integer",
                     "default": 400,
-                    "minimum": 1
+                    "minimum": 0,
+                    "description": "reads longer than length_limit will be discarded, 0 means no limitation."
                 },
                 "fp_single_end_length_min": {
                     "type": "integer",
                     "default": 1000,
-                    "minimum": 1
+                    "minimum": 0,
+                    "description": "same as fp_illumina_length_min but for single-end data. reads shorter than length_required will be discarded"
                 },
                 "fp_dedup_reads": {
                     "type": "boolean",
