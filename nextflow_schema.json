@@ -79,12 +79,14 @@
             "properties": {
                 "dehosting_idx": {
                     "type": "string",
+                    "default": "databases/PhiPacHum_m2.idx",
                     "description": "Mash sketch used for contamination detection and speciation (Sketch comments must be a taxonomic string similar to what Kraken2 outputs)",
                     "pattern": "^\\S+$",
                     "format": "file-path"
                 },
                 "mash_sketch": {
                     "type": "string",
+                    "default": "databases/GTDBSketch_20231003.msh",
                     "description": "Minimpa2 index for dehosting and kitome removal",
                     "pattern": "^\\S+$",
                     "format": "file-path"
@@ -92,11 +94,13 @@
                 "bakta_db": {
                     "type": "string",
                     "description": "Database use for bakta, this value is optional as bakta can be skipped",
+                    "default": "databases/db-light",
                     "pattern": "^\\S+$",
                     "format": "directory-path"
                 },
                 "kraken2_db": {
                     "type": "string",
+                    "default": "databases/k2_standard_20220607/",
                     "description": "Kraken2 database",
                     "pattern": "^\\S+$",
                     "format": "directory-path"
