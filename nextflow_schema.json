@@ -300,10 +300,10 @@
                 }
             }
         },
-        "control_flow_options": {
-            "title": "Control flow options",
+        "skip_options": {
+            "title": "Skip Options",
             "type": "object",
-            "description": "",
+            "description": "Options to alter control flow of the pipeline",
             "default": "",
             "properties": {
                 "run_kraken": {
@@ -313,15 +313,7 @@
                 "hybrid_unicycler": {
                     "type": "boolean",
                     "description": "Use unicycler for hybrid assembly."
-                }
-            }
-        },
-        "skip_options": {
-            "title": "Skip Options",
-            "type": "object",
-            "description": "Options to alter control flow of the pipeline",
-            "default": "",
-            "properties": {
+                },
                 "skip_report": {
                     "type": "boolean"
                 },
@@ -465,9 +457,6 @@
         },
         {
             "$ref": "#/definitions/generic_options"
-        },
-        {
-            "$ref": "#/definitions/control_flow_options"
         },
         {
             "$ref": "#/definitions/skip_options"
