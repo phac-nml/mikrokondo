@@ -215,4 +215,79 @@ nextflow_pipeline {
             assert workflow.stderr.contains("* --platform: 'invalid' is not a valid choice (Available choices: illumina, nanopore, pacbio, hybrid)")
         }
     }
+
+    test("Test validation of contig minimum length parameter") {
+        tag "fail_validation"
+
+        when {
+            params {
+                input = "https://raw.githubusercontent.com/phac-nml/mikrokondo/dev/tests/data/samplesheets/samplesheet-small-assembly.csv"
+                outdir = "results"
+
+                platform = "illumina"
+
+                mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
+                mh_min_kmer = 1
+
+                dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+
+                min_reads = 100
+
+                skip_bakta = true
+                skip_staramr = false
+                skip_mobrecon = false
+                skip_checkm = false
+                skip_raw_read_metrics = false
+                skip_polishing = false
+
+                max_memory = "2.GB"
+                max_cpus = 1
+
+                // parameter to fail validation
+                qt_min_contig_length = -1
+            }
+        }
+
+        then {
+            assert workflow.failed
+            assert workflow.stderr.contains("* --qt_min_contig_length: -1 is not greater or equal to 1 (-1)")
+        }
+    }
+
+    test("Test validation of databases parameters") {
+        tag "fail_validation"
+
+        when {
+            params {
+                input = "https://raw.githubusercontent.com/phac-nml/mikrokondo/dev/tests/data/samplesheets/samplesheet-small-assembly.csv"
+                outdir = "results"
+
+                platform = "illumina"
+
+                mh_min_kmer = 1
+
+                dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+
+                min_reads = 100
+
+                skip_bakta = true
+                skip_staramr = false
+                skip_mobrecon = false
+                skip_checkm = false
+                skip_raw_read_metrics = false
+                skip_polishing = false
+
+                max_memory = "2.GB"
+                max_cpus = 1
+
+                // parameter to fail validation
+                mash_sketch = "invalid path"
+            }
+        }
+
+        then {
+            assert workflow.failed
+            assert workflow.stderr.contains("* --mash_sketch: string [invalid path] does not match pattern ^\\S+\$ (invalid path)")
+        }
+    }
 }
