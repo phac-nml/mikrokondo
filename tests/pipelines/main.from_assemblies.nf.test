@@ -88,6 +88,7 @@ nextflow_pipeline {
 
             // output metadata
             def ecoli_metadata = iridanext_metadata.ecoli_GCA_000947975
+            assert ecoli_metadata."SpeciesTopHit" == "Escherichia coli"
             assert ecoli_metadata."QUAST.0.Total length" == "5333525"
             assert ecoli_metadata."QUAST.0.Largest contig" == "300823"
             assert ecoli_metadata."QUAST.0.# contigs" == "187"
@@ -176,6 +177,10 @@ nextflow_pipeline {
             def salmonella_json = final_report.salmonella_GCA_000008105.salmonella_GCA_000008105
 
             // Tests
+            assert salmonella_json.SpeciesTopHit == "Salmonella enterica"
+            assert iridanext_metadata.salmonella_GCA_000008105."SpeciesTopHit" == "Salmonella enterica"
+            assert final_report_tmap.SpeciesTopHit == "Salmonella enterica"
+
             assert salmonella_json.QUAST."0"."Total length" == "4944000"
             assert iridanext_metadata.salmonella_GCA_000008105."QUAST.0.Total length" == "4944000"
             assert final_report_tmap."QUAST.0.Total length" == "4944000"
@@ -293,6 +298,10 @@ nextflow_pipeline {
             def listeria_json = final_report.listeria_GCF_000196035.listeria_GCF_000196035
 
             // Tests
+            assert listeria_json.SpeciesTopHit == "Listeria monocytogenes"
+            assert iridanext_metadata.listeria_GCF_000196035."SpeciesTopHit" == "Listeria monocytogenes"
+            assert final_report_tmap.SpeciesTopHit == "Listeria monocytogenes"
+
             assert listeria_json.QUAST."0"."Total length" == "2944528"
             assert iridanext_metadata.listeria_GCF_000196035."QUAST.0.Total length" == "2944528"
             assert final_report_tmap."QUAST.0.Total length" == "2944528"
