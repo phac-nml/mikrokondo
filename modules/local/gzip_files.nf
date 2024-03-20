@@ -23,7 +23,7 @@ process GZIP_FILES {
     gzip -c ${file_in} > ${output_name}
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        gzip: \$(echo \$(gzip --version 2>&1) | sed 's/^.*coreutils) //; s/ .*\$//')
+        gzip: \$(echo \$(gzip --version 2>&1 | head -n 1 ) | sed 's/^.*gzip //')
     END_VERSIONS
     """
 
