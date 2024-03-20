@@ -113,7 +113,8 @@
             "required": [
                 "dehosting_idx",
                 "mash_sketch"
-            ]
+            ],
+            "description": "The location of databases used by mikrokondo"
         },
         "institutional_config_options": {
             "title": "Institutional config options",
@@ -176,7 +177,8 @@
                     "default": 16,
                     "fa_icon": "fas fa-microchip",
                     "hidden": true,
-                    "help_text": "Use to set an upper-limit for the CPU requirement for each process. Should be an integer e.g. `--max_cpus 1`"
+                    "help_text": "Use to set an upper-limit for the CPU requirement for each process. Should be an integer e.g. `--max_cpus 1`",
+                    "minimum": 1
                 },
                 "max_memory": {
                     "type": "string",
@@ -400,50 +402,73 @@
                 "fp_average_quality": {
                     "type": "integer",
                     "default": 25,
-                    "description": "Average quality of a read to be included (read pair is discarded if it is below this value)"
+                    "description": "Average quality of a read to be included (read pair is discarded if it is below this value)",
+                    "minimum": 0
                 },
                 "fp_cut_tail_mean_quality": {
                     "type": "integer",
-                    "default": 15
+                    "default": 15,
+                    "minimum": 1,
+                    "description": "the mean quality requirement option shared by cut_front, cut_tail or cut_sliding",
+                    "maximum": 36
                 },
                 "fp_cut_tail_window_size": {
                     "type": "integer",
-                    "default": 4
+                    "default": 4,
+                    "minimum": 1,
+                    "description": "the window size option shared by cut_front, cut_tail or cut_sliding.",
+                    "maximum": 1000
                 },
                 "fp_complexity_threshold": {
                     "type": "integer",
-                    "default": 20
+                    "default": 20,
+                    "minimum": 0,
+                    "description": "the threshold for low complexity filter",
+                    "maximum": 100
                 },
                 "fp_qualified_phred": {
                     "type": "integer",
-                    "default": 15
+                    "default": 15,
+                    "minimum": 0,
+                    "description": "the quality value that a base is qualified."
                 },
                 "fp_unqualified_precent_limit": {
                     "type": "integer",
-                    "default": 40
+                    "default": 40,
+                    "minimum": 0,
+                    "maximum": 100,
+                    "description": "how many percents of bases are allowed to be unqualified"
                 },
                 "fp_polyg_min_len": {
                     "type": "integer",
-                    "default": 10
+                    "default": 10,
+                    "minimum": 1,
+                    "description": "the minimum length to detect polyG in the read tail"
                 },
                 "fp_polyx_min_len": {
                     "type": "integer",
-                    "default": 10
+                    "default": 10,
+                    "description": "the minimum length to detect polyX in the read tail",
+                    "minimum": 1
                 },
                 "fp_illumina_length_min": {
                     "type": "integer",
-                    "default": 35
+                    "default": 35,
+                    "minimum": 1
                 },
                 "fp_illumina_length_max": {
                     "type": "integer",
-                    "default": 400
+                    "default": 400,
+                    "minimum": 1
                 },
                 "fp_single_end_length_min": {
                     "type": "integer",
-                    "default": 1000
+                    "default": 1000,
+                    "minimum": 1
                 },
                 "fp_dedup_reads": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "enable deduplication to drop the duplicated reads/pairs"
                 }
             }
         },
@@ -456,27 +481,32 @@
                 "target_depth": {
                     "type": "integer",
                     "default": 100,
-                    "description": "Target depth to sub-sample reads to"
+                    "description": "Target depth to sub-sample reads to",
+                    "minimum": 1
                 },
                 "min_reads": {
                     "type": "integer",
                     "default": 1000,
-                    "description": "Minimum number of reads a sample requires to move forward for assembly"
+                    "description": "Minimum number of reads a sample requires to move forward for assembly",
+                    "minimum": 1
                 },
                 "ba_min_conting_length": {
                     "type": "integer",
                     "default": 200,
-                    "description": "Minimum contig length for processing in Bakta"
+                    "description": "Minimum contig length for processing in Bakta",
+                    "minimum": 1
                 },
                 "qt_min_contig_length": {
                     "type": "integer",
                     "default": 1000,
-                    "description": "Minimum contig length for quast"
+                    "description": "Minimum contig length for quast",
+                    "minimum": 1
                 },
                 "mh_min_kmer": {
                     "type": "integer",
                     "default": 10,
-                    "description": "Minimum Kmer count needed for a unique kmer to be used in genome size estimation"
+                    "description": "Minimum Kmer count needed for a unique kmer to be used in genome size estimation",
+                    "minimum": 1
                 }
             }
         },
