@@ -23,6 +23,9 @@ lint:
     - assets/email_template.txt
     - assets/sendmail_template.txt
     - .gitignore
+  nextflow_config:
+    - manifest.name
+    - manifest.homePage
   multiqc_config: False
 template:
   prefix: phac-nml
