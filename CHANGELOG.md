@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Initial release of mk-kondo/mikrokondo, created with the [nf-core](https://nf-co.re/) template.
 
 ### `Added`
+
+Updated docs to include awesome-page plugin and restructured readme. 
+
 Updated coverage defaults for Shigella, Escherichia and Vibrio
 
 Updated file outputs to match the nf-iridanext plug-in
