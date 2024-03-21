@@ -9,6 +9,8 @@ Initial release of mk-kondo/mikrokondo, created with the [nf-core](https://nf-co
 
 ### `Added`
 
+Bumped version number to 0.1.0
+
 Updated docs to include awesome-page plugin and restructured readme. 
 
 Updated coverage defaults for Shigella, Escherichia and Vibrio
