@@ -1,0 +1,2 @@
+sample,fastq_1,fastq_2,long_reads,assembly
+salmonella_GCA_000008105,,,,https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/genomes/salmonella/GCA_000008105.1_ASM810v1_genomic.fna.gz

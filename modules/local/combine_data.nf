@@ -32,18 +32,6 @@ process COMBINE_DATA{
         cmd_ << "cat ${meta.fastq_2.join(' ')} > out/${prefix}.merged.fastq.gz;"
     }
     def cmd = cmd_.join("\n")
-    //if(meta.hybrid){
-    //    cmd = "cat ${forward_reads.join(' ')} > out/${prefix}_R1.merged.fastq.gz; " + \
-    //        "cat ${reverse_reads.join(' ')} > out/${prefix}_R2.merged.fastq.gz; " +
-    //        "cat ${long_reads.join(' ')} > out/${prefix}.merged.fastq.gz"
-    //}else if(meta.single_end){
-    //    cmd = "cat ${long_reads.join(' ')} > out/${prefix}.merged.fastq.gz"
-    //}else if(meta.assembly){
-    //    cmd = "cat ${assembly.join(' ')} > out/${prefix}.merged.fasta.gz"
-    //}else{
-    //    cmd = "cat ${forward_reads.join(' ')} > out/${prefix}_R1.merged.fastq.gz; " +
-    //        "cat ${reverse_reads.join(' ')} > out/${prefix}_R2.merged.fastq.gz"
-    //}
     // creating dummy outputs so that all outputs exist for any scenario
     """
     mkdir out

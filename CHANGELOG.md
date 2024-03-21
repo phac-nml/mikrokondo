@@ -11,6 +11,10 @@ Initial release of mk-kondo/mikrokondo, created with the [nf-core](https://nf-co
 
 Updated docs to include awesome-page plugin and restructured readme. 
 
+Updated coverage defaults for Shigella, Escherichia and Vibrio
+
+Updated file outputs to match the nf-iridanext plug-in
+
 Incorporated IRIDANext plug-in
 
 Upgraded nf-validation to latest version 2.0.0
