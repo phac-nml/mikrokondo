@@ -81,7 +81,7 @@ workflow ANNOTATE_GENOMES {
         star_amr_data_merged = contig_data.join(point_finder_organism)
         staramr_ = STARAMR(star_amr_data_merged, db_star) // pass nothing for database as it will use what is in the container
         versions = versions.mix(staramr_.versions)
-        reports = reports.mix(staramr_.detailed_summary.map{
+        reports = reports.mix(staramr_.summary.map{
             meta, report -> tuple(meta, params.staramr, report)
         })
     }

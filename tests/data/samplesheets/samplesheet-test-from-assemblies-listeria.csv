@@ -1,0 +1,2 @@
+sample,fastq_1,fastq_2,long_reads,assembly
+listeria_GCF_000196035,,,,https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/genomes/listeria/GCF_000196035.1_ASM19603v1_genomic.fna.gz

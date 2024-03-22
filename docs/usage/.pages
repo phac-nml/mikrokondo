@@ -1,0 +1,7 @@
+nav:
+    - installation.md
+    - useage.md
+    - examples.md
+    - Utilities.md
+    - configuration.md
+    - tool_params.md
