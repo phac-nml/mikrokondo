@@ -19,6 +19,7 @@ include { HYBRID_ASSEMBLY } from '../subworkflows/local/hybrid_assembly'
 include { ANNOTATE_GENOMES } from '../subworkflows/local/annotate_genomes.nf'
 include { SUBTYPE_GENOME } from '../subworkflows/local/subtype_genome.nf'
 include { SPLIT_METAGENOMIC } from '../subworkflows/local/split_metagenomic.nf'
+include { LOCIDEX } from '../subworkflows/local/locidex.nf'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -89,6 +90,10 @@ workflow POST_ASSEMBLY {
         log.warn "Automatic subtyping of serotypes is not supported with kraken classification."
     }else{
         log.info "No subtyping of assemblies performed"
+    }
+
+    if(!params.skip_allele_calling && (!params.skip_species_classification || params.allele_scheme)){
+        LOCIDEX(ch_filtered_contigs, ch_speciation.top_hit)
     }
 
     ANNOTATE_GENOMES(ch_filtered_contigs, ch_speciation.top_hit)
