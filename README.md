@@ -174,6 +174,8 @@ Add `--profile singularity` to switch from using docker by default to using sing
 
 ## Troubleshooting and FAQs:
 
+Within release 0.1.0, Bakta is currently skipped however it can be enabled from the command line or within the nextflow.config (please check the docs for more information). It has been disabled by default due issues in using the latest bakta database releases due to an issue with `amr_finder` there are fixes available and older databases still work however they have not been tested. A user can still enable Bakta themselves or fix the database. More information is provided here: https://github.com/oschwengers/bakta/issues/268 
+
 For a list of common issues or errors and their solutions, please read our [FAQ section](https://phac-nml.github.io/mikrokondo/troubleshooting/FAQ/).
 
 ## References
