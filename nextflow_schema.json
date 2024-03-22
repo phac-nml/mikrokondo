@@ -355,6 +355,7 @@
                 },
                 "skip_bakta": {
                     "type": "boolean",
+		    "default": true,
                     "description": "Skip annotation with Bakta"
                 },
                 "skip_abricate": {
