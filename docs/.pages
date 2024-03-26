@@ -1,0 +1,6 @@
+nav:
+    - index.md
+    - usage
+    - troubleshooting
+    - workflows
+    - subworkflows
