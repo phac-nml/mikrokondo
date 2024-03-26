@@ -18,7 +18,7 @@ nextflow_pipeline {
                 qt_min_contig_length = 1
 
                 skip_bakta = true
-                skip_mobrecon = true
+                skip_mobrecon = false
                 skip_checkm = true
                 skip_raw_read_metrics = true
                 skip_polishing = true
