@@ -1,5 +1,6 @@
 include { LOCIDEX_EXTRACT } from "../../modules/local/locidex_extract.nf"
 include { LOCIDEX_SEARCH } from "../../modules/local/locidex_search.nf"
+include { LOCIDEX_REPORT } from "../../modules/local/locidex_report.nf"
 
 
 
@@ -25,12 +26,18 @@ workflow LOCIDEX {
     paired_dbs.fallthrough.subscribe {
         log.info "No allele scheme identified for ${it[0].id}."
     }
+
     extracted_lx = LOCIDEX_EXTRACT(paired_dbs.paired)
     versions = versions.mix(extracted_lx.versions)
 
     allele_calls = LOCIDEX_SEARCH(extracted_lx.extracted_seqs)
+    versios = versions.mix(allele_calls.versions)
 
+    report_lx = LOCIDEX_REPORT(allele_calls.allele_calls)
+    versions = versions.mix(report_lx.versions)
 
+    emit:
+    versions
 
 
 }

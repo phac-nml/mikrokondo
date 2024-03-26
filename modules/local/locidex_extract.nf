@@ -1,29 +1,30 @@
 /*
-Locidex ectract fastas for allele calling
+Locidex extract fastas for allele calling
 
 */
 
 
 
 process LOCIDEX_EXTRACT {
-    // TODO awaiting containers
+
     tag "$meta.id"
     label "process_low"
+    container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.containers.get('singularity') : task.ext.containers.get('docker')}"
+
 
     input:
     tuple val(meta), path(fasta), path(db)
 
     output:
-    tuple val(meta), path("${params.locidex.extraction_dir}/*${params.locidex.extracted_seqs_suffix}"), path(db), emit: extracted_seqs
+    tuple val(meta), path("${meta.id}/*${params.locidex.extracted_seqs_suffix}"), path(db), emit: extracted_seqs
     path "versions.yml", emit: versions
 
     script:
-    def prefix = "${meta.id}"
     """
     locidex extract --mode ${params.locidex.extraction_mode} \\
     -i ${fasta} \\
     --n_threads ${task.cpus} \\
-    -o ${params.locidex.extraction_dir} -d ${db} --force \\
+    -o ${meta.id} -d ${db} --force \\
     --min_evalue ${params.locidex.min_evalue} \\
     --min_dna_len ${params.locidex.min_dna_len} \\
     --min_aa_len ${params.locidex.min_aa_len} \\

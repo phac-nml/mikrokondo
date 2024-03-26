@@ -6,24 +6,29 @@
 
 
 process LOCIDEX_SEARCH {
-    // TODO awaiting containers
+
     tag "$meta.id"
-    label "process_low"
+    label "process_high"
+    container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.containers.get('singularity') : task.ext.containers.get('docker')}"
+
 
     input:
     tuple val(meta), path(fasta), path(db)
 
     output:
-    tuple val(meta), path("${meta.id}/${params.locidex.seq_store}"), emit: allele_calls
-    tuple val(meta), path("${meta.id}/*${params.locidex.gbk_suffx}"), emit: annotations
+    tuple val(meta), path("${output_json}"), emit: allele_calls
+    tuple val(meta), path("${output_gbk}"), emit: annotations
     path "versions.yml", emit: versions
 
     script:
+    // Large portion of arguments cutout due to causing issues when running
+    output_json = "${meta.id}${params.locidex.seq_store_suffix}"
+    output_gbk = "${meta.id}${params.locidex.gbk_suffix}"
     """
     locidex search -q ${fasta} \\
-    --annotate
+    --annotate \\
     --n_threads ${task.cpus} \\
-    -o ${params.locidex.extraction_dir} \\
+    -o . \\
     -d ${db} --force \\
     --min_evalue ${params.locidex.min_evalue} \\
     --min_dna_len ${params.locidex.min_dna_len} \\
@@ -35,6 +40,8 @@ process LOCIDEX_SEARCH {
     --min_aa_match_cov ${params.locidex.min_aa_match_cov} \\
     --max_target_seqs ${params.locidex.max_target_seqs}
 
+    mv seq_store.json $output_json
+    mv annotations.gbk $output_gbk
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
