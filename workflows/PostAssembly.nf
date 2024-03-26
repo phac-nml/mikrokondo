@@ -92,7 +92,7 @@ workflow POST_ASSEMBLY {
         log.info "No subtyping of assemblies performed"
     }
 
-    println "${!params.skip_species_classification || params.allele_scheme}"
+
     if(!params.skip_allele_calling && (!params.skip_species_classification || params.allele_scheme)){
         LOCIDEX(ch_filtered_contigs, ch_speciation.top_hit)
         ch_versions = LOCIDEX.out.versions
