@@ -5,13 +5,13 @@ Some example commands of running mikrokondo are provided below:
 ## Running paired-end illumina data skipping Bakta
 `nextflow run main.nf --input sample_sheet.csv --skip_bakta true --platform illumina --outdir ../test_illumina -profile singularity -resume`
 
-The above command would run paired-end Illumina data, using Singulairty as a container service, using resume (e.g if picks up where the pipeline left off if being run again), skipping Bakta and outputting results in a folder called `test_illumina` one directory back from where the pipeline is run. **Note: your sample sheet does not need to be called sample_sheet.csv**
+The above command would run paired-end Illumina data, using Singularity as a container service, using resume (e.g if picks up where the pipeline left off if being run again), skipping Bakta and outputting results in a folder called `test_illumina` one directory back from where the pipeline is run. **Note: your sample sheet does not need to be called sample_sheet.csv**
 
 ## Running paired-end illumina data using Kraken2 for classifying the top species hit
 
 `nextflow run main.nf --input sample_sheet.csv --skip_bakta true --run_kraken true --platform illumina --outdir ../test_illumina_kraken -profile singularity -resume`
 
-The above command would run paired-end Illumina data, using Singulairty as a container service, using resume (e.g if picks up where the pipeline left off if being run again), skipping Bakta, using kraken2 to classify the species top hit and outputting results in a folder called `test_illumina_kraken` one directory back from where the pipeline is run. **Note: your sample sheet does not need to be called sample_sheet.csv**
+The above command would run paired-end Illumina data, using Singularity as a container service, using resume (e.g if picks up where the pipeline left off if being run again), skipping Bakta, using kraken2 to classify the species top hit and outputting results in a folder called `test_illumina_kraken` one directory back from where the pipeline is run. **Note: your sample sheet does not need to be called sample_sheet.csv**
 
 ## Running nanopore data
 `nextflow run main.nf --input sample_sheet.csv --skip_ont_header_cleaning true --nanopore_chemistry r941_min_hac_g507 --platform nanopore --outdir ../test_nanopore -profile docker -resume`

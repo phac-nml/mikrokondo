@@ -18,7 +18,7 @@ Screens contigs for antimicrobial and virulence genes. If you wish to use a diff
     - report_tag: determines the name of the Abricate output in the final summary file. **Do no touch this unless doing pipeline development.**
     - header_p: This field tells the report module that the Abricate output contains headers. **Do no touch this unless doing pipeline development.**
 
-### Raw Read Metrics 
+### Raw Read Metrics
 A custom Python script that gathers quality metrics for each fastq file.
 
 - raw_reads
@@ -64,13 +64,18 @@ Fastp is fast and widely used program for gathering of read quality metrics, ada
     - html_ext: Extension of the html report output by fastp, do no touch unless doing pipeline development.
     - json_ext: Extension of json report output by FastP do not touch unless doing pipeline development.
     - report_tag: Title of FastP data in the summary report.
-    - **average_quality_e**: If a read/read-pair quality is less than this value it is discarded
-    - **cut_mean_quality**: The quality to trim reads too
-    - **qualified_quality_phred**: the quality of a base to be qualified if filtering by unqualified bases
-    - **unqualified_percent_limit**: The percent amount of bases that are allowed to be unqualified in a read. This parameter is affected by the above qualified_quality_phred parameter
-    - **illumina_length_min**: The minimum read length to be allowed in illumina data
-    - **single_end_length_min**: the minimum read length allowed in Pacbio or Nanopore data
-    - **dedup_reads**: A parameter to be turned on to allow for deduplication of reads.
+    - **average_quality_e**: If a read/read-pair quality is less than this value it is discarded. Can be set from the command line with `--fp_average_quality`.
+    - **cut_tail_mean_quality**: The quality to trim reads too. Can be set from the command line with `--fp_cut_tail_mean_quality`
+    - **cut_tail_window_size**: The window size to cut a tail with. Can be set from the command line with `--fp_cut_tail_window_size`.
+    - **complexity_threshold**: the threshold for low complexity filter. Can be set from the command line with `--fp_complexity_threshold`.
+    - **qualified_quality_phred**: the quality of a base to be qualified if filtering by unqualified bases. Can be set from the command line with `--fp_qualified_phred`.
+    - **unqualified_percent_limit**: The percent amount of bases that are allowed to be unqualified in a read. This parameter is affected by the above qualified_quality_phred parameter and can be specified from the command line with `--fp_unqualified_percent_limit`.
+    - **polyg_min_len**: The minimum length to detect a polyG tail. This value can be set from the command line with `--fp_polyg_min_len`.
+    - **polyx_min_len**: The minimum length to detect a polyX tail. This value can be set from the command line with `--fp_polyx_min_len`.
+    - **illumina_length_min**: The minimum read length to be allowed in illumina data. This value can be set from the command line with `--fp_illumina_length_min`.
+    - **illumina_length_max**: The maximum read length allowed for illumina data. This value can be set from the command line with `--fp_illumina_length_max`.
+    - **single_end_length_min**: the minimum read length allowed in Pacbio or Nanopore data. This value can be set from the command line with `--fp_single_end_length_min`.
+    - **dedup_reads**: A parameter to be turned on to allow for deduplication of reads. This value can be set from the command line with `--fp_dedup_reads`.
     - **illumina_args**: The command string passed to Fastp when using illumina data, if you override this parameter other set parameters such as average_quality_e must be overridden as well as the command string will be passed to FastP as written
     - **single_end_args**: The command string passed to FastP if single end data is used e.g. Pacbio or Nanopore data. If this option is overridden you must specify all parameters passed to Fastp as this string is passed to FastP as written.
     - report_exclude_fields: Fields in the summary json to be excluded from the final aggregated report. Do not alter this field unless doing pipeline development
@@ -130,7 +135,7 @@ Quast is used to gather assembly metrics which automated quality control criteri
     - suffix: The suffix attached to quast outputs. Do not alter this field unless doing pipeline development.
     - report_base: The base term for output quast files to be used in reporting. Do not alter this field unless doing pipeline development.
     - report_prefix: The prefix of the quast outputs to be used in reporting. Do not alter this field unless doing pipeline development.
-    - **min_contig_length**: The minimum length of for contigs to be used in quasts generation of metrics. Do not alter this field unless doing pipeline development.
+    - **min_contig_length**: The minimum length of for contigs to be used in quasts generation of metrics. Do not alter this field unless doing pipeline development. This argument can be set from the command line with `--qt_min_contig_length`.
     - **args**: A command string to past to quast, altering this is unadvised as certain options may affect your reporting output. This string will be passed to quast verbatim. Do not alter this field unless doing pipeline development.
     - header_p: This tells the pipeline that the Quast report outputs contains a header. Do not alter this field unless doing pipeline development.
 
@@ -167,7 +172,7 @@ Kraken2 can be used a substitute for mash in speciation of samples, and it is us
     - singularity: Singularity container for the Kraken2.
     - docker: Docker container for Kraken2.
     - classified_suffix: Suffix for classified data from Kraken2. Do not alter this field unless doing pipeline development.
-    - unclassified_suffix: Suffic for unclassified data from Kraken2. Do not alter this field unless doing pipeline development.
+    - unclassified_suffix: Suffix for unclassified data from Kraken2. Do not alter this field unless doing pipeline development.
     - report_suffix: The name of the report output by Kraken2.
     - output_suffix: The name of the output file from Kraken2. Do not alter this field unless doing pipeline development.
     - **tophit_level**: The taxonomic level to classify a sample at. e.g. default is `S` for species but you could use `S1` or `F`.
@@ -179,7 +184,7 @@ Kraken2 can be used a substitute for mash in speciation of samples, and it is us
     - headers: A list of headers in the Kraken2 report.  Do not alter this field unless doing pipeline development.
 
 ### Seven Gene MLST
-Run Torstein Tseemans seven gene MLST program.
+Run Torstein Seemans seven gene MLST program.
 
 - mlst
     - singularity: Singularity container for mlst.
@@ -202,7 +207,7 @@ Mash is used repeatedly througout the pipeline for estimation of genome size fro
     - sketch_ext: File extension of a mash sketch. Do not alter this field unless doing pipeline development.
     - json_ext: File extension of json data output by Mash. Do not alter this field unless doing pipeline development.
     - sketch_kmer_size: The size of the kmers used in the sketching in genome size estimation.
-    - **min_kmer**: The minimum number of kmer copies required to pass the noise filter. this value is used in estimation of genome size from reads. The default value is 10 as it seems to work well for Illumina data.
+    - **min_kmer**: The minimum number of kmer copies required to pass the noise filter. this value is used in estimation of genome size from reads. The default value is 10 as it seems to work well for Illumina data. This value can be set from the command line by setting `--mh_min_kmer`.
     - final_sketch_name: **to be removed** This parameter was originally part of a subworkflow included in the pipeline for generation of the GTDB sketch. But this has been removed and replaced with scripting.
     - report_tag: Report tag for Mash in the summary report. Do not alter this field unless doing pipeline development.
     - header_p: Tells the pipeline if the output data contains headers. Do not alter this field unless doing pipeline development.
@@ -338,7 +343,7 @@ StarAMR provides annotation of antimicrobial resistance genes within your data. 
     - txt_ext: File extension of the text reports from StarAMR. Do not alter this field unless doing pipeline development.
     - xlsx_ext: File extension of the excel spread sheet from StarAMR. Do not alter this field unless doing pipeline development.
     - **args**: Additional arguments to pass to StarAMR. Do not alter this field unless doing pipeline development.
-    - point_finder_dbs: A list containing the valid databases StarAMR supports for pointfinder. The way they are structured matches what StarAMR needs for input. Do not alter this field unless doing pipeline development. Do not alter this field unless doing pipeline development.
+    - point_finder_dbs: A list containing the valid databases StarAMR supports for pointfinder. The way they are structured matches what StarAMR needs for input. Do not alter this field unless doing pipeline development.
     - report_tag: The field name of StarAMR in the final summary report. Do not alter this field unless doing pipeline development.
     - header_p: Indicates the final report from StarAMR contains a header line. Do not alter this field unless doing pipeline development.
 
@@ -348,7 +353,7 @@ Bakta is used to provide annotation of genomes, it is very reliable but it can b
 - bakta
     - singularity: The singularity container containing Bakta.
     - docker: The Docker container containing Bakta.
-    - **db**: the path where the downloaded Bakta database should be downloaded.
+    - **db**: the path where the downloaded Bakta database should be downloaded. This can be set from the command line using the argument `--bakta_db`.
     - output_dir: The name of the folder where Bakta data is saved too. Do not alter this field unless doing pipeline development.
     - embl_ext: File extension of embl file. Do not alter this field unless doing pipeline development.
     - faa_ext: File extension of faa file. Do not alter this field unless doing pipeline development.
@@ -361,7 +366,7 @@ Bakta is used to provide annotation of genomes, it is very reliable but it can b
     - hypotheticals_faa_ext: File extension of hypothetical genes fasta. Do not alter this field unless doing pipeline development.
     - tsv_ext: The file extension of the final bakta tsv report. Do not alter this field unless doing pipeline development.
     - txt_ext: The file extension of the txt report. Do not alter this field unless doing pipeline development.
-    - min_contig_length: The minimum contig length to be annotated by Bakta.
+    - min_contig_length: The minimum contig length to be annotated by Bakta. This can be set from the command line using the argument `--ba_min_contig_length`.
 
 ### Bandage
 Bandage is included to make bandage plots of the initial assemblies e.g. Spades, Flye or Unicycler. These images can be useful in determining the quality of an assembly.
@@ -436,7 +441,7 @@ Performs typing of *Staphylococcus* species.
     - header_p: Denotes if the output table of Lissero contains a header. Do not alter this field unless doing pipeline development.
 
 ### Shigeifinder
-*in-silico Shigella* typing. 
+*in-silico Shigella* typing.
 >**NOTE:** It is unlikely this subtyper will be triggered as GTDB has merged *E.coli* and *Shigella* in an updated sketch. An updated version of ECTyper will be released soon to address the shortfalls of this sketch. If you are relying on *Shigella* detection add `--run_kraken true` to your command line or update the value in the `.nextflow.config` as Kraken2 (while slower) can still detect *Shigella*.
 
 - shigeifinder

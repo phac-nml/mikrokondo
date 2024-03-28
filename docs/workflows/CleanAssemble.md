@@ -11,7 +11,7 @@
 
 
 ## Steps
-1. **[QC reads](/subworkflows/clean_reads)** subworkflow steps in brief are listed below, for further information see [clean_reads.nf](https://github.com/phac-nml/mikrokondo/blob/main/subworkflows/local/clean_reads.nf)
+1. **[QC reads](https://phac-nml.github.io/mikrokondo/subworkflows/clean_reads)** subworkflow steps in brief are listed below, for further information see [clean_reads.nf](https://github.com/phac-nml/mikrokondo/blob/main/subworkflows/local/clean_reads.nf)
 	- Reads are checked for known sequencing contamination
 	- Quality metrics are calculated
 	- Reads are trimmed
@@ -19,9 +19,9 @@
 	- Read set subsampled to set level (OPTIONAL)
 	- Read set is assessed to be either an isolate or metagenomic sample (from presence of multiple taxa)
 
-2. **[Assemble reads](/subworkflows/assemble_reads)** using the `params.platform` flag, read sets will be diverted to either the assemble_reads (short reads) or hybrid_assembly (short and/or long reads) workflow. Though the data is handled differently in eash subworklow, both generate a contigs file and a bandage image, with an option of initial polishing via Racon. See [assemble_reads.nf](https://github.com/phac-nml/mikrokondo/blob/main/subworkflows/local/assemble_reads.nf) and [hybrid_assembly.nf](https://github.com/phac-nml/mikrokondo/blob/main/subworkflows/local/hybrid_assembly.nf) subworkflow pages for more details.
+2. **[Assemble reads](https://phac-nml.github.io/mikrokondo/subworkflows/assemble_reads)** using the `params.platform` flag, read sets will be diverted to either the assemble_reads (short reads) or hybrid_assembly (short and/or long reads) workflow. Though the data is handled differently in eash subworklow, both generate a contigs file and a bandage image, with an option of initial polishing via Racon. See [assemble_reads.nf](https://github.com/phac-nml/mikrokondo/blob/main/subworkflows/local/assemble_reads.nf) and [hybrid_assembly.nf](https://github.com/phac-nml/mikrokondo/blob/main/subworkflows/local/hybrid_assembly.nf) subworkflow pages for more details.
 
-3. **[Polish assembles](/subworkflows/polish_assemblies)** (OPTIONAL) Polishing of contigs can be added [polish_assemblies.nf](https://github.com/phac-nml/mikrokondo/blob/main/subworkflows/local/polish_assemblies.nf). To make changes to the default workflow, see setting 'optional flags' page.
+3. **[Polish assembles](https://phac-nml.github.io/mikrokondo/subworkflows/polish_assemblies)** (OPTIONAL) Polishing of contigs can be added [polish_assemblies.nf](https://github.com/phac-nml/mikrokondo/blob/main/subworkflows/local/polish_assemblies.nf). To make changes to the default workflow, see setting 'optional flags' page.
 
 ## Input
 - Next generation sequencing reads:

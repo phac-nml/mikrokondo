@@ -440,7 +440,7 @@
                     "minimum": 0,
                     "description": "the quality value that a base is qualified."
                 },
-                "fp_unqualified_precent_limit": {
+                "fp_unqualified_percent_limit": {
                     "type": "integer",
                     "default": 40,
                     "minimum": 0,
@@ -501,7 +501,7 @@
                     "description": "Minimum number of reads a sample requires to move forward for assembly",
                     "minimum": 1
                 },
-                "ba_min_conting_length": {
+                "ba_min_contig_length": {
                     "type": "integer",
                     "default": 200,
                     "description": "Minimum contig length for processing in Bakta",
