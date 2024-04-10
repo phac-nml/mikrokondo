@@ -65,7 +65,7 @@ Fastp is fast and widely used program for gathering of read quality metrics, ada
     - json_ext: Extension of json report output by FastP do not touch unless doing pipeline development.
     - report_tag: Title of FastP data in the summary report.
     - **average_quality_e**: If a read/read-pair quality is less than this value it is discarded. Can be set from the command line with `--fp_average_quality`.
-    - **cut_tail_mean_quality**: The quality to trim reads too. Can be set from the command line with `--fp_cut_tail_mean_quality`
+    - **cut_tail_mean_quality**: The mean quality threshold for a sliding window below which trailing bases are trimmed from the reads. Can be set from the command line with `--fp_cut_tail_mean_quality`
     - **cut_tail_window_size**: The window size to cut a tail with. Can be set from the command line with `--fp_cut_tail_window_size`.
     - **complexity_threshold**: the threshold for low complexity filter. Can be set from the command line with `--fp_complexity_threshold`.
     - **qualified_quality_phred**: the quality of a base to be qualified if filtering by unqualified bases. Can be set from the command line with `--fp_qualified_phred`.
