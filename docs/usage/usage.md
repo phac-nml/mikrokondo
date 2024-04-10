@@ -120,7 +120,7 @@ Different databases/pre-computed files are required for usage within mikrokondo.
 - `--mash_sketch`: The mash sketch to be used for contamination detection and speciation.
 - `--bakta_db`: Bakta database for genome annotation.
 - `--kraken2_db`: Kraken2 database that can be used for speciation and binning of meta-genomically assembled contigs.
-- `--staramr_db`: An optionaly StarAMR database to be passed in, it is recommended to use the database packaged in the container.
+- `--staramr_db`: An optional StarAMR database to be passed in, it is recommended to use the database packaged in the container.
 
 #### FastP Arguments
 For simplicity parameters affecting FastP have been moved to the top level. Each argument matches one listed within the [FastP](https://phac-nml.github.io/mikrokondo/usage/tool_params/#fastp) usage section with only a `fp_` being appended to the front of the argument. For a more detailed description of what each argument does please review the tool specific parameters for [FastP](https://phac-nml.github.io/mikrokondo/usage/tool_params/#fastp) here.
