@@ -126,7 +126,7 @@ Different databases/pre-computed files are required for usage within mikrokondo.
 For simplicity parameters affecting FastP have been moved to the top level. Each argument matches one listed within the [FastP](https://phac-nml.github.io/mikrokondo/usage/tool_params/#fastp) usage section with only a `fp_` being appended to the front of the argument. For a more detailed description of what each argument does please review the tool specific parameters for [FastP](https://phac-nml.github.io/mikrokondo/usage/tool_params/#fastp) here.
 
 - `--fp_average_quality`: If a read/read-pair quality is less than this value it is discarded
-- `--fp_cut_tail_mean_quality`: the quality to trim reads too
+- `--fp_cut_tail_mean_quality`: the quality threshold to trim reads to
 - `--fp_cut_tail_window_size`: The window size to cut a tail with.
 - `--fp_complexity_threshold`: The threshold for low complexity filter.
 - `--fp_qualified_phred`: The quality of a base to be qualified if filtering by unqualified bases.
