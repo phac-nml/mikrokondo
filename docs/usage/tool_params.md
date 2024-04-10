@@ -184,7 +184,7 @@ Kraken2 can be used a substitute for mash in speciation of samples, and it is us
     - headers: A list of headers in the Kraken2 report.  Do not alter this field unless doing pipeline development.
 
 ### Seven Gene MLST
-Run Torstein Seemans seven gene MLST program.
+Run Torsten Seemann's seven gene MLST program.
 
 - mlst
     - singularity: Singularity container for mlst.
