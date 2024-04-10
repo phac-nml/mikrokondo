@@ -3,7 +3,7 @@
 ## subworkflows/local/assemble_reads
 
 >**NOTE:**
->Hybrid assembly of long and short reads uses a different workflow that can be found [here](/subworkflows/hybrid_assembly)
+>Hybrid assembly of long and short reads uses a different workflow that can be found [here](https://phac-nml.github.io/mikrokondo/subworkflows/hybrid_assembly/)
 
 ## Steps
 
