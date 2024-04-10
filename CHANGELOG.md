@@ -9,7 +9,7 @@ Initial release of phac-nml/mikrokondo. Mikrokondo currently supports: read trim
 
 - Bumped version number to 0.1.0
 
-- Updated docs to include awesome-page plugin and restructured readme. 
+- Updated docs to include awesome-page plugin and restructured readme.
 
 - Updated coverage defaults for Shigella, Escherichia and Vibrio
 
@@ -32,6 +32,11 @@ Initial release of phac-nml/mikrokondo. Mikrokondo currently supports: read trim
 - Added integration testing using [nf-test](https://www.nf-test.com/).
 
 ### `Added`
+
+- Updated documentation for params.
+
+- Fixed param typos in schema, config and docs.
+
 
 ### `Fixed`
 
