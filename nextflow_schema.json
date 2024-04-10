@@ -108,6 +108,9 @@
                     "pattern": "^\\S+$",
                     "format": "directory-path",
                     "hidden": true
+                },
+                "allele_scheme": {
+                    "type": "string"
                 }
             },
             "required": [
@@ -355,7 +358,7 @@
                 },
                 "skip_bakta": {
                     "type": "boolean",
-		    "default": true,
+                    "default": true,
                     "description": "Skip annotation with Bakta"
                 },
                 "skip_abricate": {
@@ -398,6 +401,9 @@
                 "skip_staramr": {
                     "type": "boolean",
                     "description": "Skip running StarAMR"
+                },
+                "skip_allele_calling": {
+                    "type": "boolean"
                 }
             }
         },
@@ -483,6 +489,74 @@
                 }
             }
         },
+        "locidex": {
+            "title": "Locidex",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "properties": {
+                "lx_min_evalue": {
+                    "type": "number",
+                    "default": 0.0001
+                },
+                "lx_min_dna_len": {
+                    "type": "integer",
+                    "default": 1
+                },
+                "lx_min_aa_len": {
+                    "type": "integer",
+                    "default": 1
+                },
+                "lx_max_dna_len": {
+                    "type": "integer",
+                    "default": 10000000
+                },
+                "lx_max_aa_len": {
+                    "type": "integer",
+                    "default": 10000000
+                },
+                "lx_min_dna_ident": {
+                    "type": "number",
+                    "default": 80
+                },
+                "lx_min_aa_ident": {
+                    "type": "number",
+                    "default": 80
+                },
+                "lx_min_dna_match_cov": {
+                    "type": "number",
+                    "default": 80
+                },
+                "lx_min_aa_match_cov": {
+                    "type": "number",
+                    "default": 80
+                },
+                "lx_max_target_seqs": {
+                    "type": "number",
+                    "default": 10
+                },
+                "lx_extraction_mode": {
+                    "type": "string",
+                    "default": "raw"
+                },
+                "lx_report_mode": {
+                    "type": "string",
+                    "default": "normal"
+                },
+                "lx_report_prop": {
+                    "type": "string",
+                    "default": "locus_name"
+                },
+                "lx_report_max_ambig": {
+                    "type": "number",
+                    "default": 0
+                },
+                "lx_report_max_stop": {
+                    "type": "number",
+                    "default": 0
+                }
+            }
+        },
         "data_processing_thresholds": {
             "title": "Data processing thresholds",
             "type": "object",
@@ -565,6 +639,9 @@
         },
         {
             "$ref": "#/definitions/fastp_options"
+        },
+        {
+            "$ref": "#/definitions/locidex"
         },
         {
             "$ref": "#/definitions/data_processing_thresholds"
