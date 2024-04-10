@@ -84,7 +84,7 @@
                 "mash_sketch": {
                     "type": "string",
                     "default": "./databases/GTDBSketch_20231003.msh",
-                    "description": "Minimpa2 index for dehosting and kitome removal",
+                    "description": "Minimap2 index for dehosting and kitome removal",
                     "pattern": "^\\S+$",
                     "format": "file-path"
                 },
