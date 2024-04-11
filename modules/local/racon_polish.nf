@@ -5,7 +5,7 @@
 process RACON_POLISH {
     tag "${meta.id}"
     label 'process_high'
-    container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.containers.get('singularity') : task.ext.containers.get('docker')}"
+    container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.parameters.get('singularity') : task.ext.parameters.get('docker')}"
     afterScript "rm ${input_reads}"
 
     input:
