@@ -497,63 +497,105 @@
             "properties": {
                 "lx_min_evalue": {
                     "type": "number",
-                    "default": 0.0001
+                    "default": 0.0001,
+                    "description": "Minimum e-value required for match.",
+                    "minimum": 1e-18,
+                    "maximum": 100
                 },
                 "lx_min_dna_len": {
                     "type": "integer",
-                    "default": 1
+                    "default": 1,
+                    "description": "Global minimum query length of DNA strand.",
+                    "minimum": 1
                 },
                 "lx_min_aa_len": {
                     "type": "integer",
-                    "default": 1
+                    "default": 1,
+                    "description": "Global minimum query length of an AminoAcid strand.",
+                    "minimum": 1
                 },
                 "lx_max_dna_len": {
                     "type": "integer",
-                    "default": 10000000
+                    "default": 10000000,
+                    "description": "Global maximum query length of DNA strand.",
+                    "minimum": 10
                 },
                 "lx_max_aa_len": {
                     "type": "integer",
-                    "default": 10000000
+                    "default": 10000000,
+                    "description": "Gloval maximum query length of AminoAcid strand.",
+                    "minimum": 10
                 },
                 "lx_min_dna_ident": {
                     "type": "number",
-                    "default": 80
+                    "default": 80,
+                    "description": "Global minimum DNA percent identity required for match. (Float value)",
+                    "minimum": 0.001,
+                    "maximum": 100
                 },
                 "lx_min_aa_ident": {
                     "type": "number",
-                    "default": 80
+                    "default": 80,
+                    "description": "Global minimum minimum AminoAcid percent identiy required for match. (Float value)",
+                    "minimum": 0.001,
+                    "maximum": 100
                 },
                 "lx_min_dna_match_cov": {
                     "type": "number",
-                    "default": 80
+                    "default": 80,
+                    "description": "Gloval minimum DNA percent hit coverage identity required for match. (float)",
+                    "minimum": 0.001,
+                    "maximum": 100
                 },
                 "lx_min_aa_match_cov": {
                     "type": "number",
-                    "default": 80
+                    "default": 80,
+                    "description": "Global minimum AminoAcid hit coverage identity required for match. (float)",
+                    "minimum": 0.001,
+                    "maximum": 100
                 },
                 "lx_max_target_seqs": {
                     "type": "number",
-                    "default": 10
+                    "default": 10,
+                    "description": "Maximum number of sequence hits per a query",
+                    "minimum": 1
                 },
                 "lx_extraction_mode": {
                     "type": "string",
-                    "default": "raw"
+                    "default": "raw",
+                    "description": "Different ways to run locidex.",
+                    "enum": [
+                        "snps",
+                        "trim",
+                        "raw",
+                        "extend"
+                    ]
                 },
                 "lx_report_mode": {
                     "type": "string",
-                    "default": "normal"
+                    "default": "normal",
+                    "description": "Allele profile assignment.",
+                    "enum": [
+                        "normal",
+                        "conservative"
+                    ]
                 },
                 "lx_report_prop": {
                     "type": "string",
-                    "default": "locus_name"
+                    "default": "locus_name",
+                    "description": "Metadata label to use for aggregation."
                 },
                 "lx_report_max_ambig": {
                     "type": "number",
-                    "default": 0
+                    "default": 0,
+                    "description": "Maximum number of ambiguous characters allowed in a sequence.",
+                    "minimum": 0
                 },
                 "lx_report_max_stop": {
                     "type": "number",
-                    "default": 0
+                    "default": 0,
+                    "description": "Maximum number of internal stop codons allowed in a sequence.",
+                    "minimum": 0
                 }
             }
         },
