@@ -107,9 +107,6 @@ workflow POST_ASSEMBLY {
     ch_versions = ch_versions.mix(ANNOTATE_GENOMES.out.versions)
 
 
-
-
-
     emit:
     quast_table = QC_ASSEMBLY.out.quast_data
     reports = ch_reports
