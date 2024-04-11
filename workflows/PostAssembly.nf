@@ -93,9 +93,13 @@ workflow POST_ASSEMBLY {
     }
 
 
-    if(!params.skip_allele_calling && (!params.skip_species_classification || params.allele_scheme)){
-        LOCIDEX(ch_filtered_contigs, ch_speciation.top_hit)
-        ch_versions = LOCIDEX.out.versions
+    if(!params.skip_allele_calling){
+        if (!params.skip_species_classification || params.allele_scheme){
+            LOCIDEX(ch_filtered_contigs, ch_speciation.top_hit)
+            ch_versions = LOCIDEX.out.versions
+        }else{
+            log.info "Skipping locidex since there is no '--allele_scheme' set and '--skip_species_classification' is enabled"
+        }
     }
 
     ANNOTATE_GENOMES(ch_filtered_contigs, ch_speciation.top_hit)

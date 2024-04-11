@@ -46,21 +46,18 @@ def id_scheme(top_hit){
     /* Pick the correct allele scheme based off of the species top-hit
     */
 
-    def default_db = params.allele_scheme
-    if(default_db){
-        return default_db
+    def selected_scheme = params.allele_scheme
+    if(selected_scheme){
+        return selected_scheme
     }
 
-    for( i in params.locidex.schemes){
-        search_param = i.value.search.search
+    for( scheme in params.locidex.schemes){
+        search_param = scheme.value.search.search
         if(top_hit.contains(search_param)){
-            default_db = i.value.db
+            selected_scheme = scheme.value.db ?: file(scheme.value.db)
             break
         }
     }
 
-    if(default_db){
-        default_db = file(default_db)
-    }
-    return default_db
+    return selected_scheme
 }

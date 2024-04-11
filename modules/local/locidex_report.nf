@@ -2,7 +2,6 @@
 
 */
 
-
 process LOCIDEX_REPORT {
     tag "$meta.id"
     label "process_low"
@@ -17,15 +16,21 @@ process LOCIDEX_REPORT {
 
     script:
     output_name = "${meta.id}${params.locidex.report_suffix}"
+    def is_compressed = seq_store.getName().endsWith(".gz") ? true : false
+    def seq_store_name = seq_store.getName().replace(".gz", "")
     """
-    locidex report -i $seq_store -o . --name ${meta.id} \\
+    if [ "$is_compressed" == "true" ]; then
+        gzip -c -d $seq_store > $seq_store_name
+    fi
+    locidex report -i $seq_store_name -o . --name ${meta.id} \\
     --mode ${params.locidex.report_mode} \\
     --prop ${params.locidex.report_prop} \\
     --max_ambig ${params.locidex.report_max_ambig} \\
     --max_stop ${params.locidex.report_max_stop} \\
     --force
 
-    mv profile.json $output_name
+    gzip -c profile.json > $output_name
+    rm profile.json
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

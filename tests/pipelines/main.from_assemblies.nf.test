@@ -131,6 +131,9 @@ nextflow_pipeline {
 
                 skip_staramr = false
                 skip_subtyping = false
+                skip_allele_calling = false
+
+                allele_scheme = "$baseDir/tests/databases/locidex_salm"
 
                 max_memory = "2.GB"
                 max_cpus = 1
@@ -257,8 +260,6 @@ nextflow_pipeline {
                 skip_staramr = false
                 skip_subtyping = false
                 skip_allele_calling = true
-
-                params.allele_scheme = "$baseDir/tests/databases/locidex_salm"
 
                 max_memory = "2.GB"
                 max_cpus = 1
