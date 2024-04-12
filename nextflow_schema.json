@@ -587,7 +587,7 @@
                 "lx_report_prop": {
                     "type": "string",
                     "default": "locus_name",
-                    "description": "Metadata label to use for aggregation. Only underscores are allowed in sample names",
+                    "description": "Metadata label to use for aggregation. Only alphanumeric characters, underscores and dashes are allowed names",
                     "pattern": "^[A-Za-z0-9_-]*$"
                 },
                 "lx_report_max_ambig": {

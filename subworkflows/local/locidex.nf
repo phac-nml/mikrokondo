@@ -54,7 +54,7 @@ def id_scheme(top_hit){
     for( scheme in params.locidex.schemes){
         search_param = scheme.value.search.search
         if(top_hit.contains(search_param)){
-            selected_scheme = scheme.value.db ? file(scheme.value.db) : false // Need a falue present that will send the scheme to the fallthrough case
+            selected_scheme = scheme.value.db ? file(scheme.value.db) : null // Need a falue present that will send the scheme to the fallthrough case
             break
         }
     }
