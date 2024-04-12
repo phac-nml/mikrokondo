@@ -19,6 +19,7 @@ include { HYBRID_ASSEMBLY } from '../subworkflows/local/hybrid_assembly'
 include { ANNOTATE_GENOMES } from '../subworkflows/local/annotate_genomes.nf'
 include { SUBTYPE_GENOME } from '../subworkflows/local/subtype_genome.nf'
 include { SPLIT_METAGENOMIC } from '../subworkflows/local/split_metagenomic.nf'
+include { LOCIDEX } from '../subworkflows/local/locidex.nf'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -91,12 +92,19 @@ workflow POST_ASSEMBLY {
         log.info "No subtyping of assemblies performed"
     }
 
+
+    if(!params.skip_allele_calling){
+        if (!params.skip_species_classification || params.allele_scheme){
+            LOCIDEX(ch_filtered_contigs, ch_speciation.top_hit)
+            ch_versions = LOCIDEX.out.versions
+        }else{
+            log.info "Skipping locidex since there is no '--allele_scheme' set and '--skip_species_classification' is enabled"
+        }
+    }
+
     ANNOTATE_GENOMES(ch_filtered_contigs, ch_speciation.top_hit)
     ch_reports = ch_reports.mix(ANNOTATE_GENOMES.out.reports)
     ch_versions = ch_versions.mix(ANNOTATE_GENOMES.out.versions)
-
-
-
 
 
     emit:

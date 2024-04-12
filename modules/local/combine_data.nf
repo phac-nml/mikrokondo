@@ -3,7 +3,7 @@
 process COMBINE_DATA{
     tag "${meta.id}"
     label "process_low"
-    container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.containers.get('singularity') : task.ext.containers.get('docker')}"
+    container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.parameters.get('singularity') : task.ext.parameters.get('docker')}"
 
     input:
     tuple val(meta), path(fastq_1), path(fastq_2), path(long_reads), path(assembly)
