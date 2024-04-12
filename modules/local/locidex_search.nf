@@ -5,7 +5,7 @@
 process LOCIDEX_SEARCH {
 
     tag "$meta.id"
-    label "process_high"
+    label "process_medium"
     container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.parameters.get('singularity') : task.ext.parameters.get('docker')}"
 
 

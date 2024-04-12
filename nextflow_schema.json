@@ -110,7 +110,10 @@
                     "hidden": true
                 },
                 "allele_scheme": {
-                    "type": "string"
+                    "type": "string",
+                    "pattern": "^\\S+$",
+                    "format": "directory-path",
+                    "description": "An allele scheme to to use for Locidex"
                 }
             },
             "required": [
@@ -403,7 +406,8 @@
                     "description": "Skip running StarAMR"
                 },
                 "skip_allele_calling": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Skip allele calling with Locidex"
                 }
             }
         },
@@ -499,7 +503,7 @@
                     "type": "number",
                     "default": 0.0001,
                     "description": "Minimum e-value required for match.",
-                    "minimum": 1e-18,
+                    "minimum": 0,
                     "maximum": 100
                 },
                 "lx_min_dna_len": {
@@ -530,14 +534,14 @@
                     "type": "number",
                     "default": 80,
                     "description": "Global minimum DNA percent identity required for match. (Float value)",
-                    "minimum": 0.001,
+                    "minimum": 0,
                     "maximum": 100
                 },
                 "lx_min_aa_ident": {
                     "type": "number",
                     "default": 80,
                     "description": "Global minimum minimum AminoAcid percent identiy required for match. (Float value)",
-                    "minimum": 0.001,
+                    "minimum": 0,
                     "maximum": 100
                 },
                 "lx_min_dna_match_cov": {
@@ -551,7 +555,7 @@
                     "type": "number",
                     "default": 80,
                     "description": "Global minimum AminoAcid hit coverage identity required for match. (float)",
-                    "minimum": 0.001,
+                    "minimum": 0,
                     "maximum": 100
                 },
                 "lx_max_target_seqs": {
@@ -583,7 +587,8 @@
                 "lx_report_prop": {
                     "type": "string",
                     "default": "locus_name",
-                    "description": "Metadata label to use for aggregation."
+                    "description": "Metadata label to use for aggregation. Only underscores are allowed in sample names",
+                    "pattern": "^[A-Za-z0-9_-]*$"
                 },
                 "lx_report_max_ambig": {
                     "type": "number",

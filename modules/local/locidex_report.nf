@@ -16,7 +16,7 @@ process LOCIDEX_REPORT {
 
     script:
     output_name = "${meta.id}${params.locidex.report_suffix}"
-    def is_compressed = seq_store.getName().endsWith(".gz") ? true : false
+    def is_compressed = seq_store.getName().endsWith(".gz")
     def seq_store_name = seq_store.getName().replace(".gz", "")
     """
     if [ "$is_compressed" == "true" ]; then
