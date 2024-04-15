@@ -90,7 +90,7 @@ nextflow_pipeline {
 
             // output metadata
             def ecoli_metadata = iridanext_metadata.ecoli_GCA_000947975
-            assert ecoli_metadata."SpeciesTopHit" == "s__Escherichia coli"
+            assert ecoli_metadata."Species" == "s__Escherichia coli"
             assert ecoli_metadata."QUAST.0.Total length" == "5333525"
             assert ecoli_metadata."QUAST.0.Largest contig" == "300823"
             assert ecoli_metadata."QUAST.0.# contigs" == "187"
@@ -100,12 +100,12 @@ nextflow_pipeline {
             assert ecoli_metadata."StarAMR.0.Plasmid" == "IncQ1"
             assert ecoli_metadata."StarAMR.0.Scheme" == "ecoli"
             assert ecoli_metadata."StarAMR.0.Sequence Type" == "678"
-            assert ecoli_metadata."ECTyperSubtyping.0.Species" == "Escherichia coli"
-            assert ecoli_metadata."ECTyperSubtyping.0.O-type" == "O104"
-            assert ecoli_metadata."ECTyperSubtyping.0.H-type" == "H4"
-            assert ecoli_metadata."ECTyperSubtyping.0.Serotype" == "O104:H4"
-            assert ecoli_metadata."ECTyperSubtyping.0.Database" == "v1.0 (11-03-2020)"
-            assert ecoli_metadata."ECTyperSubtyping.0.QC" == "PASS (REPORTABLE)"
+            assert ecoli_metadata."ECTyper Subtyping" == "Escherichia coli"
+            assert ecoli_metadata."ECTyper O-Antigen" == "O104"
+            assert ecoli_metadata."ECTyper H-Antigen" == "H4"
+            assert ecoli_metadata."ECTyper Serotype" == "O104:H4"
+            assert ecoli_metadata."ECTyper Database" == "v1.0 (11-03-2020)"
+            assert ecoli_metadata."ECTyper QCFlag" == "PASS (REPORTABLE)"
         }
     }
 
@@ -199,7 +199,7 @@ nextflow_pipeline {
 
             // Tests
             assert salmonella_json.SpeciesTopHit == "s__Salmonella enterica"
-            assert iridanext_metadata.salmonella_GCA_000008105."SpeciesTopHit" == "s__Salmonella enterica"
+            assert iridanext_metadata.salmonella_GCA_000008105."Species" == "s__Salmonella enterica"
             assert final_report_tmap.SpeciesTopHit == "s__Salmonella enterica"
 
             assert salmonella_json.QUAST."0"."Total length" == "4944000"
@@ -239,15 +239,15 @@ nextflow_pipeline {
             assert final_report_tmap."StarAMR.0.Sequence Type" == "66"
 
             assert salmonella_json.SISTRSubtyping."0".serovar == "Choleraesuis"
-            assert iridanext_metadata.salmonella_GCA_000008105."SISTRSubtyping.0.serovar" == "Choleraesuis"
+            assert iridanext_metadata.salmonella_GCA_000008105."SISTR Serovar" == "Choleraesuis"
             assert final_report_tmap."SISTRSubtyping.0.serovar" == "Choleraesuis"
 
             assert salmonella_json.SISTRSubtyping."0".serogroup == "C1"
-            assert iridanext_metadata.salmonella_GCA_000008105."SISTRSubtyping.0.serogroup" == "C1"
+            assert iridanext_metadata.salmonella_GCA_000008105."SISTR Serogroup" == "C1"
             assert final_report_tmap."SISTRSubtyping.0.serogroup" == "C1"
 
             assert salmonella_json.SISTRSubtyping."0".serovar_antigen == "Hissar|Choleraesuis|Paratyphi C|Typhisuis|Chiredzi"
-            assert iridanext_metadata.salmonella_GCA_000008105."SISTRSubtyping.0.serovar_antigen" == "Hissar|Choleraesuis|Paratyphi C|Typhisuis|Chiredzi"
+            assert iridanext_metadata.salmonella_GCA_000008105."SISTR Serovar Antigen" == "Hissar|Choleraesuis|Paratyphi C|Typhisuis|Chiredzi"
             assert final_report_tmap."SISTRSubtyping.0.serovar_antigen" == "Hissar|Choleraesuis|Paratyphi C|Typhisuis|Chiredzi"
 
         }
@@ -321,7 +321,7 @@ nextflow_pipeline {
 
             // Tests
             assert listeria_json.SpeciesTopHit == "s__Listeria monocytogenes"
-            assert iridanext_metadata.listeria_GCF_000196035."SpeciesTopHit" == "s__Listeria monocytogenes"
+            assert iridanext_metadata.listeria_GCF_000196035."Species" == "s__Listeria monocytogenes"
             assert final_report_tmap.SpeciesTopHit == "s__Listeria monocytogenes"
 
             assert listeria_json.QUAST."0"."Total length" == "2944528"
@@ -361,7 +361,7 @@ nextflow_pipeline {
             assert final_report_tmap."StarAMR.0.Sequence Type" == "35"
 
             assert listeria_json.LISSEROSubtyping."0".SEROTYPE == "1/2c, 3c"
-            assert iridanext_metadata.listeria_GCF_000196035."LISSEROSubtyping.0.SEROTYPE" == "1/2c, 3c"
+            assert iridanext_metadata.listeria_GCF_000196035."LISSERO Serotype" == "1/2c, 3c"
             assert final_report_tmap."LISSEROSubtyping.0.SEROTYPE" == "1/2c, 3c"
 
             assert listeria_json.LISSEROSubtyping."0".PRS == "FULL"
