@@ -6,7 +6,7 @@
 process FASTP_TRIM{
     tag "$meta.id"
     label "process_medium" // fastp uses very little memory in reality, but for duplicate analysis it is better to give it more memory
-    container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.containers.get('singularity') : task.ext.containers.get('docker')}"
+    container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.parameters.get('singularity') : task.ext.parameters.get('docker')}"
 
     input:
     tuple val(meta), path(reads)
