@@ -15,7 +15,37 @@ include { SEQTK_SAMPLE } from '../../modules/local/seqtk_sample.nf'
 
 
 
+process PUBLISH_FINAL_READS {
+    tag "$meta.id"
+    label "process_low"
+    container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.containers.get('singularity') : task.ext.containers.get('docker')}"
+
+
+    input:
+    tuple val(meta), path(reads)
+
+    output:
+    tuple val(meta), path("*/*"), emit: final_reads
+    path "versions.yml", emit: versions
+
+    script:
+    """
+    mkdir ${meta.sample}
+    for i in ${reads.join(" ")}
+    do
+        mv \$i ${meta.sample}/
+    done
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        mkdir: \$(echo \$(cat --version 2>&1) | sed 's/^.*coreutils) //; s/ .*\$//')
+        mv: \$(echo \$(touch --version 2>&1) | sed 's/^.*coreutils) //; s/ .*\$//')
+    END_VERSIONS
+    """
+}
+
+
 workflow QC_READS {
+
     // TODO add in nanoplot for nanopore data
     take:
     reads // channel [[meta etc], [Read paths], opt: long reads]
@@ -187,11 +217,13 @@ workflow QC_READS {
         ch_cleaned_reads = CHECK_ONT(ch_cleaned_reads)
     }
 
+    published_reads = PUBLISH_FINAL_READS(ch_cleaned_reads)
+    versions = versions.mix(published_reads.versions)
+
+
     emit:
     trimmed_reads = ch_cleaned_reads // channel: [val(meta), [ reads ]]
-    //genome_size = PARSE_KAT.out.genome_size
     genome_size = genome_sizes
-    //heterozygozity = PARSE_KAT.out.heterozygozity
     reports = reports
     versions = versions
 }

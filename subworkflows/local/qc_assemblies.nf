@@ -5,6 +5,36 @@ include { SEQKIT_FILTER } from "../../modules/local/seqkit_filter.nf"
 include { CHECKM_LINEAGEWF } from "../../modules/local/checkm_lineagewf.nf"
 include { MLST } from "../../modules/local/mlst.nf"
 
+
+process PUBLISH_FINAL_ASSEMBLIES {
+    tag "$meta.id"
+    label "process_low"
+    container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.containers.get('singularity') : task.ext.containers.get('docker')}"
+
+
+    input:
+    tuple val(meta), path(contigs), path(reads)
+
+    output:
+    tuple val(meta), path("*/*"), emit: final_assembly
+    path "versions.yml", emit: versions
+
+    script:
+    """
+    mkdir ${meta.sample}
+    for i in ${contigs.join(" ")}
+    do
+        mv \$i ${meta.sample}/
+    done
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        mkdir: \$(echo \$(cat --version 2>&1) | sed 's/^.*coreutils) //; s/ .*\$//')
+        mv: \$(echo \$(touch --version 2>&1) | sed 's/^.*coreutils) //; s/ .*\$//')
+    END_VERSIONS
+    """
+}
+
 workflow QC_ASSEMBLIES {
     take:
     assembled_reads // tuple val(meta), path(contigs), path(reads)
@@ -51,10 +81,15 @@ workflow QC_ASSEMBLIES {
     })
 
     min_length = Channel.value(params.quast.min_contig_length)
+
     filterd_contigs = SEQKIT_FILTER(pre_checked_data, min_length)
     versions = versions.mix(filterd_contigs.versions)
 
+    assembled_reads = filterd_contigs.filtered_sequences
 
+
+    pub_final_assembly = PUBLISH_FINAL_ASSEMBLIES(assembled_reads)
+    versions = versions.mix(pub_final_assembly.versions)
 
     if(!params.skip_checkm){
         CHECKM_LINEAGEWF(assembled_reads.map{
