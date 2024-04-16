@@ -105,7 +105,12 @@ nextflow_pipeline {
             assert ecoli_metadata."ECTyper H-Antigen" == "H4"
             assert ecoli_metadata."ECTyper Serotype" == "O104:H4"
             assert ecoli_metadata."ECTyper Database" == "v1.0 (11-03-2020)"
+            assert ecoli_metadata."ECTyper Evidence" == "Based on 3 allele(s)"
+            assert ecoli_metadata."ECTyper GeneCoverages (%)" == "100;100;100;"
+            assert ecoli_metadata."ECTyper GeneIdentities (%)" == "100;100;100;"
+            assert ecoli_metadata."ECTyper GeneScores" == "wzx:1;wzy:1;fliC:1;"
             assert ecoli_metadata."ECTyper QCFlag" == "PASS (REPORTABLE)"
+            assert ecoli_metadata."ECTyper Warnings" == "-"
         }
     }
 
