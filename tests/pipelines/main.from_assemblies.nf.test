@@ -264,6 +264,21 @@ nextflow_pipeline {
             assert iridanext_metadata.salmonella_GCA_000008105."SISTR Serovar Antigen" == "Hissar|Choleraesuis|Paratyphi C|Typhisuis|Chiredzi"
             assert final_report_tmap."SISTRSubtyping.0.serovar_antigen" == "Hissar|Choleraesuis|Paratyphi C|Typhisuis|Chiredzi"
 
+            // other metadata for IRIDA Next
+            assert iridanext_metadata.salmonella_GCA_000008105."QC Summary" == "[FAILED] Sample is likely contaminated, REISOLATION AND RESEQUENCING RECOMMENDED\nPassed Tests: 3/4\nSpecies ID: s__Salmonella enterica"
+            //assert iridanext_metadata.salmonella_GCA_000008105."Downsampled" == "false"
+            assert iridanext_metadata.salmonella_GCA_000008105."GC (%)" == "52.13"
+            assert iridanext_metadata.salmonella_GCA_000008105."SISTR cgMLST ST" == "2572600197"
+            assert iridanext_metadata.salmonella_GCA_000008105."SISTR cgMLST Found Loci" == "330"
+            assert iridanext_metadata.salmonella_GCA_000008105."SISTR cgMLST Genome Match" == "ERR351246"
+            assert iridanext_metadata.salmonella_GCA_000008105."SISTR cgMLST Matching Alleles" == "320"
+            assert iridanext_metadata.salmonella_GCA_000008105."SISTR cgMLST Subspecies" == "enterica"
+            assert iridanext_metadata.salmonella_GCA_000008105."SISTR H1" == "c"
+            assert iridanext_metadata.salmonella_GCA_000008105."SISTR H2" == "1,5"
+            assert iridanext_metadata.salmonella_GCA_000008105."SISTR Antigen" == "6,7"
+            assert iridanext_metadata.salmonella_GCA_000008105."SISTR QC Message" == "INFO: Number of cgMLST330 loci found (n=330)"
+            assert iridanext_metadata.salmonella_GCA_000008105."SISTR QC Status" == "PASS"
+            assert iridanext_metadata.salmonella_GCA_000008105."SISTR Serovar cgMLST" == "Choleraesuis"
         }
     }
 
