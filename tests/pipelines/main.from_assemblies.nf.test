@@ -111,6 +111,15 @@ nextflow_pipeline {
             assert ecoli_metadata."ECTyper GeneScores" == "wzx:1;wzy:1;fliC:1;"
             assert ecoli_metadata."ECTyper QCFlag" == "PASS (REPORTABLE)"
             assert ecoli_metadata."ECTyper Warnings" == "-"
+            assert ecoli_metadata."icd" == "136"
+            assert ecoli_metadata."recA" == "7"
+            assert ecoli_metadata."fumC" == "6"
+            assert ecoli_metadata."adk" == "6"
+            assert ecoli_metadata."gyrB" == "5"
+            assert ecoli_metadata."purA" == "7"
+            assert ecoli_metadata."mdh" == "9"
+            assert ecoli_metadata."7 Gene ST" == "678"
+            assert ecoli_metadata."7 Gene Scheme" == "ecoli"
         }
     }
 
@@ -370,11 +379,9 @@ nextflow_pipeline {
             assert final_report_tmap."LISSEROSubtyping.0.SEROTYPE" == "1/2c, 3c"
 
             assert listeria_json.LISSEROSubtyping."0".PRS == "FULL"
-            assert iridanext_metadata.listeria_GCF_000196035."LISSEROSubtyping.0.PRS" == "FULL"
             assert final_report_tmap."LISSEROSubtyping.0.PRS" == "FULL"
 
             assert listeria_json.LISSEROSubtyping."0".ORF2110 == "NONE"
-            assert iridanext_metadata.listeria_GCF_000196035."LISSEROSubtyping.0.ORF2110" == "NONE"
             assert final_report_tmap."LISSEROSubtyping.0.ORF2110" == "NONE"
         }
     }
