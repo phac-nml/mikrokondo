@@ -383,6 +383,16 @@ nextflow_pipeline {
 
             assert listeria_json.LISSEROSubtyping."0".ORF2110 == "NONE"
             assert final_report_tmap."LISSEROSubtyping.0.ORF2110" == "NONE"
+
+            assert iridanext_metadata.listeria_GCF_000196035."dat" == "1"
+            assert iridanext_metadata.listeria_GCF_000196035."ldh" == "4"
+            assert iridanext_metadata.listeria_GCF_000196035."cat" == "6"
+            assert iridanext_metadata.listeria_GCF_000196035."abcZ" == "6"
+            assert iridanext_metadata.listeria_GCF_000196035."bglA" == "5"
+            assert iridanext_metadata.listeria_GCF_000196035."dapE" == "20"
+            assert iridanext_metadata.listeria_GCF_000196035."lhkA" == "1"
+            assert iridanext_metadata.listeria_GCF_000196035."7 Gene ST" == "35"
+            assert iridanext_metadata.listeria_GCF_000196035."7 Gene Scheme" == "lmonocytogenes"
         }
     }
 
