@@ -38,6 +38,10 @@ Initial release of phac-nml/mikrokondo. Mikrokondo currently supports: read trim
 - Fixed param typos in schema, config and docs.
 
 
+- Added locidex for allele calling
+
+- Updated directory output structure and names
+
 ### `Fixed`
 
 ### `Dependencies`
