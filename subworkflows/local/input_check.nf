@@ -20,6 +20,7 @@ workflow INPUT_CHECK {
             meta -> tuple(meta.id[0], meta[0])
         }
 
+
     if(params.opt_platforms.ont == params.platform && params.nanopore_chemistry == null){
         exit 1, "ERROR: Nanopore data was selected without a model being specified."
     }
@@ -41,9 +42,14 @@ workflow INPUT_CHECK {
         it -> group_reads(it)
     }
 
+    reads_to_combine.view()
     merged_reads = COMBINE_DATA(reads_to_combine.map{
         meta -> tuple(meta, meta.fastq_1, meta.fastq_2, meta.long_reads, meta.assembly)
     })
+
+    merged_reads.reads.subscribe { it ->
+        println "merged: ${it}"
+    }
     versions = versions.mix(merged_reads.versions)
 
     re_formatted_data = merged_reads.reads.map{

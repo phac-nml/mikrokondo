@@ -9,7 +9,7 @@ include { MLST } from "../../modules/local/mlst.nf"
 process PUBLISH_FINAL_ASSEMBLIES {
     tag "$meta.id"
     label "process_low"
-    container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.containers.get('singularity') : task.ext.containers.get('docker')}"
+    container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.parameters.get('singularity') : task.ext.parameters.get('docker')}"
 
 
     input:
