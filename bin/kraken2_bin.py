@@ -355,7 +355,7 @@ class CreateBins:
         """
         for k, v in sequences.items():
             with open(
-                f"{k.strip().replace(' ', '_').replace('(', '_').replace(')', '_').replace('.', '_')}_binned.fasta",
+                f"{k.strip().replace(' ', '_').replace('(', '_').replace(')', '_').replace('.', '_')}.binned.fasta",
                 "w",
                 encoding="utf8",
             ) as out_file:
