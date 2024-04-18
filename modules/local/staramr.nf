@@ -18,7 +18,7 @@ process STARAMR {
     tuple val(meta), path("$prefix/mlst${params.staramr.tsv_ext}"), emit: mlst
     tuple val(meta), path("$prefix/settings${params.staramr.txt_ext}"), emit: settings
     tuple val(meta), path("$prefix/results${params.staramr.xlsx_ext}"), emit: results_xlsx
-    tuple val(meta), path("$prefix/hits/*"), emit: hits
+    tuple val(meta), path("$prefix/hits/*"), emit: hits, optional: true
     path "versions.yml", emit: versions
 
     script:
