@@ -48,9 +48,9 @@ nextflow_workflow {
                 assert contains([["id": "SAMPLE2"], ["report_tag": "MaxContigToShort"], false])
             }
 
-            assert !file("$launchDir/results/assembly/quality/quast/SAMPLE1/SAMPLE1.tsv").exists()
+            assert !file("$launchDir/results/Assembly/Quality/QUAST/SAMPLE1/SAMPLE1.quast.quality.tsv").exists()
 
-            with(path("$launchDir/results/assembly/quality/quast/SAMPLE2/SAMPLE2.tsv").readLines()) {
+            with(path("$launchDir/results/Assembly/Quality/QUAST/SAMPLE2/SAMPLE2.quast.quality.tsv").readLines()) {
                 assert contains("Assembly\tsample2")
                 assert contains("# contigs (>= 0 bp)\t3")
                 assert contains("Total length (>= 0 bp)\t60")
@@ -104,8 +104,8 @@ nextflow_workflow {
                 assert contains([["id": "SAMPLE2"], ["report_tag": "MaxContigToShort"], true])
             }
 
-            assert !file("$launchDir/results/assembly/quality/quast/SAMPLE1/SAMPLE1.tsv").exists()
-            assert !file("$launchDir/results/assembly/quality/quast/SAMPLE2/SAMPLE2.tsv").exists()
+            assert !file("$launchDir/results/Assembly/Quality/QUAST/SAMPLE1/SAMPLE1.quast.quality.tsv").exists()
+            assert !file("$launchDir/results/Assembly/Quality/QUAST/SAMPLE2/SAMPLE2.quast.quality.tsv").exists()
         }
     }
 
@@ -150,14 +150,14 @@ nextflow_workflow {
                 assert contains([["id": "SAMPLE2"], ["report_tag": "MaxContigToShort"], false])
             }
 
-            with(path("$launchDir/results/assembly/quality/quast/SAMPLE1/SAMPLE1.tsv").readLines()) {
+            with(path("$launchDir/results/Assembly/Quality/QUAST/SAMPLE1/SAMPLE1.quast.quality.tsv").readLines()) {
                 assert contains("Assembly\tsample1")
                 assert contains("# contigs (>= 0 bp)\t4")
                 assert contains("Total length (>= 0 bp)\t10")
                 assert contains("N50\t4")
             }
 
-            with(path("$launchDir/results/assembly/quality/quast/SAMPLE2/SAMPLE2.tsv").readLines()) {
+            with(path("$launchDir/results/Assembly/Quality/QUAST/SAMPLE2/SAMPLE2.quast.quality.tsv").readLines()) {
                 assert contains("Assembly\tsample2")
                 assert contains("# contigs (>= 0 bp)\t3")
                 assert contains("Total length (>= 0 bp)\t60")
