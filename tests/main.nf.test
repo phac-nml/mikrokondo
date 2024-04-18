@@ -67,7 +67,7 @@ nextflow_pipeline {
 
             // output files
             assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Json/final_report.json" }.size() == 1
-            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Tables/final_report_transposed.tsv" }.size() == 1
+            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Tables/final_report.tsv" }.size() == 1
             assert iridanext_samples.CSE.findAll { it.path.contains("Assembly/FinalAssembly") }.size() == 0
             assert iridanext_samples.CSE.findAll { it.path.contains("Assembly/FinalReports/FlattenedReports/CSE.flat_sample.json.gz") }.size() == 0
 
@@ -169,7 +169,7 @@ nextflow_pipeline {
 
             // output files
             assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Json/final_report.json" }.size() == 1
-            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Tables/final_report_transposed.tsv" }.size() == 1
+            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Tables/final_report.tsv" }.size() == 1
             assert iridanext_samples.short.findAll { it.path == "Assembly/FinalAssembly/short/short.final.filtered.assembly.fasta.gz" }.size() == 1
             assert iridanext_samples.short.findAll { it.path == "FinalReports/FlattenedReports/short.flat_sample.json.gz" }.size() == 1
 

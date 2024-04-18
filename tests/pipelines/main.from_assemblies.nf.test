@@ -178,7 +178,7 @@ nextflow_pipeline {
             assert iridanext_metadata.salmonella_GCA_000008105."meta.single_end" == false
 
             assert iridanext_samples.salmonella_GCA_000008105.findAll {
-                    it.path == "Assembly/annotations/Locidex/Report/salmonella_GCA_000008105.locidex.report.profile.mlst.subtyping.json.gz"
+                    it.path == "Assembly/Subtyping/Locidex/Report/salmonella_GCA_000008105.locidex.report.profile.mlst.subtyping.json.gz"
                 }.size() == 1
 
             // parse final report tsv file
