@@ -155,7 +155,7 @@ nextflow_pipeline {
             assert path("$launchDir/results/Assembly/Annotation/StarAMR/salmonella_GCA_000008105/salmonella_GCA_000008105.detailed_summary.staramr.annotation.tsv").exists()
 
             // Check Locidex outputs
-            def acutal_mlst_profile = path("$launchDir/results/Assembly/Annotation/Locidex/Report/salmonella_GCA_000008105.profile.mlst.json.gz")
+            def acutal_mlst_profile = path("$launchDir/results/Assembly/Annotation/Locidex/Report/salmonella_GCA_000008105.locidex.report.profile.mlst.subtyping.json.gz")
             assert acutal_mlst_profile.exists()
             assert path("$launchDir/results/Assembly/Annotation/Locidex/Extract/salmonella_GCA_000008105/raw.extracted.seqs.fasta.gz").exists()
             assert path("$launchDir/results/Assembly/Annotation/Locidex/Search/salmonella_GCA_000008105_seq_store.json.gz").exists()
