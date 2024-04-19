@@ -37,12 +37,15 @@ Initial release of phac-nml/mikrokondo. Mikrokondo currently supports: read trim
 
 - Fixed param typos in schema, config and docs.
 
+- Added parameter to skip length filtering of sequences
 
 - Added locidex for allele calling
 
 - Updated directory output structure and names
 
 ### `Fixed`
+
+- If you select to filter contigs by length, those contigs will now be used for subsequent analysis
 
 ### `Dependencies`
 

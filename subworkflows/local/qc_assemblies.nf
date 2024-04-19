@@ -82,10 +82,12 @@ workflow QC_ASSEMBLIES {
 
     min_length = Channel.value(params.quast.min_contig_length)
 
-    filterd_contigs = SEQKIT_FILTER(pre_checked_data, min_length)
-    versions = versions.mix(filterd_contigs.versions)
+    if(params.skip_length_filtering_contigs){
+        filterd_contigs = SEQKIT_FILTER(pre_checked_data, min_length)
+        versions = versions.mix(filterd_contigs.versions)
+        assembled_reads = filterd_contigs.filtered_sequences
+    }
 
-    assembled_reads = filterd_contigs.filtered_sequences
 
 
     pub_final_assembly = PUBLISH_FINAL_ASSEMBLIES(assembled_reads)

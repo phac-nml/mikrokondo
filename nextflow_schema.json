@@ -399,7 +399,8 @@
                 },
                 "skip_metagenomic_detection": {
                     "type": "boolean",
-                    "description": "For samples to be analyzed as isolates"
+                    "description": "For samples to be analyzed as isolates",
+                    "help_text": ""
                 },
                 "skip_staramr": {
                     "type": "boolean",
@@ -408,6 +409,11 @@
                 "skip_allele_calling": {
                     "type": "boolean",
                     "description": "Skip allele calling with Locidex"
+                },
+                "skip_length_filtering_contigs": {
+                    "type": "boolean",
+                    "description": "Skip filtering contigs by length.",
+                    "help_text": ""
                 }
             }
         },
