@@ -40,6 +40,8 @@ Initial release of phac-nml/mikrokondo. Mikrokondo currently supports: read trim
 
 ### `Fixed`
 
+- Matched ECTyper and SISTR parameters to what is set in the current IRIDA addressing issue [#58](https://github.com/phac-nml/mikrokondo/issues/58)
+
 ### `Dependencies`
 
 ### `Deprecated`
