@@ -45,7 +45,7 @@ Initial release of phac-nml/mikrokondo. Mikrokondo currently supports: read trim
 
 ### `Fixed`
 
-- If you select to filter contigs by length, those contigs will now be used for subsequent analysis
+- If you select to filter contigs by length, those contigs will now be used for subsequent analysis. This resolves issue [#55](https://github.com/phac-nml/mikrokondo/issues/55)
 
 ### `Dependencies`
 
