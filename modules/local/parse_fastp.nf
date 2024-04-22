@@ -3,7 +3,7 @@ import groovy.json.JsonSlurper
 
 process PARSE_FASTP{
     tag "$meta.id"
-    label "process_low"
+    label "process_single"
 
     input:
     tuple val(meta), val(json)
