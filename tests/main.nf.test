@@ -26,6 +26,7 @@ nextflow_pipeline {
                 skip_checkm = true
                 skip_raw_read_metrics = true
                 skip_polishing = true
+                skip_allele_calling = true
 
                 max_memory = "2.GB"
                 max_cpus = 1
@@ -92,6 +93,8 @@ nextflow_pipeline {
                 dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
 
                 min_reads = 100
+
+                skip_allele_calling = true
 
 
                 skip_bakta = true

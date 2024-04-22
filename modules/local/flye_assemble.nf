@@ -8,7 +8,7 @@ process FLYE_ASSEMBLE{
     label 'process_high'
     label 'process_high_memory'
     label 'process_long'
-    container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.containers.get('singularity') : task.ext.containers.get('docker')}"
+    container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.parameters.get('singularity') : task.ext.parameters.get('docker')}"
 
     memory { task.memory * task.attempt}
     // TODO check if --debug flag should be added to flye to actually  turns off the debug logging?

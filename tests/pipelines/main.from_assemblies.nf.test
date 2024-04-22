@@ -26,6 +26,8 @@ nextflow_pipeline {
                 skip_staramr = false
                 skip_subtyping = false
 
+                skip_allele_calling = true
+
                 max_memory = "2.GB"
                 max_cpus = 1
             }
@@ -126,9 +128,12 @@ nextflow_pipeline {
                 skip_checkm = true
                 skip_raw_read_metrics = true
                 skip_polishing = true
-                
+
                 skip_staramr = false
                 skip_subtyping = false
+                skip_allele_calling = false
+
+                allele_scheme = "$baseDir/tests/data/databases/locidex_salm"
 
                 max_memory = "2.GB"
                 max_cpus = 1
@@ -149,6 +154,18 @@ nextflow_pipeline {
             assert path("$launchDir/results/annotations/StarAMR/salmonella_GCA_000008105/resfinder.tsv").exists()
             assert path("$launchDir/results/annotations/StarAMR/salmonella_GCA_000008105/detailed_summary.tsv").exists()
 
+            // Check Locidex outputs
+            def acutal_mlst_profile = path("$launchDir/results/annotations/locidex/Report/salmonella_GCA_000008105.profile.mlst.json.gz")
+            assert acutal_mlst_profile.exists()
+            assert path("$launchDir/results/annotations/locidex/ExtractedSequences/salmonella_GCA_000008105/raw.extracted.seqs.fasta.gz").exists()
+            assert path("$launchDir/results/annotations/locidex/Search/salmonella_GCA_000008105_seq_store.json.gz").exists()
+
+            // comparing bytes, as both files are in gzipped
+            def actual_mlst_profile_bytes = path("$launchDir/results/annotations/locidex/Report/salmonella_GCA_000008105.profile.mlst.json.gz").getBytes()
+            def expected_mlst_profile_bytes = path("$baseDir/tests/data/profiles/salmonella_GCA_000008105.expected_profile.json.gz").getBytes()
+            assert actual_mlst_profile_bytes.md5() == expected_mlst_profile_bytes.md5()
+
+
             // compare IRIDA Next JSON output
             assert path("$launchDir/results/iridanext.output.json").exists()
             def iridanext_json = path("$launchDir/results/iridanext.output.json").json
@@ -159,6 +176,10 @@ nextflow_pipeline {
             assert iridanext_metadata.salmonella_GCA_000008105."meta.assembly" == true
             assert iridanext_metadata.salmonella_GCA_000008105."meta.hybrid" == false
             assert iridanext_metadata.salmonella_GCA_000008105."meta.single_end" == false
+
+            assert iridanext_samples.salmonella_GCA_000008105.findAll {
+                    it.path == "annotations/locidex/Report/salmonella_GCA_000008105.profile.mlst.json.gz"
+                }.size() == 1
 
             // parse final report tsv file
             def final_report_tmap = [:]
@@ -251,9 +272,10 @@ nextflow_pipeline {
                 skip_checkm = true
                 skip_raw_read_metrics = true
                 skip_polishing = true
-                
+
                 skip_staramr = false
                 skip_subtyping = false
+                skip_allele_calling = true
 
                 max_memory = "2.GB"
                 max_cpus = 1
