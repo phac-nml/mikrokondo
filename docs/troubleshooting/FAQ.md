@@ -43,7 +43,7 @@ Sometimes the resume features of Nextflow don't work completely. The above error
 
 - Exit code 1, and an error involving ` stderr=FASTA-Reader: Ignoring invalid residues at position(s):`
   - This is likely not a problem with your data but with your databases, following the instructions listed [here](https://github.com/phac-nml/staramr/issues/200#issuecomment-1741082733) should fix the issue.
-  - The command to download the proper databases mentioned in the issue is listed here: 
+  - The command to download the proper databases mentioned in the issue is listed here:
   `staramr db build --dir staramr_databases --resfinder-commit fa32d9a3cf0c12ec70ca4e90c45c0d590ee810bd --pointfinder-commit 8c694b9f336153e6d618b897b3b4930961521eb8 --plasmidfinder-commit c18e08c17a5988d4f075fc1171636e47546a323d`
   - **Passing in a database is optional as the one within the container will be used by default.**
   - If you continue to have problems with StarAMR you can skip it using `--skip_staramr`
@@ -82,3 +82,9 @@ Sometimes the resume features of Nextflow don't work completely. The above error
 
 - `[Errno 30] Read-only file system: '/usr/local/lib/python3.9/site-packages/quast_libs/gridss'`
   - This issue appears to be related to QUAST trying to download GRIDSS for structural variant detection and this action being incompatible with the container used to run QUAST. You may be able to resolve this be adding `--no-sv` as a QUAST command-line flag in Mikrokondo's `nextflow.config`, or by switching your container platform to singularity. Errors were observed with `apptainer version 1.2.3`, which were resolved by switching to singularity (`singularity-ce version 3.9.5` and `singularity-ce version a948062` resolved the issue).
+
+### ECTyper fails
+
+- ECTyper makes uses of pythons temporary files which can result in issues on shared file systems e.g. `ntfs`. If you encounter issues try running the pipeline in a place where read and write permissions are more relaxed.
+
+

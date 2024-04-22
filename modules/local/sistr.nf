@@ -1,4 +1,4 @@
-// SISTR on the cluster! borrowing from https://github.com/nf-core/modules/blob/master/modules/nf-core/sistr/main.nf agina
+// SISTR on the cluster! taking from https://github.com/nf-core/modules/blob/master/modules/nf-core/sistr/main.nf agina
 
 
 process SISTR {
@@ -17,7 +17,10 @@ process SISTR {
     path "versions.yml"                    , emit: versions
 
     script:
-    def args = task.ext.args ?: ''
+    def args = ""
+    if(params.sistr.full_cgmlst){
+        args << "--use-full-cgmlst-db"
+    }
     def prefix = task.ext.prefix ?: "${meta.id}"
     def is_compressed = fasta.getName().endsWith(".gz") ? true : false
     def fasta_name = fasta.getName().replace(".gz", "")

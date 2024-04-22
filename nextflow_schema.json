@@ -355,7 +355,7 @@
                 },
                 "skip_bakta": {
                     "type": "boolean",
-		    "default": true,
+                    "default": true,
                     "description": "Skip annotation with Bakta"
                 },
                 "skip_abricate": {
@@ -398,6 +398,60 @@
                 "skip_staramr": {
                     "type": "boolean",
                     "description": "Skip running StarAMR"
+                }
+            }
+        },
+        "ectyper": {
+            "title": "ECTyper",
+            "type": "object",
+            "description": "Options for ECTyper (E.coli serotyping)",
+            "default": "",
+            "properties": {
+                "ec_opid": {
+                    "type": "number",
+                    "default": 90,
+                    "description": "Minimum percent identity to determine O antigens prescence",
+                    "minimum": 0,
+                    "maximum": 100
+                },
+                "ec_opcov": {
+                    "type": "number",
+                    "default": 90,
+                    "description": "Minimum percent coverage of O antigen",
+                    "minimum": 0,
+                    "maximum": 100
+                },
+                "ec_hpid": {
+                    "type": "number",
+                    "default": 95,
+                    "description": "Miniumum percent identity to determine H antigens prescence",
+                    "minimum": 0,
+                    "maximum": 100
+                },
+                "ec_hpcov": {
+                    "type": "number",
+                    "default": 50,
+                    "description": "Minimum percent coverage of H antigen",
+                    "minimum": 0,
+                    "maximum": 100
+                },
+                "ec_enable_verification": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable species verification in ECTyper"
+                }
+            }
+        },
+        "sistr": {
+            "title": "SISTR",
+            "type": "object",
+            "description": "Options for SISTR (Salmonella serotyping)",
+            "default": "",
+            "properties": {
+                "sr_full_cgmlst": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Run SISTR using the full set of cgMLST alleles which can include highly similar alleles."
                 }
             }
         },
@@ -562,6 +616,12 @@
         },
         {
             "$ref": "#/definitions/control_flow_options"
+        },
+        {
+            "$ref": "#/definitions/ectyper"
+        },
+        {
+            "$ref": "#/definitions/sistr"
         },
         {
             "$ref": "#/definitions/fastp_options"
