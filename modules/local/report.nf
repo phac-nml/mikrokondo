@@ -11,7 +11,7 @@ import java.nio.file.Paths
 
 process REPORT{
     tag "Report Generation"
-
+    label "process_single"
 
     input:
     val test_in
