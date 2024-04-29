@@ -8,11 +8,14 @@
 
 ## Input
 
-- contigs
-- reads
-- metadata
+- Contig file (fasta) from the `FinalAssembly` dir
+	- This is the final contig file from the last step in the CleanAssemble workflow (taking into account any skip flags that have been used)
+- metadata from prior tools
 
 ## Outputs
-
-- metadata
-- binned contigs
+- Assembly
+    - PostProcessing
+        - Metagenomic
+            - BinnedContigs
+                - SAMPLE
+                    - CONTIG

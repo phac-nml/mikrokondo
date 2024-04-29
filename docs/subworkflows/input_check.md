@@ -11,7 +11,7 @@
 3. If there are samples that have duplicate ID's the **samples will be combined**.
 
 ## Input
-- CSV formatted sample sheet
+- User submitted CSV formatted sample sheet
 
 ## Outputs
 - A channel of reads and their associated tags
