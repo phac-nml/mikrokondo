@@ -40,7 +40,7 @@ workflow DETERMINE_SPECIES {
 
     }else {
         log.info "Using mash screen for sample classification"
-        MASH_SCREEN(contigs, file(params.mash.mash_sketch))
+        MASH_SCREEN(contigs, params.mash.mash_sketch ? file(params.mash.mash_sketch) : Channel.empty())
         results = results.mix(MASH_SCREEN.out.mash_data)
 
         parsed = PARSE_MASH(MASH_SCREEN.out.mash_data, Channel.value("top"))

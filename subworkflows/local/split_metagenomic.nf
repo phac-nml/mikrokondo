@@ -27,7 +27,7 @@ workflow SPLIT_METAGENOMIC {
     contigs = contigs.map{
         meta, contigs, reads -> tuple(meta, contigs)
     }
-    kraken_out = KRAKEN(contigs, params.kraken.db ? file(params.kraken.db): [])
+    kraken_out = KRAKEN(contigs, params.kraken.db ? file(params.kraken.db): Channel.empty())
     staged_kraken_data = kraken_out.classified_contigs.join(kraken_out.report).join(kraken_out.kraken_output)
 
     binned_data = BIN_KRAKEN2(staged_kraken_data, Channel.value(params.kraken_bin.taxonomic_level))
