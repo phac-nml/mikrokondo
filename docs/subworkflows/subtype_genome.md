@@ -12,8 +12,14 @@
 > If a sample cannot be subtyped, it merely passes through the pipeline and is not typed. A log message will instead be displayed notifying the user the sample cannot be typed.
 
 ## Input
-- contigs and associated tags
-- Mash report
+- Contig file (fasta) from the `FinalAssembly` dir
+   - This is the final contig file from the last step in the CleanAssemble workflow (taking into account any skip flags that have been used)
+- Mash report from assembly speciation step in the `Clean Assemble` workflow
 
 ## Output
-- software versions
+- Subtyping
+   - ECTyper
+      - SAMPLE
+   - SevenGeneMLST
+   - SISTR
+   - Etc...

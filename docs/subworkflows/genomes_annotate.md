@@ -26,12 +26,16 @@
 >The `bakta_db` setting can be changed in the `nextflow.config` file, see [bakta](/usage/tool_params/#bakta)
 
 ## Input
-- contigs
-- metadata
+- Contig file (fasta) from the `FinalAssembly` dir
+    - This is the final contig file from the last step in the CleanAssemble workflow (taking into account any skip flags that have been used)
+- metadata from prior tools
 
 ## Output
-- Bakta outputs
-- abricate outputs
-- mob-suite outputs
-- starAMR outputs
-- software versions
+- Assembly
+    - Annotation
+        - Abricate
+        - Mobsuite
+            - recon
+                - SAMPLE
+        - StarAMR
+            - SAMPLE
