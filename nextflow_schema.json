@@ -88,16 +88,16 @@
                     "exists": true,
                     "format": "file-path"
                 },
-                "bakta_db": {
+                "kraken2_db": {
                     "type": "string",
-                    "description": "Database use for bakta, this value is optional as bakta can be skipped",
+                    "description": "Kraken2 database",
                     "pattern": "^\\S+$",
                     "exists": true,
                     "format": "directory-path"
                 },
-                "kraken2_db": {
+                "bakta_db": {
                     "type": "string",
-                    "description": "Kraken2 database",
+                    "description": "Database use for bakta, this value is optional as bakta can be skipped",
                     "pattern": "^\\S+$",
                     "exists": true,
                     "format": "directory-path"
