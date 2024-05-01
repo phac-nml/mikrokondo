@@ -298,4 +298,80 @@ nextflow_pipeline {
             assert workflow.stderr.contains("* --mash_sketch: string [invalid path] does not match pattern ^\\S+\$ (invalid path)")
         }
     }
+
+    test("Test validation of databases parameters check for file existence") {
+        tag "fail_validation"
+
+        when {
+            params {
+                input = "https://raw.githubusercontent.com/phac-nml/mikrokondo/dev/tests/data/samplesheets/samplesheet-small-assembly.csv"
+                outdir = "results"
+
+                platform = "illumina"
+
+                mh_min_kmer = 1
+
+                dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+
+                kraken2_db = "$baseDir/tests/data/kraken2/test"
+
+                min_reads = 100
+
+                skip_bakta = true
+                skip_staramr = false
+                skip_mobrecon = false
+                skip_checkm = false
+                skip_raw_read_metrics = false
+                skip_polishing = false
+
+                max_memory = "2.GB"
+                max_cpus = 1
+
+                // parameter to fail validation
+                mash_sketch = "./valid_path_non_existence"
+            }
+        }
+
+        then {
+            assert workflow.failed
+            assert workflow.stderr.contains("* --mash_sketch: the file or directory './valid_path_non_existence' does not exist.")
+        }
+    }
+
+    test("Test fail required database") {
+        tag "fail_validation_required"
+
+        when {
+            params {
+                input = "https://raw.githubusercontent.com/phac-nml/mikrokondo/dev/tests/data/samplesheets/samplesheet-small-assembly.csv"
+                outdir = "results"
+
+                platform = "illumina"
+
+                mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
+                mh_min_kmer = 1
+
+                // missing dehosting_idx
+
+                kraken2_db = "$baseDir/tests/data/kraken2/test"
+
+                min_reads = 100
+
+                skip_bakta = true
+                skip_staramr = false
+                skip_mobrecon = false
+                skip_checkm = false
+                skip_raw_read_metrics = false
+                skip_polishing = false
+
+                max_memory = "2.GB"
+                max_cpus = 1
+            }
+        }
+
+        then {
+            assert workflow.failed
+            assert workflow.stderr.contains("* Missing required parameter: --dehosting_idx")
+        }
+    }
 }
