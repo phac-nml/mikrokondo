@@ -20,7 +20,7 @@ workflow DETERMINE_SPECIES {
     versions = Channel.empty()
     if (params.run_kraken){
         log.info "Running kraken2 for contigs classification"
-        KRAKEN(contigs, file(params.kraken.db))
+        KRAKEN(contigs, params.kraken.db ? file(params.kraken.db) : Channel.empty())
 
         // join contigs for classification
         split_contigs = KRAKEN.out.classified_contigs.join(KRAKEN.out.report).join(KRAKEN.out.kraken_output)
