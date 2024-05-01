@@ -78,30 +78,35 @@
                     "type": "string",
                     "description": "Mash sketch used for contamination detection and speciation (Sketch comments must be a taxonomic string similar to what Kraken2 outputs)",
                     "pattern": "^\\S+$",
+                    "exists": true,
                     "format": "file-path"
                 },
                 "mash_sketch": {
                     "type": "string",
                     "description": "Minimpa2 index for dehosting and kitome removal",
                     "pattern": "^\\S+$",
+                    "exists": true,
                     "format": "file-path"
                 },
                 "bakta_db": {
                     "type": "string",
                     "description": "Database use for bakta, this value is optional as bakta can be skipped",
                     "pattern": "^\\S+$",
+                    "exists": true,
                     "format": "directory-path"
                 },
                 "kraken2_db": {
                     "type": "string",
                     "description": "Kraken2 database",
                     "pattern": "^\\S+$",
+                    "exists": true,
                     "format": "directory-path"
                 },
                 "staramr_db": {
                     "type": "string",
                     "description": "It is recommended to use the StarAMR database in the StarAMR container however, an external option can be specified",
                     "pattern": "^\\S+$",
+                    "exists": true,
                     "format": "directory-path",
                     "hidden": true
                 }
