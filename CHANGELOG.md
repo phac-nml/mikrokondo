@@ -31,6 +31,9 @@ Initial release of phac-nml/mikrokondo. Mikrokondo currently supports: read trim
 
 - Added integration testing using [nf-test](https://www.nf-test.com/).
 
+
+### `Unreleased`
+
 ### `Added`
 
 - Updated documentation for params.
@@ -42,6 +45,8 @@ Initial release of phac-nml/mikrokondo. Mikrokondo currently supports: read trim
 - Added locidex for allele calling
 
 - Updated directory output structure and names
+
+- Added tests for Kraken2 contig binning
 
 ### `Fixed`
 
