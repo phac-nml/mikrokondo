@@ -90,6 +90,7 @@ nextflow_pipeline {
                 mh_min_kmer = 1
 
                 dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+                kraken2_db = "$launchDir/tests/kraken2/test"
 
                 min_reads = 100
 
@@ -192,6 +193,7 @@ nextflow_pipeline {
                 mh_min_kmer = 1
 
                 dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+                kraken2_db = "$launchDir/tests/kraken2/test"
 
                 min_reads = 100
 
@@ -231,6 +233,8 @@ nextflow_pipeline {
 
                 dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
 
+                kraken2_db = "$launchDir/tests/kraken2/test"
+
                 min_reads = 100
 
                 skip_bakta = true
@@ -267,6 +271,8 @@ nextflow_pipeline {
                 mh_min_kmer = 1
 
                 dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+
+                kraken2_db = "$launchDir/tests/kraken2/test"
 
                 min_reads = 100
 
