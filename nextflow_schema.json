@@ -113,7 +113,8 @@
             },
             "required": [
                 "dehosting_idx",
-                "mash_sketch"
+                "mash_sketch",
+                "kraken2_db"
             ],
             "description": "The location of databases used by mikrokondo"
         },
