@@ -356,7 +356,7 @@ class CreateBins:
         """
         for k, v in sequences.items():
             with open(
-                f"{re.sub(r'[^A-Za-z0-9\-_]', '_', k)}.binned.fasta",
+                "{}.binned.fasta".format(re.sub(r'[^A-Za-z0-9\-_]', '_', k)),
                 "w",
                 encoding="utf8",
             ) as out_file:
