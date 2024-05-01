@@ -13,6 +13,7 @@ from dataclasses import dataclass
 from collections import defaultdict
 import os
 import sys
+import re
 
 
 kraken2_classifiers = frozenset(["U", "R", "D", "K", "P", "C", "O", "F", "G", "S"])
@@ -355,7 +356,7 @@ class CreateBins:
         """
         for k, v in sequences.items():
             with open(
-                f"{k.strip().replace(' ', '_').replace('(', '_').replace(')', '_').replace('.', '_')}.binned.fasta",
+                f"{re.sub(r'[^A-Za-z0-9\-_]', '_', k)}.binned.fasta",
                 "w",
                 encoding="utf8",
             ) as out_file:
