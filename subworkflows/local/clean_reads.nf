@@ -59,7 +59,7 @@ workflow QC_READS {
 
     // TODO add in code to check that there are always enough reads left over after decontamination
     // TODO need to make sure that if one read is unmapped the other is not included as well
-    deconned_reads = REMOVE_CONTAMINANTS(reads, file(params.r_contaminants.mega_mm2_idx), Channel.value(platform_comp))
+    deconned_reads = REMOVE_CONTAMINANTS(reads, params.r_contaminants.mega_mm2_idx ? file(params.r_contaminants.mega_mm2_idx) : error("--dehosting_idx ${params.dehosting_idx} is invalid"), Channel.value(platform_comp))
     versions = versions.mix(REMOVE_CONTAMINANTS.out.versions)
 
 
@@ -169,7 +169,7 @@ workflow QC_READS {
         ch_prepped_reads = filtered_samples // put in un-downsampled reads
     }
 
-    mash_screen_out = MASH_SCREEN(ch_prepped_reads, file(params.mash.mash_sketch))
+    mash_screen_out = MASH_SCREEN(ch_prepped_reads, params.mash.mash_sketch ? file(params.mash.mash_sketch) : error("--mash_sketch ${params.mash_sketch} is invalid"))
 
     versions = versions.mix(mash_screen_out.versions)
 
