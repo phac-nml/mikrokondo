@@ -40,7 +40,7 @@ This workflow is triggered in two ways: 1. when assemblies are used for initial 
         * Json
 
 >SUBTYPING:
->Within the subtyping directory there will be directories for each of the different subtyping tools used during that run. The number and type of tools will differ depending on the organisms present in the set of samples submitted to the pipeline
+>Within the subtyping directory there will be directories for each of the different subtyping tools used during that run. The number and type of tools will differ depending on the organisms present in the set of samples submitted to the pipeline.
 
 
 >FINAL REPORTS:
