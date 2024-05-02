@@ -14,7 +14,8 @@
 
 ## Input
 - Next generation sequencing reads:
-    + Short read - Illumina
+    + Short read
+        * Illumina
     + Long read:
         * Nanopore
         * Pacbio
