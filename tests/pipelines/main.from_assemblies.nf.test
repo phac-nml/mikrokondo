@@ -15,6 +15,7 @@ nextflow_pipeline {
 
                 mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
                 dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+                kraken2_db = "$baseDir/tests/data/kraken2/test"
                 qt_min_contig_length = 1
 
                 skip_bakta = true
@@ -121,6 +122,7 @@ nextflow_pipeline {
 
                 mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/mash.msh"
                 dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+                kraken2_db = "$baseDir/tests/data/kraken2/test"
                 qt_min_contig_length = 1
 
                 skip_bakta = true
@@ -265,6 +267,7 @@ nextflow_pipeline {
 
                 mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/mash.msh"
                 dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+                kraken2_db = "$baseDir/tests/data/kraken2/test"
                 qt_min_contig_length = 1
 
                 skip_bakta = true

@@ -20,7 +20,7 @@ workflow DETERMINE_SPECIES {
     versions = Channel.empty()
     if (params.run_kraken){
         log.info "Running kraken2 for contigs classification"
-        KRAKEN(contigs, file(params.kraken.db))
+        KRAKEN(contigs, params.kraken.db ? file(params.kraken.db) : error("--kraken2_db ${params.kraken.db} is invalid"))
 
         // join contigs for classification
         split_contigs = KRAKEN.out.classified_contigs.join(KRAKEN.out.report).join(KRAKEN.out.kraken_output)
@@ -40,7 +40,7 @@ workflow DETERMINE_SPECIES {
 
     }else {
         log.info "Using mash screen for sample classification"
-        MASH_SCREEN(contigs, file(params.mash.mash_sketch))
+        MASH_SCREEN(contigs, params.mash.mash_sketch ? file(params.mash.mash_sketch) : error("--mash_sketch ${params.mash_sketch} is invalid"))
         results = results.mix(MASH_SCREEN.out.mash_data)
 
         parsed = PARSE_MASH(MASH_SCREEN.out.mash_data, Channel.value("top"))
