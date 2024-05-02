@@ -13,8 +13,8 @@
 
 ## Input
 - Contig file (fasta) from the `FinalAssembly` dir
-   - This is the final contig file from the last step in the CleanAssemble workflow (taking into account any skip flags that have been used)
-- Mash report from assembly speciation step in the `Clean Assemble` workflow
+   - This is the final contig file from the last step in the `CleanAssemble` workflow (taking into account any skip flags that have been used)
+- Mash report from assembly speciation step in the `CleanAssemble` workflow
 
 ## Output
 - Subtyping
