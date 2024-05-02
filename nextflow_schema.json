@@ -100,7 +100,8 @@
                     "description": "Database use for bakta, this value is optional as bakta can be skipped",
                     "pattern": "^\\S+$",
                     "exists": true,
-                    "format": "directory-path"
+                    "format": "directory-path",
+		    "hidden": true
                 },
                 "staramr_db": {
                     "type": "string",
@@ -358,7 +359,8 @@
                 "skip_bakta": {
                     "type": "boolean",
 		    "default": true,
-                    "description": "Skip annotation with Bakta"
+                    "description": "Skip annotation with Bakta",
+		    "hidden": true
                 },
                 "skip_abricate": {
                     "type": "boolean",

@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Changed default values for database parameters `--dehosting_idx`, `--mash_sketch`, `--kraken2_db`, and `--bakta_db` to null.
 - Enabled checking for existance of database files in JSON Schema to avoid issues with staging non-existent files in Azure.
 - Set `--kraken2_db` to be a required parameter for the pipeline.
+- Hide bakta parameters from IRIDA Next UI.
 
 ## v0.1.1 - [2024-04-22]
 
