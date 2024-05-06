@@ -33,9 +33,9 @@ process SISTR {
         --qc \\
         $args \\
         --threads $task.cpus \\
-        --alleles-output ${prefix}-allele.json \\
-        --novel-alleles ${prefix}-allele.fasta \\
-        --cgmlst-profiles ${prefix}-cgmlst.csv \\
+        --alleles-output ${prefix}.allele.json \\
+        --novel-alleles ${prefix}.allele.fasta \\
+        --cgmlst-profiles ${prefix}.cgmlst.csv \\
         --output-prediction ${prefix} \\
         --output-format tab \\
         $fasta_name

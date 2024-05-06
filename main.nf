@@ -76,8 +76,6 @@ workflow MIKROKONDO {
         logger2.setLevel(ch.qos.logback.classic.Level.DEBUG)
     }
 
-
-
     log.info paramsSummaryLog(workflow)
 
     ch_reports = Channel.empty()

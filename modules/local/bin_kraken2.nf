@@ -21,7 +21,7 @@ process BIN_KRAKEN2{
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     kraken2_bin.py ${kraken_report} ${kraken_output} ${contigs} ${taxonomic_level}
-    for i in *_binned.fasta
+    for i in *.binned.fasta
     do
         mv \$i ${prefix}_\$i
         gzip ${prefix}_\$i

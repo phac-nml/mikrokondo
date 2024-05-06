@@ -15,7 +15,37 @@ include { SEQTK_SAMPLE } from '../../modules/local/seqtk_sample.nf'
 
 
 
+process PUBLISH_FINAL_READS {
+    tag "$meta.id"
+    label "process_low"
+    container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.parameters.get('singularity') : task.ext.parameters.get('docker')}"
+
+
+    input:
+    tuple val(meta), path(reads)
+
+    output:
+    tuple val(meta), path("*/*"), emit: final_reads
+    path "versions.yml", emit: versions
+
+    script:
+    """
+    mkdir ${meta.sample}
+    for i in ${reads.join(" ")}
+    do
+        mv \$i ${meta.sample}/
+    done
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        mkdir: \$(echo \$(cat --version 2>&1) | sed 's/^.*coreutils) //; s/ .*\$//')
+        mv: \$(echo \$(touch --version 2>&1) | sed 's/^.*coreutils) //; s/ .*\$//')
+    END_VERSIONS
+    """
+}
+
+
 workflow QC_READS {
+
     // TODO add in nanoplot for nanopore data
     take:
     reads // channel [[meta etc], [Read paths], opt: long reads]
@@ -29,7 +59,7 @@ workflow QC_READS {
 
     // TODO add in code to check that there are always enough reads left over after decontamination
     // TODO need to make sure that if one read is unmapped the other is not included as well
-    deconned_reads = REMOVE_CONTAMINANTS(reads, file(params.r_contaminants.mega_mm2_idx), Channel.value(platform_comp))
+    deconned_reads = REMOVE_CONTAMINANTS(reads, params.r_contaminants.mega_mm2_idx ? file(params.r_contaminants.mega_mm2_idx) : error("--dehosting_idx ${params.dehosting_idx} is invalid"), Channel.value(platform_comp))
     versions = versions.mix(REMOVE_CONTAMINANTS.out.versions)
 
 
@@ -139,7 +169,7 @@ workflow QC_READS {
         ch_prepped_reads = filtered_samples // put in un-downsampled reads
     }
 
-    mash_screen_out = MASH_SCREEN(ch_prepped_reads, file(params.mash.mash_sketch))
+    mash_screen_out = MASH_SCREEN(ch_prepped_reads, params.mash.mash_sketch ? file(params.mash.mash_sketch) : error("--mash_sketch ${params.mash_sketch} is invalid"))
 
     versions = versions.mix(mash_screen_out.versions)
 
@@ -187,11 +217,13 @@ workflow QC_READS {
         ch_cleaned_reads = CHECK_ONT(ch_cleaned_reads)
     }
 
+    published_reads = PUBLISH_FINAL_READS(ch_cleaned_reads)
+    versions = versions.mix(published_reads.versions)
+
+
     emit:
     trimmed_reads = ch_cleaned_reads // channel: [val(meta), [ reads ]]
-    //genome_size = PARSE_KAT.out.genome_size
     genome_size = genome_sizes
-    //heterozygozity = PARSE_KAT.out.heterozygozity
     reports = reports
     versions = versions
 }

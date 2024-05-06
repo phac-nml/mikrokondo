@@ -8,6 +8,35 @@
 [![run with singularity](https://img.shields.io/badge/run%20with-singularity-1d355c.svg?labelColor=000000)](https://sylabs.io/docs/)
 <!-- [![Launch on Nextflow Tower](https://img.shields.io/badge/Launch%20%F0%9F%9A%80-Nextflow%20Tower-%234256e7)](https://tower.nf/launch?pipeline=https://github.com/mk-kondo/mikrokondo) -->
 
+- [Introduction](#introduction)
+  * [What is mikrokondo?](#what-is-mikrokondo-)
+  * [Is mikrokondo right for me?](#is-mikrokondo-right-for-me-)
+  * [Citation](#citation)
+    + [Contact](#contact)
+- [Installing mikrokondo](#installing-mikrokondo)
+  * [Step 1: Installing Nextflow](#step-1--installing-nextflow)
+  * [Step 2: Choose a Container Engine](#step-2--choose-a-container-engine)
+    + [Docker or Singularity?](#docker-or-singularity-)
+  * [Step 3: Install dependencies](#step-3--install-dependencies)
+    + [Dependencies listed](#dependencies-listed)
+  * [Step 4: Further resources to download](#step-4--further-resources-to-download)
+    + [Configuration and settings:](#configuration-and-settings-)
+- [Getting Started](#getting-started)
+  * [Usage](#usage)
+    + [Data Input/formats](#data-input-formats)
+    + [Output/Results](#output-results)
+  * [Run example data](#run-example-data)
+  * [Testing](#testing)
+    + [Install nf-test](#install-nf-test)
+    + [Run tests](#run-tests)
+  * [Troubleshooting and FAQs:](#troubleshooting-and-faqs-)
+  * [References](#references)
+  * [Legal and Compliance Information:](#legal-and-compliance-information-)
+  * [Updates and Release Notes:](#updates-and-release-notes-)
+
+<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
+
+
 # Introduction
 
 ## What is mikrokondo?
@@ -127,18 +156,21 @@ For more information see the [useage docs](https://phac-nml.github.io/mikrokondo
  
 ### Output/Results
 
-All output files will be written into the `outdir` (specified by the user). More explicit tool results can be found in both the [Workflow](workflows/CleanAssemble/) and [Subworkflow](subworkflows/) sections of the docs. Here is a brief description of the outdir structure:
+All output files will be written into the `outdir` (specified by the user). More explicit tool results can be found in both the [Workflow](workflows/CleanAssemble/) and [Subworkflow](subworkflows/) sections of the docs. Here is a brief description of the outdir structure (though in brief the further into the structure you head, the further in the workflow the tool has been run):
 
-- **annotations** - dir containing all annotation tool output.
-- **assembly** - dir containing all assembly tool related output, including quality, 7 gene MLST and taxon determination.
-- **pipeline_info** - dir containing all pipeline related information including software versions used and execution reports.
-- **ReadQuality** - dir containing all read tool related output, including contamination, fastq, mash, and subsampled read sets (when present)
-- **subtyping** - dir containing all subtyping tool related output, including SISTR, ECtyper, etc.
-- **SummaryReport** - dir containing collated results files for all tools, including: 
-   - Individual sample flatted json reports
-   - **final_report** - All tool results for all samples in both .json (including a flattened version) and .tsv format
-- **bco.json** - data providence file generated from the nf-prov plug-in
-- **manifest.json** - data providence file generated from the nf-prov plug-in
+- **Assembly** - contains all output files generated as a result of read assembly and tools using assembled contigs as input
+	- **Annotation** - contains output files generated from tools applying annotation and/or gene characterization from assembled contigs
+	- **Assembling** - contains output files generated as a part of the assembly process in nested order
+	- **FinalAssembly** - this directory will always contain the final output contig files from the last step in the assembly process (will take into account any skip flags in the process)
+	- **PostProcessing** - contains output files from intermediary tools that run after assembly but before annotation takes place in the workflow
+	- **Quality** - contains all output files generated as a result of quality tools after assembly
+- **Subtyping** - contains all output files from workflow subtyping tools, based off assembled contigs
+- **FinalReports** - contains assorted reports including aggregated and flat reports
+- **pipeline_info** - includes tool versions and other pipeline specific information
+- **Reads** - contains all output files generated as a result of read processing and tools using reads as input
+	- **FinalReads** - this directory will contain the final output read files from the last step in read processing (taking into account any skip flags used in the run)
+	- **Processing** - contains output files from tools run to process reads in nested order
+	- **Quality** - contains all output files generated from read quality tools
 
 ## Run example data
 
