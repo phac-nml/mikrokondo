@@ -60,7 +60,6 @@ workflow CLEAN_ASSEMBLE_READS {
 
     // Get quality metrics on Raw Reads (requirement)
     if(!params.skip_raw_read_metrics){
-
         raw_quality_info = READ_SCAN(prepped_input.map{
             val -> val[0].hybrid ? tuple(val[0], val[1], val[2]) : tuple(val[0], val[1], [])
         })

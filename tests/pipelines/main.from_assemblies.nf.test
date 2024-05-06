@@ -39,7 +39,7 @@ nextflow_pipeline {
             assert path("$launchDir/results").exists()
 
             // parse final report json file
-            def final_report = path("$launchDir/results/SummaryReport/final_report.json").json
+            def final_report = path("$launchDir/results/FinalReports/Aggregated/Json/final_report.json").json
             def ecoli_json = final_report.ecoli_GCA_000947975.ecoli_GCA_000947975
             assert ecoli_json.StarAMR."0".Genotype.equals("aph(3'')-Ib, aph(6)-Id, blaCTX-M-15, blaTEM-1B, dfrA7, gyrA (S83A), qacE, sul1, sul2, tet(A)")
             assert ecoli_json.StarAMR."0"."Predicted Phenotype".equals("streptomycin, kanamycin, ampicillin, ceftriaxone, trimethoprim, ciprofloxacin I/R, nalidixic acid, unknown[qacE_1_X68232], sulfisoxazole, tetracycline")
@@ -56,7 +56,7 @@ nextflow_pipeline {
 
             // parse final report tsv file
             def final_report_tmap = [:]
-            def final_report_tsv = path("$launchDir/results/SummaryReport/final_report.tsv").readLines()
+            def final_report_tsv = path("$launchDir/results/FinalReports/Aggregated/Tables/final_report.tsv").readLines()
             final_report_tsv.each {
                 def tokens = it.split("\t")
                 final_report_tmap[tokens[0]] = tokens[1]
@@ -85,9 +85,9 @@ nextflow_pipeline {
             def iridanext_metadata = iridanext_json.metadata.samples
 
             // output files
-            assert iridanext_global.findAll { it.path == "SummaryReport/final_report.json" }.size() == 1
-            assert iridanext_global.findAll { it.path == "SummaryReport/final_report.tsv" }.size() == 1
-            assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "SummaryReport/ecoli_GCA_000947975_flat_sample.json.gz" }.size() == 1
+            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Json/final_report.json" }.size() == 1
+            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Tables/final_report.tsv" }.size() == 1
+            assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "FinalReports/FlattenedReports/ecoli_GCA_000947975.flat_sample.json.gz" }.size() == 1
 
             // output metadata
             def ecoli_metadata = iridanext_metadata.ecoli_GCA_000947975
@@ -146,24 +146,24 @@ nextflow_pipeline {
             assert workflow.success
             assert path("$launchDir/results").exists()
 
-            assert path("$launchDir/results/subtyping/sistr/salmonella_GCA_000008105-allele.fasta").exists()
-            assert path("$launchDir/results/subtyping/sistr/salmonella_GCA_000008105-allele.json").exists()
-            assert path("$launchDir/results/subtyping/sistr/salmonella_GCA_000008105-cgmlst.csv").exists()
-            assert path("$launchDir/results/subtyping/sistr/salmonella_GCA_000008105.tab").exists()
+            assert path("$launchDir/results/Assembly/Subtyping/SISTR/salmonella_GCA_000008105.sistr.allele.subtyping.fasta").exists()
+            assert path("$launchDir/results/Assembly/Subtyping/SISTR/salmonella_GCA_000008105.sistr.allele.subtyping.json").exists()
+            assert path("$launchDir/results/Assembly/Subtyping/SISTR/salmonella_GCA_000008105.sistr.cgmlst.subtyping.csv").exists()
+            assert path("$launchDir/results/Assembly/Subtyping/SISTR/salmonella_GCA_000008105.sistr.subtyping.tab").exists()
 
-            assert path("$launchDir/results/annotations/StarAMR/salmonella_GCA_000008105/plasmidfinder.tsv").exists()
-            assert path("$launchDir/results/annotations/StarAMR/salmonella_GCA_000008105/pointfinder.tsv").exists()
-            assert path("$launchDir/results/annotations/StarAMR/salmonella_GCA_000008105/resfinder.tsv").exists()
-            assert path("$launchDir/results/annotations/StarAMR/salmonella_GCA_000008105/detailed_summary.tsv").exists()
+            assert path("$launchDir/results/Assembly/Annotation/StarAMR/salmonella_GCA_000008105/salmonella_GCA_000008105.plasmidfinder.staramr.annotation.tsv").exists()
+            assert path("$launchDir/results/Assembly/Annotation/StarAMR/salmonella_GCA_000008105/salmonella_GCA_000008105.pointfinder.staramr.annotation.tsv").exists()
+            assert path("$launchDir/results/Assembly/Annotation/StarAMR/salmonella_GCA_000008105/salmonella_GCA_000008105.resfinder.staramr.annotation.tsv").exists()
+            assert path("$launchDir/results/Assembly/Annotation/StarAMR/salmonella_GCA_000008105/salmonella_GCA_000008105.detailed_summary.staramr.annotation.tsv").exists()
 
             // Check Locidex outputs
-            def acutal_mlst_profile = path("$launchDir/results/annotations/locidex/Report/salmonella_GCA_000008105.profile.mlst.json.gz")
+            def acutal_mlst_profile = path("$launchDir/results/Assembly/Subtyping/Locidex/Report/salmonella_GCA_000008105.locidex.report.profile.mlst.subtyping.json.gz")
             assert acutal_mlst_profile.exists()
-            assert path("$launchDir/results/annotations/locidex/ExtractedSequences/salmonella_GCA_000008105/raw.extracted.seqs.fasta.gz").exists()
-            assert path("$launchDir/results/annotations/locidex/Search/salmonella_GCA_000008105_seq_store.json.gz").exists()
+            assert path("$launchDir/results/Assembly/Subtyping/Locidex/Extract/salmonella_GCA_000008105/salmonella_GCA_000008105.raw.locidex.extract.extracted.seqs.subtyping.fasta.gz").exists()
+            assert path("$launchDir/results/Assembly/Subtyping/Locidex/Search/salmonella_GCA_000008105.locidex.seq_store.json.gz").exists()
 
             // comparing bytes, as both files are in gzipped
-            def actual_mlst_profile_bytes = path("$launchDir/results/annotations/locidex/Report/salmonella_GCA_000008105.profile.mlst.json.gz").getBytes()
+            def actual_mlst_profile_bytes = path("$launchDir/results/Assembly/Subtyping/Locidex/Report/salmonella_GCA_000008105.locidex.report.profile.mlst.subtyping.json.gz").getBytes()
             def expected_mlst_profile_bytes = path("$baseDir/tests/data/profiles/salmonella_GCA_000008105.expected_profile.json.gz").getBytes()
             assert actual_mlst_profile_bytes.md5() == expected_mlst_profile_bytes.md5()
 
@@ -180,23 +180,23 @@ nextflow_pipeline {
             assert iridanext_metadata.salmonella_GCA_000008105."meta.single_end" == false
 
             assert iridanext_samples.salmonella_GCA_000008105.findAll {
-                    it.path == "annotations/locidex/Report/salmonella_GCA_000008105.profile.mlst.json.gz"
+                    it.path == "Assembly/Subtyping/Locidex/Report/salmonella_GCA_000008105.locidex.report.profile.mlst.subtyping.json.gz"
                 }.size() == 1
 
             // parse final report tsv file
             def final_report_tmap = [:]
-            def final_report_tsv = path("$launchDir/results/SummaryReport/final_report.tsv").readLines()
+            def final_report_tsv = path("$launchDir/results/FinalReports/Aggregated/Tables/final_report.tsv").readLines()
             final_report_tsv.each {
                 def tokens = it.split("\t")
                 final_report_tmap[tokens[0]] = tokens[1]
             }
 
             // output files
-            assert iridanext_global.findAll { it.path == "SummaryReport/final_report.json" }.size() == 1
-            assert iridanext_global.findAll { it.path == "SummaryReport/final_report.tsv" }.size() == 1
+            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Json/final_report.json" }.size() == 1
+            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Tables/final_report.tsv" }.size() == 1
 
             // parse final report json file
-            def final_report = path("$launchDir/results/SummaryReport/final_report.json").json
+            def final_report = path("$launchDir/results/FinalReports/Aggregated/Json/final_report.json").json
             def salmonella_json = final_report.salmonella_GCA_000008105.salmonella_GCA_000008105
 
             // Tests
@@ -289,11 +289,11 @@ nextflow_pipeline {
             assert workflow.success
             assert path("$launchDir/results").exists()
 
-            assert path("$launchDir/results/subtyping/lissero/listeria_GCF_000196035.tsv").exists()
+            assert path("$launchDir/results/Assembly/Subtyping/Lissero/listeria_GCF_000196035.lissero.subtyping.tsv").exists()
 
-            assert path("$launchDir/results/annotations/StarAMR/listeria_GCF_000196035/plasmidfinder.tsv").exists()
-            assert path("$launchDir/results/annotations/StarAMR/listeria_GCF_000196035/resfinder.tsv").exists()
-            assert path("$launchDir/results/annotations/StarAMR/listeria_GCF_000196035/detailed_summary.tsv").exists()
+            assert path("$launchDir/results/Assembly/Annotation/StarAMR/listeria_GCF_000196035/listeria_GCF_000196035.plasmidfinder.staramr.annotation.tsv").exists()
+            assert path("$launchDir/results/Assembly/Annotation/StarAMR/listeria_GCF_000196035/listeria_GCF_000196035.resfinder.staramr.annotation.tsv").exists()
+            assert path("$launchDir/results/Assembly/Annotation/StarAMR/listeria_GCF_000196035/listeria_GCF_000196035.detailed_summary.staramr.annotation.tsv").exists()
 
             // compare IRIDA Next JSON output
             assert path("$launchDir/results/iridanext.output.json").exists()
@@ -308,18 +308,18 @@ nextflow_pipeline {
 
             // parse final report tsv file
             def final_report_tmap = [:]
-            def final_report_tsv = path("$launchDir/results/SummaryReport/final_report.tsv").readLines()
+            def final_report_tsv = path("$launchDir/results/FinalReports/Aggregated/Tables/final_report.tsv").readLines()
             final_report_tsv.each {
                 def tokens = it.split("\t")
                 final_report_tmap[tokens[0]] = tokens[1]
             }
 
             // output files
-            assert iridanext_global.findAll { it.path == "SummaryReport/final_report.json" }.size() == 1
-            assert iridanext_global.findAll { it.path == "SummaryReport/final_report.tsv" }.size() == 1
+            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Json/final_report.json" }.size() == 1
+            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Tables/final_report.tsv" }.size() == 1
 
             // parse final report json file
-            def final_report = path("$launchDir/results/SummaryReport/final_report.json").json
+            def final_report = path("$launchDir/results/FinalReports/Aggregated/Json/final_report.json").json
             def listeria_json = final_report.listeria_GCF_000196035.listeria_GCF_000196035
 
             // Tests

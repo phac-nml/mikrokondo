@@ -40,7 +40,7 @@ nextflow_pipeline {
             assert path("$launchDir/results").exists()
 
             // parse output json file
-            def json = path("$launchDir/results/SummaryReport/final_report.json").json
+            def json = path("$launchDir/results/FinalReports/Aggregated/Json/final_report.json").json
 
             assert json.CSE.CSE.FastP.summary.sequencing.equals("paired end (150 cycles + 150 cycles)")
             assert json.CSE.CSE.FastP.summary.before_filtering.total_reads.equals(248)
@@ -55,10 +55,10 @@ nextflow_pipeline {
             assert json.CSE.meta.merge.equals(false)
             assert json.CSE.meta.downsampled.equals(false)
 
-            def assembly_path = "$launchDir/results/assembly/length_filtered_contigs/CSE_filtered.fasta.gz"
+            def assembly_path = "$launchDir/results/Assembly/FinalAssembly/CSE/CSE.final.filtered.assembly.fasta.gz"
             assert path(assembly_path).exists().equals(false)
 
-            def contigs_path = "$launchDir/results/assembly/length_filtered_contigs"
+            def contigs_path = "$launchDir/results/Assembly/FinalAssembly"
             assert path(contigs_path).exists().equals(false)
 
             // compare IRIDA Next JSON output
@@ -68,10 +68,10 @@ nextflow_pipeline {
             def iridanext_metadata = iridanext_json.metadata.samples
 
             // output files
-            assert iridanext_global.findAll { it.path == "SummaryReport/final_report.json" }.size() == 1
-            assert iridanext_global.findAll { it.path == "SummaryReport/final_report.tsv" }.size() == 1
-            assert iridanext_samples.CSE.findAll { it.path.contains("assembly/length_filtered_contigs") }.size() == 0
-            assert iridanext_samples.CSE.findAll { it.path.contains("assembly/CSE_flat_sample.json.gz") }.size() == 0
+            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Json/final_report.json" }.size() == 1
+            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Tables/final_report.tsv" }.size() == 1
+            assert iridanext_samples.CSE.findAll { it.path.contains("Assembly/FinalAssembly") }.size() == 0
+            assert iridanext_samples.CSE.findAll { it.path.contains("Assembly/FinalReports/FlattenedReports/CSE.flat_sample.json.gz") }.size() == 0
 
             // output metadata
             //assert iridanext_metadata.CSE."AssemblyCompleted" == false
@@ -117,7 +117,7 @@ nextflow_pipeline {
             assert path("$launchDir/results").exists()
 
             // parse output json file
-            def json = path("$launchDir/results/SummaryReport/final_report.json").json
+            def json = path("$launchDir/results/FinalReports/Aggregated/Json/final_report.json").json
 
             assert json.short.short.RawReadSummary.R1."total_bp".equals(118750)
             assert json.short.short.RawReadSummary.R1."total_reads".equals(475)
@@ -153,11 +153,11 @@ nextflow_pipeline {
             assert json.short.short.CheckM."0"."# marker sets".equals("24")
             assert json.short.short.CheckM."0".Contamination.equals("0.00")
 
-            assert json.short.short.SevenGeneMLSTReport[0].filename.equals("short_polished.fasta.gz")
+            assert json.short.short.SevenGeneMLSTReport[0].filename.equals("short.filtered.fasta.gz")
 
             assert json.short.short.Abricate."0".RESISTANCE.equals("NoData")  // All Abricate results for this are "NoData".
 
-            def assembly_path = "$launchDir/results/assembly/length_filtered_contigs/short_filtered.fasta.gz"
+            def assembly_path = "$launchDir/results/Assembly/FinalAssembly/short/short.final.filtered.assembly.fasta.gz"
             assert path(assembly_path).exists()
 
             // parse assembly file
@@ -171,10 +171,10 @@ nextflow_pipeline {
             def iridanext_metadata = iridanext_json.metadata.samples
 
             // output files
-            assert iridanext_global.findAll { it.path == "SummaryReport/final_report.json" }.size() == 1
-            assert iridanext_global.findAll { it.path == "SummaryReport/final_report.tsv" }.size() == 1
-            assert iridanext_samples.short.findAll { it.path == "assembly/length_filtered_contigs/short_filtered.fasta.gz" }.size() == 1
-            assert iridanext_samples.short.findAll { it.path == "SummaryReport/short_flat_sample.json.gz" }.size() == 1
+            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Json/final_report.json" }.size() == 1
+            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Tables/final_report.tsv" }.size() == 1
+            assert iridanext_samples.short.findAll { it.path == "Assembly/FinalAssembly/short/short.final.filtered.assembly.fasta.gz" }.size() == 1
+            assert iridanext_samples.short.findAll { it.path == "FinalReports/FlattenedReports/short.flat_sample.json.gz" }.size() == 1
 
             // output metadata
             assert iridanext_metadata.short."AssemblyCompleted" == true

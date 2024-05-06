@@ -20,6 +20,7 @@ workflow INPUT_CHECK {
             meta -> tuple(meta.id[0], meta[0])
         }
 
+
     if(params.opt_platforms.ont == params.platform && params.nanopore_chemistry == null){
         exit 1, "ERROR: Nanopore data was selected without a model being specified."
     }
