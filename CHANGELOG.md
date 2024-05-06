@@ -3,6 +3,31 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## `Unreleased`
+
+### `Added`
+
+- Updated documentation for params.
+
+- Fixed param typos in schema, config and docs.
+
+- Added parameter to skip length filtering of sequences
+
+- Added locidex for allele calling
+
+- Updated directory output structure and names
+
+- Added tests for Kraken2 contig binning
+
+### `Fixed`
+
+- If you select to filter contigs by length, those contigs will now be used for subsequent analysis. This resolves issue [#55](https://github.com/phac-nml/mikrokondo/issues/55)
+
+### `Dependencies`
+
+### `Deprecated`
+
+
 ## v0.1.2 - [2024-05-02]
 
 ### Added
@@ -51,26 +76,3 @@ Initial release of phac-nml/mikrokondo. Mikrokondo currently supports: read trim
 - Added integration testing using [nf-test](https://www.nf-test.com/).
 
 
-### `Unreleased`
-
-### `Added`
-
-- Updated documentation for params.
-
-- Fixed param typos in schema, config and docs.
-
-- Added parameter to skip length filtering of sequences
-
-- Added locidex for allele calling
-
-- Updated directory output structure and names
-
-- Added tests for Kraken2 contig binning
-
-### `Fixed`
-
-- If you select to filter contigs by length, those contigs will now be used for subsequent analysis. This resolves issue [#55](https://github.com/phac-nml/mikrokondo/issues/55)
-
-### `Dependencies`
-
-### `Deprecated`
