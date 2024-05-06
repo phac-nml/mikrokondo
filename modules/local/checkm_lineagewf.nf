@@ -10,7 +10,7 @@ process CHECKM_LINEAGEWF {
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("${prefix}/*"), emit: checkm_output
+    tuple val(meta), path("${prefix}/**"), emit: checkm_output
     tuple val(meta), path("${prefix}/${prefix}${params.checkm.results_ext}"), emit: checkm_results
     tuple val(meta), path("${prefix}/${params.checkm.lineage_ms}"), emit: lineage_ms
     path "versions.yml", emit: versions

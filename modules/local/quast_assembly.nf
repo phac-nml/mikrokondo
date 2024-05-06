@@ -11,7 +11,7 @@ process QUAST {
     tuple val(meta), path(contigs), path(trimmed_reads)
 
     output:
-    tuple val(meta), path("${prefix}/*"), path(contigs), emit: quast_data
+    tuple val(meta), path("${prefix}/**"), path(contigs), emit: quast_data
     tuple val(meta), path("${prefix}/${params.quast.report_prefix}${prefix}${params.quast.report_ext}"), path(contigs), emit: quast_table
     path "versions.yml", emit: versions
 

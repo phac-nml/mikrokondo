@@ -21,12 +21,29 @@
 
 5. **Metagenomic assesment** using a custom [Mash](https://github.com/marbl/Mash) 'sketch' file generated from the Genome Taxonomy Database [GTDB](https://gtdb.ecogenomic.org/) and the mash_screen module, this step assesses how many bacterial genera are present in a sample (e.g. a contaminated or metagenomic sample may have more than one genus of bacteria present) with greater than 90% identity (according to Mash). When more than 1 taxa are present, the metagenomic tag is set, turning on metagenomic assembly in later steps. Additionally Kraken2 will be run on metagenomic assemblies and contigs will be binned at a defined taxonomic level (default level: genus).
 
-6. **Nanopore ID screening** duplicate Nanopore read ID's have been known to cause issues in the pipeline downstream. In order to bypass this issue, an option can be toggled where a script will read in Nanopore reads and append a unique ID to the header, this process can be slow so default setting is `--skip_ont_header_cleaning true`.
+6. **Nanopore ID screening** duplicate Nanopore read ID's have been known to cause issues in the pipeline downstream. In order to bypass this issue, an option can be toggled where a script will read in Nanopore reads and append a unique ID to the header, this process can be slow so default setting is to skip, `--skip_ont_header_cleaning true`.
 
 ## Input
-- reads and metadata
+- Next generation sequencing reads:
+	+ Short read - Illumina
+	+ Long read:
+		* Nanopore
+		* Pacbio
+- User submitted sample sheet		
+
 
 ## Outputs
-- quality trimmed and deconned reads
-- estimated genome size
-- software versions
+- Reads
+	- FinalReads
+		- SAMPLE
+	- Processing
+		- Dehosting
+			- Trimmed
+				- FastP
+					- Seqtk
+				- MashSketches
+	- Quality
+		- RawReadQuality
+		- Trimmed
+			- FastP
+			- MashScreen
