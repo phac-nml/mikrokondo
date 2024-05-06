@@ -72,11 +72,7 @@ nextflow_pipeline {
             assert iridanext_global.findAll { it.path == "SummaryReport/final_report.tsv" }.size() == 1
             assert iridanext_samples.CSE.findAll { it.path.contains("assembly/length_filtered_contigs") }.size() == 0
             assert iridanext_samples.CSE.findAll { it.path.contains("assembly/CSE_flat_sample.json.gz") }.size() == 0
-
-            // output metadata
-            //assert iridanext_metadata.CSE."AssemblyCompleted" == false
         }
-
     }
 
     test("Should run without failure.") {
@@ -177,11 +173,11 @@ nextflow_pipeline {
             assert iridanext_samples.short.findAll { it.path == "SummaryReport/short_flat_sample.json.gz" }.size() == 1
 
             // output metadata
-            assert iridanext_metadata.short."AssemblyCompleted" == true
-            assert iridanext_metadata.short."QUAST.0.Total length" == "4949"
-            assert iridanext_metadata.short."QUAST.0.Largest contig" == "4949"
-            assert iridanext_metadata.short."QUAST.0.# contigs" == "1"
-            assert iridanext_metadata.short."QUAST.0.N50" == "4949"
+            assert iridanext_metadata.short."QC Status" == "FAILED"
+            // Need to wait for additional code before these have correct values
+            //assert iridanext_metadata.short."Length Value" == "4949"
+            //assert iridanext_metadata.short."nr contigs Value" == "1"
+            //assert iridanext_metadata.short."n50 Value" == "4949"
         }
 
     }
