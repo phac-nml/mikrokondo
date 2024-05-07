@@ -170,6 +170,12 @@ nextflow_pipeline {
             assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Json/final_report.json" }.size() == 1
             assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Tables/final_report.tsv" }.size() == 1
             assert iridanext_samples.short.findAll { it.path == "Assembly/FinalAssembly/short/short.final.filtered.assembly.fasta.gz" }.size() == 1
+            //assert iridanext_samples.short.findAll { it.path == "Assembly/Quality/QUAST/short/short.transposed_short.quast.quality.tsv" }.size() == 1
+            assert iridanext_samples.short.findAll { it.path == "Assembly/Quality/SeqKitStats/short.seqkit.stats.summary.tsv" }.size() == 1
+            assert iridanext_samples.short.findAll { it.path == "Assembly/PostProcessing/Speciation/MashScreen/short.mash.screen.taxa.screen.screen" }.size() == 1
+            assert iridanext_samples.short.findAll { it.path == "Reads/Quality/Trimmed/MashScreen/short.mash.screen.reads.screen.screen" }.size() == 1
+            assert iridanext_samples.short.findAll { it.path == "Reads/Quality/Trimmed/FastP/short.fastp.summary.json" }.size() == 1
+            assert iridanext_samples.short.findAll { it.path == "Reads/Quality/RawReadQuality/short.read.scan.summary.json" }.size() == 1
             assert iridanext_samples.short.findAll { it.path == "FinalReports/FlattenedReports/short.flat_sample.json.gz" }.size() == 1
 
             // output metadata
