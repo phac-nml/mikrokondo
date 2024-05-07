@@ -487,6 +487,7 @@ def range_comp(fields, qc_data, comp_val, qc_obj){
     if(vals[0] <= comp_val && comp_val <= vals[1]){
         qc_obj.status = true
         qc_obj.message = "[PASSED ${qc_obj.field}] ${comp_val} is within acceptable QC range for ${qc_data.search} (${fields[0]}: ${vals[0]} - ${fields[1]} ${vals[1]})"
+        qc_obj.qc_status = "PASSED"
     }else{
         if(comp_val < vals[0]){
             qc_obj.low = true
@@ -494,6 +495,7 @@ def range_comp(fields, qc_data, comp_val, qc_obj){
             qc_obj.low = false
         }
         qc_obj.message = "[FAILED ${qc_obj.field}] ${comp_val} is outside the acceptable ranges for ${qc_data.search} (${fields[0]}: ${vals[0]} - ${fields[1]} ${vals[1]})"
+        qc_obj.qc_status = "FAILED"
     }
     return qc_obj
 }
@@ -514,9 +516,11 @@ def greater_equal_comp(fields, qc_data, comp_val, qc_obj){
     if(comp_val >= vals ){
         qc_obj.status = true
         qc_obj.message = "[PASSED ${qc_obj.field}] ${comp_val} meets QC parameter of => ${vals} for ${qc_data.search}"
+        qc_obj.qc_status  = "PASSED"
     }else{
         qc_obj.low = true
         qc_obj.message = "[FAILED ${qc_obj.field}] ${comp_val} is less than QC parameter of ${vals} for ${qc_data.search}"
+        qc_obj.qc_status  = "FAILED"
     }
     return qc_obj
 }
@@ -538,16 +542,18 @@ def lesser_equal_comp(fields, qc_data, comp_val, qc_obj){
     if(comp_val <= vals ){
         qc_obj.status = true
         qc_obj.message = "[PASSED ${qc_obj.field}] ${comp_val} meets QC parameter of <= ${vals} for ${qc_data.search}"
+        qc_obj.qc_status = "PASSED"
     }else{
         qc_obj.low = false
         qc_obj.message = "[FAILED ${qc_obj.field}] ${comp_val} is greater than than QC parameter of ${vals} for ${qc_data.search}"
+        qc_obj.qc_status = "FAILED"
     }
     return qc_obj
 }
 
 def prep_qc_vals(qc_vals, qc_data, comp_val, field_val){
     // Low value is added to designate if a value was too low or too high if it fails a qc threshold
-    def status = ["status": false, "message": "", "field": field_val, "low": false]
+    def status = ["status": false, "message": "", "field": field_val, "low": false, "value": comp_val, "qc_status": "WARNING"]
     def comp_fields = qc_vals.compare_fields
     switch(qc_vals.comp_type.toUpperCase()){
         case 'GE':

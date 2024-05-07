@@ -54,6 +54,13 @@ nextflow_pipeline {
             assert ecoli_json.ECTyperSubtyping."0".Database.equals("v1.0 (11-03-2020)")
             assert ecoli_json.ECTyperSubtyping."0".QC.equals("PASS (REPORTABLE)")
 
+            assert final_report.ecoli_GCA_000947975.QualityAnalysis.n50_value.value == 122025
+            assert final_report.ecoli_GCA_000947975.QualityAnalysis.n50_value.qc_status == "PASSED"
+            assert final_report.ecoli_GCA_000947975.QualityAnalysis.nr_contigs.qc_status == "PASSED"
+            assert final_report.ecoli_GCA_000947975.QualityAnalysis.nr_contigs.value == 187
+            assert final_report.ecoli_GCA_000947975.QualityAnalysis.length.value == 5333525
+            assert final_report.ecoli_GCA_000947975.QualityAnalysis.length.qc_status == "PASSED"
+
             // parse final report tsv file
             def final_report_tmap = [:]
             def final_report_tsv = path("$launchDir/results/FinalReports/Aggregated/Tables/final_report.tsv").readLines()
@@ -77,6 +84,7 @@ nextflow_pipeline {
             assert final_report_tmap."ECTyperSubtyping.0.Serotype" == "O104:H4"
             assert final_report_tmap."ECTyperSubtyping.0.Database" == "v1.0 (11-03-2020)"
             assert final_report_tmap."ECTyperSubtyping.0.QC" == "PASS (REPORTABLE)"
+
 
             // compare IRIDA Next JSON output
             def iridanext_json = path("$launchDir/results/iridanext.output.json").json
@@ -205,6 +213,13 @@ nextflow_pipeline {
             // parse final report json file
             def final_report = path("$launchDir/results/FinalReports/Aggregated/Json/final_report.json").json
             def salmonella_json = final_report.salmonella_GCA_000008105.salmonella_GCA_000008105
+
+            assert final_report.salmonella_GCA_000008105.QualityAnalysis.n50_value.value == 4755700
+            assert final_report.salmonella_GCA_000008105.QualityAnalysis.n50_value.qc_status == "PASSED"
+            assert final_report.salmonella_GCA_000008105.QualityAnalysis.nr_contigs.qc_status == "PASSED"
+            assert final_report.salmonella_GCA_000008105.QualityAnalysis.nr_contigs.value == 3
+            assert final_report.salmonella_GCA_000008105.QualityAnalysis.length.value == 4944000
+            assert final_report.salmonella_GCA_000008105.QualityAnalysis.length.qc_status == "PASSED"
 
             // Tests
             assert salmonella_json.SpeciesTopHit == "s__Salmonella enterica"
@@ -336,6 +351,13 @@ nextflow_pipeline {
             // parse final report json file
             def final_report = path("$launchDir/results/FinalReports/Aggregated/Json/final_report.json").json
             def listeria_json = final_report.listeria_GCF_000196035.listeria_GCF_000196035
+
+            assert final_report.listeria_GCF_000196035.QualityAnalysis.n50_value.value == 2944528
+            assert final_report.listeria_GCF_000196035.QualityAnalysis.n50_value.qc_status == "PASSED"
+            assert final_report.listeria_GCF_000196035.QualityAnalysis.nr_contigs.qc_status == "PASSED"
+            assert final_report.listeria_GCF_000196035.QualityAnalysis.nr_contigs.value == 1
+            assert final_report.listeria_GCF_000196035.QualityAnalysis.length.value == 2944528
+            assert final_report.listeria_GCF_000196035.QualityAnalysis.length.qc_status == "PASSED"
 
             // Tests
             assert listeria_json.SpeciesTopHit == "s__Listeria monocytogenes"
