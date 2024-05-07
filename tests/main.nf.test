@@ -180,10 +180,9 @@ nextflow_pipeline {
 
             // output metadata
             assert iridanext_metadata.short."QC Status" == "FAILED"
-            // Need to wait for additional code before these have correct values
-            //assert iridanext_metadata.short."Length Value" == "4949"
-            //assert iridanext_metadata.short."nr contigs Value" == "1"
-            //assert iridanext_metadata.short."n50 Value" == "4949"
+            assert iridanext_metadata.short."Length Value" == 4949
+            assert iridanext_metadata.short."nr contigs Value" == 1
+            assert iridanext_metadata.short."n50 Value" == 4949
         }
 
     }
