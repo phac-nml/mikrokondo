@@ -29,6 +29,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Changed the specific files and metadata to store within IRIDA Next.
 
+- Added separate report fields for (PASSED|FAILED|WARNING) values and for the the actual value
+
 ### `Dependencies`
 
 ### `Deprecated`
