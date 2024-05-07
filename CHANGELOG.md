@@ -23,6 +23,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - If you select to filter contigs by length, those contigs will now be used for subsequent analysis. This resolves issue [#55](https://github.com/phac-nml/mikrokondo/issues/55)
 
+- Matched ECTyper and SISTR parameters to what is set in the current IRIDA addressing issue [#58](https://github.com/phac-nml/mikrokondo/issues/58)
+
 ### `Dependencies`
 
 ### `Deprecated`
