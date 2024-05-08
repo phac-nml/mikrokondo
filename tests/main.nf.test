@@ -72,6 +72,23 @@ nextflow_pipeline {
             assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Tables/final_report.tsv" }.size() == 1
             assert iridanext_samples.CSE.findAll { it.path.contains("Assembly/FinalAssembly") }.size() == 0
             assert iridanext_samples.CSE.findAll { it.path.contains("Assembly/FinalReports/FlattenedReports/CSE.flat_sample.json.gz") }.size() == 0
+
+            // metadata
+            assert iridanext_metadata.CSE.containsKey("QC Status")
+            assert iridanext_metadata.CSE."QC Status" == "FAILED"
+            assert !iridanext_metadata.CSE.containsKey("Checkm Status")
+            assert !iridanext_metadata.CSE.containsKey("Checkm Value")
+            assert !iridanext_metadata.CSE.containsKey("Average Coverage Status")
+            assert !iridanext_metadata.CSE.containsKey("Average Coverage Value")
+            assert !iridanext_metadata.CSE.containsKey("n50 Status")
+            assert !iridanext_metadata.CSE.containsKey("n50 Value")
+            assert !iridanext_metadata.CSE.containsKey("Raw Average Quality Status")
+            assert !iridanext_metadata.CSE.containsKey("Raw Average Quality Value")
+            assert !iridanext_metadata.CSE.containsKey("Length Status")
+            assert !iridanext_metadata.CSE.containsKey("Length Value")
+            assert !iridanext_metadata.CSE.containsKey("nr contigs Status")
+            assert !iridanext_metadata.CSE.containsKey("nr contigs Value")
+            assert iridanext_metadata.CSE."QC Summary" == "[FAILED] Sample is likely contaminated, REISOLATION AND RESEQUENCING RECOMMENDED\nPassed Tests: 0/6\nSpecies ID: null"
         }
     }
 
@@ -182,8 +199,8 @@ nextflow_pipeline {
             assert iridanext_metadata.short."QC Status" == "FAILED"
             assert iridanext_metadata.short."Checkm Status" == "PASSED"
             assert iridanext_metadata.short."Checkm Value" == 0.0
-            //assert iridanext_metadata.short."Average Coverage Status" == "FAILED"
-            //assert iridanext_metadata.short."Average Coverage Value" == "FAILED"
+            assert !iridanext_metadata.short.containsKey("Average Coverage Status")
+            assert !iridanext_metadata.short.containsKey("Average Coverage Value")
             assert iridanext_metadata.short."n50 Status" == "WARNING"
             assert iridanext_metadata.short."n50 Value" == 4949
             assert iridanext_metadata.short."Raw Average Quality Status" == "PASSED"
