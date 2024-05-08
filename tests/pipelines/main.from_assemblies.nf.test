@@ -361,6 +361,22 @@ nextflow_pipeline {
             def iridanext_global = iridanext_json.files.global
             def iridanext_samples = iridanext_json.files.samples
             def iridanext_metadata = iridanext_json.metadata.samples
+            def listeria_metadata = iridanext_metadata.listeria_GCF_000196035
+
+            assert listeria_metadata."QC Status" == "FAILED"
+            assert !listeria_metadata.containsKey("Checkm Status")
+            assert !listeria_metadata.containsKey("Checkm Value")
+            assert !listeria_metadata.containsKey("Average Coverage Status")
+            assert !listeria_metadata.containsKey("Average Coverage Value")
+            assert listeria_metadata."n50 Status" == "PASSED"
+            assert listeria_metadata."n50 Value" == 2944528
+            assert !listeria_metadata.containsKey("Raw Average Quality Status")
+            assert !listeria_metadata.containsKey("Raw Average Quality Value")
+            assert listeria_metadata."Length Status" == "PASSED"
+            assert listeria_metadata."Length Value" == 2944528
+            assert listeria_metadata."nr contigs Status" == "PASSED"
+            assert listeria_metadata."nr contigs Value" == 1
+            assert listeria_metadata."QC Summary" == "[FAILED] Sample is likely contaminated, REISOLATION AND RESEQUENCING RECOMMENDED\nPassed Tests: 3/4\nSpecies ID: s__Listeria monocytogenes"
 
             // parse final report tsv file
             def final_report_tmap = [:]
@@ -391,18 +407,15 @@ nextflow_pipeline {
             assert final_report_tmap.SpeciesTopHit == "s__Listeria monocytogenes"
 
             assert listeria_json.QUAST."0"."Total length" == "2944528"
-            //assert iridanext_metadata.listeria_GCF_000196035."Length Value" == "2944528"
             assert final_report_tmap."QUAST.0.Total length" == "2944528"
 
             assert listeria_json.QUAST."0"."Largest contig" == "2944528"
             assert final_report_tmap."QUAST.0.Largest contig" == "2944528"
 
             assert listeria_json.QUAST."0"."# contigs" == "1"
-            //assert iridanext_metadata.listeria_GCF_000196035."nr contigs Value" == "1"
             assert final_report_tmap."QUAST.0.# contigs" == "1"
 
             assert listeria_json.QUAST."0"."N50" == "2944528"
-            //assert iridanext_metadata.listeria_GCF_000196035."n50 Value" == "2944528"
             assert final_report_tmap."QUAST.0.N50" == "2944528"
 
             assert listeria_json.StarAMR."0".Genotype == "fosX"
