@@ -180,9 +180,19 @@ nextflow_pipeline {
 
             // output metadata
             assert iridanext_metadata.short."QC Status" == "FAILED"
-            assert iridanext_metadata.short."Length Value" == 4949
-            assert iridanext_metadata.short."nr contigs Value" == 1
+            assert iridanext_metadata.short."Checkm Status" == "PASSED"
+            assert iridanext_metadata.short."Checkm Value" == 0.0
+            //assert iridanext_metadata.short."Average Coverage Status" == "FAILED"
+            //assert iridanext_metadata.short."Average Coverage Value" == "FAILED"
+            assert iridanext_metadata.short."n50 Status" == "WARNING"
             assert iridanext_metadata.short."n50 Value" == 4949
+            assert iridanext_metadata.short."Raw Average Quality Status" == "PASSED"
+            assert iridanext_metadata.short."Raw Average Quality Value" == 40.0
+            assert iridanext_metadata.short."Length Status" == "WARNING"
+            assert iridanext_metadata.short."Length Value" == 4949
+            assert iridanext_metadata.short."nr contigs Status" == "WARNING"
+            assert iridanext_metadata.short."nr contigs Value" == 1
+            assert iridanext_metadata.short."QC Summary" == "[FAILED] RESEQUENCING IS RECOMMENDED\nPassed Tests: 5/6\nSpecies ID: No Species Identified"
         }
 
     }
