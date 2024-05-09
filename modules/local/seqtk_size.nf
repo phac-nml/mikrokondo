@@ -17,7 +17,7 @@ process SEQTK_SIZE{
     def prefix = task.ext.prefix ?: "${meta.id}"
     output = "${meta.id}_basecounts.txt"
     """
-    seqtk size ${reads.join(" ")} > ${output}
+    zcat ${reads.join(" ")} | seqtk size - > ${output}
     cat <<-END_VERSIONS > versions.yml\n"${task.process}":\n    seqtk: \$(echo \$(seqtk 2>&1) | sed 's/^.*Version: //; s/ .*\$//')\nEND_VERSIONS
     """
 

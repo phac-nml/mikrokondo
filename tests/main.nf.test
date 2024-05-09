@@ -210,6 +210,12 @@ nextflow_pipeline {
             assert iridanext_metadata.short."nr contigs Status" == "WARNING"
             assert iridanext_metadata.short."nr contigs Value" == 1
             assert iridanext_metadata.short."QC Summary" == "[FAILED] RESEQUENCING IS RECOMMENDED\nPassed Tests: 5/6\nSpecies ID: No Species Identified"
+
+            assert iridanext_metadata.short."Downsampled" == false
+            assert iridanext_metadata.short."Species" == "No Species Identified"
+            assert iridanext_metadata.short."GC (%)" == "52.96"
+            assert iridanext_metadata.short."Mean Sequence Length Forward" == 250
+            assert iridanext_metadata.short."BaseCount" == 237500
         }
 
     }
