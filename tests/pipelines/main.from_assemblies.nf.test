@@ -115,21 +115,25 @@ nextflow_pipeline {
             assert ecoli_metadata."nr contigs Value" == 187
             assert ecoli_metadata."QC Summary" == "[FAILED] Sample is likely contaminated, REISOLATION AND RESEQUENCING RECOMMENDED\nPassed Tests: 3/4\nSpecies ID: s__Escherichia coli"
 
+            assert !ecoli_metadata.containsKey("Downsampled")
             assert ecoli_metadata."Species" == "s__Escherichia coli"
-            assert ecoli_metadata."StarAMR Genotype" == "aph(3'')-Ib, aph(6)-Id, blaCTX-M-15, blaTEM-1B, dfrA7, gyrA (S83A), qacE, sul1, sul2, tet(A)"
-            assert ecoli_metadata."StarAMR Predicted Phenotype" == "streptomycin, kanamycin, ampicillin, ceftriaxone, trimethoprim, ciprofloxacin I/R, nalidixic acid, unknown[qacE_1_X68232], sulfisoxazole, tetracycline"
-            assert ecoli_metadata."StarAMR Plasmid" == "IncQ1"
-            assert ecoli_metadata."ECTyper Subtyping" == "Escherichia coli"
-            assert ecoli_metadata."ECTyper O-Antigen" == "O104"
-            assert ecoli_metadata."ECTyper H-Antigen" == "H4"
-            assert ecoli_metadata."ECTyper Serotype" == "O104:H4"
+
             assert ecoli_metadata."ECTyper Database" == "v1.0 (11-03-2020)"
             assert ecoli_metadata."ECTyper Evidence" == "Based on 3 allele(s)"
             assert ecoli_metadata."ECTyper GeneCoverages (%)" == "100;100;100;"
             assert ecoli_metadata."ECTyper GeneIdentities (%)" == "100;100;100;"
             assert ecoli_metadata."ECTyper GeneScores" == "wzx:1;wzy:1;fliC:1;"
+            assert ecoli_metadata."ECTyper H-Antigen" == "H4"
+            assert ecoli_metadata."ECTyper O-Antigen" == "O104"
             assert ecoli_metadata."ECTyper QCFlag" == "PASS (REPORTABLE)"
+            assert ecoli_metadata."ECTyper Serotype" == "O104:H4"
+            assert ecoli_metadata."ECTyper Subtyping" == "Escherichia coli"
             assert ecoli_metadata."ECTyper Warnings" == "-"
+
+            assert ecoli_metadata."GC (%)" == "50.58"
+            assert !ecoli_metadata.containsKey("Mean Sequence Length Forward")
+            assert !ecoli_metadata.containsKey("BaseCount")
+
             assert ecoli_metadata."icd" == "136"
             assert ecoli_metadata."recA" == "7"
             assert ecoli_metadata."fumC" == "6"
@@ -139,6 +143,10 @@ nextflow_pipeline {
             assert ecoli_metadata."mdh" == "9"
             assert ecoli_metadata."7 Gene ST" == "678"
             assert ecoli_metadata."7 Gene Scheme" == "ecoli"
+
+            assert ecoli_metadata."StarAMR Genotype" == "aph(3'')-Ib, aph(6)-Id, blaCTX-M-15, blaTEM-1B, dfrA7, gyrA (S83A), qacE, sul1, sul2, tet(A)"
+            assert ecoli_metadata."StarAMR Predicted Phenotype" == "streptomycin, kanamycin, ampicillin, ceftriaxone, trimethoprim, ciprofloxacin I/R, nalidixic acid, unknown[qacE_1_X68232], sulfisoxazole, tetracycline"
+            assert ecoli_metadata."StarAMR Plasmid" == "IncQ1"
         }
     }
 
