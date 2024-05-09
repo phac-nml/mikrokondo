@@ -115,7 +115,7 @@ nextflow_pipeline {
             assert ecoli_metadata."nr contigs Value" == 187
             assert ecoli_metadata."QC Summary" == "[FAILED] Sample is likely contaminated, REISOLATION AND RESEQUENCING RECOMMENDED\nPassed Tests: 3/4\nSpecies ID: s__Escherichia coli"
 
-            assert !ecoli_metadata.containsKey("Downsampled")
+            assert ecoli_metadata."Downsampled" == false
             assert ecoli_metadata."Species" == "s__Escherichia coli"
 
             assert ecoli_metadata."ECTyper Database" == "v1.0 (11-03-2020)"
@@ -231,7 +231,7 @@ nextflow_pipeline {
             assert salmonella_metadata."nr contigs Value" == 3
             assert salmonella_metadata."QC Summary" == "[FAILED] Sample is likely contaminated, REISOLATION AND RESEQUENCING RECOMMENDED\nPassed Tests: 3/4\nSpecies ID: s__Salmonella enterica"
 
-            assert !salmonella_metadata.containsKey("Downsampled")
+            assert salmonella_metadata."Downsampled" == false
 
             assert iridanext_samples.salmonella_GCA_000008105.findAll {
                     it.path == "Assembly/Subtyping/Locidex/Report/salmonella_GCA_000008105.locidex.report.profile.mlst.subtyping.json.gz"
@@ -388,7 +388,7 @@ nextflow_pipeline {
             assert listeria_metadata."nr contigs Value" == 1
             assert listeria_metadata."QC Summary" == "[FAILED] Sample is likely contaminated, REISOLATION AND RESEQUENCING RECOMMENDED\nPassed Tests: 3/4\nSpecies ID: s__Listeria monocytogenes"
 
-            assert !listeria_metadata.containsKey("Downsampled")
+            assert listeria_metadata."Downsampled" == false
 
             // parse final report tsv file
             def final_report_tmap = [:]
