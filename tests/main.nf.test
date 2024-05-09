@@ -89,6 +89,13 @@ nextflow_pipeline {
             assert !iridanext_metadata.CSE.containsKey("nr contigs Status")
             assert !iridanext_metadata.CSE.containsKey("nr contigs Value")
             assert iridanext_metadata.CSE."QC Summary" == "[FAILED] Sample is likely contaminated, REISOLATION AND RESEQUENCING RECOMMENDED\nPassed Tests: 0/6\nSpecies ID: null"
+
+            assert iridanext_metadata.CSE."Downsampled" == false
+            assert !iridanext_metadata.CSE.containsKey("Species")
+            assert !iridanext_metadata.CSE.containsKey("GC (%)")
+            //assert iridanext_metadata.CSE."Mean Sequence Length Forward" == 150
+            // Base count after decontamination
+            assert iridanext_metadata.CSE."BaseCount" == 37200
         }
     }
 
