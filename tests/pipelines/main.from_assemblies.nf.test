@@ -213,7 +213,6 @@ nextflow_pipeline {
             def expected_mlst_profile_bytes = path("$baseDir/tests/data/profiles/salmonella_GCA_000008105.expected_profile.json.gz").getBytes()
             assert actual_mlst_profile_bytes.md5() == expected_mlst_profile_bytes.md5()
 
-
             // compare IRIDA Next JSON output
             assert path("$launchDir/results/iridanext.output.json").exists()
             def iridanext_json = path("$launchDir/results/iridanext.output.json").json
@@ -239,10 +238,6 @@ nextflow_pipeline {
 
             assert salmonella_metadata."Downsampled" == false
 
-            assert iridanext_samples.salmonella_GCA_000008105.findAll {
-                    it.path == "Assembly/Subtyping/Locidex/Report/salmonella_GCA_000008105.locidex.report.profile.mlst.subtyping.json.gz"
-                }.size() == 1
-
             // parse final report tsv file
             def final_report_tmap = [:]
             def final_report_tsv = path("$launchDir/results/FinalReports/Aggregated/Tables/final_report.tsv").readLines()
@@ -261,6 +256,7 @@ nextflow_pipeline {
             assert iridanext_samples.salmonella_GCA_000008105.findAll { it.path == "Assembly/Subtyping/SISTR/salmonella_GCA_000008105.sistr.allele.subtyping.fasta" }.size() == 1
             assert iridanext_samples.salmonella_GCA_000008105.findAll { it.path == "Assembly/Subtyping/SISTR/salmonella_GCA_000008105.sistr.allele.subtyping.json" }.size() == 1
             assert iridanext_samples.salmonella_GCA_000008105.findAll { it.path == "Assembly/Subtyping/SISTR/salmonella_GCA_000008105.sistr.cgmlst.subtyping.csv" }.size() == 1
+            assert iridanext_samples.salmonella_GCA_000008105.findAll { it.path == "Assembly/Subtyping/Locidex/Report/salmonella_GCA_000008105.locidex.report.profile.mlst.subtyping.json.gz" }.size() == 1
             assert iridanext_samples.salmonella_GCA_000008105.findAll { it.path == "FinalReports/FlattenedReports/salmonella_GCA_000008105.flat_sample.json.gz" }.size() == 1
 
             // parse final report json file
