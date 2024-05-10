@@ -95,6 +95,12 @@ nextflow_pipeline {
             // output files
             assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Json/final_report.json" }.size() == 1
             assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Tables/final_report.tsv" }.size() == 1
+            assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/Quality/QUAST/ecoli_GCA_000947975/ecoli_GCA_000947975.transposed_ecoli_GCA_000947975.quast.quality.tsv" }.size() == 1
+            assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/Quality/SeqKitStats/ecoli_GCA_000947975.seqkit.stats.summary.tsv" }.size() == 1
+            assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/PostProcessing/Speciation/MashScreen/ecoli_GCA_000947975.mash.screen.taxa.screen.screen" }.size() == 1
+            assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/Subtyping/ECTyper/ecoli_GCA_000947975/ecoli_GCA_000947975.blast_output_alleles.ectyper.subtyping.txt" }.size() == 1
+            assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/Subtyping/ECTyper/ecoli_GCA_000947975/ecoli_GCA_000947975.ectyper.ectyper.subtyping.log" }.size() == 1
+            assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/Subtyping/ECTyper/ecoli_GCA_000947975/ecoli_GCA_000947975.output.ectyper.subtyping.tsv" }.size() == 1
             assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "FinalReports/FlattenedReports/ecoli_GCA_000947975.flat_sample.json.gz" }.size() == 1
 
             // output metadata
@@ -248,6 +254,14 @@ nextflow_pipeline {
             // output files
             assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Json/final_report.json" }.size() == 1
             assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Tables/final_report.tsv" }.size() == 1
+            assert iridanext_samples.salmonella_GCA_000008105.findAll { it.path == "Assembly/Quality/QUAST/salmonella_GCA_000008105/salmonella_GCA_000008105.transposed_salmonella_GCA_000008105.quast.quality.tsv" }.size() == 1
+            assert iridanext_samples.salmonella_GCA_000008105.findAll { it.path == "Assembly/Quality/SeqKitStats/salmonella_GCA_000008105.seqkit.stats.summary.tsv" }.size() == 1
+            assert iridanext_samples.salmonella_GCA_000008105.findAll { it.path == "Assembly/PostProcessing/Speciation/MashScreen/salmonella_GCA_000008105.mash.screen.taxa.screen.screen" }.size() == 1
+            assert iridanext_samples.salmonella_GCA_000008105.findAll { it.path == "Assembly/Subtyping/SISTR/salmonella_GCA_000008105.sistr.subtyping.tab" }.size() == 1
+            assert iridanext_samples.salmonella_GCA_000008105.findAll { it.path == "Assembly/Subtyping/SISTR/salmonella_GCA_000008105.sistr.allele.subtyping.fasta" }.size() == 1
+            assert iridanext_samples.salmonella_GCA_000008105.findAll { it.path == "Assembly/Subtyping/SISTR/salmonella_GCA_000008105.sistr.allele.subtyping.json" }.size() == 1
+            assert iridanext_samples.salmonella_GCA_000008105.findAll { it.path == "Assembly/Subtyping/SISTR/salmonella_GCA_000008105.sistr.cgmlst.subtyping.csv" }.size() == 1
+            assert iridanext_samples.salmonella_GCA_000008105.findAll { it.path == "FinalReports/FlattenedReports/salmonella_GCA_000008105.flat_sample.json.gz" }.size() == 1
 
             // parse final report json file
             def final_report = path("$launchDir/results/FinalReports/Aggregated/Json/final_report.json").json
@@ -401,6 +415,11 @@ nextflow_pipeline {
             // output files
             assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Json/final_report.json" }.size() == 1
             assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Tables/final_report.tsv" }.size() == 1
+            assert iridanext_samples.listeria_GCF_000196035.findAll { it.path == "Assembly/Quality/QUAST/listeria_GCF_000196035/listeria_GCF_000196035.transposed_listeria_GCF_000196035.quast.quality.tsv" }.size() == 1
+            assert iridanext_samples.listeria_GCF_000196035.findAll { it.path == "Assembly/Quality/SeqKitStats/listeria_GCF_000196035.seqkit.stats.summary.tsv" }.size() == 1
+            assert iridanext_samples.listeria_GCF_000196035.findAll { it.path == "Assembly/PostProcessing/Speciation/MashScreen/listeria_GCF_000196035.mash.screen.taxa.screen.screen" }.size() == 1
+            assert iridanext_samples.listeria_GCF_000196035.findAll { it.path == "Assembly/Subtyping/Lissero/listeria_GCF_000196035.lissero.subtyping.tsv" }.size() == 1
+            assert iridanext_samples.listeria_GCF_000196035.findAll { it.path == "FinalReports/FlattenedReports/listeria_GCF_000196035.flat_sample.json.gz" }.size() == 1
 
             // parse final report json file
             def final_report = path("$launchDir/results/FinalReports/Aggregated/Json/final_report.json").json
