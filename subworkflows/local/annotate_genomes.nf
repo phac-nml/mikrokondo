@@ -70,7 +70,6 @@ workflow ANNOTATE_GENOMES {
 
         // Dump db versions
         // Removed as data is in results
-        //STARAMR_DUMP_DB_VERSIONS(db_star)
 
         point_finder_organism = channel.empty()
         if(params.skip_species_classification){

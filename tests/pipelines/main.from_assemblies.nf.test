@@ -223,6 +223,7 @@ nextflow_pipeline {
             assert ecoli_metadata."n50 Value" == 122025
             assert ecoli_metadata."Length Value" == 5299656
             assert ecoli_metadata."nr contigs Value" == 123
+            assert ecoli_metadata."StarAMR Genotype" == "aph(3'')-Ib, aph(6)-Id, blaCTX-M-15, blaTEM-1B, dfrA7, qacE, sul1, sul2, tet(A)"
 
             // Read in filtered assembly fasta to verify number of contigs
             def assemblyLines = path("$launchDir/results/Assembly/FinalAssembly/ecoli_GCA_000947975/ecoli_GCA_000947975.final.filtered.assembly.fasta.gz").readLinesGzip()
