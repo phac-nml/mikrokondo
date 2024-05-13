@@ -163,6 +163,84 @@ nextflow_pipeline {
         }
     }
 
+        test("Test starting from assemblies ecoli with default min contig without speciation enabled for StarAMR") {
+        tag "from_assemblies_ecoli_default_min_contig_no_speciation"
+
+        when {
+            params {
+                input = "$baseDir/tests/data/samplesheets/samplesheet-test-from-assemblies.csv"
+                outdir = "results"
+
+                platform = "illumina"
+
+                mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
+                dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+                kraken2_db = "$baseDir/tests/data/kraken2/test"
+
+                // Use default min contig, whould be 1000
+                //qt_min_contig_length = 1000
+
+                skip_bakta = true
+                skip_mobrecon = true
+                skip_checkm = true
+                skip_raw_read_metrics = true
+                skip_polishing = true
+                skip_species_classification = true
+
+                skip_staramr = false
+                skip_subtyping = false
+
+                skip_allele_calling = true
+
+                max_memory = "2.GB"
+                max_cpus = 1
+            }
+        }
+
+        then {
+            assert workflow.success
+            assert path("$launchDir/results").exists()
+
+            // compare IRIDA Next JSON output
+            def iridanext_json = path("$launchDir/results/iridanext.output.json").json
+            def iridanext_global = iridanext_json.files.global
+            def iridanext_samples = iridanext_json.files.samples
+            def iridanext_metadata = iridanext_json.metadata.samples
+
+            // output files
+            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Json/final_report.json" }.size() == 1
+            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Tables/final_report.tsv" }.size() == 1
+            assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/Quality/QUAST/ecoli_GCA_000947975/ecoli_GCA_000947975.transposed_ecoli_GCA_000947975.quast.quality.tsv" }.size() == 1
+            assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/Quality/SeqKitStats/ecoli_GCA_000947975.seqkit.stats.summary.tsv" }.size() == 1
+            assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "FinalReports/FlattenedReports/ecoli_GCA_000947975.flat_sample.json.gz" }.size() == 1
+
+            // output metadata
+            def ecoli_metadata = iridanext_metadata.ecoli_GCA_000947975
+
+            assert ecoli_metadata."QC Status" == "FAILED"
+            assert !ecoli_metadata.containsKey("Checkm Status")
+            assert !ecoli_metadata.containsKey("Checkm Value")
+            assert !ecoli_metadata.containsKey("Average Coverage Status")
+            assert !ecoli_metadata.containsKey("Average Coverage Value")
+            assert ecoli_metadata."n50 Status" == "PASSED"
+            assert ecoli_metadata."n50 Value" == 122025
+            assert !ecoli_metadata.containsKey("Raw Average Quality Status")
+            assert !ecoli_metadata.containsKey("Raw Average Quality Value")
+            assert ecoli_metadata."Length Status" == "PASSED"
+            assert ecoli_metadata."Length Value" == 5299656
+            assert ecoli_metadata."nr contigs Status" == "PASSED"
+            assert ecoli_metadata."nr contigs Value" == 123
+            assert ecoli_metadata."QC Summary" == "[FAILED] Sample is likely contaminated, REISOLATION AND RESEQUENCING RECOMMENDED\nPassed Tests: 3/4\nSpecies ID: s__Escherichia coli"
+
+            // Read in filtered assembly fasta to verify number of contigs
+            def assemblyLines = path("$launchDir/results/Assembly/FinalAssembly/ecoli_GCA_000947975/ecoli_GCA_000947975.final.filtered.assembly.fasta.gz").readLinesGzip()
+            def actualNumberContigs = assemblyLines.findAll { it.startsWith(">") }.size()
+            def actualLength = assemblyLines.findAll { !it.startsWith(">") }.collect { it.strip().size() }.sum()
+            assert actualNumberContigs == 123
+            assert actualLength == 5299656
+        }
+    }
+
     test("Test starting from assemblies ecoli with default min contig") {
         tag "from_assemblies_ecoli_default_min_contig"
 
@@ -185,7 +263,6 @@ nextflow_pipeline {
                 skip_checkm = true
                 skip_raw_read_metrics = true
                 skip_polishing = true
-                skip_species_classification = true
 
                 skip_staramr = false
                 skip_subtyping = false
