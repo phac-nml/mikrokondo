@@ -1,0 +1,58 @@
+nextflow_process {
+    name "Test Process SEQTK_SIZE"
+    script "modules/local/seqtk_size.nf"
+    process "SEQTK_SIZE"
+    tag "modules"
+    tag "seqkit_stats"
+
+    test("Test seqtk_size single end") {
+        tag "single_end"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [id: "SAMPLE1", single_end: true],
+                    [file("$baseDir/tests/data/reads/1_R1.fq.gz", checkIfExists: true)]
+                ])
+                """
+            }
+
+            params {
+                outdir = "results"
+            }
+        }
+
+        then {
+            assert process.success
+            def data = path("$launchDir/results/Reads/FinalReads/BaseCounts/SAMPLE1.SAMPLE1_basecounts.seqtk.size.txt").text
+            assert data == "475\t118750\n"
+        }
+    }
+
+    test("Test seqtk_size paired end") {
+        tag "paired_end"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [id: "SAMPLE1", single_end: false],
+                    [file("$baseDir/tests/data/reads/1_R1.fq.gz", checkIfExists: true),
+                     file("$baseDir/tests/data/reads/1_R2.fq.gz", checkIfExists: true)]
+                ])
+                """
+            }
+
+            params {
+                outdir = "results"
+            }
+        }
+
+        then {
+            assert process.success
+            def data = path("$launchDir/results/Reads/FinalReads/BaseCounts/SAMPLE1.SAMPLE1_basecounts.seqtk.size.txt").text
+            assert data == "950\t237500\n"
+        }
+    }
+}

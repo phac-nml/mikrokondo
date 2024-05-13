@@ -73,10 +73,30 @@ nextflow_pipeline {
             assert iridanext_samples.CSE.findAll { it.path.contains("Assembly/FinalAssembly") }.size() == 0
             assert iridanext_samples.CSE.findAll { it.path.contains("Assembly/FinalReports/FlattenedReports/CSE.flat_sample.json.gz") }.size() == 0
 
-            // output metadata
-            //assert iridanext_metadata.CSE."AssemblyCompleted" == false
-        }
+            // metadata
+            assert iridanext_metadata.CSE.containsKey("QC Status")
+            assert iridanext_metadata.CSE."QC Status" == "FAILED"
+            assert !iridanext_metadata.CSE.containsKey("Checkm Status")
+            assert !iridanext_metadata.CSE.containsKey("Checkm Value")
+            assert !iridanext_metadata.CSE.containsKey("Average Coverage Status")
+            assert !iridanext_metadata.CSE.containsKey("Average Coverage Value")
+            assert !iridanext_metadata.CSE.containsKey("n50 Status")
+            assert !iridanext_metadata.CSE.containsKey("n50 Value")
+            assert !iridanext_metadata.CSE.containsKey("Raw Average Quality Status")
+            assert !iridanext_metadata.CSE.containsKey("Raw Average Quality Value")
+            assert !iridanext_metadata.CSE.containsKey("Length Status")
+            assert !iridanext_metadata.CSE.containsKey("Length Value")
+            assert !iridanext_metadata.CSE.containsKey("nr contigs Status")
+            assert !iridanext_metadata.CSE.containsKey("nr contigs Value")
+            assert iridanext_metadata.CSE."QC Summary" == "[FAILED] Sample is likely contaminated, REISOLATION AND RESEQUENCING RECOMMENDED\nPassed Tests: 0/6\nSpecies ID: null"
 
+            assert iridanext_metadata.CSE."Downsampled" == false
+            assert !iridanext_metadata.CSE.containsKey("Species")
+            assert !iridanext_metadata.CSE.containsKey("GC (%)")
+            //assert iridanext_metadata.CSE."Mean Sequence Length Forward" == 150
+            // Base count after decontamination
+            assert iridanext_metadata.CSE."BaseCount" == 37200
+        }
     }
 
     test("Should run without failure.") {
@@ -174,14 +194,35 @@ nextflow_pipeline {
             assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Json/final_report.json" }.size() == 1
             assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Tables/final_report.tsv" }.size() == 1
             assert iridanext_samples.short.findAll { it.path == "Assembly/FinalAssembly/short/short.final.filtered.assembly.fasta.gz" }.size() == 1
+            assert iridanext_samples.short.findAll { it.path == "Assembly/Quality/QUAST/short/short.transposed_short.quast.quality.tsv" }.size() == 1
+            assert iridanext_samples.short.findAll { it.path == "Assembly/Quality/SeqKitStats/short.seqkit.stats.summary.tsv" }.size() == 1
+            assert iridanext_samples.short.findAll { it.path == "Assembly/PostProcessing/Speciation/MashScreen/short.mash.screen.taxa.screen.screen" }.size() == 1
+            assert iridanext_samples.short.findAll { it.path == "Reads/Quality/Trimmed/MashScreen/short.mash.screen.reads.screen.screen" }.size() == 1
+            assert iridanext_samples.short.findAll { it.path == "Reads/Quality/Trimmed/FastP/short.fastp.summary.json" }.size() == 1
+            assert iridanext_samples.short.findAll { it.path == "Reads/Quality/RawReadQuality/short.read.scan.summary.json" }.size() == 1
             assert iridanext_samples.short.findAll { it.path == "FinalReports/FlattenedReports/short.flat_sample.json.gz" }.size() == 1
 
             // output metadata
-            assert iridanext_metadata.short."AssemblyCompleted" == true
-            assert iridanext_metadata.short."QUAST.0.Total length" == "4949"
-            assert iridanext_metadata.short."QUAST.0.Largest contig" == "4949"
-            assert iridanext_metadata.short."QUAST.0.# contigs" == "1"
-            assert iridanext_metadata.short."QUAST.0.N50" == "4949"
+            assert iridanext_metadata.short."QC Status" == "FAILED"
+            assert iridanext_metadata.short."Checkm Status" == "PASSED"
+            assert iridanext_metadata.short."Checkm Value" == 0.0
+            assert !iridanext_metadata.short.containsKey("Average Coverage Status")
+            assert !iridanext_metadata.short.containsKey("Average Coverage Value")
+            assert iridanext_metadata.short."n50 Status" == "WARNING"
+            assert iridanext_metadata.short."n50 Value" == 4949
+            assert iridanext_metadata.short."Raw Average Quality Status" == "PASSED"
+            assert iridanext_metadata.short."Raw Average Quality Value" == 40.0
+            assert iridanext_metadata.short."Length Status" == "WARNING"
+            assert iridanext_metadata.short."Length Value" == 4949
+            assert iridanext_metadata.short."nr contigs Status" == "WARNING"
+            assert iridanext_metadata.short."nr contigs Value" == 1
+            assert iridanext_metadata.short."QC Summary" == "[FAILED] RESEQUENCING IS RECOMMENDED\nPassed Tests: 5/6\nSpecies ID: No Species Identified"
+
+            assert iridanext_metadata.short."Downsampled" == false
+            assert iridanext_metadata.short."Species" == "No Species Identified"
+            assert iridanext_metadata.short."GC (%)" == "52.96"
+            assert iridanext_metadata.short."Mean Sequence Length Forward" == 250
+            assert iridanext_metadata.short."BaseCount" == 237500
         }
 
     }
