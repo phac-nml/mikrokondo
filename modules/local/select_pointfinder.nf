@@ -39,19 +39,15 @@ process IDENTIFY_POINTDB {
     // Remove spurious characters and strings that may affect database identification e.g. Entercoccus_B -> it would get rid of the B
     species_data = species_data.findAll { it.size() >= shortest_entry }
 
-    def db_opt = null
+    def db_opt = params.staramr.point_finder_db_default
 
     // Find exact match
     for(int db in 0..databases.size()-1){
-        //println databases[db]
         def match_size = databases[db].size() // if match size is a single value, only need to match one value
         // tile the species list
         def tokens = tokenize_values(species_data, match_size)
         def db_found = compare_lists(databases[db], tokens)
         if(db_found){
-            //println db_found
-            //println params.staramr.point_finder_dbs[db]
-            //println databases[db]
             db_opt = params.staramr.point_finder_dbs[db]
             break
         }

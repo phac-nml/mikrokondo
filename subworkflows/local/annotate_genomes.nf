@@ -3,14 +3,12 @@ include { BAKTA_ANNOTATE } from '../../modules/local/bakta_annotate.nf'
 include { ABRICATE } from "../../modules/local/abricate.nf"
 include { MOBSUITE_RECON } from "../../modules/local/mob_recon.nf"
 include { STARAMR } from "../../modules/local/staramr.nf"
-include { STARAMR_DUMP_DB_VERSIONS } from "../../modules/local/staramr_version.nf"
 include { IDENTIFY_POINTDB } from "../../modules/local/select_pointfinder.nf"
 
 workflow ANNOTATE_GENOMES {
     take:
     contig_data // val(meta), path(assembly)
     top_hit // val(meta), val(species)
-    // TODO add in species so that point finder can run
 
     main:
     versions = channel.empty()
@@ -63,15 +61,24 @@ workflow ANNOTATE_GENOMES {
     }
 
     if(!params.skip_staramr){
-        // TODO test and verify
+
         def db_star = [] // set default value for database
         if(params.staramr.db){
             db_star = Channel.value("${params.staramr.db}")
         }
-        // Dump db versions
-        STARAMR_DUMP_DB_VERSIONS(db_star)
 
-        point_finder_organism = IDENTIFY_POINTDB(top_hit).pointfinder_db
+        // Dump db versions
+        // Removed as data is in results
+
+        point_finder_organism = channel.empty()
+        if(params.skip_species_classification){
+            point_finder_organism = contig_data.map{ meta, assembly ->
+                                                        tuple(meta, params.staramr.point_finder_db_default)
+                                                    } // Add in default null value for StarAMR
+        }else{
+            point_finder_organism = IDENTIFY_POINTDB(top_hit).pointfinder_db
+        }
+
 
         // Report point finder databases used
         reports = reports.mix(point_finder_organism.map{
