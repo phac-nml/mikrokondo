@@ -114,6 +114,7 @@
                 "allele_scheme": {
                     "type": "string",
                     "pattern": "^\\S+$",
+                    "exists": true,
                     "format": "directory-path",
                     "description": "An allele scheme to to use for Locidex"
                 }
@@ -403,8 +404,7 @@
                 },
                 "skip_metagenomic_detection": {
                     "type": "boolean",
-                    "description": "For samples to be analyzed as isolates",
-                    "help_text": ""
+                    "description": "For samples to be analyzed as isolates"
                 },
                 "skip_staramr": {
                     "type": "boolean",
@@ -416,8 +416,7 @@
                 },
                 "skip_length_filtering_contigs": {
                     "type": "boolean",
-                    "description": "Skip filtering contigs by length.",
-                    "help_text": ""
+                    "description": "Skip filtering contigs by length."
                 }
             }
         },
@@ -560,7 +559,7 @@
         "locidex": {
             "title": "Locidex",
             "type": "object",
-            "description": "",
+            "description": "Options for allele calling with locidex.",
             "default": "",
             "properties": {
                 "lx_min_evalue": {
@@ -623,7 +622,7 @@
                     "maximum": 100
                 },
                 "lx_max_target_seqs": {
-                    "type": "number",
+                    "type": "integer",
                     "default": 10,
                     "description": "Maximum number of sequence hits per a query",
                     "minimum": 1
@@ -655,13 +654,13 @@
                     "pattern": "^[A-Za-z0-9_-]*$"
                 },
                 "lx_report_max_ambig": {
-                    "type": "number",
+                    "type": "integer",
                     "default": 0,
                     "description": "Maximum number of ambiguous characters allowed in a sequence.",
                     "minimum": 0
                 },
                 "lx_report_max_stop": {
-                    "type": "number",
+                    "type": "integer",
                     "default": 0,
                     "description": "Maximum number of internal stop codons allowed in a sequence.",
                     "minimum": 0
