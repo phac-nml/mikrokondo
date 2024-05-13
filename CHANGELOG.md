@@ -33,6 +33,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added separate report fields for (PASSED|FAILED|WARNING) values and for the the actual value
 
+- Updated StarAMR to version 0.10.0
+
 ### `Dependencies`
 
 ### `Deprecated`
