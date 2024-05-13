@@ -44,7 +44,7 @@ nextflow_pipeline {
             assert ecoli_json.StarAMR."0".Genotype.equals("aph(3'')-Ib, aph(6)-Id, blaCTX-M-15, blaTEM-1B, dfrA7, gyrA (S83A), qacE, sul1, sul2, tet(A)")
             assert ecoli_json.StarAMR."0"."Predicted Phenotype".equals("streptomycin, kanamycin, ampicillin, ceftriaxone, trimethoprim, ciprofloxacin I/R, nalidixic acid, unknown[qacE_1_X68232], sulfisoxazole, tetracycline")
             assert ecoli_json.StarAMR."0".Plasmid.equals("IncQ1")
-            assert ecoli_json.StarAMR."0".Scheme.equals("ecoli")
+            assert ecoli_json.StarAMR."0".Scheme.equals("ecoli_achtman_4")
             assert ecoli_json.StarAMR."0"."Sequence Type".equals("678")
             assert ecoli_json.PointfinderDB.equals("escherichia_coli")
             assert ecoli_json.ECTyperSubtyping."0".Species.equals("Escherichia coli")
@@ -76,7 +76,7 @@ nextflow_pipeline {
             assert final_report_tmap."StarAMR.0.Genotype" == "aph(3'')-Ib, aph(6)-Id, blaCTX-M-15, blaTEM-1B, dfrA7, gyrA (S83A), qacE, sul1, sul2, tet(A)"
             assert final_report_tmap."StarAMR.0.Predicted Phenotype" == "streptomycin, kanamycin, ampicillin, ceftriaxone, trimethoprim, ciprofloxacin I/R, nalidixic acid, unknown[qacE_1_X68232], sulfisoxazole, tetracycline"
             assert final_report_tmap."StarAMR.0.Plasmid" == "IncQ1"
-            assert final_report_tmap."StarAMR.0.Scheme" == "ecoli"
+            assert final_report_tmap."StarAMR.0.Scheme" == "ecoli_achtman_4"
             assert final_report_tmap."StarAMR.0.Sequence Type" == "678"
             assert final_report_tmap."ECTyperSubtyping.0.Species" == "Escherichia coli"
             assert final_report_tmap."ECTyperSubtyping.0.O-type" == "O104"
@@ -387,8 +387,8 @@ nextflow_pipeline {
             assert iridanext_metadata.salmonella_GCA_000008105."StarAMR Plasmid" == "IncFIB(K), IncFIB(S), IncFII(S)"
             assert final_report_tmap."StarAMR.0.Plasmid" == "IncFIB(K), IncFIB(S), IncFII(S)"
 
-            assert salmonella_json.StarAMR."0".Scheme == "senterica"
-            assert final_report_tmap."StarAMR.0.Scheme" == "senterica"
+            assert salmonella_json.StarAMR."0".Scheme == "senterica_achtman_2"
+            assert final_report_tmap."StarAMR.0.Scheme" == "senterica_achtman_2"
 
             assert salmonella_json.StarAMR."0"."Sequence Type" == "66"
             assert final_report_tmap."StarAMR.0.Sequence Type" == "66"
@@ -545,8 +545,8 @@ nextflow_pipeline {
             assert iridanext_metadata.listeria_GCF_000196035."StarAMR Plasmid" == "None"
             assert final_report_tmap."StarAMR.0.Plasmid" == "None"
 
-            assert listeria_json.StarAMR."0".Scheme == "lmonocytogenes"
-            assert final_report_tmap."StarAMR.0.Scheme" == "lmonocytogenes"
+            assert listeria_json.StarAMR."0".Scheme == "listeria_2"
+            assert final_report_tmap."StarAMR.0.Scheme" == "listeria_2"
 
             assert listeria_json.StarAMR."0"."Sequence Type" == "35"
             assert final_report_tmap."StarAMR.0.Sequence Type" == "35"
