@@ -81,7 +81,6 @@ workflow POST_ASSEMBLY {
 
     //if(!params.skip_subtyping && !params.run_kraken && !params.skip_species_classification){
     if(!params.skip_subtyping && !params.skip_species_classification){
-        //SUBTYPE_GENOME(ch_filtered_contigs, ch_speciation.results)
         SUBTYPE_GENOME(ch_filtered_contigs, ch_speciation.top_hit)
         ch_reports = ch_reports.mix(SUBTYPE_GENOME.out.reports)
         ch_versions = ch_versions.mix(SUBTYPE_GENOME.out.versions)
