@@ -3,7 +3,6 @@ include { BAKTA_ANNOTATE } from '../../modules/local/bakta_annotate.nf'
 include { ABRICATE } from "../../modules/local/abricate.nf"
 include { MOBSUITE_RECON } from "../../modules/local/mob_recon.nf"
 include { STARAMR } from "../../modules/local/staramr.nf"
-include { STARAMR_DUMP_DB_VERSIONS } from "../../modules/local/staramr_version.nf"
 include { IDENTIFY_POINTDB } from "../../modules/local/select_pointfinder.nf"
 
 workflow ANNOTATE_GENOMES {
