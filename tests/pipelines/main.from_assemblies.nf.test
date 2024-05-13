@@ -43,6 +43,7 @@ nextflow_pipeline {
             def ecoli_json = final_report.ecoli_GCA_000947975.ecoli_GCA_000947975
             assert ecoli_json.StarAMR."0".Genotype.equals("aph(3'')-Ib, aph(6)-Id, blaCTX-M-15, blaTEM-1B, dfrA7, gyrA (S83A), qacE, sul1, sul2, tet(A)")
             assert ecoli_json.StarAMR."0"."Predicted Phenotype".equals("streptomycin, kanamycin, ampicillin, ceftriaxone, trimethoprim, ciprofloxacin I/R, nalidixic acid, unknown[qacE_1_X68232], sulfisoxazole, tetracycline")
+            assert ecoli_json.StarAMR."0"."CGE Predicted Phenotype".equals("Streptomycin, Amoxicillin, Ampicillin, Aztreonam, Cefepime, Cefotaxime, Ceftazidime, Ceftriaxone, Piperacillin, Ticarcillin, Cephalothin, Trimethoprim, Nalidixic acid, Ciprofloxacin, Benzylkonium Chloride, Ethidium Bromide, Chlorhexidine, Cetylpyridinium Chloride, Sulfamethoxazole, Doxycycline, Tetracycline")
             assert ecoli_json.StarAMR."0".Plasmid.equals("IncQ1")
             assert ecoli_json.StarAMR."0".Scheme.equals("ecoli_achtman_4")
             assert ecoli_json.StarAMR."0"."Sequence Type".equals("678")
@@ -75,6 +76,7 @@ nextflow_pipeline {
             assert final_report_tmap."QUAST.0.N50" == "122025"
             assert final_report_tmap."StarAMR.0.Genotype" == "aph(3'')-Ib, aph(6)-Id, blaCTX-M-15, blaTEM-1B, dfrA7, gyrA (S83A), qacE, sul1, sul2, tet(A)"
             assert final_report_tmap."StarAMR.0.Predicted Phenotype" == "streptomycin, kanamycin, ampicillin, ceftriaxone, trimethoprim, ciprofloxacin I/R, nalidixic acid, unknown[qacE_1_X68232], sulfisoxazole, tetracycline"
+            assert final_report_tmap."StarAMR.0.CGE Predicted Phenotype" == "Streptomycin, Amoxicillin, Ampicillin, Aztreonam, Cefepime, Cefotaxime, Ceftazidime, Ceftriaxone, Piperacillin, Ticarcillin, Cephalothin, Trimethoprim, Nalidixic acid, Ciprofloxacin, Benzylkonium Chloride, Ethidium Bromide, Chlorhexidine, Cetylpyridinium Chloride, Sulfamethoxazole, Doxycycline, Tetracycline"
             assert final_report_tmap."StarAMR.0.Plasmid" == "IncQ1"
             assert final_report_tmap."StarAMR.0.Scheme" == "ecoli_achtman_4"
             assert final_report_tmap."StarAMR.0.Sequence Type" == "678"
@@ -152,6 +154,7 @@ nextflow_pipeline {
 
             assert ecoli_metadata."StarAMR Genotype" == "aph(3'')-Ib, aph(6)-Id, blaCTX-M-15, blaTEM-1B, dfrA7, gyrA (S83A), qacE, sul1, sul2, tet(A)"
             assert ecoli_metadata."StarAMR Predicted Phenotype" == "streptomycin, kanamycin, ampicillin, ceftriaxone, trimethoprim, ciprofloxacin I/R, nalidixic acid, unknown[qacE_1_X68232], sulfisoxazole, tetracycline"
+            assert ecoli_metadata."StarAMR CGE Predicted Phenotype" == "Streptomycin, Amoxicillin, Ampicillin, Aztreonam, Cefepime, Cefotaxime, Ceftazidime, Ceftriaxone, Piperacillin, Ticarcillin, Cephalothin, Trimethoprim, Nalidixic acid, Ciprofloxacin, Benzylkonium Chloride, Ethidium Bromide, Chlorhexidine, Cetylpyridinium Chloride, Sulfamethoxazole, Doxycycline, Tetracycline"
             assert ecoli_metadata."StarAMR Plasmid" == "IncQ1"
 
             // Read in filtered assembly fasta to verify number of contigs
@@ -383,6 +386,10 @@ nextflow_pipeline {
             assert iridanext_metadata.salmonella_GCA_000008105."StarAMR Predicted Phenotype" == "streptomycin, kanamycin, ampicillin, amoxicillin/clavulanic acid, cefoxitin, ceftriaxone, chloramphenicol, trimethoprim, ciprofloxacin I/R, nalidixic acid, unknown[qacE_1_X68232], sulfisoxazole, tetracycline"
             assert final_report_tmap."StarAMR.0.Predicted Phenotype" == "streptomycin, kanamycin, ampicillin, amoxicillin/clavulanic acid, cefoxitin, ceftriaxone, chloramphenicol, trimethoprim, ciprofloxacin I/R, nalidixic acid, unknown[qacE_1_X68232], sulfisoxazole, tetracycline"
 
+            assert salmonella_json.StarAMR."0"."CGE Predicted Phenotype" == "Spectinomycin, Streptomycin, Neomycin, Kanamycin, Lividomycin, Paromomycin, Ribostamycin, Amoxicillin, Amoxicillin+Clavulanic acid, Ampicillin, Ampicillin+Clavulanic acid, Cefotaxime, Cefoxitin, Ceftazidime, Piperacillin, Piperacillin+Tazobactam, Ticarcillin, Ticarcillin+Clavulanic acid, Cephalothin, Chloramphenicol, Trimethoprim, Nalidixic acid, Ciprofloxacin, Benzylkonium Chloride, Ethidium Bromide, Chlorhexidine, Cetylpyridinium Chloride, Sulfamethoxazole, Doxycycline, Tetracycline"
+            assert iridanext_metadata.salmonella_GCA_000008105."StarAMR CGE Predicted Phenotype" == "Spectinomycin, Streptomycin, Neomycin, Kanamycin, Lividomycin, Paromomycin, Ribostamycin, Amoxicillin, Amoxicillin+Clavulanic acid, Ampicillin, Ampicillin+Clavulanic acid, Cefotaxime, Cefoxitin, Ceftazidime, Piperacillin, Piperacillin+Tazobactam, Ticarcillin, Ticarcillin+Clavulanic acid, Cephalothin, Chloramphenicol, Trimethoprim, Nalidixic acid, Ciprofloxacin, Benzylkonium Chloride, Ethidium Bromide, Chlorhexidine, Cetylpyridinium Chloride, Sulfamethoxazole, Doxycycline, Tetracycline"
+            assert final_report_tmap."StarAMR.0.CGE Predicted Phenotype" == "Spectinomycin, Streptomycin, Neomycin, Kanamycin, Lividomycin, Paromomycin, Ribostamycin, Amoxicillin, Amoxicillin+Clavulanic acid, Ampicillin, Ampicillin+Clavulanic acid, Cefotaxime, Cefoxitin, Ceftazidime, Piperacillin, Piperacillin+Tazobactam, Ticarcillin, Ticarcillin+Clavulanic acid, Cephalothin, Chloramphenicol, Trimethoprim, Nalidixic acid, Ciprofloxacin, Benzylkonium Chloride, Ethidium Bromide, Chlorhexidine, Cetylpyridinium Chloride, Sulfamethoxazole, Doxycycline, Tetracycline"
+
             assert salmonella_json.StarAMR."0".Plasmid == "IncFIB(K), IncFIB(S), IncFII(S)"
             assert iridanext_metadata.salmonella_GCA_000008105."StarAMR Plasmid" == "IncFIB(K), IncFIB(S), IncFII(S)"
             assert final_report_tmap."StarAMR.0.Plasmid" == "IncFIB(K), IncFIB(S), IncFII(S)"
@@ -540,6 +547,10 @@ nextflow_pipeline {
             assert listeria_json.StarAMR."0"."Predicted Phenotype" == "fosfomycin"
             assert iridanext_metadata.listeria_GCF_000196035."StarAMR Predicted Phenotype" == "fosfomycin"
             assert final_report_tmap."StarAMR.0.Predicted Phenotype" == "fosfomycin"
+
+            assert listeria_json.StarAMR."0"."CGE Predicted Phenotype" == "Fosfomycin"
+            assert iridanext_metadata.listeria_GCF_000196035."StarAMR CGE Predicted Phenotype" == "Fosfomycin"
+            assert final_report_tmap."StarAMR.0.CGE Predicted Phenotype" == "Fosfomycin"
 
             assert listeria_json.StarAMR."0".Plasmid == "None"
             assert iridanext_metadata.listeria_GCF_000196035."StarAMR Plasmid" == "None"
