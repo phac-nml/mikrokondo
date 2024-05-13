@@ -3,21 +3,21 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## `Unreleased`
+## v0.2.0 - [2024-05-14]
 
 ### `Added`
 
-- Updated documentation for params.
+- Updated documentation for params [#66](https://github.com/phac-nml/mikrokondo/pull/66)
 
-- Fixed param typos in schema, config and docs.
+- Fixed param typos in schema, config and docs [#66](https://github.com/phac-nml/mikrokondo/pull/66)
 
-- Added parameter to skip length filtering of sequences
+- Added parameter to skip length filtering of sequences [#66](https://github.com/phac-nml/mikrokondo/pull/66)
 
-- Added locidex for allele calling
+- Added locidex for allele calling [#62](https://github.com/phac-nml/mikrokondo/pull/62)
 
-- Updated directory output structure and names
+- Updated directory output structure and names [#66](https://github.com/phac-nml/mikrokondo/pull/66)
 
-- Added tests for Kraken2 contig binning
+- Added tests for Kraken2 contig binning [#66](https://github.com/phac-nml/mikrokondo/pull/66)
 
 ### `Fixed`
 
@@ -27,9 +27,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## `Changed`
 
-- Changed the specific files and metadata to store within IRIDA Next.
+- Changed the specific files and metadata to store within IRIDA Next [#65](https://github.com/phac-nml/mikrokondo/pull/65)
 
-- Added separate report fields for (PASSED|FAILED|WARNING) values and for the the actual value
+- Added separate report fields for (PASSED|FAILED|WARNING) values and for the the actual value [#65](https://github.com/phac-nml/mikrokondo/pull/65)
 
 ### `Dependencies`
 
