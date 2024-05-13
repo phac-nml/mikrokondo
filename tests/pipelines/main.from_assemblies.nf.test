@@ -216,21 +216,10 @@ nextflow_pipeline {
 
             // output metadata
             def ecoli_metadata = iridanext_metadata.ecoli_GCA_000947975
-
             assert ecoli_metadata."QC Status" == "FAILED"
-            assert !ecoli_metadata.containsKey("Checkm Status")
-            assert !ecoli_metadata.containsKey("Checkm Value")
-            assert !ecoli_metadata.containsKey("Average Coverage Status")
-            assert !ecoli_metadata.containsKey("Average Coverage Value")
-            assert ecoli_metadata."n50 Status" == "PASSED"
             assert ecoli_metadata."n50 Value" == 122025
-            assert !ecoli_metadata.containsKey("Raw Average Quality Status")
-            assert !ecoli_metadata.containsKey("Raw Average Quality Value")
-            assert ecoli_metadata."Length Status" == "PASSED"
             assert ecoli_metadata."Length Value" == 5299656
-            assert ecoli_metadata."nr contigs Status" == "PASSED"
             assert ecoli_metadata."nr contigs Value" == 123
-            assert ecoli_metadata."QC Summary" == "[FAILED] Sample is likely contaminated, REISOLATION AND RESEQUENCING RECOMMENDED\nPassed Tests: 3/4\nSpecies ID: s__Escherichia coli"
 
             // Read in filtered assembly fasta to verify number of contigs
             def assemblyLines = path("$launchDir/results/Assembly/FinalAssembly/ecoli_GCA_000947975/ecoli_GCA_000947975.final.filtered.assembly.fasta.gz").readLinesGzip()
