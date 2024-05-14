@@ -14,7 +14,7 @@ process LOCIDEX_SEARCH {
 
     output:
     tuple val(meta), path("${output_json}"), emit: allele_calls
-    tuple val(meta), path("${output_gbk}"), emit: annotations
+    tuple val(meta), path("${output_gbk}"), emit: annotations, optional: true
     path "versions.yml", emit: versions
 
     script:
@@ -43,9 +43,8 @@ process LOCIDEX_SEARCH {
     --min_aa_match_cov ${params.locidex.min_aa_match_cov} \\
     --max_target_seqs ${params.locidex.max_target_seqs}
 
-    gzip -c seq_store.json > $output_json
-    gzip -c annotations.gbk > $output_gbk
-    rm seq_store.json annotations.gbk
+    gzip -c seq_store.json > $output_json && rm seq_store.json
+    test -f annotations.gbk && gzip -c annotations.gbk > $output_gbk && rm annotations.gbk
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
