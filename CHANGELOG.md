@@ -3,61 +3,54 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## `Unreleased`
+## v0.2.0 - [2024-05-14]
 
 ### `Added`
 
-- Updated documentation for params.
+- Updated documentation for params. See [PR 66](https://github.com/phac-nml/mikrokondo/pull/66)
 
-- Fixed param typos in schema, config and docs.
+- Fixed param typos in schema, config and docs. See [PR 66](https://github.com/phac-nml/mikrokondo/pull/66)
 
-- Added parameter to skip length filtering of sequences
+- Added parameter to skip length filtering of sequences. See [PR 66](https://github.com/phac-nml/mikrokondo/pull/66)
 
-- Added locidex for allele calling
+- Added locidex for allele calling. See [PR 62](https://github.com/phac-nml/mikrokondo/pull/62)
 
-- Updated directory output structure and names
+- Updated directory output structure and names. See [PR 66](https://github.com/phac-nml/mikrokondo/pull/66)
 
-- Added tests for Kraken2 contig binning
+- Added tests for Kraken2 contig binning. See [PR 66](https://github.com/phac-nml/mikrokondo/pull/66)
 
 ### `Fixed`
 
-- If you select to filter contigs by length, those contigs will now be used for subsequent analysis. This resolves issue [#55](https://github.com/phac-nml/mikrokondo/issues/55)
+- If you select to filter contigs by length, those contigs will now be used for subsequent analysis. See [PR 66](https://github.com/phac-nml/mikrokondo/pull/66)
 
-- Matched ECTyper and SISTR parameters to what is set in the current IRIDA addressing issue [#58](https://github.com/phac-nml/mikrokondo/issues/58)
+- Matched ECTyper and SISTR parameters to what is set in the current IRIDA. See [PR 68](https://github.com/phac-nml/mikrokondo/pull/68)
 
-- Updated StarAMR point finder DB selection to resolve error when in db selection when a database is not selected addressing issue [[#69](https://github.com/phac-nml/mikrokondo/issues/69)]
+- Updated StarAMR point finder DB selection to resolve error when in db selection when a database is not selected addressing issue. See [PR 74](https://github.com/phac-nml/mikrokondo/pull/74)
+
+- Fixed calculation of SeqtkBaseCount value include counts for both pairs of paird-end reads. See [PR 65](https://github.com/phac-nml/mikrokondo/pull/65).
 
 ## `Changed`
 
-- Changed the specific files and metadata to store within IRIDA Next.
+- Changed the specific files and metadata to store within IRIDA Next. See [PR 65](https://github.com/phac-nml/mikrokondo/pull/65)
 
-- Added separate report fields for (PASSED|FAILED|WARNING) values and for the the actual value
+- Added separate report fields for (PASSED|FAILED|WARNING) values and for the the actual value. See [PR 65](https://github.com/phac-nml/mikrokondo/pull/65)
 
-- Updated StarAMR to version 0.10.0
-
-### `Dependencies`
-
-### `Deprecated`
-
+- Updated StarAMR to version 0.10.0. See [PR 74](https://github.com/phac-nml/mikrokondo/pull/74)
 
 ## v0.1.2 - [2024-05-02]
 
-### Added
-
 ### Changed
 
-- Changed default values for database parameters `--dehosting_idx`, `--mash_sketch`, `--kraken2_db`, and `--bakta_db` to null.
-- Enabled checking for existance of database files in JSON Schema to avoid issues with staging non-existent files in Azure.
-- Set `--kraken2_db` to be a required parameter for the pipeline.
-- Hide bakta parameters from IRIDA Next UI.
+- Changed default values for database parameters `--dehosting_idx`, `--mash_sketch`, `--kraken2_db`, and `--bakta_db` to null. See [PR 71](https://github.com/phac-nml/mikrokondo/pull/71)
+- Enabled checking for existance of database files in JSON Schema to avoid issues with staging non-existent files in Azure. See [PR 71](https://github.com/phac-nml/mikrokondo/pull/71).
+- Set `--kraken2_db` to be a required parameter for the pipeline. See [PR 71](https://github.com/phac-nml/mikrokondo/pull/71)
+- Hide bakta parameters from IRIDA Next UI. See [PR 71](https://github.com/phac-nml/mikrokondo/pull/71)
 
 ## v0.1.1 - [2024-04-22]
 
-### Added
-
 ### Changed
 
-- Switched the resource labels for **parse_fastp**, **select_pointfinder**, **report**, and **parse_kat** from `process_low` to `process_single` as they are all configured to run on the local Nextflow machine.
+- Switched the resource labels for **parse_fastp**, **select_pointfinder**, **report**, and **parse_kat** from `process_low` to `process_single` as they are all configured to run on the local Nextflow machine. See [PR 67](https://github.com/phac-nml/mikrokondo/pull/67)
 
 ## v0.1.0 - [2024-03-22]
 
@@ -86,5 +79,3 @@ Initial release of phac-nml/mikrokondo. Mikrokondo currently supports: read trim
 - Changed salmonella default default coverage to 40
 
 - Added integration testing using [nf-test](https://www.nf-test.com/).
-
-
