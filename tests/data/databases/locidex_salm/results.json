@@ -1,0 +1,15 @@
+{
+    "analysis_start_time": "2024-02-26 15:55:10",
+    "parameters": {
+        "input_file": "/Users/jrobertson/PycharmProjects/locidex/locidex/example/build_db_mlst/senterica.mlst.txt",
+        "outdir": "/Users/jrobertson/PycharmProjects/locidex/locidex/example/mlst_locidex_db",
+        "name": "Locidex Database",
+        "author": "",
+        "date": "",
+        "db_ver": "1.0.0",
+        "db_desc": "",
+        "force": true
+    },
+    "result_file": "/Users/jrobertson/PycharmProjects/locidex/locidex/example/mlst_locidex_db",
+    "analysis_end_time": "2024-02-26 15:55:10"
+}

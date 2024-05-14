@@ -3,7 +3,7 @@
 process STARAMR {
     tag "${meta.id}"
     label "process_medium"
-    container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.containers.get('singularity') : task.ext.containers.get('docker')}"
+    container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.parameters.get('singularity') : task.ext.parameters.get('docker')}"
 
     input:
     tuple val(meta), path(fasta), val(point_finder_db)
@@ -18,6 +18,7 @@ process STARAMR {
     tuple val(meta), path("$prefix/mlst${params.staramr.tsv_ext}"), emit: mlst
     tuple val(meta), path("$prefix/settings${params.staramr.txt_ext}"), emit: settings
     tuple val(meta), path("$prefix/results${params.staramr.xlsx_ext}"), emit: results_xlsx
+    tuple val(meta), path("$prefix/hits/*"), emit: hits, optional: true
     path "versions.yml", emit: versions
 
     script:

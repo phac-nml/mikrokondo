@@ -4,7 +4,7 @@
 process BAKTA_DB_DOWNLOAD {
     label 'process_single'
     storeDir "${params.bakta.db_output}"
-    container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.containers.get('singularity') : task.ext.containers.get('docker')}"
+    container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.parameters.get('singularity') : task.ext.parameters.get('docker')}"
 
     output:
     path "db*", emit: db

@@ -13,11 +13,27 @@
     B. [Bandage](https://rrwick.github.io/Bandage/) creates a bandage plot of the assembly [bandage_image.nf](https://github.com/phac-nml/mikrokondo/blob/main/modules/local/bandage_image.nf)
 
 ## Input
-- metadata
-- short reads
-- long reads
+- Next generation sequencing reads:
+    + Short read
+        * Illumina
+    + Long read:
+        * Nanopore
+        * Pacbio
+- User submitted sample sheet   
 
 ## Output
-- contigs (pilon, unicycler)
-- vcf data (pilon)
-- software versions
+- Assembly
+    - Assembling
+        - Bandage
+        - ConsensusGeneration
+            - Polishing
+                - Pilon
+                    - BAMs
+                    - Changes
+                    - Fasta
+                    - VCF
+            - Racon
+                - Consensus
+        - Unicycler
+    - FinalAssembly
+        - SAMPLE

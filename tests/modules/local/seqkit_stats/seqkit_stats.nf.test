@@ -25,7 +25,7 @@ nextflow_process {
 
         then {
             assert process.success
-            def stats_data = path("$launchDir/seqkit_stats_test1/assembly/quality/seqkit_stats/SAMPLE1.tsv").readLines()
+            def stats_data = path("$launchDir/seqkit_stats_test1/Assembly/Quality/SeqKitStats/SAMPLE1.seqkit.stats.summary.tsv").readLines()
 
             assert stats_data.contains("file\tformat\ttype\tnum_seqs\tsum_len\tmin_len\tavg_len\tmax_len")
             assert stats_data.contains("sample1.fasta\tFASTA\tDNA\t4\t10\t1\t2.5\t4")

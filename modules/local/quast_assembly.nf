@@ -4,15 +4,15 @@
 process QUAST {
     tag "$meta.id"
     label 'process_medium'
-    container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.containers.get('singularity') : task.ext.containers.get('docker')}"
+    container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.parameters.get('singularity') : task.ext.parameters.get('docker')}"
 
 
     input:
     tuple val(meta), path(contigs), path(trimmed_reads)
 
     output:
-    tuple val(meta), path("${prefix}/*"), path(contigs), emit: quast_data
-    tuple val(meta), path("${prefix}/${params.quast.report_prefix}${prefix}${params.quast.report_ext}"), path(contigs), emit: quast_table
+    tuple val(meta), path("${prefix}/**"), path(contigs), emit: quast_data
+    tuple val(meta), path("${prefix}/quast_table/${params.quast.report_prefix}${prefix}${params.quast.report_ext}"), path(contigs), emit: quast_table
     path "versions.yml", emit: versions
 
     script:
@@ -20,6 +20,8 @@ process QUAST {
     def args =  task.ext.args ?: ""
     def reads = null
     prefix = meta.id
+    
+    def quast_table_name = "${params.quast.report_prefix}${meta.id}${params.quast.report_ext}"
 
     def long_read_string = "--single"
     if (params.platform == params.opt_platforms.ont){
@@ -47,6 +49,8 @@ process QUAST {
     do
         mv \$i \${i/$params.quast.report_base/$prefix}
     done
+    mkdir '${prefix}/quast_table'
+    cp '${prefix}/${quast_table_name}' '${prefix}/quast_table/${quast_table_name}'
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         quast: \$(quast.py --version 2>&1 | sed 's/^.*QUAST v//; s/ .*\$//')

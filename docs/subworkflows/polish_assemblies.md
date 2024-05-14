@@ -11,9 +11,20 @@
   - **Pacbio** No addtional polishing is performed, outputs of Pacbio data still need to be tested.
 
 ## Input
-- cleaned reads
-- Assembly
+- cleaned reads (`fastq`) from the `FinalReads` dir
+  - This is the final reads file from the last step in the `Clean Reads` workflow (taking into account any skip flags that have been used)
+- Contig file (`fasta`) from the `FinalAssembly` dir
+  - This is the final contig file from the last step in the CleanAssemble workflow (taking into account any skip flags that have been used)
 
 ## Outputs
-- Polished assemblies
-- Reads used to polish
+- Assembly
+   - Assembling
+       - ConsensusGeneration
+           - Polishing
+              - Pilon
+                  - BAMs
+                  - Changes
+                  - Fasta
+                  - VCF
+              - Racon
+                  - Consensus

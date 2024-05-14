@@ -19,9 +19,21 @@
 
 
 ## Input
-- cleaned reads with tags
-- polished contigs with tags
+- cleaned reads (`fastq`) from the `FinalReads` dir
+  - This is the final reads file from the last step in the `Clean Reads` workflow (taking into account any skip flags that have been used)
+- Contig file (`fasta`) from the `FinalAssembly` dir
+  - This is the final contig file from the last step in the CleanAssemble workflow (taking into account any skip flags that have been used)
 
 ## Outputs
-- filtered contigs
-- software versions
+- Assembly
+   - Quality
+      - CheckM
+         - SAMPLE
+            - bins
+            - storage
+               - tree
+      - Quast
+         - SAMPLE
+- Subtyping
+   - SevenGeneMLST
+   - mlst

@@ -28,6 +28,7 @@ nextflow_pipeline {
                 skip_checkm = true
                 skip_raw_read_metrics = true
                 skip_polishing = true
+                skip_allele_calling = true
 
                 max_memory = "2.GB"
                 max_cpus = 1
@@ -39,7 +40,7 @@ nextflow_pipeline {
             assert path("$launchDir/results").exists()
 
             // parse output json file
-            def json = path("$launchDir/results/SummaryReport/final_report.json").json
+            def json = path("$launchDir/results/FinalReports/Aggregated/Json/final_report.json").json
 
             assert json.CSE.CSE.FastP.summary.sequencing.equals("paired end (150 cycles + 150 cycles)")
             assert json.CSE.CSE.FastP.summary.before_filtering.total_reads.equals(248)
@@ -54,10 +55,10 @@ nextflow_pipeline {
             assert json.CSE.meta.merge.equals(false)
             assert json.CSE.meta.downsampled.equals(false)
 
-            def assembly_path = "$launchDir/results/assembly/length_filtered_contigs/CSE_filtered.fasta.gz"
+            def assembly_path = "$launchDir/results/Assembly/FinalAssembly/CSE/CSE.final.filtered.assembly.fasta.gz"
             assert path(assembly_path).exists().equals(false)
 
-            def contigs_path = "$launchDir/results/assembly/length_filtered_contigs"
+            def contigs_path = "$launchDir/results/Assembly/FinalAssembly"
             assert path(contigs_path).exists().equals(false)
 
             // compare IRIDA Next JSON output
@@ -67,15 +68,35 @@ nextflow_pipeline {
             def iridanext_metadata = iridanext_json.metadata.samples
 
             // output files
-            assert iridanext_global.findAll { it.path == "SummaryReport/final_report.json" }.size() == 1
-            assert iridanext_global.findAll { it.path == "SummaryReport/final_report.tsv" }.size() == 1
-            assert iridanext_samples.CSE.findAll { it.path.contains("assembly/length_filtered_contigs") }.size() == 0
-            assert iridanext_samples.CSE.findAll { it.path.contains("assembly/CSE_flat_sample.json.gz") }.size() == 0
+            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Json/final_report.json" }.size() == 1
+            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Tables/final_report.tsv" }.size() == 1
+            assert iridanext_samples.CSE.findAll { it.path.contains("Assembly/FinalAssembly") }.size() == 0
+            assert iridanext_samples.CSE.findAll { it.path.contains("Assembly/FinalReports/FlattenedReports/CSE.flat_sample.json.gz") }.size() == 0
 
-            // output metadata
-            //assert iridanext_metadata.CSE."AssemblyCompleted" == false
+            // metadata
+            assert iridanext_metadata.CSE.containsKey("QC Status")
+            assert iridanext_metadata.CSE."QC Status" == "FAILED"
+            assert !iridanext_metadata.CSE.containsKey("Checkm Status")
+            assert !iridanext_metadata.CSE.containsKey("Checkm Value")
+            assert !iridanext_metadata.CSE.containsKey("Average Coverage Status")
+            assert !iridanext_metadata.CSE.containsKey("Average Coverage Value")
+            assert !iridanext_metadata.CSE.containsKey("n50 Status")
+            assert !iridanext_metadata.CSE.containsKey("n50 Value")
+            assert !iridanext_metadata.CSE.containsKey("Raw Average Quality Status")
+            assert !iridanext_metadata.CSE.containsKey("Raw Average Quality Value")
+            assert !iridanext_metadata.CSE.containsKey("Length Status")
+            assert !iridanext_metadata.CSE.containsKey("Length Value")
+            assert !iridanext_metadata.CSE.containsKey("nr contigs Status")
+            assert !iridanext_metadata.CSE.containsKey("nr contigs Value")
+            assert iridanext_metadata.CSE."QC Summary" == "[FAILED] Sample is likely contaminated, REISOLATION AND RESEQUENCING RECOMMENDED\nPassed Tests: 0/6\nSpecies ID: null"
+
+            assert iridanext_metadata.CSE."Downsampled" == false
+            assert !iridanext_metadata.CSE.containsKey("Species")
+            assert !iridanext_metadata.CSE.containsKey("GC (%)")
+            //assert iridanext_metadata.CSE."Mean Sequence Length Forward" == 150
+            // Base count after decontamination
+            assert iridanext_metadata.CSE."BaseCount" == 37200
         }
-
     }
 
     test("Should run without failure.") {
@@ -96,6 +117,8 @@ nextflow_pipeline {
 
                 min_reads = 100
 
+                skip_allele_calling = true
+
 
                 skip_bakta = true
                 skip_staramr = false
@@ -114,7 +137,7 @@ nextflow_pipeline {
             assert path("$launchDir/results").exists()
 
             // parse output json file
-            def json = path("$launchDir/results/SummaryReport/final_report.json").json
+            def json = path("$launchDir/results/FinalReports/Aggregated/Json/final_report.json").json
 
             assert json.short.short.RawReadSummary.R1."total_bp".equals(118750)
             assert json.short.short.RawReadSummary.R1."total_reads".equals(475)
@@ -142,7 +165,7 @@ nextflow_pipeline {
 
             // Below two values should be empty
             assert json.short.short.StarAMR."0"."Genotype".equals("None")
-            assert json.short.short.StarAMR."0"."Predicted Phenotype".equals("Sensitive")
+            assert json.short.short.StarAMR."0"."Predicted Phenotype".equals("Susceptible")
             assert json.short.short.StarAMR."0"."Genome Length".equals("4949")
 
             assert json.short.short.CheckM."0"."# genomes".equals("5656")
@@ -150,11 +173,11 @@ nextflow_pipeline {
             assert json.short.short.CheckM."0"."# marker sets".equals("24")
             assert json.short.short.CheckM."0".Contamination.equals("0.00")
 
-            assert json.short.short.SevenGeneMLSTReport[0].filename.equals("short_polished.fasta.gz")
+            assert json.short.short.SevenGeneMLSTReport[0].filename.equals("short.filtered.fasta.gz")
 
             assert json.short.short.Abricate."0".RESISTANCE.equals("NoData")  // All Abricate results for this are "NoData".
 
-            def assembly_path = "$launchDir/results/assembly/length_filtered_contigs/short_filtered.fasta.gz"
+            def assembly_path = "$launchDir/results/Assembly/FinalAssembly/short/short.final.filtered.assembly.fasta.gz"
             assert path(assembly_path).exists()
 
             // parse assembly file
@@ -168,17 +191,41 @@ nextflow_pipeline {
             def iridanext_metadata = iridanext_json.metadata.samples
 
             // output files
-            assert iridanext_global.findAll { it.path == "SummaryReport/final_report.json" }.size() == 1
-            assert iridanext_global.findAll { it.path == "SummaryReport/final_report.tsv" }.size() == 1
-            assert iridanext_samples.short.findAll { it.path == "assembly/length_filtered_contigs/short_filtered.fasta.gz" }.size() == 1
-            assert iridanext_samples.short.findAll { it.path == "SummaryReport/short_flat_sample.json.gz" }.size() == 1
+            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Json/final_report.json" }.size() == 1
+            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Tables/final_report.tsv" }.size() == 1
+            assert iridanext_samples.short.findAll { it.path == "Assembly/FinalAssembly/short/short.final.filtered.assembly.fasta.gz" }.size() == 1
+            assert iridanext_samples.short.findAll { it.path == "Assembly/Quality/QUAST/short/short.transposed_short.quast.quality.tsv" }.size() == 1
+            assert iridanext_samples.short.findAll { it.path == "Assembly/Quality/SeqKitStats/short.seqkit.stats.summary.tsv" }.size() == 1
+            assert iridanext_samples.short.findAll { it.path == "Assembly/PostProcessing/Speciation/MashScreen/short.mash.screen.taxa.screen.screen" }.size() == 1
+            assert iridanext_samples.short.findAll { it.path == "Reads/Quality/Trimmed/MashScreen/short.mash.screen.reads.screen.screen" }.size() == 1
+            assert iridanext_samples.short.findAll { it.path == "Reads/Quality/Trimmed/FastP/short.fastp.summary.json" }.size() == 1
+            assert iridanext_samples.short.findAll { it.path == "Reads/Quality/RawReadQuality/short.read.scan.summary.json" }.size() == 1
+            assert iridanext_samples.short.findAll { it.path == "FinalReports/FlattenedReports/short.flat_sample.json.gz" }.size() == 1
 
             // output metadata
-            assert iridanext_metadata.short."AssemblyCompleted" == true
-            assert iridanext_metadata.short."QUAST.0.Total length" == "4949"
-            assert iridanext_metadata.short."QUAST.0.Largest contig" == "4949"
-            assert iridanext_metadata.short."QUAST.0.# contigs" == "1"
-            assert iridanext_metadata.short."QUAST.0.N50" == "4949"
+            assert iridanext_metadata.short."QC Status" == "FAILED"
+            assert iridanext_metadata.short."Checkm Status" == "PASSED"
+            assert iridanext_metadata.short."Checkm Value" == 0.0
+            assert !iridanext_metadata.short.containsKey("Average Coverage Status")
+            assert !iridanext_metadata.short.containsKey("Average Coverage Value")
+            assert iridanext_metadata.short."n50 Status" == "WARNING"
+            assert iridanext_metadata.short."n50 Value" == 4949
+            assert iridanext_metadata.short."Raw Average Quality Status" == "PASSED"
+            assert iridanext_metadata.short."Raw Average Quality Value" == 40.0
+            assert iridanext_metadata.short."Length Status" == "WARNING"
+            assert iridanext_metadata.short."Length Value" == 4949
+            assert iridanext_metadata.short."nr contigs Status" == "WARNING"
+            assert iridanext_metadata.short."nr contigs Value" == 1
+            assert iridanext_metadata.short."QC Summary" == "[FAILED] RESEQUENCING IS RECOMMENDED\nPassed Tests: 5/6\nSpecies ID: No Species Identified"
+
+            assert iridanext_metadata.short."Downsampled" == false
+            assert iridanext_metadata.short."Species" == "No Species Identified"
+            assert iridanext_metadata.short."GC (%)" == "52.96"
+            assert iridanext_metadata.short."Mean Sequence Length Forward" == 250
+            assert iridanext_metadata.short."BaseCount" == 237500
+
+            assert iridanext_metadata.short."StarAMR Genotype" == "None"
+            assert iridanext_metadata.short."StarAMR Predicted Phenotype" == "Susceptible"
         }
 
     }

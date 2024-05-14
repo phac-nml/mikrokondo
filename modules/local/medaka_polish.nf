@@ -3,7 +3,7 @@
 process MEDAKA_POLISH{
     tag "$meta.id"
     label 'process_high'
-    container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.containers.get('singularity') : task.ext.containers.get('docker')}"
+    container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.parameters.get('singularity') : task.ext.parameters.get('docker')}"
     afterScript 'rm -rf medaka' // clean up medaka output directory, having issues on resumes
     beforeScript 'rm -rf medaka' // Same reasoning as above
     errorStrategy { sleep(Math.pow(2, task.attempt) * 200 as long); return 'retry' } // May be having issues with medaka model copying

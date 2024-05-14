@@ -1,10 +1,10 @@
-// SISTR on the cluster! borrowing from https://github.com/nf-core/modules/blob/master/modules/nf-core/sistr/main.nf agina
+// SISTR on the cluster! taking from https://github.com/nf-core/modules/blob/master/modules/nf-core/sistr/main.nf agina
 
 
 process SISTR {
     tag "$meta.id"
     label 'process_medium'
-    container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.containers.get('singularity') : task.ext.containers.get('docker')}"
+    container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.parameters.get('singularity') : task.ext.parameters.get('docker')}"
 
     input:
     tuple val(meta), path(fasta)
@@ -17,7 +17,10 @@ process SISTR {
     path "versions.yml"                    , emit: versions
 
     script:
-    def args = task.ext.args ?: ''
+    def args = ""
+    if(params.sistr.full_cgmlst){
+        args << "--use-full-cgmlst-db"
+    }
     def prefix = task.ext.prefix ?: "${meta.id}"
     def is_compressed = fasta.getName().endsWith(".gz") ? true : false
     def fasta_name = fasta.getName().replace(".gz", "")
@@ -30,9 +33,9 @@ process SISTR {
         --qc \\
         $args \\
         --threads $task.cpus \\
-        --alleles-output ${prefix}-allele.json \\
-        --novel-alleles ${prefix}-allele.fasta \\
-        --cgmlst-profiles ${prefix}-cgmlst.csv \\
+        --alleles-output ${prefix}.allele.json \\
+        --novel-alleles ${prefix}.allele.fasta \\
+        --cgmlst-profiles ${prefix}.cgmlst.csv \\
         --output-prediction ${prefix} \\
         --output-format tab \\
         $fasta_name

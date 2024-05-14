@@ -4,13 +4,13 @@
 process CHECKM_LINEAGEWF {
     tag "$meta.id"
     label 'process_high'
-    container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.containers.get('singularity') : task.ext.containers.get('docker')}"
+    container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.parameters.get('singularity') : task.ext.parameters.get('docker')}"
 
     input:
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("${prefix}/*"), emit: checkm_output
+    tuple val(meta), path("${prefix}/**"), emit: checkm_output
     tuple val(meta), path("${prefix}/${prefix}${params.checkm.results_ext}"), emit: checkm_results
     tuple val(meta), path("${prefix}/${params.checkm.lineage_ms}"), emit: lineage_ms
     path "versions.yml", emit: versions

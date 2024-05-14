@@ -110,6 +110,13 @@
                     "exists": true,
                     "format": "directory-path",
                     "hidden": true
+                },
+                "allele_scheme": {
+                    "type": "string",
+                    "pattern": "^\\S+$",
+                    "exists": true,
+                    "format": "directory-path",
+                    "description": "An allele scheme to to use for Locidex"
                 }
             },
             "required": [
@@ -402,6 +409,68 @@
                 "skip_staramr": {
                     "type": "boolean",
                     "description": "Skip running StarAMR"
+                },
+                "skip_allele_calling": {
+                    "type": "boolean",
+                    "description": "Skip allele calling with Locidex"
+                },
+                "skip_length_filtering_contigs": {
+                    "type": "boolean",
+                    "description": "Skip filtering contigs by length."
+                }
+            }
+        },
+        "ectyper": {
+            "title": "ECTyper",
+            "type": "object",
+            "description": "Options for ECTyper (E.coli serotyping)",
+            "default": "",
+            "properties": {
+                "ec_opid": {
+                    "type": "number",
+                    "default": 90,
+                    "description": "Minimum percent identity to determine O antigens prescence",
+                    "minimum": 0,
+                    "maximum": 100
+                },
+                "ec_opcov": {
+                    "type": "number",
+                    "default": 90,
+                    "description": "Minimum percent coverage of O antigen",
+                    "minimum": 0,
+                    "maximum": 100
+                },
+                "ec_hpid": {
+                    "type": "number",
+                    "default": 95,
+                    "description": "Miniumum percent identity to determine H antigens prescence",
+                    "minimum": 0,
+                    "maximum": 100
+                },
+                "ec_hpcov": {
+                    "type": "number",
+                    "default": 50,
+                    "description": "Minimum percent coverage of H antigen",
+                    "minimum": 0,
+                    "maximum": 100
+                },
+                "ec_enable_verification": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable species verification in ECTyper"
+                }
+            }
+        },
+        "sistr": {
+            "title": "SISTR",
+            "type": "object",
+            "description": "Options for SISTR (Salmonella serotyping)",
+            "default": "",
+            "properties": {
+                "sr_full_cgmlst": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Run SISTR using the full set of cgMLST alleles which can include highly similar alleles."
                 }
             }
         },
@@ -444,7 +513,7 @@
                     "minimum": 0,
                     "description": "the quality value that a base is qualified."
                 },
-                "fp_unqualified_precent_limit": {
+                "fp_unqualified_percent_limit": {
                     "type": "integer",
                     "default": 40,
                     "minimum": 0,
@@ -487,6 +556,117 @@
                 }
             }
         },
+        "locidex": {
+            "title": "Locidex",
+            "type": "object",
+            "description": "Options for allele calling with locidex.",
+            "default": "",
+            "properties": {
+                "lx_min_evalue": {
+                    "type": "number",
+                    "default": 0.0001,
+                    "description": "Minimum e-value required for match.",
+                    "minimum": 0,
+                    "maximum": 100
+                },
+                "lx_min_dna_len": {
+                    "type": "integer",
+                    "default": 1,
+                    "description": "Global minimum query length of DNA strand.",
+                    "minimum": 1
+                },
+                "lx_min_aa_len": {
+                    "type": "integer",
+                    "default": 1,
+                    "description": "Global minimum query length of an AminoAcid strand.",
+                    "minimum": 1
+                },
+                "lx_max_dna_len": {
+                    "type": "integer",
+                    "default": 10000000,
+                    "description": "Global maximum query length of DNA strand.",
+                    "minimum": 10
+                },
+                "lx_max_aa_len": {
+                    "type": "integer",
+                    "default": 10000000,
+                    "description": "Gloval maximum query length of AminoAcid strand.",
+                    "minimum": 10
+                },
+                "lx_min_dna_ident": {
+                    "type": "number",
+                    "default": 80,
+                    "description": "Global minimum DNA percent identity required for match. (Float value)",
+                    "minimum": 0,
+                    "maximum": 100
+                },
+                "lx_min_aa_ident": {
+                    "type": "number",
+                    "default": 80,
+                    "description": "Global minimum minimum AminoAcid percent identiy required for match. (Float value)",
+                    "minimum": 0,
+                    "maximum": 100
+                },
+                "lx_min_dna_match_cov": {
+                    "type": "number",
+                    "default": 80,
+                    "description": "Gloval minimum DNA percent hit coverage identity required for match. (float)",
+                    "minimum": 0.001,
+                    "maximum": 100
+                },
+                "lx_min_aa_match_cov": {
+                    "type": "number",
+                    "default": 80,
+                    "description": "Global minimum AminoAcid hit coverage identity required for match. (float)",
+                    "minimum": 0,
+                    "maximum": 100
+                },
+                "lx_max_target_seqs": {
+                    "type": "integer",
+                    "default": 10,
+                    "description": "Maximum number of sequence hits per a query",
+                    "minimum": 1
+                },
+                "lx_extraction_mode": {
+                    "type": "string",
+                    "default": "raw",
+                    "description": "Different ways to run locidex.",
+                    "enum": [
+                        "snps",
+                        "trim",
+                        "raw",
+                        "extend"
+                    ]
+                },
+                "lx_report_mode": {
+                    "type": "string",
+                    "default": "normal",
+                    "description": "Allele profile assignment.",
+                    "enum": [
+                        "normal",
+                        "conservative"
+                    ]
+                },
+                "lx_report_prop": {
+                    "type": "string",
+                    "default": "locus_name",
+                    "description": "Metadata label to use for aggregation. Only alphanumeric characters, underscores and dashes are allowed in names",
+                    "pattern": "^[A-Za-z0-9_-]*$"
+                },
+                "lx_report_max_ambig": {
+                    "type": "integer",
+                    "default": 0,
+                    "description": "Maximum number of ambiguous characters allowed in a sequence.",
+                    "minimum": 0
+                },
+                "lx_report_max_stop": {
+                    "type": "integer",
+                    "default": 0,
+                    "description": "Maximum number of internal stop codons allowed in a sequence.",
+                    "minimum": 0
+                }
+            }
+        },
         "data_processing_thresholds": {
             "title": "Data processing thresholds",
             "type": "object",
@@ -505,7 +685,7 @@
                     "description": "Minimum number of reads a sample requires to move forward for assembly",
                     "minimum": 1
                 },
-                "ba_min_conting_length": {
+                "ba_min_contig_length": {
                     "type": "integer",
                     "default": 200,
                     "description": "Minimum contig length for processing in Bakta",
@@ -533,7 +713,8 @@
             "properties": {
                 "nanopore_chemistry": {
                     "type": "string",
-                    "description": "The guppy base calling model. See the docs for a link of valid options"
+                    "description": "The guppy base calling model. See the docs for a link of valid options",
+                    "pattern": "^[A-Za-z0-9_-]*$"
                 },
                 "flye_read_type": {
                     "type": "string",
@@ -568,7 +749,16 @@
             "$ref": "#/definitions/control_flow_options"
         },
         {
+            "$ref": "#/definitions/ectyper"
+        },
+        {
+            "$ref": "#/definitions/sistr"
+        },
+        {
             "$ref": "#/definitions/fastp_options"
+        },
+        {
+            "$ref": "#/definitions/locidex"
         },
         {
             "$ref": "#/definitions/data_processing_thresholds"

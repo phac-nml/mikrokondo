@@ -1,0 +1,41 @@
+nextflow_process {
+    name "Test Process BIN_KRAKEN2"
+    script "modules/local/bin_kraken2.nf"
+    process "BIN_KRAKEN2"
+    tag "modules"
+    tag "bin_kraken2"
+
+    test("Test contig binning using a kraken2 output"){
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [id: "SAMPLE1"],
+                    file("$baseDir/tests/data/kraken2/output.k2.cls.fa"),
+                    file("$baseDir/tests/data/kraken2/output.k2.report"),
+                    file("$baseDir/tests/data/kraken2/output.k2.out")
+                ])
+                input[1] = Channel.from("S")
+                """
+            }
+
+            params{
+                outdir = "kraken2_bin"
+            }
+        }
+        then {
+            assert process.success
+
+            assert path("$launchDir/kraken2_bin/Assembly/PostProcessing/Metagenomic/BinnedContigs/Kraken2/SAMPLE1.SAMPLE1_Escherichia_virus_Lambda.kraken2.binned.assembly.fasta.gz").exists()
+            assert path("$launchDir/kraken2_bin/Assembly/PostProcessing/Metagenomic/BinnedContigs/Kraken2/SAMPLE1.SAMPLE1_Human_immunodeficiency_virus_1.kraken2.binned.assembly.fasta.gz").exists()
+            assert path("$launchDir/kraken2_bin/Assembly/PostProcessing/Metagenomic/BinnedContigs/Kraken2/SAMPLE1.SAMPLE1_Human_immunodeficiency_virus_2.kraken2.binned.assembly.fasta.gz").exists()
+            assert path("$launchDir/kraken2_bin/Assembly/PostProcessing/Metagenomic/BinnedContigs/Kraken2/SAMPLE1.SAMPLE1_Influenza_A_virus.kraken2.binned.assembly.fasta.gz").exists()
+            assert path("$launchDir/kraken2_bin/Assembly/PostProcessing/Metagenomic/BinnedContigs/Kraken2/SAMPLE1.SAMPLE1_Influenza_B_virus.kraken2.binned.assembly.fasta.gz").exists()
+            assert path("$launchDir/kraken2_bin/Assembly/PostProcessing/Metagenomic/BinnedContigs/Kraken2/SAMPLE1.SAMPLE1_Middle_East_respiratory_syndrome-related_coronavirus.kraken2.binned.assembly.fasta.gz").exists()
+            assert path("$launchDir/kraken2_bin/Assembly/PostProcessing/Metagenomic/BinnedContigs/Kraken2/SAMPLE1.SAMPLE1_Severe_acute_respiratory_syndrome-related_coronavirus.kraken2.binned.assembly.fasta.gz").exists()
+
+        }
+    }
+
+
+}

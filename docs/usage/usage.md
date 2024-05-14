@@ -1,11 +1,11 @@
 # Running MikroKondo
 
-## Useage
+## Usage
 
 MikroKondo can be run like most other nextflow pipelines. The most basic usage is as follows:
 `nextflow run main.nf --input PATH_TO_SAMPLE_SHEET --outdir OUTPUT_DIR --platform SEQUENCING_PLATFORM  -profile CONTAINER_TYPE`
 
-Many parameters can be altered or accessed from the command line. For a full list of parameters to be altered please refer to the `nextflow.config` file in the repo. 
+Many parameters can be altered or accessed from the command line. For a full list of parameters to be altered please refer to the `nextflow.config` file in the repo.
 
 ## Input
 
@@ -15,13 +15,13 @@ This pipeline requires the following as input:
 This pipeline requires sample files to be gzipped (symlinks may be problematic).
 
 ### Samplesheet (CSV)
-Mikrokondo requires a sample sheet to be run. This FOFN (file of file names) contains the samples names and allows a user to combine read-sets based on that name if provided. The sample-sheet can utilize the following header fields: 
+Mikrokondo requires a sample sheet to be run. This FOFN (file of file names) contains the samples names and allows a user to combine read-sets based on that name if provided. The sample-sheet can utilize the following header fields:
 
-- sample   
-- fastq_1   
-- fastq_2   
-- long_reads   
-- assembly   
+- sample
+- fastq_1
+- fastq_2
+- long_reads
+- assembly
 
 
 Example layouts for different sample-sheets include:
@@ -50,6 +50,14 @@ _Starting with assembly only_
 |------|--------|
 |sample_name|path_to_assembly|
 
+_Example merging paired-end data_
+
+|sample|fastq_1|fastq_2|
+|------|-------|-------|
+|my_sample|path_to_forward_reads_1|path_to_reversed_reads_1|
+|my_sample|path_to_forward_reads_2|path_to_reversed_reads_2|
+
+*The value of `my_sample` is repeated twice allowing sample to be merged on the common key. This works for nanopore data, hybrid assembly data and assemblies*
 
 ## Command line arguments
 
@@ -100,6 +108,51 @@ Numerous steps within mikrokondo can be turned off without compromising the stab
 - `--skip_starmar`: turn off starAMR AMR detection.
 - `--skip_subtyping`: to turn off automatic triggering of subtyping in the pipeline (useful when target organism does not have a subtyping tool installed within mikrokondo).
 - `--skip_version_gathering`: prevents the collation of tool versions. This process generally takes a couple minutes (at worst) but can be useful when during recurrent runs of the pipeline (like when testing settings).
+- `--skip_report`: Prevents creation of final report summary report amalgamating outputs of all other files, this will also turnoff the creation of individual sub-reports.
+- `--skip_metagenomic_detection`: Skips classification of sample as metagnomic and forces a sample to be analyzed as an isolate.
+- `--skip_raw_read_metrics`: Prevents generation of raw read metrics, e.g. metrics generated about the reads before any trimming or filtering is performed.
+- `--skip_mlst`: Skip seven gene MLST.
+
+#### Datasets
+Different databases/pre-computed files are required for usage within mikrokondo. These can be downloaded or created by the user, and if not configured within the `nextflow.config` file they can be passed in as files with the following command-line arguments.
+
+- `--dehosting_idx`: The minimap2 index to be used for dehosting.
+- `--mash_sketch`: The mash sketch to be used for contamination detection and speciation.
+- `--bakta_db`: Bakta database for genome annotation.
+- `--kraken2_db`: Kraken2 database that can be used for speciation and binning of meta-genomically assembled contigs.
+- `--staramr_db`: An optional StarAMR database to be passed in, it is recommended to use the database packaged in the container.
+
+#### FastP Arguments
+For simplicity parameters affecting FastP have been moved to the top level. Each argument matches one listed within the [FastP](https://phac-nml.github.io/mikrokondo/usage/tool_params/#fastp) usage section with only a `fp_` being appended to the front of the argument. For a more detailed description of what each argument does please review the tool specific parameters for [FastP](https://phac-nml.github.io/mikrokondo/usage/tool_params/#fastp) here.
+
+- `--fp_average_quality`: If a read/read-pair quality is less than this value it is discarded
+- `--fp_cut_tail_mean_quality`: the quality threshold to trim reads to
+- `--fp_cut_tail_window_size`: The window size to cut a tail with.
+- `--fp_complexity_threshold`: The threshold for low complexity filter.
+- `--fp_qualified_phred`: The quality of a base to be qualified if filtering by unqualified bases.
+- `--fp_unqualified_percent_limit`: The percent amount of bases that are allowed to be unqualified in a read.
+- `--fp_polyg_min_len`: The minimum length to detect a polyG tail.
+- `--fp_polyx_min_len`: The minimum length to detect a polyX tail.
+- `--fp_illumina_length_min`: The minimum read length to be allowed in illumina data.
+- `--fp_illumina_length_max`: The maximum read length allowed for illumina data.
+- `--fp_single_end_length_min`: the minimum read length allowed in Pacbio or Nanopore data.
+- `--fp_dedup_reads`: A parameter to be turned on to allow for deduplication of reads.
+
+#### Bakta Parameters
+Top level parameters that can be passed to Bakta.
+
+- `--ba_min_contig_length`: Minimum contig length to be analyzed by Bakta
+
+#### Quast Parameters
+Top level parameters that can be passed to Quast.
+
+- `--qt_min_contig_length`: Minimum length of a contig to be analyzed within Quast.
+
+#### Mash parameters
+Top level parameters to be passed to Mash.
+
+- `--mh_min_kmer`: The minimum time a kmer needs to appear to be used in genome size estimation by mash.
+
 
 #### Containers
 
@@ -119,7 +172,7 @@ Different container services can be specified from the command line when running
 - `--platform nanopore` for Nanopore.
 - `--platform pacbio` for Pacbio
 - `--platform hybrid` for hybrid assemblies.
-   > **Note:** when denoting your run as using a hybrid platform, you must also add in the long_read_opt parameter as the defualt value is nanopore**. `--long_read_opt nanopore` for nanopore or `--long_read_opt pacbio` for pacbio.
+   > **Note:** when denoting your run as using a hybrid platform, you must also add in the long_read_opt parameter as the default value is nanopore**. `--long_read_opt nanopore` for nanopore or `--long_read_opt pacbio` for pacbio.
 
 #### Slurm options
 
@@ -135,8 +188,8 @@ All output files will be written into the `outdir` (specified by the user). More
 - **pipeline_info** - dir containing all pipeline related information including software versions used and execution reports.
 - **ReadQuality** - dir containing all read tool related output, including contamination, fastq, mash, and subsampled read sets (when present)
 - **subtyping** - dir containing all subtyping tool related output, including SISTR, ECtyper, etc.
-- **SummaryReport** - dir containing collated results files for all tools, including: 
-   - Individual sample flatted json reports
+- **SummaryReport** - dir containing collated results files for all tools, including:
+   - Individual sample flattened json reports
    - **final_report** - All tool results for all samples in both .json (including a flattened version) and .tsv format
 - **bco.json** - data providence file generated from the nf-prov plug-in
 - **manifest.json** - data providence file generated from the nf-prov plug-in

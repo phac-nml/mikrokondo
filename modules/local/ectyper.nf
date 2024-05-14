@@ -1,13 +1,12 @@
 // Module for running ectyper
-// borrowed from: https://github.com/nf-core/modules/blob/master/modules/nf-core/ectyper/main.nf
+// adapted from: https://github.com/nf-core/modules/blob/master/modules/nf-core/ectyper/main.nf
 
 
 
 process ECTYPER{
     tag "$meta.id"
     label 'process_medium'
-    container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.containers.get('singularity') : task.ext.containers.get('docker')}"
-    // TODO add ECTyper temporary directory issues to docs
+    container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.parameters.get('singularity') : task.ext.parameters.get('docker')}"
 
     input:
     tuple val(meta), path(fasta)
