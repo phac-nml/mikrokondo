@@ -27,6 +27,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Updated StarAMR point finder DB selection to resolve error when in db selection when a database is not selected addressing issue. See [PR 74](https://github.com/phac-nml/mikrokondo/pull/74)
 
+- Fixed calculation of SeqtkBaseCount value include counts for both pairs of paird-end reads. See [PR 65](https://github.com/phac-nml/mikrokondo/pull/65).
+
 ## `Changed`
 
 - Changed the specific files and metadata to store within IRIDA Next. See [PR 65](https://github.com/phac-nml/mikrokondo/pull/65)
