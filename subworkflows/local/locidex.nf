@@ -31,7 +31,7 @@ workflow LOCIDEX {
     versions = versions.mix(extracted_lx.versions)
 
     allele_calls = LOCIDEX_SEARCH(extracted_lx.extracted_seqs)
-    versios = versions.mix(allele_calls.versions)
+    versions = versions.mix(allele_calls.versions)
 
     report_lx = LOCIDEX_REPORT(allele_calls.allele_calls)
     versions = versions.mix(report_lx.versions)
