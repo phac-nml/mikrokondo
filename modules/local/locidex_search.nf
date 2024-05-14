@@ -30,7 +30,6 @@ process LOCIDEX_SEARCH {
     fi
 
     locidex search -q ${fasta_name} \\
-    --annotate \\
     --n_threads ${task.cpus} \\
     -o . \\
     -d ${db} --force \\
