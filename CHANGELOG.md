@@ -15,8 +15,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added locidex for allele calling. See [PR 62](https://github.com/phac-nml/mikrokondo/pull/62)
 
-- Removed `--annotate` parameter from locidex search.
-
 - Updated directory output structure and names. See [PR 66](https://github.com/phac-nml/mikrokondo/pull/66)
 
 - Added tests for Kraken2 contig binning. See [PR 66](https://github.com/phac-nml/mikrokondo/pull/66)
