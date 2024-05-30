@@ -1,0 +1,202 @@
+/*
+Tests for functions in the report module.
+*/
+
+
+nextflow_function {
+    name "Test report.nf functions"
+    script "modules/local/report.nf"
+    function "table_values"
+
+    test("Test tab missing column value, header supplied"){
+
+        when {
+            function {
+                """
+                input[0] = file("$baseDir/tests/data/tables/mock_missing_value.tab")
+                input[1] = true
+                input[2] = '\t'
+                input[3] = null
+                """
+            }
+            params {
+                outdir = "results"
+            }
+        }
+        then{
+            assert function.result == ['0':['header1':'NoData', 'header2':'stuff2', 'header3':'stuff3']]
+            assert function.success
+        }
+    }
+
+    test("Test tab missing 2 column values, header supplied"){
+
+        when {
+            function {
+                """
+                input[0] = file("$baseDir/tests/data/tables/mock_missing_value_2.tab")
+                input[1] = true
+                input[2] = '\t'
+                input[3] = null
+                """
+            }
+            params {
+                outdir = "results"
+            }
+        }
+        then{
+            assert function.result == ['0':['header1':'NoData', 'header2':'NoData', 'header3':'stuff3']]
+            assert function.success
+        }
+    }
+
+
+    test("Test tab, header supplied"){
+
+        when {
+            function {
+                """
+                input[0] = file("$baseDir/tests/data/tables/no_missing.tab")
+                input[1] = true
+                input[2] = '\t'
+                input[3] = null
+                """
+            }
+            params {
+                outdir = "results"
+            }
+        }
+        then{
+            assert function.result == ['0':['header1':'stuff1', 'header2':'stuff2', 'header3':'stuff3']]
+            assert function.success
+        }
+    }
+
+    test("Test csv missing column value, header supplied"){
+
+        when {
+            function {
+                """
+                input[0] = file("$baseDir/tests/data/tables/mock_missing_value.csv")
+                input[1] = true
+                input[2] = ','
+                input[3] = null
+                """
+            }
+            params {
+                outdir = "results"
+            }
+        }
+        then{
+            assert function.result == ['0':['header1':'NoData', 'header2':'stuff2', 'header3':'stuff3']]
+            assert function.success
+        }
+    }
+
+
+    test("Test csv, header supplied"){
+
+        when {
+            function {
+                """
+                input[0] = file("$baseDir/tests/data/tables/no_missing.csv")
+                input[1] = true
+                input[2] = ','
+                input[3] = null
+                """
+            }
+            params {
+                outdir = "results"
+            }
+        }
+        then{
+            assert function.result == ['0':['header1':'stuff1', 'header2':'stuff2', 'header3':'stuff3']]
+            assert function.success
+        }
+    }
+
+    test("Test csv, header missing one value"){
+
+        when {
+            function {
+                """
+                input[0] = file("$baseDir/tests/data/tables/header_missing_val.csv")
+                input[1] = true
+                input[2] = ','
+                input[3] = null
+                """
+            }
+            params {
+                outdir = "results"
+            }
+        }
+        then{
+            assert function.success
+            assert function.result == ['0':['__default_index':'stuff1', 'header2':'stuff2', 'header3':'stuff3']]
+        }
+    }
+
+
+    test("Test csv, no header"){
+
+        when {
+            function {
+                """
+                input[0] = file("$baseDir/tests/data/tables/no_header.csv")
+                input[1] = false
+                input[2] = ','
+                input[3] = ['header1', 'header2', 'header3']
+                """
+            }
+            params {
+                outdir = "results"
+            }
+        }
+        then{
+            assert function.success
+            assert function.result == ['0':['header1':'stuff1', 'header2':'stuff2', 'header3':'stuff3']]
+        }
+    }
+
+
+    test("Test csv, two headers missing values"){
+
+        when {
+            function {
+                """
+                input[0] = file("$baseDir/tests/data/tables/two_missing_headers.csv")
+                input[1] = true
+                input[2] = ','
+                input[3] = null
+                """
+            }
+            params {
+                outdir = "results"
+            }
+        }
+        then{
+            assert function.failed
+        }
+    }
+
+        test("Test csv, vector with header"){
+
+        when {
+            function {
+                """
+                input[0] = file("$baseDir/tests/data/tables/vector.csv")
+                input[1] = true
+                input[2] = ','
+                input[3] = null
+                """
+            }
+            params {
+                outdir = "results"
+            }
+        }
+        then{
+            assert function.result == ['0':['header1':'stuff1'], '1': ['header1':'stuff2'], '2':['header1':'stuff3']]
+            assert function.success
+        }
+    }
+}
