@@ -804,7 +804,7 @@ def table_values(file_path, header_p, seperator, headers=null){
     def converted_data = [:]
     def idx = 0
     def lines_read = false
-    def missing_value = "NoData"
+    def missing_value = ''
     def default_index_col = "__default_index__"
     file_path.withReader{
         String line
@@ -815,13 +815,13 @@ def table_values(file_path, header_p, seperator, headers=null){
             def missing_headers = 0
             if(split_header.size() > 1){
                 for(col_header in split_header[1..-1]){ // skip first column as it is allowed to be empty
-                    if(!col_header){
+                    if(col_header == null || col_header == ''){
                         missing_headers++;
                     }
                 }
             }
 
-            if(missing_headers){
+            if(missing_headers != 0){
                 error("Missing multiple column headers in ${file_path}. You may need to pass in column headers in the nextflow.config file.")
             }
 
@@ -854,7 +854,7 @@ def table_values(file_path, header_p, seperator, headers=null){
             lines_read = true
         }
         if(!lines_read){
-            converted_data[idx] = [split_header, Collections.nCopies(split_header.size, missing_value)].transpose().collectEntries()
+            converted_data[idx] = [split_header, Collections.nCopies(split_header.size(), missing_value)].transpose().collectEntries()
         }
 
     }

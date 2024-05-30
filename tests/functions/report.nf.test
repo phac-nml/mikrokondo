@@ -24,7 +24,7 @@ nextflow_function {
             }
         }
         then{
-            assert function.result == ['0':['header1':'NoData', 'header2':'stuff2', 'header3':'stuff3']]
+            assert function.result == ['0':['header1':'', 'header2':'stuff2', 'header3':'stuff3']]
             assert function.success
         }
     }
@@ -45,7 +45,7 @@ nextflow_function {
             }
         }
         then{
-            assert function.result == ['0':['header1':'NoData', 'header2':'NoData', 'header3':'stuff3']]
+            assert function.result == ['0':['header1':'', 'header2':'', 'header3':'stuff3']]
             assert function.success
         }
     }
@@ -88,7 +88,7 @@ nextflow_function {
             }
         }
         then{
-            assert function.result == ['0':['header1':'NoData', 'header2':'stuff2', 'header3':'stuff3']]
+            assert function.result == ['0':['header1':'', 'header2':'stuff2', 'header3':'stuff3']]
             assert function.success
         }
     }
@@ -132,7 +132,7 @@ nextflow_function {
         }
         then{
             assert function.success
-            assert function.result == ['0':['__default_index':'stuff1', 'header2':'stuff2', 'header3':'stuff3']]
+            assert function.result == ['0':['__default_index__':'stuff1', 'header2':'stuff2', 'header3':'stuff3']]
         }
     }
 
@@ -179,7 +179,7 @@ nextflow_function {
         }
     }
 
-        test("Test csv, vector with header"){
+    test("Test csv, vector with header"){
 
         when {
             function {
@@ -197,6 +197,108 @@ nextflow_function {
         then{
             assert function.result == ['0':['header1':'stuff1'], '1': ['header1':'stuff2'], '2':['header1':'stuff3']]
             assert function.success
+        }
+    }
+
+    test("Test empty file"){
+
+        when {
+            function {
+                """
+                input[0] = file("$baseDir/tests/data/tables/empty.csv")
+                input[1] = true
+                input[2] = ','
+                input[3] = null
+                """
+            }
+            params {
+                outdir = "results"
+            }
+        }
+        then{
+            assert function.failed
+        }
+    }
+
+
+    test("Test more values than columns"){
+
+        when {
+            function {
+                """
+                input[0] = file("$baseDir/tests/data/tables/mismatch_headers_values.csv")
+                input[1] = true
+                input[2] = ','
+                input[3] = null
+                """
+            }
+            params {
+                outdir = "results"
+            }
+        }
+        then{
+            assert function.failed
+        }
+    }
+
+    test("Vector no column header"){
+        when {
+            function {
+                """
+                input[0] = file("$baseDir/tests/data/tables/vector_no_hdr.csv")
+                input[1] = true
+                input[2] = ','
+                input[3] = null
+                """
+            }
+            params {
+                outdir = "results"
+            }
+        }
+        then{
+            assert function.result == ['0':['__default_index__':'stuff1'], '1': ['__default_index__':'stuff2'], '2':['__default_index__':'stuff3']]
+            assert function.success
+        }
+    }
+
+
+    test("Missing all column headers"){
+        when {
+            function {
+                """
+                input[0] = file("$baseDir/tests/data/tables/missing_all_headers.csv")
+                input[1] = true
+                input[2] = ','
+                input[3] = null
+                """
+            }
+            params {
+                outdir = "results"
+            }
+        }
+        then{
+            assert function.failed
+        }
+    }
+
+    test("Missing all values"){
+        when {
+            function {
+                """
+                input[0] = file("$baseDir/tests/data/tables/all_values_missing.csv")
+                input[1] = true
+                input[2] = ','
+                input[3] = null
+                """
+            }
+            params {
+                outdir = "results"
+            }
+        }
+        then{
+            assert function.success
+            assert function.result == ['0':['header1':'', 'header2':'', 'header3':'']]
+
         }
     }
 }
