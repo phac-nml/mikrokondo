@@ -804,24 +804,57 @@ def table_values(file_path, header_p, seperator, headers=null){
     def converted_data = [:]
     def idx = 0
     def lines_read = false
+    def missing_value = "NoData"
+    def default_index_col = "__default_index__"
     file_path.withReader{
         String line
         if(header_p){
             header = it.readLine()
-            split_header = header.tokenize(seperator)
+            split_header = header.split(seperator)
+
+            def missing_headers = 0
+            if(split_header.size() > 1){
+                for(col_header in split_header[1..-1]){ // skip first column as it is allowed to be empty
+                    if(!col_header){
+                        missing_headers++;
+                    }
+                }
+            }
+
+            if(missing_headers){
+                error("Missing multiple column headers in ${file_path}. You may need to pass in column headers in the nextflow.config file.")
+            }
+
+            if(!split_header[0] && ( split_header.size() == 1 || split_header[1] != default_index_col)){
+                // Missing column headers could arise from the first column serving as and index, if this is the case
+                // verify that the split_split header size is greater == 1 (e.g is it a vector) or that the next column
+                // value is not equal to the value of "default_index_col"
+                split_header[0] = default_index_col
+            }
+
         }
         if(headers){
             split_header = headers
         }
         while(line = it.readLine()){
-            split_line = line.tokenize(seperator)
+            split_line = line.split(seperator) // split will allow for missing values
             // Transpose, and collect converts the data to a map
-            converted_data[idx] = [split_header, split_line].transpose().collectEntries()
+            if(split_line.size() != split_header.size()){
+                error("The number of values in ${file_path} differs from number of columns headers ${split_header}")
+            }
+
+            def new_row = [split_header, split_line].transpose().collectEntries()
+            new_row.each{
+                if(!it.value){
+                    it.value = missing_value;
+                }
+            }
+            converted_data[idx] = new_row
             idx++
             lines_read = true
         }
         if(!lines_read){
-            converted_data[idx] = [split_header, Collections.nCopies(split_header.size, "NoData")].transpose().collectEntries()
+            converted_data[idx] = [split_header, Collections.nCopies(split_header.size, missing_value)].transpose().collectEntries()
         }
 
     }
