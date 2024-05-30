@@ -298,7 +298,6 @@ nextflow_function {
         then{
             assert function.success
             assert function.result == ['0':['header1':'', 'header2':'', 'header3':'']]
-
         }
     }
 }
