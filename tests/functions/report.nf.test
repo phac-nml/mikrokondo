@@ -95,6 +95,7 @@ nextflow_function {
 
 
     test("Test csv, header supplied"){
+        tag "no_missing"
 
         when {
             function {
@@ -138,6 +139,7 @@ nextflow_function {
 
 
     test("Test csv, no header"){
+        tag "csv_no_header"
 
         when {
             function {
