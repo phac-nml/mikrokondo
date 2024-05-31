@@ -801,14 +801,30 @@ def table_values(file_path, header_p, seperator, headers=null){
     */
     def missing_value = 'NoData'
     def default_index_col = "__default_index__"
+    def rows_list = null
     def replace_missing = { it == null || it == '' ? missing_value : it }
 
-    def rows_list = file_path.splitCsv(header: (header_p ? true : headers), sep:seperator)
+    try {
+        rows_list = file_path.splitCsv(header: (header_p ? true : headers), sep:seperator)
+    } catch (java.lang.IllegalStateException e) {
+        // Probably not the best solution since messages could change with different versions
+        // of Nextflow, but there isn't a way to get any more specific exception type
+        if (header_p && e.getMessage() == "Empty header columns are not allowed in CSV file") {
+            // Attempt to read file assuming first line is header line with missing value
+            def header_line = file_path.splitText()[0].trim()
+            def headers_from_file = header_line.split(seperator)
+            if (headers_from_file[0] == null || headers_from_file[0] == '') {
+                headers_from_file[0] = default_index_col
+                rows_list = file_path.splitCsv(header: headers_from_file as List, sep:seperator, skip: 1)
+            } else {
+                throw e
+            }
+        } else {
+            throw e
+        }
+    }
     def converted_data = rows_list.indexed().collectEntries { idx, row -> 
         ["${idx}": row.collectEntries { k, v -> [(k): replace_missing(v)] }]
     }
     return converted_data
 }
-
-
-

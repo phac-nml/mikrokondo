@@ -9,6 +9,7 @@ nextflow_function {
     function "table_values"
 
     test("Test tab missing column value, header supplied"){
+        tag "tab_missing_value"
 
         when {
             function {
@@ -117,6 +118,7 @@ nextflow_function {
     }
 
     test("Test csv, header missing one value"){
+        tag "header_missing_one_value"
 
         when {
             function {
