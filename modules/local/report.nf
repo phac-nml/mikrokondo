@@ -839,7 +839,7 @@ def table_values(file_path, header_p, seperator, headers=null){
         while(line = it.readLine()){
             split_line = line.split(seperator) // split will allow for missing values
             // Transpose, and collect converts the data to a map
-            if(split_line.size() != split_header.size()){
+            if(split_line.size() > split_header.size()){
                 error("The number of values in ${file_path} differs from number of columns headers ${split_header}")
             }
 
