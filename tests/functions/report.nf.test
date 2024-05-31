@@ -300,4 +300,64 @@ nextflow_function {
             assert function.result == ['0':['header1':'NoData', 'header2':'NoData', 'header3':'NoData']]
         }
     }
+
+    test("Missing last two values"){
+        when {
+            function {
+                """
+                input[0] = file("$baseDir/tests/data/tables/missing_last_value.tab")
+                input[1] = true
+                input[2] = '\t'
+                input[3] = null
+                """
+            }
+            params {
+                outdir = "results"
+            }
+        }
+        then{
+            assert function.success
+            assert function.result == ['0':['header1':'stuff1', 'header2':'stuff2', 'header3':'NoData']]
+        }
+    }
+
+    test("Missing multiple terminal value separators"){
+        when {
+            function {
+                """
+                input[0] = file("$baseDir/tests/data/tables/missing_multiple_value_separators.tab")
+                input[1] = true
+                input[2] = '\t'
+                input[3] = null
+                """
+            }
+            params {
+                outdir = "results"
+            }
+        }
+        then{
+            assert function.success
+            assert function.result == ['0':['header1':'stuff1', 'header2':'stuff2', 'header3':'NoData', 'header4': 'NoData']]
+        }
+    }
+
+    test("Missing internal value separator"){
+        when {
+            function {
+                """
+                input[0] = file("$baseDir/tests/data/tables/missing_multiple_value_separators.tab")
+                input[1] = true
+                input[2] = '\t'
+                input[3] = null
+                """
+            }
+            params {
+                outdir = "results"
+            }
+        }
+        then{
+            assert function.success
+            assert function.result == ['0':['header1':'stuff1', 'header2':'stuff2', 'header3':'NoData', 'header4': 'stuff4']]
+        }
+    }
 }
