@@ -24,7 +24,7 @@ nextflow_function {
             }
         }
         then{
-            assert function.result == ['0':['header1':'', 'header2':'stuff2', 'header3':'stuff3']]
+            assert function.result == ['0':['header1':'NoData', 'header2':'stuff2', 'header3':'stuff3']]
             assert function.success
         }
     }
@@ -45,7 +45,7 @@ nextflow_function {
             }
         }
         then{
-            assert function.result == ['0':['header1':'', 'header2':'', 'header3':'stuff3']]
+            assert function.result == ['0':['header1':'NoData', 'header2':'NoData', 'header3':'stuff3']]
             assert function.success
         }
     }
@@ -88,7 +88,7 @@ nextflow_function {
             }
         }
         then{
-            assert function.result == ['0':['header1':'', 'header2':'stuff2', 'header3':'stuff3']]
+            assert function.result == ['0':['header1':'NoData', 'header2':'stuff2', 'header3':'stuff3']]
             assert function.success
         }
     }
@@ -297,7 +297,7 @@ nextflow_function {
         }
         then{
             assert function.success
-            assert function.result == ['0':['header1':'', 'header2':'', 'header3':'']]
+            assert function.result == ['0':['header1':'NoData', 'header2':'NoData', 'header3':'NoData']]
         }
     }
 }

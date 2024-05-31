@@ -804,7 +804,7 @@ def table_values(file_path, header_p, seperator, headers=null){
     def converted_data = [:]
     def idx = 0
     def lines_read = false
-    def missing_value = ''
+    def missing_value = 'NoData'
     def default_index_col = "__default_index__"
     file_path.withReader{
         String line
