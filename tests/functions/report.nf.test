@@ -184,6 +184,7 @@ nextflow_function {
     }
 
     test("Test csv, vector with header"){
+        tag "csv_vector_header"
 
         when {
             function {
@@ -286,6 +287,8 @@ nextflow_function {
     }
 
     test("Missing all values"){
+        tag "missing_all_values"
+
         when {
             function {
                 """
