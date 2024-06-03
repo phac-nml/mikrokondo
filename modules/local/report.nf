@@ -807,9 +807,7 @@ def table_values(file_path, header_p, seperator, headers=null){
     try {
         rows_list = file_path.splitCsv(header: (header_p ? true : headers), sep:seperator)
     } catch (java.lang.IllegalStateException e) {
-        // Probably not the best solution since messages could change with different versions
-        // of Nextflow, but there isn't a way to get any more specific exception type
-        if (header_p && e.getMessage() == "Empty header columns are not allowed in CSV file") {
+        if (header_p) {
             // Attempt to read file assuming first line is header line with missing value
             def header_line = file_path.splitText()[0].trim()
             def headers_from_file = header_line.split(seperator)

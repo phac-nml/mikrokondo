@@ -247,6 +247,8 @@ nextflow_function {
     }
 
     test("Vector no column header"){
+        tag "vector_no_column_header"
+
         when {
             function {
                 """
