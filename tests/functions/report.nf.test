@@ -315,6 +315,30 @@ nextflow_function {
         }
     }
 
+    test("Missing all column headers, only single line"){
+        tag "missing_all_column_headers_single_line"
+
+        when {
+            function {
+                """
+                input[0] = file("$baseDir/tests/data/tables/missing_all_headers_single_line.csv")
+                input[1] = true
+                input[2] = ','
+                input[3] = null
+                """
+            }
+            params {
+                outdir = "results"
+            }
+        }
+        then{
+            assert function.success
+            // When headers are supposed to exist in the file, but only a single line of values 
+            // will assume first line is headers
+            assert function.result == ['0':['stuff1':'NoData', 'stuff2':'NoData', 'stuff3':'NoData']]
+        }
+    }
+
     test("Missing all values"){
         tag "missing_all_values"
 
