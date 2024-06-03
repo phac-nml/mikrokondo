@@ -76,14 +76,14 @@
             "properties": {
                 "dehosting_idx": {
                     "type": "string",
-                    "description": "Mash sketch used for contamination detection and speciation (Sketch comments must be a taxonomic string similar to what Kraken2 outputs)",
+                    "description": "Minimpa2 index for dehosting and kitome removal",
                     "pattern": "^\\S+$",
                     "exists": true,
                     "format": "file-path"
                 },
                 "mash_sketch": {
                     "type": "string",
-                    "description": "Minimpa2 index for dehosting and kitome removal",
+                    "description": "Mash sketch used for contamination detection and speciation (Sketch comments must be a taxonomic string similar to what Kraken2 outputs)",
                     "pattern": "^\\S+$",
                     "exists": true,
                     "format": "file-path"
