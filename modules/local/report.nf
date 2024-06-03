@@ -837,7 +837,7 @@ def table_values(file_path, header_p, seperator, headers=null){
         }
     }
     def converted_data = rows_list.indexed().collectEntries { idx, row -> 
-        ["${idx}": row.collectEntries { k, v -> [(k): replace_missing(v)] }]
+        [(idx): row.collectEntries { k, v -> [(k): replace_missing(v)] }]
     }
     return converted_data
 }
