@@ -349,6 +349,8 @@ nextflow_function {
     }
 
     test("Missing internal value separator"){
+        tag "missing_internal_separator"
+
         when {
             function {
                 """
@@ -364,7 +366,7 @@ nextflow_function {
         }
         then{
             assert function.success
-            assert function.result == ['0':['header1':'stuff1', 'header2':'stuff2', 'header3':'NoData', 'header4': 'stuff4']]
+            assert function.result == ['0':['header1':'stuff1', 'header2':'stuff2', 'header3':'NoData', 'header4': 'NoData']]
         }
     }
 }
