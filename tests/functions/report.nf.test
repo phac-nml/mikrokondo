@@ -207,6 +207,7 @@ nextflow_function {
     }
 
     test("Test empty file"){
+        tag "test_empty"
 
         when {
             function {
@@ -223,9 +224,31 @@ nextflow_function {
         }
         then{
             assert function.failed
+            assert function.stdout.any { it.contains("ERROR ~ Attempting to parse empty file") }
         }
     }
 
+    test("Test empty file pass header"){
+        tag "test_empty_pass_header"
+
+        when {
+            function {
+                """
+                input[0] = file("$baseDir/tests/data/tables/empty.csv")
+                input[1] = false
+                input[2] = ','
+                input[3] = ['header1', 'header2']
+                """
+            }
+            params {
+                outdir = "results"
+            }
+        }
+        then{
+            assert function.success
+            assert function.result == ['0':['header1':'NoData', 'header2':'NoData']]
+        }
+    }
 
     test("Test more values than columns"){
 

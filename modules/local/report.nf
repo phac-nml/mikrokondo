@@ -813,8 +813,8 @@ def table_values(file_path, header_p, seperator, headers=null){
     } else if (!header_p) {
         if (file_lines.size() == 0) {
             // headers were not in the file, and file size is 0, so return missing data based
-            // on passed headers
-            rows_list = headers.collectEntries { [(it): null] }
+            // on passed headers (i.e., single row of empty values)
+            rows_list = [headers.collectEntries { [(it): null] }]
         } else {
             // verify that passed headers and rows have same number
             def row_line = file_lines[0].replaceAll('(\n|\r\n)$', '')
@@ -846,7 +846,8 @@ def table_values(file_path, header_p, seperator, headers=null){
 
         if (file_lines.size() == 1) {
             // There is no row lines, only headers, so return missing data
-            rows_list = headers_from_file.collectEntries { [(it): null] }
+            // (single row of empty values)
+            rows_list = [headers_from_file.collectEntries { [(it): null] }]
         } else {
             // If there exists a row line, then make sure rows + headers match
 
