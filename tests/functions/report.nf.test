@@ -164,6 +164,7 @@ nextflow_function {
 
 
     test("Test csv, two headers missing values"){
+        tag "two_headers_missing_values"
 
         when {
             function {

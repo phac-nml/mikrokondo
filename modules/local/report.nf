@@ -802,16 +802,21 @@ def table_values(file_path, header_p, seperator, headers=null){
     def missing_value = 'NoData'
     def default_index_col = "__default_index__"
     def rows_list = null
-    def replace_missing = { it == null || it == '' ? missing_value : it }
+    def is_missing = { it == null || it == '' }
+    def replace_missing = { is_missing(it) ? missing_value : it }
 
     try {
         rows_list = file_path.splitCsv(header: (header_p ? true : headers), sep:seperator)
     } catch (java.lang.IllegalStateException e) {
+        // Catch exception here to deal with situation where the very first header is missing
         if (header_p) {
             // Attempt to read file assuming first line is header line with missing value
             def header_line = file_path.splitText()[0].trim()
             def headers_from_file = header_line.split(seperator)
-            if (headers_from_file[0] == null || headers_from_file[0] == '') {
+            def count_missing_headers = headers_from_file.collect{ is_missing(it) ? 1 : 0 }.sum()
+            if (count_missing_headers > 1) {
+                throw e
+            } else if (is_missing(headers_from_file[0])) {
                 headers_from_file[0] = default_index_col
                 rows_list = file_path.splitCsv(header: headers_from_file as List, sep:seperator, skip: 1)
             } else {
