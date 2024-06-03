@@ -802,42 +802,67 @@ def table_values(file_path, header_p, seperator, headers=null){
     def missing_value = 'NoData'
     def default_index_col = "__default_index__"
     def rows_list = null
+    def use_modified_headers_from_file = false
     def is_missing = { it == null || it == '' }
     def replace_missing = { is_missing(it) ? missing_value : it }
 
-    try {
-        rows_list = file_path.splitCsv(header: (header_p ? true : headers), sep:seperator)
-    } catch (java.lang.IllegalStateException e) {
-        // Catch exception here to deal with situation where the very first header is missing
-        if (header_p) {
-            // Attempt to read file assuming first line is header line with missing value
-            def file_lines = file_path.splitText()
-            def header_line = file_lines[0].trim()
-            def values_line1 = file_lines[1].trim()
-            def headers_from_file = header_line.split(seperator)
-            def value1_columns = values_line1.split(seperator)
+    // Reads two lines (up to one header line + one row) for making decisions on how to parse the file
+    def file_lines = file_path.splitText(limit: 2)
+    if (!header_p) {
+        if (file_lines.size() == 0) {
+            // headers were not in the file, and file size is 0, so return missing data based
+            // on passed headers
+            rows_list = headers.collectEntries { [(it): null] }
+        } else {
+            // verify that passed headers and rows have same number
+            def row_line = file_lines[0].replaceAll('(\n|\r\n)$', '')
+            def row_line_columns = row_line.split(seperator, -1)
+            if (headers.size() != row_line_columns.size()) {
+                throw new Exception("Mismatched number of passed headers ${headers} and column values ${row_line_columns} for file ${file_path}")
+            } else {
+                rows_list = file_path.splitCsv(header: headers, sep:seperator)
+            }
+        }
+    } else {
+        // Headers exist in file
 
-            // If you pass a list of headers, then splitCsv does not seem to check to make sure
-            // the list has the same number as the values columns in the file, so I need to check this here
-            if (headers_from_file.size() != value1_columns.size()) {
-                throw new java.lang.IllegalStateException("Mismatched number of headers ${headers_from_file} and column values ${value1_columns} for file ${file_path}")
+        if (file_lines.size() == 0) {
+            throw new Exception("Attempting to parse empty file [${file_path}] as a table where header_p=${header_p}")
+        }
+
+        def header_line = file_lines[0].replaceAll('(\n|\r\n)$', '')
+        def headers_from_file = header_line.split(seperator, -1)
+        def total_missing_headers = headers_from_file.collect{ is_missing(it) ? 1 : 0 }.sum()
+
+        if (total_missing_headers > 1) {
+            throw new Exception("Attempting to parse tabular file with more than one missing header: [${file_path}]")
+        } else if (is_missing(headers_from_file[0])) {
+            // Case, single missing header as first column
+            headers_from_file[0] = default_index_col
+            use_modified_headers_from_file = true
+        }
+
+        if (file_lines.size() == 1) {
+            // There is no row lines, only headers, so return missing data
+            rows_list = headers_from_file.collectEntries { [(it): null] }
+        } else {
+            // If there exists a row line, then make sure rows + headers match
+
+            def row_line1 = file_lines[1].replaceAll('(\n|\r\n)$', '')
+            def row_line1_columns = row_line1.split(seperator, -1)
+            if (headers_from_file.size() != row_line1_columns.size()) {
+                throw new java.lang.IllegalStateException("Mismatched number of headers ${headers_from_file} and column values ${row_line1_columns} for file ${file_path}")
             }
 
-            def count_missing_headers = headers_from_file.collect{ is_missing(it) ? 1 : 0 }.sum()
-            if (count_missing_headers > 1) {
-                throw e
-            } else if (is_missing(headers_from_file[0])) {
-                headers_from_file[0] = default_index_col
+            if (use_modified_headers_from_file) {
                 rows_list = file_path.splitCsv(header: headers_from_file as List, sep:seperator, skip: 1)
             } else {
-                throw e
+                rows_list = file_path.splitCsv(header: (header_p ? true : headers), sep:seperator)
             }
-        } else {
-            throw e
         }
     }
-    def converted_data = rows_list.indexed().collectEntries { idx, row -> 
+
+    return rows_list.indexed().collectEntries { idx, row -> 
         [(idx): row.collectEntries { k, v -> [(k): replace_missing(v)] }]
     }
-    return converted_data
 }

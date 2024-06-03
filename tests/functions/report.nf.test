@@ -288,7 +288,7 @@ nextflow_function {
         }
         then{
             assert function.failed
-            assert function.stdout.any { it.contains("ERROR ~ Mismatched number of headers [] and column values [stuff1, stuff2, stuff3] for file") }
+            assert function.stdout.any { it.contains("ERROR ~ Mismatched number of headers [__default_index__] and column values [stuff1, stuff2, stuff3] for file") }
         }
     }
 
