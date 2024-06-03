@@ -315,6 +315,8 @@ nextflow_function {
     }
 
     test("Missing last two values"){
+        tag "missing_last_two_values"
+
         when {
             function {
                 """
@@ -329,33 +331,13 @@ nextflow_function {
             }
         }
         then{
-            assert function.success
-            assert function.result == ['0':['header1':'stuff1', 'header2':'stuff2', 'header3':'NoData']]
+            assert function.failed
+            assert function.stdout.any { it.contains("Mismatched number of headers [header1, header2, header3] and column values [stuff1, stuff2]") }
         }
     }
 
     test("Missing multiple terminal value separators"){
-        when {
-            function {
-                """
-                input[0] = file("$baseDir/tests/data/tables/missing_multiple_value_separators.tab")
-                input[1] = true
-                input[2] = '\t'
-                input[3] = null
-                """
-            }
-            params {
-                outdir = "results"
-            }
-        }
-        then{
-            assert function.success
-            assert function.result == ['0':['header1':'stuff1', 'header2':'stuff2', 'header3':'NoData', 'header4': 'NoData']]
-        }
-    }
-
-    test("Missing internal value separator"){
-        tag "missing_internal_separator"
+        tag "missing_multiple_terminal_value_separators"
 
         when {
             function {
@@ -371,8 +353,8 @@ nextflow_function {
             }
         }
         then{
-            assert function.success
-            assert function.result == ['0':['header1':'stuff1', 'header2':'stuff2', 'header3':'NoData', 'header4': 'NoData']]
+            assert function.failed
+            assert function.stdout.any { it.contains("Mismatched number of headers [header1, header2, header3, header4] and column values [stuff1, stuff2]") }
         }
     }
 }

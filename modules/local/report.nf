@@ -808,7 +808,9 @@ def table_values(file_path, header_p, seperator, headers=null){
 
     // Reads two lines (up to one header line + one row) for making decisions on how to parse the file
     def file_lines = file_path.splitText(limit: 2)
-    if (!header_p) {
+    if (!header_p && headers == null) {
+        throw new Exception("Header is not provided in file [header_p=${header_p}], but headers passed to function is null")
+    } else if (!header_p) {
         if (file_lines.size() == 0) {
             // headers were not in the file, and file size is 0, so return missing data based
             // on passed headers
@@ -851,13 +853,13 @@ def table_values(file_path, header_p, seperator, headers=null){
             def row_line1 = file_lines[1].replaceAll('(\n|\r\n)$', '')
             def row_line1_columns = row_line1.split(seperator, -1)
             if (headers_from_file.size() != row_line1_columns.size()) {
-                throw new java.lang.IllegalStateException("Mismatched number of headers ${headers_from_file} and column values ${row_line1_columns} for file ${file_path}")
+                throw new Exception("Mismatched number of headers ${headers_from_file} and column values ${row_line1_columns} for file ${file_path}")
             }
 
             if (use_modified_headers_from_file) {
                 rows_list = file_path.splitCsv(header: headers_from_file as List, sep:seperator, skip: 1)
             } else {
-                rows_list = file_path.splitCsv(header: (header_p ? true : headers), sep:seperator)
+                rows_list = file_path.splitCsv(header: true, sep:seperator)
             }
         }
     }
