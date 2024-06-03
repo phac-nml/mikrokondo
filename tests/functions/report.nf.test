@@ -271,6 +271,8 @@ nextflow_function {
 
 
     test("Missing all column headers"){
+        tag "missing_all_column_headers"
+
         when {
             function {
                 """
@@ -286,6 +288,7 @@ nextflow_function {
         }
         then{
             assert function.failed
+            assert function.stdout.any { it.contains("ERROR ~ Mismatched number of headers [] and column values [stuff1, stuff2, stuff3] for file") }
         }
     }
 

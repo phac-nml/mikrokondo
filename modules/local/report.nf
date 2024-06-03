@@ -811,8 +811,18 @@ def table_values(file_path, header_p, seperator, headers=null){
         // Catch exception here to deal with situation where the very first header is missing
         if (header_p) {
             // Attempt to read file assuming first line is header line with missing value
-            def header_line = file_path.splitText()[0].trim()
+            def file_lines = file_path.splitText()
+            def header_line = file_lines[0].trim()
+            def values_line1 = file_lines[1].trim()
             def headers_from_file = header_line.split(seperator)
+            def value1_columns = values_line1.split(seperator)
+
+            // If you pass a list of headers, then splitCsv does not seem to check to make sure
+            // the list has the same number as the values columns in the file, so I need to check this here
+            if (headers_from_file.size() != value1_columns.size()) {
+                throw new java.lang.IllegalStateException("Mismatched number of headers ${headers_from_file} and column values ${value1_columns} for file ${file_path}")
+            }
+
             def count_missing_headers = headers_from_file.collect{ is_missing(it) ? 1 : 0 }.sum()
             if (count_missing_headers > 1) {
                 throw e
