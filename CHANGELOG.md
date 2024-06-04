@@ -3,7 +3,14 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## v0.2.0 - [2024-05-14]
+## [0.2.1] - 2024-06-03
+
+### `Fixed`
+
+- Parsed table values would not show up properly if values were missing resolving issue See [PR 83](https://github.com/phac-nml/mikrokondo/pull/83)
+- Fixed mismatched description for minimap2 and mash databases. See [PR 83](https://github.com/phac-nml/mikrokondo/pull/83)
+
+## [0.2.0] - 2024-05-14
 
 ### `Added`
 
@@ -37,7 +44,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Updated StarAMR to version 0.10.0. See [PR 74](https://github.com/phac-nml/mikrokondo/pull/74)
 
-## v0.1.2 - [2024-05-02]
+## [0.1.2] - 2024-05-02
 
 ### Changed
 
@@ -46,13 +53,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Set `--kraken2_db` to be a required parameter for the pipeline. See [PR 71](https://github.com/phac-nml/mikrokondo/pull/71)
 - Hide bakta parameters from IRIDA Next UI. See [PR 71](https://github.com/phac-nml/mikrokondo/pull/71)
 
-## v0.1.1 - [2024-04-22]
+## [0.1.1] - 2024-04-22
 
 ### Changed
 
 - Switched the resource labels for **parse_fastp**, **select_pointfinder**, **report**, and **parse_kat** from `process_low` to `process_single` as they are all configured to run on the local Nextflow machine. See [PR 67](https://github.com/phac-nml/mikrokondo/pull/67)
 
-## v0.1.0 - [2024-03-22]
+## [0.1.0] - 2024-03-22
 
 Initial release of phac-nml/mikrokondo. Mikrokondo currently supports: read trimming and quality control, contamination detection, assembly (isolate, metagenomic or hybrid), annotation, AMR detection and subtyping of genomic sequencing data targeting bacterial or metagenomic data.
 
@@ -79,3 +86,9 @@ Initial release of phac-nml/mikrokondo. Mikrokondo currently supports: read trim
 - Changed salmonella default default coverage to 40
 
 - Added integration testing using [nf-test](https://www.nf-test.com/).
+
+[0.2.1]: https://github.com/phac-nml/mikrokondo/releases/tag/0.2.1
+[0.2.0]: https://github.com/phac-nml/mikrokondo/releases/tag/0.2.0
+[0.1.2]: https://github.com/phac-nml/mikrokondo/releases/tag/0.1.2
+[0.1.1]: https://github.com/phac-nml/mikrokondo/releases/tag/0.1.1
+[0.1.0]: https://github.com/phac-nml/mikrokondo/releases/tag/0.1.0

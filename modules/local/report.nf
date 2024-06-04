@@ -799,34 +799,73 @@ def table_values(file_path, header_p, seperator, headers=null){
 
         returns a map
     */
-    def split_header = null
-    def split_line = null
-    def converted_data = [:]
-    def idx = 0
-    def lines_read = false
-    file_path.withReader{
-        String line
-        if(header_p){
-            header = it.readLine()
-            split_header = header.tokenize(seperator)
+    def missing_value = 'NoData'
+    def default_index_col = "__default_index__"
+    def rows_list = null
+    def use_modified_headers_from_file = false
+    def is_missing = { it == null || it == '' }
+    def replace_missing = { is_missing(it) ? missing_value : it }
+
+    // Reads two lines (up to one header line + one row) for making decisions on how to parse the file
+    def file_lines = file_path.splitText(limit: 2)
+    if (!header_p && headers == null) {
+        throw new Exception("Header is not provided in file [header_p=${header_p}], but headers passed to function is null")
+    } else if (!header_p) {
+        if (file_lines.size() == 0) {
+            // headers were not in the file, and file size is 0, so return missing data based
+            // on passed headers (i.e., single row of empty values)
+            rows_list = [headers.collectEntries { [(it): null] }]
+        } else {
+            // verify that passed headers and rows have same number
+            def row_line = file_lines[0].replaceAll('(\n|\r\n)$', '')
+            def row_line_columns = row_line.split(seperator, -1)
+            if (headers.size() != row_line_columns.size()) {
+                throw new Exception("Mismatched number of passed headers ${headers} and column values ${row_line_columns} for file ${file_path}")
+            } else {
+                rows_list = file_path.splitCsv(header: headers, sep:seperator)
+            }
         }
-        if(headers){
-            split_header = headers
-        }
-        while(line = it.readLine()){
-            split_line = line.tokenize(seperator)
-            // Transpose, and collect converts the data to a map
-            converted_data[idx] = [split_header, split_line].transpose().collectEntries()
-            idx++
-            lines_read = true
-        }
-        if(!lines_read){
-            converted_data[idx] = [split_header, Collections.nCopies(split_header.size, "NoData")].transpose().collectEntries()
+    } else {
+        // Headers exist in file
+
+        if (file_lines.size() == 0) {
+            throw new Exception("Attempting to parse empty file [${file_path}] as a table where header_p=${header_p}")
         }
 
+        def header_line = file_lines[0].replaceAll('(\n|\r\n)$', '')
+        def headers_from_file = header_line.split(seperator, -1)
+        def total_missing_headers = headers_from_file.collect{ is_missing(it) ? 1 : 0 }.sum()
+
+        if (total_missing_headers > 1) {
+            throw new Exception("Attempting to parse tabular file with more than one missing header: [${file_path}]")
+        } else if (is_missing(headers_from_file[0])) {
+            // Case, single missing header as first column
+            headers_from_file[0] = default_index_col
+            use_modified_headers_from_file = true
+        }
+
+        if (file_lines.size() == 1) {
+            // There is no row lines, only headers, so return missing data
+            // (single row of empty values)
+            rows_list = [headers_from_file.collectEntries { [(it): null] }]
+        } else {
+            // If there exists a row line, then make sure rows + headers match
+
+            def row_line1 = file_lines[1].replaceAll('(\n|\r\n)$', '')
+            def row_line1_columns = row_line1.split(seperator, -1)
+            if (headers_from_file.size() != row_line1_columns.size()) {
+                throw new Exception("Mismatched number of headers ${headers_from_file} and column values ${row_line1_columns} for file ${file_path}")
+            }
+
+            if (use_modified_headers_from_file) {
+                rows_list = file_path.splitCsv(header: headers_from_file as List, sep:seperator, skip: 1)
+            } else {
+                rows_list = file_path.splitCsv(header: true, sep:seperator)
+            }
+        }
     }
-    return converted_data
+
+    return rows_list.indexed().collectEntries { idx, row -> 
+        [(idx): row.collectEntries { k, v -> [(k): replace_missing(v)] }]
+    }
 }
-
-
-
