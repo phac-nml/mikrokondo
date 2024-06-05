@@ -224,6 +224,9 @@ def create_action_call(sample_data){
 
 
     TODO creating a logic heavy function that needs to be refactored
+
+    For addressing the defect, the Passed and failed messeges have been broken up, all that remains is to have the
+    final summary, checks passed and checks failed
     */
 
     for(val in sample_data){
@@ -245,8 +248,7 @@ def create_action_call(sample_data){
                     final_message = "[FAILED] Sample was determined to be metagenomic, and this was not specied as" +
                     " a metagenomic run indicating contamination REISOLATION AND RESEQUENCING RECOMMENDED." +
                     "There is additionally a possibility that your sample could not be identified as it is novel and " +
-                    "not included in the mash sketch provided to the pipeline (however this would be very rare), "+
-                    "but if this is the case please disregard this message."
+                    "not included in the program used to taxonomically classify your pipeline (however this is an unlikely culprit)."
                 }
                 sample_data[val.key]["QCStatus"] = sample_status
                 sample_data[val.key]["QCSummary"] = final_message
@@ -290,7 +292,7 @@ def create_action_call(sample_data){
                 checks += 1
 
                 if(qual_data && qual_data.containsKey("average_coverage") && !qual_data.average_coverage.status){
-                    //qual_message.add(params.QCReportFields.average_coverage.low_msg)
+
                     if(meta_data.downsampled){
                         qual_message.add("The sample may have been downsampled too aggressively, if this is the cause please re-run sample with a different target depth.")
                     }
@@ -865,7 +867,7 @@ def table_values(file_path, header_p, seperator, headers=null){
         }
     }
 
-    return rows_list.indexed().collectEntries { idx, row -> 
+    return rows_list.indexed().collectEntries { idx, row ->
         [(idx): row.collectEntries { k, v -> [(k): replace_missing(v)] }]
     }
 }
