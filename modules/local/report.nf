@@ -35,6 +35,7 @@ process REPORT{
     def data_stride = 3 // report values added in groups of three, e.g sample meta info, parameters, output file of interest
     def headers_list = 'headers' // ! TODO this string exists twice, need to fix that
     def arr_size = test_in.size()
+    def qc_species_tag = "QCParameterSelection"
     for(long i = 0; i < arr_size; i=i+data_stride){
         def meta_data = test_in[i]
         def report_tag = test_in[i+1]
@@ -76,8 +77,8 @@ process REPORT{
     def search_phrases = qc_params_species()
 
     // Add in quality information in place
-    generate_qc_data(sample_data, search_phrases)
-    create_action_call(sample_data)
+    generate_qc_data(sample_data, search_phrases, qc_species_tag)
+    create_action_call(sample_data, qc_species_tag)
 
 
     def json_converted_data = new JsonBuilder(sample_data).toPrettyString()
@@ -124,6 +125,7 @@ def generate_coverage_data(sample_data, bp_field, species){
             // Add fixed genome coverage for species if desired
             def species_data_pos = 1;
             if(base_counts_p
+                && species[species_data_pos] != null
                 && species[species_data_pos].containsKey("fixed_genome_size")
                 && species[species_data_pos].fixed_genome_size != null){
 
@@ -197,7 +199,7 @@ def populate_qual_message(qual_data){
 }
 
 // Action: Reisolate and resequence, resequence, all good.
-def create_action_call(sample_data){
+def create_action_call(sample_data, species_tag){
     /*Define criteria used to create base sketches
 
     TODO Need to test a falthrough sample (e.g. unspeciated to see what happens)
@@ -281,7 +283,6 @@ def create_action_call(sample_data){
             if(!meta_data.assembly){
                 // We should have reads as we assembled it
                 if(qual_data && qual_data.containsKey("raw_average_quality") && !qual_data.raw_average_quality.status){
-                    //qual_message.add(params.QCReportFields.raw_average_quality.low_msg)
                     resequence += 1
                     checks_failed += 1
                 }else if (qual_data && (!qual_data.containsKey("raw_average_quality") || !qual_data.raw_average_quality.status)){
@@ -343,7 +344,6 @@ def create_action_call(sample_data){
             checks += 1
 
 
-
             (reisolate, resequence) = n50_nrcontigs_decision(qual_data, nr_contigs_failed, n50_failed, qual_message, reisolate, resequence)
             //qual_message.add("Quality Conclusion")
 
@@ -366,15 +366,24 @@ def create_action_call(sample_data){
                 qual_message.add("[PASSED] All Checks passed")
                 sample_status = "PASSED"
             }
-            qual_message.add("Passed Tests: ${checks - checks_failed - checks_ignored}/${checks}")
 
+            def organism_criteria = sample_data[val.key][species_tag][1].search
+            def tests_passed = "Passed Tests: ${checks - checks_failed - checks_ignored}/${checks}"
+            qual_message.add(tests_passed)
 
-            qual_message.add("Species ID: ${val.value[val.key][params.top_hit_species.report_tag]}")
+            def species_id = "Species ID: ${val.value[val.key][params.top_hit_species.report_tag]}"
+            qual_message.add(species_id)
 
             // Qual summary not final message
             final_message = qual_message.join("\n")
             def terminal_message = populate_qual_message(qual_data).join("\n")
             log.info "\n$val.key\n${terminal_message}\n${sample_status}\n${final_message}"
+
+            // Reseq recommended should go to a seperate field
+            // Requested output should be: [PASS|FAILED] Species ID: [species] [Tests passed] [Organism criteria available]
+            qc_message = "${sample_status} ${species_id} ${tests_passed} Organism QC Criteria: ${organism_criteria}"
+
+            sample_data[val.key]["QCMessage"] = qc_message
             sample_data[val.key]["QCStatus"] = sample_status
             sample_data[val.key]["QCSummary"] = final_message
         }
@@ -606,7 +615,8 @@ def get_species(value, search_phrases, shortest_token){
         shortest_token: contains values to scrub from value to be searched for
     */
 
-    def qc_data = null;
+
+    def qc_data = [params.QCReport.fallthrough.search, params.QCReport.fallthrough];
     if(value == null){
         return qc_data
     }
@@ -627,7 +637,6 @@ def get_species(value, search_phrases, shortest_token){
 
 def get_qc_data_species(value_data, qc_data){
     def quality_messages = [:]
-
 
     params.QCReportFields.each{
         k, v ->
@@ -651,7 +660,7 @@ def get_qc_data_species(value_data, qc_data){
     return quality_messages;
 }
 
-def generate_qc_data(data, search_phrases){
+def generate_qc_data(data, search_phrases, qc_species_tag){
     /*
     data: sample data in a LazyMap
     search_phrases: normalized search phrases from the nextflow.config
@@ -664,9 +673,9 @@ def generate_qc_data(data, search_phrases){
     for(k in data){
         if(!k.value.meta.metagenomic){
             def species = get_species(k.value[k.key][top_hit_tag], search_phrases, shortest_token)
-            //generate_coverage_data(data[k.key], params.seqtk_size.report_tag, species) // update coverage first so its values can be used in generating qc messages
             generate_coverage_data(data[k.key], params.coverage_calc_fields.bp_field, species) // update coverage first so its values can be used in generating qc messages
             data[k.key][quality_analysis] = get_qc_data_species(k.value[k.key], species)
+            data[k.key][qc_species_tag] = species
         }else{
             data[k.key][quality_analysis] = ["Metagenomic": ["message": null, "status": false]]
             data[k.key][quality_analysis]["Metagenomic"].message = "The sample was determined to be metagenomic, summary metrics will not be generated" +
