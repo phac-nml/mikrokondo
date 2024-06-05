@@ -5,6 +5,7 @@ process PARSE_FASTP{
     tag "$meta.id"
     label "process_single"
 
+    fair true
     input:
     tuple val(meta), val(json)
 

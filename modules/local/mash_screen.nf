@@ -10,6 +10,7 @@ process MASH_SCREEN {
     label 'process_medium'
     container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.parameters.get('singularity') : task.ext.parameters.get('docker')}"
 
+    fair true
     input:
     tuple val(meta), path(reads)
     path sequences_sketch

@@ -7,6 +7,7 @@ process REPORT_AGGREGATE{
     label 'process_medium'
     container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.parameters.get('singularity') : task.ext.parameters.get('docker')}"
 
+    fair true
     input:
     path summary_report
 

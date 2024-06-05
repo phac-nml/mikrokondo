@@ -10,6 +10,7 @@ process CHECK_ONT{
     // TODO perhaps reads should just be dedupped by header...
     // TODO Awk would be faster...
 
+    fair true
     input:
     tuple val(meta), path(reads)
 

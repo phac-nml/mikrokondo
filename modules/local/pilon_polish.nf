@@ -10,6 +10,7 @@ process PILON_POLISH {
 
 
     // NOTE some inputs not used, they are just there to maintain a common interface with other polishing programs
+    fair true
     input:
     tuple val(meta), path(reads), path(contigs), path(bam), path(bai) // may need to copy the bai into the work dir
 

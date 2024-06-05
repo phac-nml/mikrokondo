@@ -13,6 +13,7 @@ process FLYE_ASSEMBLE{
     memory { task.memory * task.attempt}
     // TODO check if --debug flag should be added to flye to actually  turns off the debug logging?
 
+    fair true
     input:
     tuple val(meta), path(reads)
     val mode

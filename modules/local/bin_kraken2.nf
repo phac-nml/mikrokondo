@@ -10,6 +10,7 @@ process BIN_KRAKEN2{
     cache 'deep' // ! Deep caching is required to not bungle up the later metadata updates on resumes
     container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.parameters.get('singularity') : task.ext.parameters.get('docker')}"
 
+    fair true
     input:
     tuple val(meta), path(contigs), path(kraken_report), path(kraken_output)
     val taxonomic_level

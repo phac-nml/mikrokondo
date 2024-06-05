@@ -11,6 +11,7 @@ process LISSERO {
     // TODO add in log message saying what went wrong with the sample
     errorStrategy 'ignore' // TODO set a proper strategy once the issues with the mash parsing script are solved e.g. the ambiguous top hits
 
+    fair true
     input:
     tuple val(meta), path(fasta)
 

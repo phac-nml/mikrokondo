@@ -8,6 +8,7 @@ process SHIGATYPER{
     label 'process_low'
     container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.parameters.get('singularity') : task.ext.parameters.get('docker')}"
 
+    fair true
     input:
     tuple val(meta), path(reads) // in mkkondo it will only work with assemblies
 

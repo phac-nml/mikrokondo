@@ -13,6 +13,7 @@ process REPORT{
     tag "Report Generation"
     label "process_single"
 
+    fair true
     input:
     val test_in
 

@@ -8,6 +8,7 @@ process MEDAKA_POLISH{
     beforeScript 'rm -rf medaka' // Same reasoning as above
     errorStrategy { sleep(Math.pow(2, task.attempt) * 200 as long); return 'retry' } // May be having issues with medaka model copying
 
+    fair true
     input:
     tuple val(meta), path(reads), path(assembly)
     val model

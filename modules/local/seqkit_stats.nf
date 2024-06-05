@@ -7,6 +7,7 @@ process SEQKIT_STATS {
     label 'process_single'
     container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.parameters.get('singularity') : task.ext.parameters.get('docker')}"
 
+    fair true
     input:
     tuple val(meta), path(contigs), path(trimmed_reads)
 

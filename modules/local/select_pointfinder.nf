@@ -4,6 +4,7 @@ process IDENTIFY_POINTDB {
     tag "$meta.id"
     label "process_single"
 
+    fair true
     input:
     tuple val(meta), val(species)
 

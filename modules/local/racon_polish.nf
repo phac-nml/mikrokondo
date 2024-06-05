@@ -8,6 +8,7 @@ process RACON_POLISH {
     container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.parameters.get('singularity') : task.ext.parameters.get('docker')}"
     afterScript "rm ${input_reads}"
 
+    fair true
     input:
     tuple val(meta), path(reads), path(sam), path(contigs)
 

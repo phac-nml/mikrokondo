@@ -7,6 +7,7 @@ process SAMPLESHEET_CHECK {
         'https://depot.galaxyproject.org/singularity/python:3.8.3' :
         'quay.io/biocontainers/python:3.8.3' }"
 
+    fair true
     input:
     path samplesheet
 
