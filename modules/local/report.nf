@@ -367,7 +367,7 @@ def create_action_call(sample_data, species_tag){
                 sample_status = "PASSED"
             }
 
-            def organism_criteria = sample_data[val.key][species_tag][1].search
+            def organism_criteria = sample_data[val.key][species_tag]
             def tests_passed = "Passed Tests: ${checks - checks_failed - checks_ignored}/${checks}"
             qual_message.add(tests_passed)
 
@@ -670,12 +670,13 @@ def generate_qc_data(data, search_phrases, qc_species_tag){
     def top_hit_tag = params.top_hit_species.report_tag;
     def quality_analysis = "QualityAnalysis"
     def shortest_token = get_shortest_token(search_phrases)
+    def species_tag_location = 0
     for(k in data){
         if(!k.value.meta.metagenomic){
             def species = get_species(k.value[k.key][top_hit_tag], search_phrases, shortest_token)
             generate_coverage_data(data[k.key], params.coverage_calc_fields.bp_field, species) // update coverage first so its values can be used in generating qc messages
             data[k.key][quality_analysis] = get_qc_data_species(k.value[k.key], species)
-            data[k.key][qc_species_tag] = species
+            data[k.key][qc_species_tag] = species[species_tag_location]
         }else{
             data[k.key][quality_analysis] = ["Metagenomic": ["message": null, "status": false]]
             data[k.key][quality_analysis]["Metagenomic"].message = "The sample was determined to be metagenomic, summary metrics will not be generated" +
