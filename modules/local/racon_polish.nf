@@ -6,8 +6,8 @@ process RACON_POLISH {
     tag "${meta.id}"
     label 'process_high'
     container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.parameters.get('singularity') : task.ext.parameters.get('docker')}"
-    afterScript "rm ${input_reads}"
 
+    afterScript "sleep 30; rm ${input_reads}"
     input:
     tuple val(meta), path(reads), path(sam), path(contigs)
 

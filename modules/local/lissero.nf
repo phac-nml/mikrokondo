@@ -7,10 +7,10 @@ process LISSERO {
     tag "$meta.id"
     label 'process_low'
     container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.parameters.get('singularity') : task.ext.parameters.get('docker')}"
-    afterScript "rm ${prefix}.fasta"
     // TODO add in log message saying what went wrong with the sample
     errorStrategy 'ignore' // TODO set a proper strategy once the issues with the mash parsing script are solved e.g. the ambiguous top hits
 
+    afterScript "sleep 30; rm ${prefix}.fasta"
     input:
     tuple val(meta), path(fasta)
 

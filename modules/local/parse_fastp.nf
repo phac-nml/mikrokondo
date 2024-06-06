@@ -5,6 +5,7 @@ process PARSE_FASTP{
     tag "$meta.id"
     label "process_single"
 
+    afterScript "sleep 30"
     input:
     tuple val(meta), val(json)
 

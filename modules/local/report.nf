@@ -13,6 +13,7 @@ process REPORT{
     tag "Report Generation"
     label "process_single"
 
+    afterScript "sleep 30"
     input:
     val test_in
 

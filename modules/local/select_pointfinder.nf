@@ -4,6 +4,7 @@ process IDENTIFY_POINTDB {
     tag "$meta.id"
     label "process_single"
 
+    afterScript "sleep 30"
     input:
     tuple val(meta), val(species)
 

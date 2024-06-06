@@ -8,6 +8,7 @@ process MASH_ESTIMATE{
     tag "${prefix}"
     container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.parameters.get('singularity') : task.ext.parameters.get('docker')}"
 
+    afterScript "sleep 30"
     input:
     tuple val(meta), path(reads)
     val long_reads_p

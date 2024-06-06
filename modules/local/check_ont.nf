@@ -10,6 +10,7 @@ process CHECK_ONT{
     // TODO perhaps reads should just be dedupped by header...
     // TODO Awk would be faster...
 
+    afterScript "sleep 30"
     input:
     tuple val(meta), path(reads)
 

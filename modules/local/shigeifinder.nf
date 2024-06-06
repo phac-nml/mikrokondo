@@ -4,9 +4,9 @@
 process SHIGEIFINDER {
     tag "$meta.id"
     label 'process_low'
-    afterScript "rm $tmp_file"
     container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.parameters.get('singularity') : task.ext.parameters.get('docker')}"
 
+    afterScript "sleep 30; rm $tmp_file"
     input:
     tuple val(meta), path(seqs)
 

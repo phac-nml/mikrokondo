@@ -6,6 +6,7 @@ process SEQTK_SAMPLE{
     label "process_low"
     container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.parameters.get('singularity') : task.ext.parameters.get('docker')}"
 
+    afterScript "sleep 30"
     input:
     tuple val(meta), path(reads), val(sample_fraction)
 
