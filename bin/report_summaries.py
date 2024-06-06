@@ -30,6 +30,7 @@ class JsonImport:
 
     __key_order = {v.field: v for v in [CleaningInfo(field="QCStatus"),
                 CleaningInfo(field="QCSummary"),
+                CleaningInfo(field="QCParameterSelection"),
                 CleaningInfo(field="QCMessage"),
                 CleaningInfo(field="QualityAnalysis", keep="message", trim_field=1),
                 CleaningInfo(field="meta")]}

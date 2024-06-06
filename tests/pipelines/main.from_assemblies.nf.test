@@ -121,7 +121,7 @@ nextflow_pipeline {
             assert ecoli_metadata."Length Value" == 5333525
             assert ecoli_metadata."nr contigs Status" == "PASSED"
             assert ecoli_metadata."nr contigs Value" == 187
-            assert ecoli_metadata."QC Summary" == "[FAILED] Sample is likely contaminated, REISOLATION AND RESEQUENCING RECOMMENDED\nPassed Tests: 3/4\nSpecies ID: s__Escherichia coli"
+            assert ecoli_metadata."QC Message" == "FAILED Species ID: s__Escherichia coli Passed Tests: 3/4 Organism QC Criteria: Escherichia coli"
 
             assert ecoli_metadata."Downsampled" == false
             assert ecoli_metadata."Species" == "s__Escherichia coli"
