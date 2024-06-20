@@ -91,7 +91,8 @@ nextflow_pipeline {
             assert iridanext_metadata.CSE."QC Summary" == "[FAILED] Sample is likely contaminated, REISOLATION AND RESEQUENCING RECOMMENDED\nPassed Tests: 0/6\nSpecies ID: null"
 
             assert iridanext_metadata.CSE."Downsampled" == false
-            assert !iridanext_metadata.CSE.containsKey("Species")
+            assert !iridanext_metadata.CSE.containsKey("predicted_identification_name")
+            assert !iridanext_metadata.CSE.containsKey("predicted_identification_method")
             assert !iridanext_metadata.CSE.containsKey("GC (%)")
             //assert iridanext_metadata.CSE."Mean Sequence Length Forward" == 150
             // Base count after decontamination
@@ -219,7 +220,8 @@ nextflow_pipeline {
             assert iridanext_metadata.short."QC Summary" == "[FAILED] RESEQUENCING IS RECOMMENDED\nPassed Tests: 5/6\nSpecies ID: No Species Identified"
 
             assert iridanext_metadata.short."Downsampled" == false
-            assert iridanext_metadata.short."Species" == "No Species Identified"
+            assert iridanext_metadata.short."predicted_identification_name" == "No Species Identified"
+            assert iridanext_metadata.short."predicted_identification_method" == "Mash"
             assert iridanext_metadata.short."GC (%)" == "52.96"
             assert iridanext_metadata.short."Mean Sequence Length Forward" == 250
             assert iridanext_metadata.short."BaseCount" == 237500

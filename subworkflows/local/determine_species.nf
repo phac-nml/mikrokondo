@@ -15,13 +15,14 @@ workflow DETERMINE_SPECIES {
     // TODO can try using ifEmpty operator or exit codes in the modules themselves
 
     main:
+    def id_method = null
     reports = Channel.empty()
     results = Channel.empty()
     versions = Channel.empty()
     if (params.run_kraken){
         log.info "Running kraken2 for contigs classification"
         KRAKEN(contigs, params.kraken.db ? file(params.kraken.db) : error("--kraken2_db ${params.kraken.db} is invalid"))
-
+        id_method = "Kraken2"
         // join contigs for classification
         split_contigs = KRAKEN.out.classified_contigs.join(KRAKEN.out.report).join(KRAKEN.out.kraken_output)
         results = results.mix(KRAKEN.out.report)
@@ -40,6 +41,7 @@ workflow DETERMINE_SPECIES {
 
     }else {
         log.info "Using mash screen for sample classification"
+        id_method = "Mash"
         MASH_SCREEN(contigs, params.mash.mash_sketch ? file(params.mash.mash_sketch) : error("--mash_sketch ${params.mash_sketch} is invalid"))
         results = results.mix(MASH_SCREEN.out.mash_data)
 
@@ -47,10 +49,17 @@ workflow DETERMINE_SPECIES {
         reports = reports.mix(parsed.mash_out.map{
             meta, report -> tuple(meta, params.top_hit_species, report)
         })
+
         top_hit = parsed.mash_out
         versions = versions.mix(MASH_SCREEN.out.versions)
         versions = versions.mix(parsed.versions)
     }
+
+    // Create a channle identifying pipelines output ID
+    id_channel = top_hit.map{
+        meta, output -> tuple(meta, params.top_hit_method, id_method)
+    }
+    reports = reports.mix(reports)
 
 
 
