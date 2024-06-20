@@ -124,7 +124,8 @@ nextflow_pipeline {
             assert ecoli_metadata."QC Summary" == "[FAILED] Sample is likely contaminated, REISOLATION AND RESEQUENCING RECOMMENDED\nPassed Tests: 3/4\nSpecies ID: s__Escherichia coli"
 
             assert ecoli_metadata."Downsampled" == false
-            assert ecoli_metadata."Species" == "s__Escherichia coli"
+            assert ecoli_metadata."predicted_identification_name" == "s__Escherichia coli"
+            assert ecoli_metadata."predicted_identification_method" == "Mash"
 
             assert ecoli_metadata."ECTyper Database" == "v1.0 (11-03-2020)"
             assert ecoli_metadata."ECTyper Evidence" == "Based on 3 allele(s)"
@@ -431,8 +432,8 @@ nextflow_pipeline {
 
             // Tests
             assert salmonella_json.SpeciesTopHit == "s__Salmonella enterica"
-            assert iridanext_metadata.salmonella_GCA_000008105."Species" == "s__Salmonella enterica"
-            assert final_report_tmap.SpeciesTopHit == "s__Salmonella enterica"
+            assert iridanext_metadata.salmonella_GCA_000008105."predicted_identification_name" == "s__Salmonella enterica"
+            assert iridanext_metadata.salmonella_GCA_000008105."predicted_identification_method" == "Mash"
 
             assert salmonella_json.QUAST."0"."Total length" == "4944000"
             assert final_report_tmap."QUAST.0.Total length" == "4944000"
@@ -593,7 +594,8 @@ nextflow_pipeline {
 
             // Tests
             assert listeria_json.SpeciesTopHit == "s__Listeria monocytogenes"
-            assert iridanext_metadata.listeria_GCF_000196035."Species" == "s__Listeria monocytogenes"
+            assert iridanext_metadata.listeria_GCF_000196035."predicted_identification_name" == "s__Listeria monocytogenes"
+            assert iridanext_metadata.listeria_GCF_000196035."predicted_identification_method" == "Mash"
             assert final_report_tmap.SpeciesTopHit == "s__Listeria monocytogenes"
 
             assert listeria_json.QUAST."0"."Total length" == "2944528"
