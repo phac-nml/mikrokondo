@@ -59,7 +59,7 @@ workflow DETERMINE_SPECIES {
     id_channel = top_hit.map{
         meta, output -> tuple(meta, params.top_hit_method, id_method)
     }
-    reports = reports.mix(reports)
+    reports = reports.mix(id_channel)
 
 
 
