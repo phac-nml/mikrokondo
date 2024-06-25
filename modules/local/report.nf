@@ -381,11 +381,11 @@ def create_action_call(sample_data, species_tag){
 
             // Reseq recommended should go to a seperate field
             // Requested output should be: [PASS|FAILED] Species ID: [species] [Tests passed] [Organism criteria available]
-            qc_message = "${sample_status} ${species_id} ${tests_passed} Organism QC Criteria: ${organism_criteria}"
+            qc_message = "${sample_status} ${species_id}; ${tests_passed}; Organism QC Criteria: ${organism_criteria}"
 
-            sample_data[val.key]["QCMessage"] = qc_message
+            sample_data[val.key]["QCSummary"] = qc_message
             sample_data[val.key]["QCStatus"] = sample_status
-            sample_data[val.key]["QCSummary"] = final_message
+            sample_data[val.key]["QCMessage"] = final_message
         }
 
 }
