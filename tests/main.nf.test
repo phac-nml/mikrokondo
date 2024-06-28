@@ -133,6 +133,7 @@ nextflow_pipeline {
         }
 
         then {
+
             assert workflow.success
             assert path("$launchDir/results").exists()
 
