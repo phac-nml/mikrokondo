@@ -3,6 +3,16 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+### `Changed`
+
+- Reformatted QCSummary fields and added a QCMessage field containing the old summary message.
+
+### Fixed
+
+- Updated samtools/minimap2 container fixing CI issues and issues running the pipeline with Docker.
+
 ## [0.2.1] - 2024-06-03
 
 ### `Fixed`
