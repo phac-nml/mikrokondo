@@ -7,11 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Changed`
 
-- Reformatted QCSummary fields and added a QCMessage field containing the old summary message.
+- Reformatted QCSummary fields and added a QCMessage field containing the old summary message. See [PR 85](https://github.com/phac-nml/mikrokondo/pull/85)
 
 ### Fixed
 
-- Updated samtools/minimap2 container fixing CI issues and issues running the pipeline with Docker.
+- Updated samtools/minimap2 container fixing CI issues and issues running the pipeline with Docker. See [PR 85](https://github.com/phac-nml/mikrokondo/pull/85)
 
 ## [0.2.1] - 2024-06-03
 
