@@ -63,7 +63,7 @@ workflow DETERMINE_SPECIES {
 
     // Strip prefix from top_hit
     top_hit = top_hit.map{
-        meta, output -> tuple(meta, top_hit.replaceFirst(/\w__/, ""))
+        meta, output -> tuple(meta, top_hit.replaceFirst(/^\w__/, ""))
     }
 
 
