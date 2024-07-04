@@ -121,10 +121,11 @@ nextflow_pipeline {
             assert ecoli_metadata."Length Value" == 5333525
             assert ecoli_metadata."nr contigs Status" == "PASSED"
             assert ecoli_metadata."nr contigs Value" == 187
-            assert ecoli_metadata."QC Summary" == "[FAILED] Sample is likely contaminated, REISOLATION AND RESEQUENCING RECOMMENDED\nPassed Tests: 3/4\nSpecies ID: s__Escherichia coli"
+            assert ecoli_metadata."QC Summary" == "FAILED Species ID: Escherichia coli; Passed Tests: 3/4; Organism QC Criteria: Escherichia coli"
 
             assert ecoli_metadata."Downsampled" == false
-            assert ecoli_metadata."Species" == "s__Escherichia coli"
+            assert ecoli_metadata."predicted_identification_name" == "Escherichia coli"
+            assert ecoli_metadata."predicted_identification_method" == "Mash"
 
             assert ecoli_metadata."ECTyper Database" == "v1.0 (11-03-2020)"
             assert ecoli_metadata."ECTyper Evidence" == "Based on 3 allele(s)"
@@ -304,7 +305,7 @@ nextflow_pipeline {
             assert ecoli_metadata."Length Value" == 5299656
             assert ecoli_metadata."nr contigs Status" == "PASSED"
             assert ecoli_metadata."nr contigs Value" == 123
-            assert ecoli_metadata."QC Summary" == "[FAILED] Sample is likely contaminated, REISOLATION AND RESEQUENCING RECOMMENDED\nPassed Tests: 3/4\nSpecies ID: s__Escherichia coli"
+            assert ecoli_metadata."QC Summary" == "FAILED Species ID: Escherichia coli; Passed Tests: 3/4; Organism QC Criteria: Escherichia coli"
 
             // Read in filtered assembly fasta to verify number of contigs
             def assemblyLines = path("$launchDir/results/Assembly/FinalAssembly/ecoli_GCA_000947975/ecoli_GCA_000947975.final.filtered.assembly.fasta.gz").readLinesGzip()
@@ -393,7 +394,7 @@ nextflow_pipeline {
             assert salmonella_metadata."Length Value" == 4944000
             assert salmonella_metadata."nr contigs Status" == "PASSED"
             assert salmonella_metadata."nr contigs Value" == 3
-            assert salmonella_metadata."QC Summary" == "[FAILED] Sample is likely contaminated, REISOLATION AND RESEQUENCING RECOMMENDED\nPassed Tests: 3/4\nSpecies ID: s__Salmonella enterica"
+            assert salmonella_metadata."QC Summary" == "FAILED Species ID: Salmonella enterica; Passed Tests: 3/4; Organism QC Criteria: Salmonella"
 
             assert salmonella_metadata."Downsampled" == false
 
@@ -430,9 +431,9 @@ nextflow_pipeline {
             assert final_report.salmonella_GCA_000008105.QualityAnalysis.length.qc_status == "PASSED"
 
             // Tests
-            assert salmonella_json.SpeciesTopHit == "s__Salmonella enterica"
-            assert iridanext_metadata.salmonella_GCA_000008105."Species" == "s__Salmonella enterica"
-            assert final_report_tmap.SpeciesTopHit == "s__Salmonella enterica"
+            assert salmonella_json.SpeciesTopHit == "Salmonella enterica"
+            assert iridanext_metadata.salmonella_GCA_000008105."predicted_identification_name" == "Salmonella enterica"
+            assert iridanext_metadata.salmonella_GCA_000008105."predicted_identification_method" == "Mash"
 
             assert salmonella_json.QUAST."0"."Total length" == "4944000"
             assert final_report_tmap."QUAST.0.Total length" == "4944000"
@@ -559,7 +560,7 @@ nextflow_pipeline {
             assert listeria_metadata."Length Value" == 2944528
             assert listeria_metadata."nr contigs Status" == "PASSED"
             assert listeria_metadata."nr contigs Value" == 1
-            assert listeria_metadata."QC Summary" == "[FAILED] Sample is likely contaminated, REISOLATION AND RESEQUENCING RECOMMENDED\nPassed Tests: 3/4\nSpecies ID: s__Listeria monocytogenes"
+            assert listeria_metadata."QC Summary" == "FAILED Species ID: Listeria monocytogenes; Passed Tests: 3/4; Organism QC Criteria: Listeria"
 
             assert listeria_metadata."Downsampled" == false
 
@@ -592,9 +593,10 @@ nextflow_pipeline {
             assert final_report.listeria_GCF_000196035.QualityAnalysis.length.qc_status == "PASSED"
 
             // Tests
-            assert listeria_json.SpeciesTopHit == "s__Listeria monocytogenes"
-            assert iridanext_metadata.listeria_GCF_000196035."Species" == "s__Listeria monocytogenes"
-            assert final_report_tmap.SpeciesTopHit == "s__Listeria monocytogenes"
+            assert listeria_json.SpeciesTopHit == "Listeria monocytogenes"
+            assert iridanext_metadata.listeria_GCF_000196035."predicted_identification_name" == "Listeria monocytogenes"
+            assert iridanext_metadata.listeria_GCF_000196035."predicted_identification_method" == "Mash"
+            assert final_report_tmap.SpeciesTopHit == "Listeria monocytogenes"
 
             assert listeria_json.QUAST."0"."Total length" == "2944528"
             assert final_report_tmap."QUAST.0.Total length" == "2944528"
