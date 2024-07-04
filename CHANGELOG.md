@@ -3,15 +3,17 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## [0.3.0] - 2024-07-04
 
 ### `Changed`
 
 - Reformatted QCSummary fields and added a QCMessage field containing the old summary message. See [PR 85](https://github.com/phac-nml/mikrokondo/pull/85)
 
-- Changed default Python3 image to use the StarAMR image. See [PR 85](https://github.com/phac-nml/mikrokondo/pull/85)
+- Changed default Python3 image to use the StarAMR image. See [PR 90](https://github.com/phac-nml/mikrokondo/pull/90)
 
-- Stripped identifier from taxonomic identification from string. See [Issue 81](https://github.com/phac-nml/mikrokondo/issues/81), [PR 90](https://github.com/phac-nml/mikrokondo/pull/90)
+- Stripped identifier from taxonomic identification from string. See [Issue 81](https://github.com/phac-nml/mikrokondo/pull/90)
+
+- Set spades to ignore for integration tests. See [PR 91](https://github.com/phac-nml/mikrokondo/pull/91)
 
 ### `Fixed`
 
@@ -21,7 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Added`
 
-- Altered name of stored `SpeciesTopHit` field in the irida-next.config, and added a field displaying the field name used addressing [Issue 81](https://github.com/phac-nml/mikrokondo/issues/81), [PR 90](https://github.com/phac-nml/mikrokondo/pull/90)
+- Altered name of stored `SpeciesTopHit` field in the irida-next.config, and added a field displaying the field name used addressing [Issue 81](https://github.com/phac-nml/mikrokondo/pull/90)
 
 
 ## [0.2.1] - 2024-06-03
@@ -108,6 +110,7 @@ Initial release of phac-nml/mikrokondo. Mikrokondo currently supports: read trim
 
 - Added integration testing using [nf-test](https://www.nf-test.com/).
 
+[0.3.0]: https://github.com/phac-nml/mikrokondo/releases/tag/0.3.0
 [0.2.1]: https://github.com/phac-nml/mikrokondo/releases/tag/0.2.1
 [0.2.0]: https://github.com/phac-nml/mikrokondo/releases/tag/0.2.0
 [0.1.2]: https://github.com/phac-nml/mikrokondo/releases/tag/0.1.2
