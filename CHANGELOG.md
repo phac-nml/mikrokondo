@@ -5,6 +5,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### `Changed`
+
+- Reformatted QCSummary fields and added a QCMessage field containing the old summary message. See [PR 85](https://github.com/phac-nml/mikrokondo/pull/85)
+
+### Fixed
+
+- Updated samtools/minimap2 container fixing CI issues and issues running the pipeline with Docker. See [PR 85](https://github.com/phac-nml/mikrokondo/pull/85)
+
 ### `Added`
 
 - Altered name of stored `SpeciesTopHit` field in the irida-next.config, and added a field displaying the field name used addressing (Issue 81)[https://github.com/phac-nml/mikrokondo/issues/81]
