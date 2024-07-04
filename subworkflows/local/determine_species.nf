@@ -61,6 +61,11 @@ workflow DETERMINE_SPECIES {
     }
     reports = reports.mix(id_channel)
 
+    // Strip prefix from top_hit
+    top_hit = top_hit.map{
+        meta, output -> tuple(meta, top_hit.replaceFirst(/\w__/, ""))
+    }
+
 
 
     emit:
