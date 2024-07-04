@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Reformatted QCSummary fields and added a QCMessage field containing the old summary message. See [PR 85](https://github.com/phac-nml/mikrokondo/pull/85)
 
+- Changed default Python3 image to use the StarAMR image. See [PR 85](https://github.com/phac-nml/mikrokondo/pull/85)
+
 - Stripped identifier from taxonomic identification from string. See [Issue 81](https://github.com/phac-nml/mikrokondo/issues/81), [PR 90](https://github.com/phac-nml/mikrokondo/pull/90)
 
 ### `Fixed`
