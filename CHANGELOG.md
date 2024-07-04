@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Stripped identifier from taxonomic identification from string. See [Issue 81](https://github.com/phac-nml/mikrokondo/pull/90)
 
-- Set spades to ignore for integration tests. See [PR 91](https://github.com/phac-nml/mikrokondo/pull/91)
+- Removed retry logic from processes and switched them to ignore. See [PR 91](https://github.com/phac-nml/mikrokondo/pull/91)
 
 ### `Fixed`
 
