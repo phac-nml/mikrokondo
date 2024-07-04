@@ -19,6 +19,10 @@ workflow DETERMINE_SPECIES {
     reports = Channel.empty()
     results = Channel.empty()
     versions = Channel.empty()
+    taxon_identifications = Channel.empty()
+
+    def TAXON_PREFIX_STRIP = ~/^\w__/
+
     if (params.run_kraken){
         log.info "Running kraken2 for contigs classification"
         KRAKEN(contigs, params.kraken.db ? file(params.kraken.db) : error("--kraken2_db ${params.kraken.db} is invalid"))
@@ -31,11 +35,7 @@ workflow DETERMINE_SPECIES {
         })
 
         parsed = PARSE_KRAKEN(KRAKEN.out.report)
-        reports = reports.mix(parsed.kraken_top.map{
-            meta, report -> tuple(meta, params.top_hit_species, report)
-        })
-
-        top_hit = parsed.kraken_top
+        taxon_identifications = parsed.kraken_top
         versions = versions.mix(parsed.versions)
         versions = versions.mix(KRAKEN.out.versions)
 
@@ -46,25 +46,23 @@ workflow DETERMINE_SPECIES {
         results = results.mix(MASH_SCREEN.out.mash_data)
 
         parsed = PARSE_MASH(MASH_SCREEN.out.mash_data, Channel.value("top"))
-        reports = reports.mix(parsed.mash_out.map{
-            meta, report -> tuple(meta, params.top_hit_species, report)
-        })
-
-        top_hit = parsed.mash_out
+        taxon_identifications = parsed.mash_out
         versions = versions.mix(MASH_SCREEN.out.versions)
         versions = versions.mix(parsed.versions)
     }
+
+    top_hit = taxon_identifications.map{meta, output -> tuple(meta, output - TAXON_PREFIX_STRIP)}
+    reports = reports.mix( top_hit.map{
+        meta, report -> tuple(meta, params.top_hit_species, report)
+        }
+    )
+
 
     // Create a channel identifying pipelines output ID
     id_channel = top_hit.map{
         meta, output -> tuple(meta, params.top_hit_method, id_method)
     }
     reports = reports.mix(id_channel)
-
-    // Strip prefix from top_hit
-    top_hit = top_hit.map{
-        meta, output -> tuple(meta, output.replaceFirst(/^\w__/, ""))
-    }
 
 
 
