@@ -17,7 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Updated samtools/minimap2 container fixing CI issues and issues running the pipeline with Docker. See [PR 85](https://github.com/phac-nml/mikrokondo/pull/85)
 
-- Removed task.maxRetries from error handling to prevent StackOverflow addressing [Issue 86](https://github.com/phac-nml/mikrokondo/issues/86)
+- Removed task.maxRetries from error handling to prevent StackOverflow addressing [Issue 86](https://github.com/phac-nml/mikrokondo/pull/91)
 
 ### `Added`
 
