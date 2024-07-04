@@ -121,7 +121,7 @@ nextflow_pipeline {
             assert ecoli_metadata."Length Value" == 5333525
             assert ecoli_metadata."nr contigs Status" == "PASSED"
             assert ecoli_metadata."nr contigs Value" == 187
-            assert ecoli_metadata."QC Summary" == "[FAILED] Sample is likely contaminated, REISOLATION AND RESEQUENCING RECOMMENDED\nPassed Tests: 3/4\nSpecies ID: s__Escherichia coli"
+            assert ecoli_metadata."QC Summary" == "FAILED Species ID: s__Escherichia coli; Passed Tests: 3/4; Organism QC Criteria: Escherichia coli"
 
             assert ecoli_metadata."Downsampled" == false
             assert ecoli_metadata."Species" == "s__Escherichia coli"
@@ -304,7 +304,7 @@ nextflow_pipeline {
             assert ecoli_metadata."Length Value" == 5299656
             assert ecoli_metadata."nr contigs Status" == "PASSED"
             assert ecoli_metadata."nr contigs Value" == 123
-            assert ecoli_metadata."QC Summary" == "[FAILED] Sample is likely contaminated, REISOLATION AND RESEQUENCING RECOMMENDED\nPassed Tests: 3/4\nSpecies ID: s__Escherichia coli"
+            assert ecoli_metadata."QC Summary" == "FAILED Species ID: s__Escherichia coli; Passed Tests: 3/4; Organism QC Criteria: Escherichia coli"
 
             // Read in filtered assembly fasta to verify number of contigs
             def assemblyLines = path("$launchDir/results/Assembly/FinalAssembly/ecoli_GCA_000947975/ecoli_GCA_000947975.final.filtered.assembly.fasta.gz").readLinesGzip()
@@ -393,7 +393,7 @@ nextflow_pipeline {
             assert salmonella_metadata."Length Value" == 4944000
             assert salmonella_metadata."nr contigs Status" == "PASSED"
             assert salmonella_metadata."nr contigs Value" == 3
-            assert salmonella_metadata."QC Summary" == "[FAILED] Sample is likely contaminated, REISOLATION AND RESEQUENCING RECOMMENDED\nPassed Tests: 3/4\nSpecies ID: s__Salmonella enterica"
+            assert salmonella_metadata."QC Summary" == "FAILED Species ID: s__Salmonella enterica; Passed Tests: 3/4; Organism QC Criteria: Salmonella"
 
             assert salmonella_metadata."Downsampled" == false
 
@@ -559,7 +559,7 @@ nextflow_pipeline {
             assert listeria_metadata."Length Value" == 2944528
             assert listeria_metadata."nr contigs Status" == "PASSED"
             assert listeria_metadata."nr contigs Value" == 1
-            assert listeria_metadata."QC Summary" == "[FAILED] Sample is likely contaminated, REISOLATION AND RESEQUENCING RECOMMENDED\nPassed Tests: 3/4\nSpecies ID: s__Listeria monocytogenes"
+            assert listeria_metadata."QC Summary" == "FAILED Species ID: s__Listeria monocytogenes; Passed Tests: 3/4; Organism QC Criteria: Listeria"
 
             assert listeria_metadata."Downsampled" == false
 
