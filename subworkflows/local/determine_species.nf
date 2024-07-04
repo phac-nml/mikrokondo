@@ -55,7 +55,7 @@ workflow DETERMINE_SPECIES {
         versions = versions.mix(parsed.versions)
     }
 
-    // Create a channle identifying pipelines output ID
+    // Create a channel identifying pipelines output ID
     id_channel = top_hit.map{
         meta, output -> tuple(meta, params.top_hit_method, id_method)
     }

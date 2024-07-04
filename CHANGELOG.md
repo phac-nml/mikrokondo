@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Added`
 
-- Altered name of stored `SpeciesTopHit` field in the irida-next.config, and added a field displaying the field name used addressing (Issue 81)[https://github.com/phac-nml/mikrokondo/issues/81]
+- Altered name of stored `SpeciesTopHit` field in the irida-next.config, and added a field displaying the field name used addressing [Issue 81](https://github.com/phac-nml/mikrokondo/issues/81), [PR 90](https://github.com/phac-nml/mikrokondo/pull/90)
 
 ## [0.2.1] - 2024-06-03
 
