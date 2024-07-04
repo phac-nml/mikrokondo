@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Changed default Python3 image to use the StarAMR image. See [PR 90](https://github.com/phac-nml/mikrokondo/pull/90)
 
-- Stripped identifier from taxonomic identification from string. See [Issue 81](https://github.com/phac-nml/mikrokondo/pull/90)
+- Stripped identifier from taxonomic identification from string. See [PR 90](https://github.com/phac-nml/mikrokondo/pull/90)
 
 - Removed retry logic from processes and switched them to ignore. See [PR 91](https://github.com/phac-nml/mikrokondo/pull/91)
 
@@ -19,11 +19,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Updated samtools/minimap2 container fixing CI issues and issues running the pipeline with Docker. See [PR 85](https://github.com/phac-nml/mikrokondo/pull/85)
 
-- Removed task.maxRetries from error handling to prevent StackOverflow addressing [Issue 86](https://github.com/phac-nml/mikrokondo/pull/91)
+- Removed task.maxRetries from error handling to prevent StackOverflow addressing [PR 91](https://github.com/phac-nml/mikrokondo/pull/91)
 
 ### `Added`
 
-- Altered name of stored `SpeciesTopHit` field in the irida-next.config, and added a field displaying the field name used addressing [Issue 81](https://github.com/phac-nml/mikrokondo/pull/90)
+- Altered name of stored `SpeciesTopHit` field in the irida-next.config, and added a field displaying the field name used addressing [PR 90](https://github.com/phac-nml/mikrokondo/pull/90)
 
 
 ## [0.2.1] - 2024-06-03
