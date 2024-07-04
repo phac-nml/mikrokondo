@@ -6,7 +6,7 @@ TODO add static html table output
 Matthew Wells: 2023-09-22
 """
 from dataclasses import dataclass
-from typing import Dict, Union
+from typing import Dict, Optional
 from collections import defaultdict
 import os
 import argparse
@@ -22,14 +22,16 @@ class CleaningInfo:
     trim_field int: when split on a delimiter which section of the list to keep
     """
     field: str
-    keep: Union[str, None] = None
-    trim_field: Union[int, None] = None
+    keep: Optional[str] = None
+    trim_field: Optional[int] = None
 
 class JsonImport:
     """Intake json report to convert to CSV"""
 
     __key_order = {v.field: v for v in [CleaningInfo(field="QCStatus"),
                 CleaningInfo(field="QCSummary"),
+                CleaningInfo(field="QCParameterSelection"),
+                CleaningInfo(field="QCMessage"),
                 CleaningInfo(field="QualityAnalysis", keep="message", trim_field=1),
                 CleaningInfo(field="meta")]}
     __keep_keys = frozenset(__key_order.keys())
