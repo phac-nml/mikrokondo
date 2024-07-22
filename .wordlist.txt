@@ -21,4 +21,24 @@ iridanext
 contig
 contigs
 Quast
+AMR
+kat
+genomic
+bakta
+SeqtkBaseCount
+locidex
+Kraken
+params
+param
+minimap
+irida
+config
+StackOverflow
+maxRetries
+samtools
+QCSummary
+QCMessage
+Changelog
+Biotechnol
+doi
 

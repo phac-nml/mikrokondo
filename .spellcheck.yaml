@@ -13,6 +13,9 @@ matrix:
   - pyspelling.filters.markdown:
       markdown_extensions:
       - pymdownx.superfences
+      - pymdownx.striphtml
+      comments: false
+      notes: false
   - pyspelling.filters.html:
       comments: false
       ignores:
