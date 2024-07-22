@@ -76,7 +76,7 @@
             "properties": {
                 "dehosting_idx": {
                     "type": "string",
-                    "description": "Minimpa2 index for dehosting and kitome removal",
+                    "description": "Minimap2 index for dehosting and kitome removal",
                     "pattern": "^\\S+$",
                     "exists": true,
                     "format": "file-path"
@@ -404,7 +404,7 @@
                 },
                 "skip_metagenomic_detection": {
                     "type": "boolean",
-                    "description": "For samples to be analyzed as isolates"
+                    "description": "Force samples to be analyzed as isolates"
                 },
                 "skip_staramr": {
                     "type": "boolean",
@@ -429,7 +429,7 @@
                 "ec_opid": {
                     "type": "number",
                     "default": 90,
-                    "description": "Minimum percent identity to determine O antigens prescence",
+                    "description": "Minimum percent identity to determine O antigens presence",
                     "minimum": 0,
                     "maximum": 100
                 },
@@ -443,7 +443,7 @@
                 "ec_hpid": {
                     "type": "number",
                     "default": 95,
-                    "description": "Miniumum percent identity to determine H antigens prescence",
+                    "description": "Miniumum percent identity to determine H antigens presence",
                     "minimum": 0,
                     "maximum": 100
                 },
