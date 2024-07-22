@@ -76,7 +76,7 @@ Nextflow and Mikrokondo only supports running the pipeline using containers such
 
 ### Docker or Singularity?
 
-Docker or Singularity (Apptainer) Docker requires root privileges which can can make it a hassle to install on computing clusters (there are work arounds). Apptainer/Singularity does not, so running the pipeline using Apptainer/Singularity is the recommended method for running the pipeline.
+Docker or Singularity (Apptainer) Docker requires root privileges which can can make it a hassle to install on computing clusters (there are workarounds). Apptainer/Singularity does not, so running the pipeline using Apptainer/Singularity is the recommended method for running the pipeline.
 
 ## Step 3: Install dependencies
 
@@ -152,7 +152,7 @@ Mikrokondo requires two things as input:
    - long_reads
    - assembly
 
-For more information see the [useage docs](https://phac-nml.github.io/mikrokondo/usage/useage/).
+For more information see the [usage docs](https://phac-nml.github.io/mikrokondo/usage/useage/).
 
 ### Output/Results
 
