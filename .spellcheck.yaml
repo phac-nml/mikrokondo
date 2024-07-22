@@ -11,9 +11,6 @@ matrix:
     wordlists:
     - .wordlist.txt
   pipeline:
-  - pyspelling.filters.context:
-    - open: ''
-    - close:
   - pyspelling.filters.markdown:
       markdown_extensions:
       - pymdownx.superfences
