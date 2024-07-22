@@ -291,7 +291,7 @@
                     "fa_icon": "far fa-check-circle",
                     "description": "Validation of parameters fails when an unrecognised parameter is found.",
                     "hidden": true,
-                    "help_text": "By default, when an unrecognised parameter is found, it returns a warinig."
+                    "help_text": "By default, when an unrecognised parameter is found, it returns a warning."
                 },
                 "show_hidden_params": {
                     "type": "boolean",
@@ -590,7 +590,7 @@
                 "lx_max_aa_len": {
                     "type": "integer",
                     "default": 10000000,
-                    "description": "Gloval maximum query length of AminoAcid strand.",
+                    "description": "Global maximum query length of AminoAcid strand.",
                     "minimum": 10
                 },
                 "lx_min_dna_ident": {
