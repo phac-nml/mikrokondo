@@ -1,7 +1,7 @@
 matrix:
 - name: Markdown
   sources:
-  - '!venv/**/*.md|**/*.md/'
+  - '!venv/**/*.md|**/*.md|nextflow_schema.json'
   default_encoding: utf-8
   aspell:
     lang: en
@@ -21,7 +21,3 @@ matrix:
       - code
       - pre
       - small
-- name: javascript
-  pipeline:
-  sources:
-  - "nextflow_schema.json"
