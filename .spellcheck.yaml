@@ -16,3 +16,6 @@ matrix:
       ignores:
       - code
       - pre
+      - small
+      - a
+      - i

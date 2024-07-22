@@ -69,9 +69,9 @@ Nextflow is required to run mikrokondo (requires Linux), and instructions for it
 
 ## Step 2: Choose a Container Engine
 
-Nextflow and Mikrokondo only supports running the pipeline using containers such as: Docker, Singularity (now apptainer), podman, gitpod, shifter and charliecloud. Currently only usage with Singularity has been fully tested, (Docker and Apptainer have only been partially tested) but support for each of the container services exists. 
+Nextflow and Mikrokondo only supports running the pipeline using containers such as: Docker, Singularity (now apptainer), podman, gitpod, shifter and charliecloud. Currently only usage with Singularity has been fully tested, (Docker and Apptainer have only been partially tested) but support for each of the container services exists.
 
->[!Note] 
+>[!Note]
 >Singularity was adopted by the Linux Foundation and is now called Apptainer. Singularity still exists, but it is likely newer installs will use Apptainer.
 
 ### Docker or Singularity?
@@ -143,7 +143,7 @@ Under the usage section you can find example commands, instructions for configur
 
 ### Data Input/formats
 
-Mikrokondo requires two things as input: 
+Mikrokondo requires two things as input:
 1. **Sample files** - fastq and fasta must be in gzip format
 2. **Sample sheet** - this FOFN (file of file names) contains sample names and allows user to combine read-sets. The following header fields are accepted:
    - sample
@@ -153,7 +153,7 @@ Mikrokondo requires two things as input:
    - assembly
 
 For more information see the [useage docs](https://phac-nml.github.io/mikrokondo/usage/useage/).
- 
+
 ### Output/Results
 
 All output files will be written into the `outdir` (specified by the user). More explicit tool results can be found in both the [Workflow](workflows/CleanAssemble/) and [Subworkflow](subworkflows/) sections of the docs. Here is a brief description of the outdir structure (though in brief the further into the structure you head, the further in the workflow the tool has been run):
@@ -206,7 +206,7 @@ Add `--profile singularity` to switch from using docker by default to using sing
 
 ## Troubleshooting and FAQs:
 
-Within release 0.1.0, Bakta is currently skipped however it can be enabled from the command line or within the nextflow.config (please check the docs for more information). It has been disabled by default due issues in using the latest bakta database releases due to an issue with `amr_finder` there are fixes available and older databases still work however they have not been tested. A user can still enable Bakta themselves or fix the database. More information is provided here: https://github.com/oschwengers/bakta/issues/268 
+Within release 0.1.0, Bakta is currently skipped however it can be enabled from the command line or within the nextflow.config (please check the docs for more information). It has been disabled by default due issues in using the latest bakta database releases due to an issue with `amr_finder` there are fixes available and older databases still work however they have not been tested. A user can still enable Bakta themselves or fix the database. More information is provided here: https://github.com/oschwengers/bakta/issues/268
 
 For a list of common issues or errors and their solutions, please read our [FAQ section](https://phac-nml.github.io/mikrokondo/troubleshooting/FAQ/).
 
