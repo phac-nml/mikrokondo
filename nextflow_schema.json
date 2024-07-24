@@ -396,7 +396,7 @@
                 },
                 "skip_mlst": {
                     "type": "boolean",
-                    "description": "Skip classic 7gene MLST (Uses Torsten Seemann's mlst)"
+                    "description": "Skip classic 7 gene MLST (Uses Torsten Seemann's mlst)"
                 },
                 "skip_mobrecon": {
                     "type": "boolean",
@@ -404,7 +404,7 @@
                 },
                 "skip_metagenomic_detection": {
                     "type": "boolean",
-                    "description": "Force samples to be analyzed as isolates"
+                    "description": "Skip metagenomic detection. (Forces samples to be analyzed as if they were isolates)"
                 },
                 "skip_staramr": {
                     "type": "boolean",
@@ -477,7 +477,7 @@
         "fastp_options": {
             "title": "Fastp options",
             "type": "object",
-            "description": "Options to fastp for read qa/qc",
+            "description": "Options to pass to FastP for read QA/QC",
             "default": "",
             "properties": {
                 "fp_average_quality": {
@@ -490,69 +490,69 @@
                     "type": "integer",
                     "default": 15,
                     "minimum": 1,
-                    "description": "the mean quality requirement option shared by cut_front, cut_tail or cut_sliding",
+                    "description": "The mean quality requirement option shared by cut_front, cut_tail or cut_sliding",
                     "maximum": 36
                 },
                 "fp_cut_tail_window_size": {
                     "type": "integer",
                     "default": 4,
                     "minimum": 1,
-                    "description": "the window size option shared by cut_front, cut_tail or cut_sliding.",
+                    "description": "The window size option shared by cut_front, cut_tail or cut_sliding.",
                     "maximum": 1000
                 },
                 "fp_complexity_threshold": {
                     "type": "integer",
                     "default": 20,
                     "minimum": 0,
-                    "description": "the threshold for low complexity filter",
+                    "description": "The threshold for low complexity filter",
                     "maximum": 100
                 },
                 "fp_qualified_phred": {
                     "type": "integer",
                     "default": 15,
                     "minimum": 0,
-                    "description": "the quality value that a base is qualified."
+                    "description": "The quality value that a base is qualified."
                 },
                 "fp_unqualified_percent_limit": {
                     "type": "integer",
                     "default": 40,
                     "minimum": 0,
                     "maximum": 100,
-                    "description": "how many percents of bases are allowed to be unqualified"
+                    "description": "The percentage of bases that are allowed to be unqualified"
                 },
                 "fp_polyg_min_len": {
                     "type": "integer",
                     "default": 10,
                     "minimum": 1,
-                    "description": "the minimum length to detect polyG in the read tail"
+                    "description": "The minimum length to detect polyG in the read tail"
                 },
                 "fp_polyx_min_len": {
                     "type": "integer",
                     "default": 10,
-                    "description": "the minimum length to detect polyX in the read tail",
+                    "description": "The minimum length to detect polyX in the read tail",
                     "minimum": 1
                 },
                 "fp_illumina_length_min": {
                     "type": "integer",
                     "default": 35,
                     "minimum": 0,
-                    "description": "reads shorter than length_required will be discarded"
+                    "description": "Reads shorter than length_required will be discarded"
                 },
                 "fp_illumina_length_max": {
                     "type": "integer",
                     "default": 400,
                     "minimum": 0,
-                    "description": "reads longer than length_limit will be discarded, 0 means no limitation."
+                    "description": "Reads longer than length_limit will be discarded, 0 means no limitation."
                 },
                 "fp_single_end_length_min": {
                     "type": "integer",
                     "default": 1000,
                     "minimum": 0,
-                    "description": "same as fp_illumina_length_min but for single-end data. reads shorter than length_required will be discarded"
+                    "description": "Same as fp_illumina_length_min but for single-end data. reads shorter than length_required will be discarded"
                 },
                 "fp_dedup_reads": {
                     "type": "boolean",
-                    "description": "enable deduplication to drop the duplicated reads/pairs"
+                    "description": "Enable deduplication to drop the duplicated reads/pairs"
                 }
             }
         },
@@ -578,7 +578,7 @@
                 "lx_min_aa_len": {
                     "type": "integer",
                     "default": 1,
-                    "description": "Global minimum query length of an AminoAcid strand.",
+                    "description": "Global minimum query length of an Amino Acid strand.",
                     "minimum": 1
                 },
                 "lx_max_dna_len": {
@@ -590,7 +590,7 @@
                 "lx_max_aa_len": {
                     "type": "integer",
                     "default": 10000000,
-                    "description": "Global maximum query length of AminoAcid strand.",
+                    "description": "Global maximum query length of Amino Acid strand.",
                     "minimum": 10
                 },
                 "lx_min_dna_ident": {
@@ -603,7 +603,7 @@
                 "lx_min_aa_ident": {
                     "type": "number",
                     "default": 80,
-                    "description": "Global minimum minimum AminoAcid percent identiy required for match. (Float value)",
+                    "description": "Global minimum Amino Acid percent identiy required for match. (Float value)",
                     "minimum": 0,
                     "maximum": 100
                 },
@@ -617,14 +617,14 @@
                 "lx_min_aa_match_cov": {
                     "type": "number",
                     "default": 80,
-                    "description": "Global minimum AminoAcid hit coverage identity required for match. (float)",
+                    "description": "Global minimum Amino Acid hit coverage identity required for match. (float)",
                     "minimum": 0,
                     "maximum": 100
                 },
                 "lx_max_target_seqs": {
                     "type": "integer",
                     "default": 10,
-                    "description": "Maximum number of sequence hits per a query",
+                    "description": "Maximum number of sequence hits per query",
                     "minimum": 1
                 },
                 "lx_extraction_mode": {
