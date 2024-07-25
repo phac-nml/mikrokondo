@@ -161,3 +161,10 @@ unicycler
 validationFailUnrecognisedParams
 validationShowHiddenParams
 zA
+kondo
+gz
+fq
+ast
+dependentRequired
+errorMessage
+Samplesheet
