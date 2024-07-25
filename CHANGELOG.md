@@ -5,9 +5,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### `Changed`
+
+- Removed quay.io docker repo tags [PR 94](https://github.com/phac-nml/mikrokondo/pull/94)
+
 ### `Fixed`
 
 - Fixed spelling issues issues in config values. See [PR 95](https://github.com/phac-nml/mikrokondo/pull/95)
+
 
 ## [0.3.0] - 2024-07-04
 
