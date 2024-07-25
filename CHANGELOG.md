@@ -3,6 +3,12 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+### `Fixed`
+
+- Fixed spelling issues issues in config values. See [PR 95](https://github.com/phac-nml/mikrokondo/pull/95)
+
 ## [0.3.0] - 2024-07-04
 
 ### `Changed`
@@ -57,7 +63,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Updated StarAMR point finder DB selection to resolve error when in db selection when a database is not selected addressing issue. See [PR 74](https://github.com/phac-nml/mikrokondo/pull/74)
 
-- Fixed calculation of SeqtkBaseCount value include counts for both pairs of paird-end reads. See [PR 65](https://github.com/phac-nml/mikrokondo/pull/65).
+- Fixed calculation of SeqtkBaseCount value include counts for both pairs of paired-end reads. See [PR 65](https://github.com/phac-nml/mikrokondo/pull/65).
 
 ## `Changed`
 
@@ -72,7 +78,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Changed default values for database parameters `--dehosting_idx`, `--mash_sketch`, `--kraken2_db`, and `--bakta_db` to null. See [PR 71](https://github.com/phac-nml/mikrokondo/pull/71)
-- Enabled checking for existance of database files in JSON Schema to avoid issues with staging non-existent files in Azure. See [PR 71](https://github.com/phac-nml/mikrokondo/pull/71).
+- Enabled checking for existence of database files in JSON Schema to avoid issues with staging non-existent files in Azure. See [PR 71](https://github.com/phac-nml/mikrokondo/pull/71).
 - Set `--kraken2_db` to be a required parameter for the pipeline. See [PR 71](https://github.com/phac-nml/mikrokondo/pull/71)
 - Hide bakta parameters from IRIDA Next UI. See [PR 71](https://github.com/phac-nml/mikrokondo/pull/71)
 

@@ -69,14 +69,14 @@ Nextflow is required to run mikrokondo (requires Linux), and instructions for it
 
 ## Step 2: Choose a Container Engine
 
-Nextflow and Mikrokondo only supports running the pipeline using containers such as: Docker, Singularity (now apptainer), podman, gitpod, shifter and charliecloud. Currently only usage with Singularity has been fully tested, (Docker and Apptainer have only been partially tested) but support for each of the container services exists. 
+Nextflow and Mikrokondo only supports running the pipeline using containers such as: Docker, Singularity (now apptainer), podman, gitpod, shifter and charliecloud. Currently only usage with Singularity has been fully tested, (Docker and Apptainer have only been partially tested) but support for each of the container services exists.
 
->[!Note] 
+>[!Note]
 >Singularity was adopted by the Linux Foundation and is now called Apptainer. Singularity still exists, but it is likely newer installs will use Apptainer.
 
 ### Docker or Singularity?
 
-Docker or Singularity (Apptainer) Docker requires root privileges which can can make it a hassle to install on computing clusters (there are work arounds). Apptainer/Singularity does not, so running the pipeline using Apptainer/Singularity is the recommended method for running the pipeline.
+Docker or Singularity (Apptainer) Docker requires root privileges which can can make it a hassle to install on computing clusters (there are workarounds). Apptainer/Singularity does not, so running the pipeline using Apptainer/Singularity is the recommended method for running the pipeline.
 
 ## Step 3: Install dependencies
 
@@ -93,7 +93,7 @@ Besides the Nextflow run time (requires Java), and container engine the dependen
 
 - [GTDB Mash Sketch](https://zenodo.org/record/8408361): required for speciation and determination if sample is metagenomic
 - [Decontamination Index](https://zenodo.org/record/8408557): Required for decontamination of reads (it is simply a minimap2 index)
-- [Kraken2 nt database](https://benlangmead.github.io/aws-indexes/k2): Required for binning of metagenommic data and is an alternative to using Mash for speciation
+- [Kraken2 nt database](https://benlangmead.github.io/aws-indexes/k2): Required for binning of metagenomic data and is an alternative to using Mash for speciation
 - [Bakta database](https://zenodo.org/record/7669534): Running Bakta is optional and there is a light database option, however the full one is recommended. You will have to unzip and un-tar the database for usage. You can skip running Bakta however making the requirement of downloading this database **optional**.
 - [StarAMR database](https://github.com/phac-nml/staramr#database-build): Running StarAMR is optional and requires downloading the StarAMR databases. Also if you wish to avoid downloading the database, the container for StarAMR has a database included which mikrokondo will default to using if one is not specified making this requirement **optional**.
 
@@ -143,7 +143,7 @@ Under the usage section you can find example commands, instructions for configur
 
 ### Data Input/formats
 
-Mikrokondo requires two things as input: 
+Mikrokondo requires two things as input:
 1. **Sample files** - fastq and fasta must be in gzip format
 2. **Sample sheet** - this FOFN (file of file names) contains sample names and allows user to combine read-sets. The following header fields are accepted:
    - sample
@@ -152,8 +152,8 @@ Mikrokondo requires two things as input:
    - long_reads
    - assembly
 
-For more information see the [useage docs](https://phac-nml.github.io/mikrokondo/usage/useage/).
- 
+For more information see the [usage docs](https://phac-nml.github.io/mikrokondo/usage/useage/).
+
 ### Output/Results
 
 All output files will be written into the `outdir` (specified by the user). More explicit tool results can be found in both the [Workflow](workflows/CleanAssemble/) and [Subworkflow](subworkflows/) sections of the docs. Here is a brief description of the outdir structure (though in brief the further into the structure you head, the further in the workflow the tool has been run):
@@ -206,7 +206,7 @@ Add `--profile singularity` to switch from using docker by default to using sing
 
 ## Troubleshooting and FAQs:
 
-Within release 0.1.0, Bakta is currently skipped however it can be enabled from the command line or within the nextflow.config (please check the docs for more information). It has been disabled by default due issues in using the latest bakta database releases due to an issue with `amr_finder` there are fixes available and older databases still work however they have not been tested. A user can still enable Bakta themselves or fix the database. More information is provided here: https://github.com/oschwengers/bakta/issues/268 
+Within release 0.1.0, Bakta is currently skipped however it can be enabled from the command line or within the nextflow.config (please check the docs for more information). It has been disabled by default due issues in using the latest bakta database releases due to an issue with `amr_finder` there are fixes available and older databases still work however they have not been tested. A user can still enable Bakta themselves or fix the database. More information is provided here: https://github.com/oschwengers/bakta/issues/268
 
 For a list of common issues or errors and their solutions, please read our [FAQ section](https://phac-nml.github.io/mikrokondo/troubleshooting/FAQ/).
 
