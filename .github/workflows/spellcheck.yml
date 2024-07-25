@@ -19,7 +19,7 @@ jobs:
     - uses: rojopolis/spellcheck-github-actions@v0
       name: Spellcheck
       with:
-        source_files: README.md CHANGELOG.md nextflow_schema.json
+        source_files: README.md CHANGELOG.md nextflow_schema.json assets/schema_input.json
         task_name: Markdown
         output_file: spellcheck-output.txt
 

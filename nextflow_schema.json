@@ -610,7 +610,7 @@
                 "lx_min_dna_match_cov": {
                     "type": "number",
                     "default": 80,
-                    "description": "Gloval minimum DNA percent hit coverage identity required for match. (float)",
+                    "description": "Global minimum DNA percent hit coverage identity required for match. (float)",
                     "minimum": 0.001,
                     "maximum": 100
                 },
