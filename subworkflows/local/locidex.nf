@@ -3,7 +3,7 @@ include { LOCIDEX_SEARCH } from "../../modules/local/locidex_search.nf"
 include { LOCIDEX_REPORT } from "../../modules/local/locidex_report.nf"
 include { LOCIDEX_SELECT } from "../../modules/local/locidex_select.nf"
 
-
+// TODO add to report fields of `count_loci_found (loci that are not "-")`, `count_loci_missing` (loci that are "-"), total_loci (how many loci screened for), `missing` (total loci - found loci)
 
 workflow LOCIDEX {
     take:
