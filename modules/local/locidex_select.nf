@@ -14,7 +14,7 @@ Locidex Manifest is setup as:
                 "config": {
                     "db_name": "Locidex Database 1",
                     "db_version": "1.0.0",
-                    "db_date": "04/04/2024",
+                    "db_date": "yyyy-MM-dd",
                     "db_author": "test1",
                     "db_desc": "test1",
                     "db_num_seqs": 53,
@@ -29,6 +29,7 @@ Locidex Manifest is setup as:
 */
 
 import groovy.json.JsonSlurper
+import java.text.SimpleDateFormat
 
 
 process LOCIDEX_SELECT {
@@ -90,19 +91,63 @@ process LOCIDEX_SELECT {
         def tokens = tokenize_values(species_data, match_size)
         def db_found = compare_lists(db[db_tokes_pos], tokens)
         if(db_found){
-            //scheme = database[db[db_key]] need to get path value
-            scheme = database[db[db_key]]
+            def selected_db = select_locidex_db_path(database[db[db_key]], db[db_key])
             paired_p = db_found
             break
         }
     }
+}
+
+def join_database_paths(manifest_path, database_path){
+    /// Database paths are relative to the manifest, hopefully this will not offer many issue on cloud executors
+    
 
 }
 
 
-def select_locidex_db_path(db_value){
+def select_locidex_db_path(db_values, db_name){
     /// Select the optimal locidex database by parsing date fields for the organism
     /// Database fields are labeled by date, so the most recent will be shown
+    /// Db value is an object containing the path fields and the config fields
+    /// db_values: is the list of database config information in the manifest
+
+
+    def database_entries = db_values.size()
+    def default_date = new SimpleDateFormat(params.locidex.date_format_string).parse("0001-01-01")
+    def max_date = default_date
+    def max_date_idx = 0
+    def idx = 0
+    def dates = []
+
+    // Validate all input fields
+    for(value in db_values){
+        if(!value.containsKey(params.locidex.manifest_db_path)){
+            exit 1, "Missing path value in locidex config for: ${db_name}"
+        }
+        if(!value.containsKey(params.locidex.manifest_config_key)){
+            exit 1, "Missing config data for locidex database entry: ${db_name}"
+        }
+        if(!value[params.locidex.manifest_config_key].containsKey(params.locidex.database_config_value_date)){
+            exit 1, "Missing date created value for locidex database entry: ${db_name}"
+        }
+        def date_value = value[params.locidex.manifest_config_key][params.locidex.database_config_value_date]
+        def date_check = new SimpleDateFormat(params.locidex.date_format_string).parse(date_value)
+        def dates << date_check
+        if(date_check > max_date){
+            max_date = date_check
+            max_date_idx = idx
+        }
+        idx += 1
+    }
+    if(idx == 1){
+        return db_values[0]
+    }
+
+    def max_date_count = dates.count(max_date)
+    if(max_date_count > 1){
+        exit 1, "There are multiple versions of the most recent database for ${db_name}. Mikrokondo could not determine the best database to pick."
+    }
+    return db_values[max_date_idx]
 }
 
 

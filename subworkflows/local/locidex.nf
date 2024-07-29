@@ -22,8 +22,9 @@ workflow LOCIDEX {
             meta, top_hit, contigs -> tuple(meta, contigs, file(params.allele_scheme))
         }
     }else{
-
-        matched_dbs = LOCIDEX_SELECT(paired_species)
+        def manifest_file_in = [params.locidex.allele_database, params.locidex.manifest_name].join(File.separator)
+        def manifest_file = file(manifest_file_in, checkIfExists: true)
+        matched_dbs = LOCIDEX_SELECT(paired_species, manifest_file)
         paired = matched_dbs.db_data.branch{
             paired: it[3] // position 3 is a bool showing if a db is matched
             fallthrough: true
