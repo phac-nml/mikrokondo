@@ -21,10 +21,17 @@ workflow LOCIDEX {
         paired_dbs = paired_species.map{
             meta, top_hit, contigs -> tuple(meta, contigs, file(params.allele_scheme))
         }
+
+        reports = reports.mix(paired_dbs.map{
+            meta, top_hit, contigs -> tuple(meta, params.allele_scheme_used, params.allele_scheme)
+        })
+
     }else{
         def manifest_file_in = [params.locidex.allele_database, params.locidex.manifest_name].join(File.separator)
         def manifest_file = file(manifest_file_in, checkIfExists: true)
         matched_dbs = LOCIDEX_SELECT(paired_species, manifest_file)
+
+
         paired = matched_dbs.db_data.branch{
             paired: it[3] // position 3 is a bool showing if a db is matched
             fallthrough: true
@@ -32,13 +39,17 @@ workflow LOCIDEX {
 
         // Pull out databases that have a path only
         paired_dbs = paired.paired.map {
-            meta, contigs, scheme, paired -> tuple(meta, contigs, scheme)
+            meta, contigs, scheme, paired, output_config -> tuple(meta, contigs, scheme)
         }
 
         // TODO add to reports the database for allele calls to report
         paired.fallthrough.subscribe {
             log.info "No allele scheme identified for ${it[0].id}."
         }
+
+        reports = reports.mix(matched_dbs.config_data.map{
+            meta output_config -> tuple(meta, params.locidex, output_config)
+        })
     }
 
     extracted_lx = LOCIDEX_EXTRACT(paired_dbs.paired)
@@ -52,26 +63,6 @@ workflow LOCIDEX {
 
     emit:
     versions
+    reports
 
-
-}
-
-def id_scheme(top_hit){
-    /* Pick the correct allele scheme based off of the species top-hit
-    */
-
-    def selected_scheme = params.allele_scheme
-    if(selected_scheme){
-        return selected_scheme
-    }
-
-    for( scheme in params.locidex.schemes){
-        search_param = scheme.value.search.search
-        if(top_hit.contains(search_param)){
-            selected_scheme = scheme.value.db ? file(scheme.value.db) : null // Need a value present that will send the scheme to the fallthrough case
-            break
-        }
-    }
-
-    return selected_scheme
 }
