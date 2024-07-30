@@ -1,0 +1,12 @@
+{
+    "db_name": "Vibrio cholerae",
+    "db_version": "1.0.0",
+    "db_date": "2024-07-29",
+    "db_author": "Tester",
+    "db_desc": "The database but older, this one is not functional",
+    "db_num_seqs": 823,
+    "is_nucl": true,
+    "is_prot": true,
+    "nucleotide_db_name": "nucleotide",
+    "protein_db_name": "protein"
+}
