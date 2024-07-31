@@ -23,7 +23,7 @@ workflow LOCIDEX {
         }
 
         reports = reports.mix(paired_dbs.map{
-            meta, top_hit, contigs -> tuple(meta, params.allele_scheme_used, params.allele_scheme)
+            meta, top_hit, contigs -> tuple(meta, params.allele_scheme_selected, params.allele_scheme)
         })
 
     }else{
@@ -48,11 +48,11 @@ workflow LOCIDEX {
         }
 
         reports = reports.mix(matched_dbs.config_data.map{
-            meta output_config -> tuple(meta, params.locidex, output_config)
+            meta, output_config -> tuple(meta, params.locidex, output_config)
         })
     }
 
-    extracted_lx = LOCIDEX_EXTRACT(paired_dbs.paired)
+    extracted_lx = LOCIDEX_EXTRACT(paired_dbs)
     versions = versions.mix(extracted_lx.versions)
 
     allele_calls = LOCIDEX_SEARCH(extracted_lx.extracted_seqs)

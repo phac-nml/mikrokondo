@@ -29,6 +29,7 @@ Locidex Manifest is setup as:
 */
 
 import groovy.json.JsonSlurper
+import groovy.json.JsonBuilder
 import java.text.SimpleDateFormat
 
 
@@ -152,7 +153,7 @@ def select_locidex_db_path(db_values, db_name){
         }
         def date_value = value[params.locidex.manifest_config_key][params.locidex.database_config_value_date]
         def date_check = new SimpleDateFormat(params.locidex.date_format_string).parse(date_value)
-        def dates << date_check
+        dates << date_check
         if(date_check > max_date){
             max_date = date_check
             max_date_idx = idx

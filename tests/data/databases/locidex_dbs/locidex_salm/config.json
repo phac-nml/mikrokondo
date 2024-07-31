@@ -6,7 +6,7 @@
     "db_desc": "Testdatabase for salmonella in mikrokondo",
     "db_num_seqs": 53,
     "is_nucl": true,
-    "is_prot": false,
+    "is_prot": true,
     "nucleotide_db_name": "nucleotide",
     "protein_db_name": "protein"
 }

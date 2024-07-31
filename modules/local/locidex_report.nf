@@ -29,8 +29,8 @@ process LOCIDEX_REPORT {
     --max_stop ${params.locidex.report_max_stop} \\
     --force
 
-    gzip -c profile.json > $output_name
-    rm profile.json
+    gzip -c report.json > $output_name
+    rm report.json
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
