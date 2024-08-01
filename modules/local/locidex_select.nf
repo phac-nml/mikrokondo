@@ -36,7 +36,6 @@ import java.text.SimpleDateFormat
 process LOCIDEX_SELECT {
     tag "$meta.id"
     label "process_single"
-    beforeScript "cp $contigs $task.workDir"
 
     input:
     tuple val(meta), val(top_hit), val(contigs)
@@ -44,7 +43,7 @@ process LOCIDEX_SELECT {
     val manifest // This is a json file to be parsed
 
     output:
-    tuple val(meta), val(contigs), path(scheme), val(paired_p), emit: db_data
+    tuple val(meta), val(contigs), val(scheme), val(paired_p), emit: db_data
     tuple val(meta), path(output_config), emit: config_data
 
     exec:
@@ -58,9 +57,6 @@ process LOCIDEX_SELECT {
 
     // De-serialize the manifest file from the database location
     def jsonSlurper = new JsonSlurper()
-    //def file_in = task.workDir.resolve(manifest)
-    //def data = file(manifest, checkIfExists: true)
-    //def data = file(file_in, checkIfExists: true)
     String json_data = manifest.text
     def allele_db_data = jsonSlurper.parseText(json_data)
     def allele_db_keys = allele_db_data.keySet() as String[]
@@ -68,6 +64,7 @@ process LOCIDEX_SELECT {
     // Tokenize all database keys for lookup of species top hit in the database names
     def databases = []
     def shortest_entry = Integer.MAX_VALUE
+    def idx = 0
     for(i in allele_db_keys){
         def db_tokens = i.split('_|\s')
         for(g in db_tokens){
@@ -76,10 +73,12 @@ process LOCIDEX_SELECT {
                 shortest_entry = tok_size
             }
         }
-        databases.add(new Tuple(db_tokens*.toLowerCase(), i))
+        databases.add(new Tuple(db_tokens*.toLowerCase(), i, idx))
+        idx += 1
     }
     def db_tokes_pos = 0
     def db_key = 1
+    def db_idx_pos = 2
 
     // Remove spurious characters from tokenized string
     species_data = species_data.findAll { it.size() >= shortest_entry }
@@ -94,11 +93,12 @@ process LOCIDEX_SELECT {
     report_name = "${meta.id}_${params.locidex.db_config_output_name}"
     output_config = task.workDir.resolve(report_name)
     for(db in databases){
+        // TODO not getting best matches, currently
         def match_size = db[db_tokes_pos].size() // Prevent single token matches
         def tokens = tokenize_values(species_data, match_size)
         def db_found = compare_lists(db[db_tokes_pos], tokens)
         if(db_found){
-            def selected_db = select_locidex_db_path(database[db[db_key]], db[db_key])
+            def selected_db = select_locidex_db_path(allele_db_data[db[db_key]], db[db_key])
             /// Write selected allele database info to a file for the final report
             write_config_data(selected_db, output_config)
             scheme = join_database_paths(selected_db)
@@ -110,10 +110,6 @@ process LOCIDEX_SELECT {
     if(!paired_p){
         write_config_data(["No database selected."], output_config)
     }
-
-    paired_p
-    scheme
-    output_config
 
 }
 
@@ -128,8 +124,8 @@ def write_config_data(db_data, output_name){
 
 def join_database_paths(db_path){
     /// Database paths are relative to the manifest, hopefully this will not offer many issue on cloud executors
-    def input_dir_path = [params.allele_database, db_path[params.locidex.manifest_db_path]].join(File.separator)
-    return file(input_dir_path, checkIfExists: true)
+    def input_dir_path = [params.lx_allele_database, db_path[params.locidex.manifest_db_path]].join(File.separator)
+    return input_dir_path
 }
 
 def select_locidex_db_path(db_values, db_name){
@@ -165,9 +161,6 @@ def select_locidex_db_path(db_values, db_name){
             max_date_idx = idx
         }
         idx += 1
-    }
-    if(idx == 1){
-        return db_values[0]
     }
 
     def max_date_count = dates.count(max_date)

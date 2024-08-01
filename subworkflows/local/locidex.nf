@@ -8,7 +8,7 @@ include { LOCIDEX_SELECT } from "../../modules/local/locidex_select.nf"
 workflow LOCIDEX {
     take:
     contigs // val(meta), path(contigs)
-    top_hit // val(meta), top_hit
+    top_hit // val(meta), val(top_hit)
 
     main:
     reports = Channel.empty()
@@ -39,14 +39,14 @@ workflow LOCIDEX {
 
         // Pull out databases that have a path only
         paired_dbs = paired.paired.map {
-            meta, contigs, scheme, paired, output_config -> tuple(meta, contigs, scheme)
+            meta, contigs, scheme, paired -> tuple(meta, contigs, file(scheme, checkIfExists: true))
         }
 
         // TODO add to reports the database for allele calls to report
         paired.fallthrough.subscribe {
             log.info "No allele scheme identified for ${it[0].id}."
         }
-
+        matched_dbs.config_data.view()
         reports = reports.mix(matched_dbs.config_data.map{
             meta, output_config -> tuple(meta, params.locidex, output_config)
         })
