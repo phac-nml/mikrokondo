@@ -22,7 +22,7 @@ nextflow_workflow
                         [[id: "ST190"], file("$baseDir/tests/data/fake_contigs/vibrio_cholerea/st_190.fa")],
                         [[id: "ST243"], file("$baseDir/tests/data/fake_contigs/vibrio_cholerea/st_243.fa")],
                         [[id: "ST25"] , file("$baseDir/tests/data/fake_contigs/vibrio_cholerea/st_25.fa")],
-                        [[id: "ST248"], file("$baseDir/tests/data/fake_contigs/vibrio_cholerea/st_248.fa")],
+                        [[id: "ST284"], file("$baseDir/tests/data/fake_contigs/vibrio_cholerea/st_284.fa")],
                         [[id: "ST307"], file("$baseDir/tests/data/fake_contigs/vibrio_cholerea/st_307.fa")],
                         [[id: "ST32"] , file("$baseDir/tests/data/fake_contigs/vibrio_cholerea/st_32.fa")],
                         [[id: "ST61"] , file("$baseDir/tests/data/fake_contigs/vibrio_cholerea/st_61.fa")],
@@ -34,7 +34,7 @@ nextflow_workflow
                         [[id: "ST190"], 's_Vibrio cholerae'],
                         [[id: "ST243"], 's_Vibrio cholerae'],
                         [[id: "ST25"] , 's_Vibrio cholerae'],
-                        [[id: "ST248"], 's_Vibrio cholerae'],
+                        [[id: "ST284"], 's_Vibrio cholerae'],
                         [[id: "ST307"], 's_Vibrio cholerae'],
                         [[id: "ST32"] , 's_Vibrio cholerae'],
                         [[id: "ST61"] , 's_Vibrio cholerae'],
@@ -47,6 +47,7 @@ nextflow_workflow
                 max_memory = "2.GB"
                 max_cpus = 1
                 lx_allele_database = "${projectDir}/tests/data/databases/locidex_dbs"
+                lx_report_max_stop = 100
             }
         }
         then {

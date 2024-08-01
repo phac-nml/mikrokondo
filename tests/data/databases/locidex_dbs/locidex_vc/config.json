@@ -1,8 +1,8 @@
 {
     "db_name": "Vibrio cholerae_1",
-    "db_version": "1.0.1",
-    "db_date": "2024-07-30",
-    "db_author": "Tester",
+    "db_version": "1.0.0",
+    "db_date": "2024-08-01",
+    "db_author": "tester",
     "db_desc": "The PubMLST 7 gene mlst database for vibrio cholerae",
     "db_num_seqs": 823,
     "is_nucl": true,

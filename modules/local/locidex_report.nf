@@ -24,9 +24,9 @@ process LOCIDEX_REPORT {
     fi
     locidex report -i $seq_store_name -o . --name ${meta.id} \\
     --mode ${params.locidex.report_mode} \\
-    --prop ${params.locidex.report_prop} \\
     --max_ambig ${params.locidex.report_max_ambig} \\
     --max_stop ${params.locidex.report_max_stop} \\
+    --prop ${params.locidex.report_prop} \\
     --force
 
     gzip -c report.json > $output_name
