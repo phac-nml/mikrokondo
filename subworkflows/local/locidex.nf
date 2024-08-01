@@ -28,7 +28,7 @@ workflow LOCIDEX {
 
     }else{
         def manifest_file_in = [params.locidex.allele_database, params.locidex.manifest_name].join(File.separator)
-        def manifest_file = file(manifest_file_in, checkIfExists: true)
+        manifest_file = file(manifest_file_in, checkIfExists: true)
         matched_dbs = LOCIDEX_SELECT(paired_species, manifest_file)
 
 

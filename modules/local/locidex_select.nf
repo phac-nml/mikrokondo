@@ -36,13 +36,15 @@ import java.text.SimpleDateFormat
 process LOCIDEX_SELECT {
     tag "$meta.id"
     label "process_single"
+    beforeScript "cp $contigs $task.workDir"
 
     input:
-    tuple val(meta), val(top_hit), path(contigs)
-    path manifest // This is a json file to be parsed
+    tuple val(meta), val(top_hit), val(contigs)
+    // TODO check that manifest is copied propely in azure, path identifier does not stage file
+    val manifest // This is a json file to be parsed
 
     output:
-    tuple val(meta), path(contigs), path(scheme), val(paired_p), emit: db_data
+    tuple val(meta), val(contigs), path(scheme), val(paired_p), emit: db_data
     tuple val(meta), path(output_config), emit: config_data
 
     exec:
@@ -56,14 +58,16 @@ process LOCIDEX_SELECT {
 
     // De-serialize the manifest file from the database location
     def jsonSlurper = new JsonSlurper()
-    def data = file(manifest)
-    String json_data = data.text
+    //def file_in = task.workDir.resolve(manifest)
+    //def data = file(manifest, checkIfExists: true)
+    //def data = file(file_in, checkIfExists: true)
+    String json_data = manifest.text
     def allele_db_data = jsonSlurper.parseText(json_data)
     def allele_db_keys = allele_db_data.keySet() as String[]
 
     // Tokenize all database keys for lookup of species top hit in the database names
     def databases = []
-    def shortest_token = Integer.MAX_VALUE
+    def shortest_entry = Integer.MAX_VALUE
     for(i in allele_db_keys){
         def db_tokens = i.split('_|\s')
         for(g in db_tokens){
@@ -87,7 +91,8 @@ process LOCIDEX_SELECT {
 
     paired_p = false // Sets predicate for db identification as false by default
     scheme = null
-    output_config = task.workDir.resolve("${meta.id}_${params.locidex.db_config_output_name}")
+    report_name = "${meta.id}_${params.locidex.db_config_output_name}"
+    output_config = task.workDir.resolve(report_name)
     for(db in databases){
         def match_size = db[db_tokes_pos].size() // Prevent single token matches
         def tokens = tokenize_values(species_data, match_size)
@@ -109,13 +114,14 @@ process LOCIDEX_SELECT {
     paired_p
     scheme
     output_config
+
 }
 
 
 def write_config_data(db_data, output_name){
     /// Config data for db to use
     def json_data = new JsonBuilder(db_data).toPrettyString()
-    def output_file = file(output_config_path).newWriter()
+    def output_file = file(output_name).newWriter()
     output_file.write(json_data)
     output_file.close()
 }
