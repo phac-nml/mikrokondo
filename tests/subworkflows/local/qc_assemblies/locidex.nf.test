@@ -52,6 +52,22 @@ nextflow_workflow
         }
         then {
             assert workflow.success
+            assert path("$launchDir/results").exists()
+            def st_names = ["ST120", "ST176", "ST190", "ST243", "ST25", "ST284", "ST307", "ST32", "ST61", "ST8"]
+
+
+            for(i in st_names){
+                def select_string = "$launchDir/results/Assembly/Subtyping/Locidex/Select/${i}.${i}_SelectedLocidexConfig.locidex.db.json"
+                def extract_string = "$launchDir/results/Assembly/Subtyping/Locidex/Extract/${i}/${i}.raw.locidex.extract.extracted.seqs.subtyping.fasta.gz"
+                def search_string = "$launchDir/results/Assembly/Subtyping/Locidex/Search/${i}.locidex.seq_store.json.gz"
+                def report_string = "$launchDir/results/Assembly/Subtyping/Locidex/Report/${i}.locidex.report.profile.mlst.subtyping.json.gz"
+
+                assert path(select_string).exists()
+                assert path(extract_string).exists()
+                assert path(search_string).exists()
+                assert path(report_string).exists()
+            }
+
         }
     }
 }

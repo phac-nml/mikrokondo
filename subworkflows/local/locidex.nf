@@ -46,7 +46,7 @@ workflow LOCIDEX {
         paired.fallthrough.subscribe {
             log.info "No allele scheme identified for ${it[0].id}."
         }
-        matched_dbs.config_data.view()
+
         reports = reports.mix(matched_dbs.config_data.map{
             meta, output_config -> tuple(meta, params.locidex, output_config)
         })
