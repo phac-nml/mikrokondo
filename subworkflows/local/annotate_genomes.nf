@@ -27,7 +27,7 @@ workflow ANNOTATE_GENOMES {
     abricate_report = channel.empty()
 
     if(!params.skip_bakta && params.bakta.db){
-        db_file = Channel.value("${params.bakta.db}") // Hows is this working without being marked as a file...
+        db_file = Channel.value("${params.bakta.db}")
         annotated = BAKTA_ANNOTATE(contig_data, db_file,
             [], [], [], [], [], []) // empty channels for optional arguments
         embl = BAKTA_ANNOTATE.out.embl

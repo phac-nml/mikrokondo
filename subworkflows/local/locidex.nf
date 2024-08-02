@@ -42,7 +42,6 @@ workflow LOCIDEX {
             meta, contigs, scheme, paired -> tuple(meta, contigs, file(scheme, checkIfExists: true))
         }
 
-        // TODO add to reports the database for allele calls to report
         paired.fallthrough.subscribe {
             log.info "No allele scheme identified for ${it[0].id}."
         }

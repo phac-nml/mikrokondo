@@ -39,7 +39,6 @@ process LOCIDEX_SELECT {
 
     input:
     tuple val(meta), val(top_hit), val(contigs)
-    // TODO check that manifest is copied propely in azure, path identifier does not stage file
     val manifest // This is a json file to be parsed
 
     output:
@@ -59,26 +58,24 @@ process LOCIDEX_SELECT {
     def jsonSlurper = new JsonSlurper()
     String json_data = manifest.text
     def allele_db_data = jsonSlurper.parseText(json_data)
-    def allele_db_keys = allele_db_data.keySet() as String[]
+    def allele_DB_KEYs = allele_db_data.keySet() as String[]
 
     // Tokenize all database keys for lookup of species top hit in the database names
     def databases = []
     def shortest_entry = Integer.MAX_VALUE
-    def idx = 0
-    for(i in allele_db_keys){
-        def db_tokens = i.split('_|\s')
-        for(g in db_tokens){
-            def tok_size = g.size()
+    for(allele_db in allele_DB_KEYs){
+        def db_tokens = allele_db.split('_|\s')
+        for(token in db_tokens){
+            def tok_size = token.size()
             if(tok_size < shortest_entry){
                 shortest_entry = tok_size
             }
         }
-        databases.add(new Tuple(db_tokens*.toLowerCase(), i, idx))
-        idx += 1
+        databases.add(new Tuple(db_tokens*.toLowerCase(), allele_db))
     }
-    def db_tokes_pos = 0
-    def db_key = 1
-    def db_idx_pos = 2
+
+    def DB_TOKES_POS = 0
+    def DB_KEY = 1
 
     // Remove spurious characters from tokenized string
     species_data = species_data.findAll { it.size() >= shortest_entry }
@@ -92,13 +89,14 @@ process LOCIDEX_SELECT {
     scheme = null
     report_name = "${meta.id}_${params.locidex.db_config_output_name}"
     output_config = task.workDir.resolve(report_name)
+
     for(db in databases){
         // TODO not getting best matches, currently
-        def match_size = db[db_tokes_pos].size() // Prevent single token matches
-        def tokens = tokenize_values(species_data, match_size)
-        def db_found = compare_lists(db[db_tokes_pos], tokens)
+        def match_size = db[DB_TOKES_POS].size() // Prevent single token matches
+        def tokens = window_string(species_data, match_size)
+        def db_found = compare_lists(db[DB_TOKES_POS], tokens)
         if(db_found){
-            def selected_db = select_locidex_db_path(allele_db_data[db[db_key]], db[db_key])
+            def selected_db = select_locidex_db_path(allele_db_data[db[DB_KEY]], db[DB_KEY])
             /// Write selected allele database info to a file for the final report
             write_config_data(selected_db, output_config)
             scheme = join_database_paths(selected_db)
@@ -138,54 +136,70 @@ def select_locidex_db_path(db_values, db_name){
     def database_entries = db_values.size()
     def default_date = new SimpleDateFormat(params.locidex.date_format_string).parse("0001-01-01")
     def max_date = default_date
-    def max_date_idx = 0
-    def idx = 0
+    def max_date_entry = null
     def dates = []
 
     // Validate all input fields
-    for(value in db_values){
-        if(!value.containsKey(params.locidex.manifest_db_path)){
+    for(idx in 0..db_values.size()){
+        def db_entry = db_values[idx]
+        if(!db_entry.containsKey(params.locidex.manifest_db_path)){
             exit 1, "Missing path value in locidex config for: ${db_name}"
         }
-        if(!value.containsKey(params.locidex.manifest_config_key)){
+        if(!db_entry.containsKey(params.locidex.manifest_config_key)){
             exit 1, "Missing config data for locidex database entry: ${db_name}"
         }
-        if(!value[params.locidex.manifest_config_key].containsKey(params.locidex.database_config_value_date)){
+        if(!db_entry[params.locidex.manifest_config_key].containsKey(params.locidex.database_config_value_date)){
             exit 1, "Missing date created value for locidex database entry: ${db_name}"
         }
-        def date_value = value[params.locidex.manifest_config_key][params.locidex.database_config_value_date]
+        def date_value = db_entry[params.locidex.manifest_config_key][params.locidex.database_config_value_date]
         def date_check = new SimpleDateFormat(params.locidex.date_format_string).parse(date_value)
-        dates << date_check
+        dates.add(date_check)
         if(date_check > max_date){
             max_date = date_check
-            max_date_idx = idx
+            max_date_entry = db_entry
         }
-        idx += 1
     }
 
     def max_date_count = dates.count(max_date)
     if(max_date_count > 1){
         exit 1, "There are multiple versions of the most recent database for ${db_name}. Mikrokondo could not determine the best database to pick."
+    }else if (max_date_count == 0){
+        exit 1, "There are not databases created after the year ${defualt_date}. Please set the allele database parameter, or adjust the date your database was created in the 'config.json'"
+    }else if (max_date_entry == null){
+        exit 1, "Could not select a database for locidex sample. ${meta.id}"
     }
-    return db_values[max_date_idx]
+    return max_date_entry
 }
 
 
-def tokenize_values(species, match_size){
-    // Tokenize the species values to find the right match
-    def tokens = []
+def window_string(species, match_size){
+    /*
+        Create an array of strings of a various match "match size" for comparison to a given value later one.
+
+        e.g. spieces is an array of: ["1", "2", "3", "4"] and match_size is 2 the output will be.
+            [
+                ["1", "2"],
+                ["2", "3"],
+                ["3", "4"]
+            ]
+    */
+    def tiles = []
     def adj_match_size = match_size - 1
     for(int spot = 0; spot < species.size()-adj_match_size; spot = spot + 1){
-        tokens.add(species[spot..spot + adj_match_size])
+        tiles.add(species[spot..spot + adj_match_size])
     }
-    return tokens
+    return tiles
 }
 
-def compare_lists(db_tokens, species_tokens){
-    // compare the various tokens till the right db is found
-    //! This allows for matches on shorter than optimal matches
-    for(i in species_tokens){
-        if(i == db_tokens){
+def compare_lists(db_string_windows, species_tokens){
+    /* compare the various windows till the right db is found
+        The db_string is an array of [["1", "2"], ["2", "3"], ["3", "4"]] and the species tokens would be ["2", "3"]
+
+    TODO need to add a match size
+    */
+
+    for(window in db_string_windows){
+        if(window == species_tokens){
             return true
         }
     }
