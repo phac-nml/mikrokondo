@@ -51,19 +51,18 @@ process LOCIDEX_SELECT {
     }
 
     // Tokenize the "top_hit" or species value to identify all relevant match parts of the string
-    def species_data = top_hit.split('_|\s')
-    species_data = species_data*.toLowerCase()
-
+    def species_data = top_hit.split('_|\s').collect{ it.toLowerCase() }
+    println species_data
     // De-serialize the manifest file from the database location
     def jsonSlurper = new JsonSlurper()
     String json_data = manifest.text
     def allele_db_data = jsonSlurper.parseText(json_data)
-    def allele_DB_KEYs = allele_db_data.keySet() as String[]
+    def allele_db_keys = allele_db_data.keySet() as String[]
 
     // Tokenize all database keys for lookup of species top hit in the database names
     def databases = []
     def shortest_entry = Integer.MAX_VALUE
-    for(allele_db in allele_DB_KEYs){
+    for(allele_db in allele_db_keys){
         def db_tokens = allele_db.split('_|\s')
         for(token in db_tokens){
             def tok_size = token.size()
@@ -80,34 +79,35 @@ process LOCIDEX_SELECT {
     // Remove spurious characters from tokenized string
     species_data = species_data.findAll { it.size() >= shortest_entry }
 
-    // A default locidex database is set to null as there should be no option set
-    // a default database can be set, but this process will then be skipped
-    def db_opt = null
+    def DB_SELECTION_SCORE_POS = 1
+    def DB_DATA_POS = 0
 
+    def matched_databases = databases.collect {
+        db ->
+            def match_size = db[DB_TOKES_POS].size()
+            def tokens = window_string(species_data, match_size)
+            def score_out = compare_lists(db[DB_TOKES_POS], tokens)
+            new Tuple(db[DB_KEY],  score_out)
+    }.sort{dp -> dp[DB_SELECTION_SCORE_POS]}.reverse() // Sort is in descending order by default
 
     paired_p = false // Sets predicate for db identification as false by default
     scheme = null
     report_name = "${meta.id}_${params.locidex.db_config_output_name}"
     output_config = task.workDir.resolve(report_name)
+    def selected_db = ["No database selected"]
 
-    for(db in databases){
-        // TODO not getting best matches, currently
-        def match_size = db[DB_TOKES_POS].size() // Prevent single token matches
-        def tokens = window_string(species_data, match_size)
-        def db_found = compare_lists(db[DB_TOKES_POS], tokens)
-        if(db_found){
-            def selected_db = select_locidex_db_path(allele_db_data[db[DB_KEY]], db[DB_KEY])
-            /// Write selected allele database info to a file for the final report
-            write_config_data(selected_db, output_config)
-            scheme = join_database_paths(selected_db)
-            paired_p = db_found
-            break
-        }
+    if(!matched_databases.isEmpty() ||
+        !(matched_databases.size() >= 2 &&
+        matched_databases[0][DB_SELECTION_SCORE_POS] == matched_databases[1][DB_SELECTION_SCORE_POS])){
+
+        // Check first and last databases to verify an optimal match is chosen
+        paired_p = true
+        def best_database = matched_databases[0][DB_DATA_POS]
+        selected_db = select_locidex_db_path(allele_db_data[best_database], best_database)
+        scheme = join_database_paths(selected_db)
     }
 
-    if(!paired_p){
-        write_config_data(["No database selected."], output_config)
-    }
+    write_config_data(selected_db, output_config)
 
 }
 
@@ -140,7 +140,7 @@ def select_locidex_db_path(db_values, db_name){
     def dates = []
 
     // Validate all input fields
-    for(idx in 0..db_values.size()){
+    for(idx in 0..<database_entries){
         def db_entry = db_values[idx]
         if(!db_entry.containsKey(params.locidex.manifest_db_path)){
             exit 1, "Missing path value in locidex config for: ${db_name}"
@@ -191,18 +191,23 @@ def window_string(species, match_size){
     return tiles
 }
 
-def compare_lists(db_string_windows, species_tokens){
+def compare_lists(db_string, species_tokens){
     /* compare the various windows till the right db is found
-        The db_string is an array of [["1", "2"], ["2", "3"], ["3", "4"]] and the species tokens would be ["2", "3"]
+        The db_string is an array of tokenized db values e.g. ["1", "2"] and the species would be tokenized into
+        would be [["1", "2"], ["2", "3"]], it would search through the windows of the spcies to see what matches
+        the database value best e.g. ["1", "2"].
 
-    TODO need to add a match size
+        This would match as true, however this allows for multiple matches to be found with similarly named databases.
+
+        To get a "better match" we will create a simple score of the the "match size" / length of the the db string tokens
     */
 
-    for(window in db_string_windows){
-        if(window == species_tokens){
-            return true
+    for(window in species_tokens){
+        if(window == db_string){
+            // Can return on first match as any subsequent match would have the same score
+            return window.size() / db_string.size().toFloat()
         }
     }
-    return false
+    return 0.0
 }
 
