@@ -27,6 +27,7 @@ nextflow_workflow
                         [[id: "ST32"] , file("$baseDir/tests/data/fake_contigs/vibrio_cholerea/st_32.fa")],
                         [[id: "ST61"] , file("$baseDir/tests/data/fake_contigs/vibrio_cholerea/st_61.fa")],
                         [[id: "ST8"]  , file("$baseDir/tests/data/fake_contigs/vibrio_cholerea/st_8.fa")],
+                        [[id: "Nothing"]  , file("$baseDir/tests/data/fake_contigs/vibrio_cholerea/st_8.fa")],
                     )
                     input[1] = Channel.of(
                         [[id: "ST120"], 's_Vibrio cholerae'],
@@ -39,6 +40,7 @@ nextflow_workflow
                         [[id: "ST32"] , 's_Vibrio cholerae'],
                         [[id: "ST61"] , 's_Vibrio cholerae'],
                         [[id: "ST8"]  , 's_Vibrio cholerae'],
+                        [[id: "Nothing"]  , 'No species identified'],
                     )
                 """
             }
@@ -55,17 +57,75 @@ nextflow_workflow
             assert path("$launchDir/results").exists()
             def st_names = ["ST120", "ST176", "ST190", "ST243", "ST25", "ST284", "ST307", "ST32", "ST61", "ST8"]
 
-
             for(i in st_names){
                 def select_string = "$launchDir/results/Assembly/Subtyping/Locidex/Select/${i}.${i}_SelectedLocidexConfig.locidex.db.json"
                 def extract_string = "$launchDir/results/Assembly/Subtyping/Locidex/Extract/${i}/${i}.raw.locidex.extract.extracted.seqs.subtyping.fasta.gz"
                 def search_string = "$launchDir/results/Assembly/Subtyping/Locidex/Search/${i}.locidex.seq_store.json.gz"
                 def report_string = "$launchDir/results/Assembly/Subtyping/Locidex/Report/${i}.locidex.report.profile.mlst.subtyping.json.gz"
-
                 assert path(select_string).exists()
                 assert path(extract_string).exists()
                 assert path(search_string).exists()
                 assert path(report_string).exists()
+            }
+
+            def fail_names = ["Nothing"]
+            for(i in fail_names){
+                def select_string = "$launchDir/results/Assembly/Subtyping/Locidex/Select/${i}.${i}_SelectedLocidexConfig.locidex.db.json"
+                def extract_string = "$launchDir/results/Assembly/Subtyping/Locidex/Extract/${i}/${i}.raw.locidex.extract.extracted.seqs.subtyping.fasta.gz"
+                def search_string = "$launchDir/results/Assembly/Subtyping/Locidex/Search/${i}.locidex.seq_store.json.gz"
+                def report_string = "$launchDir/results/Assembly/Subtyping/Locidex/Report/${i}.locidex.report.profile.mlst.subtyping.json.gz"
+                assert path(select_string).exists()
+                assert !path(extract_string).exists()
+                assert !path(search_string).exists()
+                assert !path(report_string).exists()
+
+            }
+
+        }
+    }
+
+    test("Test of No Selection Locidex"){
+        tag "locidex_fail"
+        /*
+            The locidex workflow take in the following channels
+            contigs: val(meta), path(contigs)
+            top_hit: val(meta), val(top_hit)
+            Both metadata channels affect just need to contain ID
+        */
+        when{
+            workflow {
+                """
+                    input[0] = Channel.of(
+                        [[id: "Nothing"]  , file("$baseDir/tests/data/fake_contigs/vibrio_cholerea/st_8.fa")],
+                    )
+                    input[1] = Channel.of(
+                        [[id: "Nothing"]  , 'No species identified'],
+                    )
+                """
+            }
+            params {
+                outdir = "results"
+                max_memory = "2.GB"
+                max_cpus = 1
+                lx_allele_database = "${projectDir}/tests/data/databases/locidex_dbs"
+                lx_report_max_stop = 100
+            }
+        }
+        then {
+            assert workflow.success
+            assert path("$launchDir/results").exists()
+
+            def fail_names = ["Nothing"]
+            for(i in fail_names){
+                def select_string = "$launchDir/results/Assembly/Subtyping/Locidex/Select/${i}.${i}_SelectedLocidexConfig.locidex.db.json"
+                def extract_string = "$launchDir/results/Assembly/Subtyping/Locidex/Extract/${i}/${i}.raw.locidex.extract.extracted.seqs.subtyping.fasta.gz"
+                def search_string = "$launchDir/results/Assembly/Subtyping/Locidex/Search/${i}.locidex.seq_store.json.gz"
+                def report_string = "$launchDir/results/Assembly/Subtyping/Locidex/Report/${i}.locidex.report.profile.mlst.subtyping.json.gz"
+                assert path(select_string).exists()
+                assert !path(extract_string).exists()
+                assert !path(search_string).exists()
+                assert !path(report_string).exists()
+
             }
 
         }

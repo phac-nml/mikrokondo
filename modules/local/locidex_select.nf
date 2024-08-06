@@ -52,7 +52,7 @@ process LOCIDEX_SELECT {
 
     // Tokenize the "top_hit" or species value to identify all relevant match parts of the string
     def species_data = top_hit.split('_|\s').collect{ it.toLowerCase() }
-    println species_data
+
     // De-serialize the manifest file from the database location
     def jsonSlurper = new JsonSlurper()
     String json_data = manifest.text
@@ -81,14 +81,14 @@ process LOCIDEX_SELECT {
 
     def DB_SELECTION_SCORE_POS = 1
     def DB_DATA_POS = 0
-
+    def MINIMUM_MATCH_SCORE = 1.0
     def matched_databases = databases.collect {
         db ->
             def match_size = db[DB_TOKES_POS].size()
             def tokens = window_string(species_data, match_size)
             def score_out = compare_lists(db[DB_TOKES_POS], tokens)
             new Tuple(db[DB_KEY],  score_out)
-    }.sort{dp -> dp[DB_SELECTION_SCORE_POS]}.reverse() // Sort is in descending order by default
+    }.sort{dp -> dp[DB_SELECTION_SCORE_POS]}.findAll{ dt -> dt[DB_SELECTION_SCORE_POS] == MINIMUM_MATCH_SCORE }.reverse() // Sort is in descending order by default
 
     paired_p = false // Sets predicate for db identification as false by default
     scheme = null
@@ -96,7 +96,7 @@ process LOCIDEX_SELECT {
     output_config = task.workDir.resolve(report_name)
     def selected_db = ["No database selected"]
 
-    if(!matched_databases.isEmpty() ||
+    if(!matched_databases.isEmpty() &&
         !(matched_databases.size() >= 2 &&
         matched_databases[0][DB_SELECTION_SCORE_POS] == matched_databases[1][DB_SELECTION_SCORE_POS])){
 
@@ -108,6 +108,7 @@ process LOCIDEX_SELECT {
     }
 
     write_config_data(selected_db, output_config)
+    output_config
 
 }
 
@@ -205,7 +206,8 @@ def compare_lists(db_string, species_tokens){
     for(window in species_tokens){
         if(window == db_string){
             // Can return on first match as any subsequent match would have the same score
-            return window.size() / db_string.size().toFloat()
+            def match_val = window.size() / db_string.size().toFloat()
+            return match_val
         }
     }
     return 0.0
