@@ -1,0 +1,146 @@
+nextflow_process {
+    name "Test Process LOCIDEX_SELECT"
+    script "modules/local/locidex_select.nf"
+    process "LOCIDEX_SELECT"
+    tag "modules"
+    tag "locidex_select"
+
+    test("Test failed due to missing date") {
+        when {
+            process {
+                """
+                input[0] = Channel.of(
+                    [["id": "Bad Date"], 'Bad Date', file("$baseDir/tests/data/fake_contigs/vibrio_cholerea/st_120.fa")]
+                )
+
+                input[1] = Channel.of(
+                    file("${projectDir}/tests/data/databases/locidex_dbs")
+                )
+                """
+            }
+
+            params {
+                outdir = "locidex_select"
+                lx_allele_database = "${projectDir}/tests/data/databases/"
+            }
+        }
+
+        then {
+            assert process.failure
+            println process.properties.each { println "$it.key -> $it.value" }
+            //assert process.stdout.contains("Missing date created value for locidex database entry: Bad Date")
+        }
+    }
+
+
+    test("Test parsing failed due to missing path"){
+        when {
+            process {
+                """
+                input[0] = Channel.of(
+                    [['id': 'Bad Path'], 'Bad Path', file("$baseDir/tests/data/fake_contigs/vibrio_cholerea/st_120.fa")]
+                )
+
+                input[1] = Channel.of([
+                    file("${projectDir}/tests/data/databases/locidex_dbs")
+                ])
+                """
+            }
+
+            params {
+                outdir = "locidex_select"
+                lx_allele_database = "${projectDir}/tests/data/databases/"
+            }
+        }
+
+        then {
+            assert process.failed
+            assert process.errorReport.contains("Missing path value in locidex config for: Bad Path")
+        }
+
+    }
+    test("Test parsing failed due incorrect date format"){
+        when {
+            process {
+                """
+                input[0] = Channel.of(
+                    [["id": "Bad Date Format"], 'Bad Date Format', file("$baseDir/tests/data/fake_contigs/vibrio_cholerea/st_120.fa")]
+                )
+
+                input[1] = Channel.of(
+                    file("${projectDir}/tests/data/databases/locidex_dbs")
+                )
+                """
+            }
+
+
+            params {
+                outdir = "locidex_select"
+                lx_allele_database = "${projectDir}/tests/data/databases/"
+            }
+
+        }
+
+        then {
+            assert process.failed
+            assert process.errorReport.contains("Date value 2024/02/25 does not meet format string required of yyyy-MM-dd")
+        }
+    }
+
+    test("Test parsing failed due to missing database name"){
+        when {
+            process {
+                """
+                input[0] = Channel.of(
+                    [["id": "Bad Name"], 'Bad Name', file("$baseDir/tests/data/fake_contigs/vibrio_cholerea/st_120.fa")]
+                )
+
+                input[1] = Channel.of(
+                    file("${projectDir}/tests/data/databases/locidex_dbs")
+                )
+                """
+            }
+
+
+            params {
+                outdir = "locidex_select"
+                lx_allele_database = "${projectDir}/tests/data/databases/"
+            }
+
+        }
+
+        then {
+            assert process.failed
+            assert process.errorReport.contains("Missing path value in locidex config for: Bad Name")
+        }
+    }
+
+
+    test("Test parsing failed due to missing database name"){
+        when {
+            process {
+                """
+                input[0] = Channel.of(
+                    [["id": "No config"], 'No config', file("$baseDir/tests/data/fake_contigs/vibrio_cholerea/st_120.fa")]
+                )
+
+                input[1] = Channel.of(
+                    file("${projectDir}/tests/data/databases/locidex_dbs")
+                )
+                """
+            }
+
+
+            params {
+                outdir = "locidex_select"
+                lx_allele_database = "${projectDir}/tests/data/databases/"
+            }
+
+        }
+
+        then {
+            assert process.failed
+            assert process.errorReport.contains("Missing config data for locidex database entry: No config")
+        }
+    }
+}
