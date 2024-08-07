@@ -51,7 +51,7 @@ process LOCIDEX_SUMMARIZE {
     def profile_data = data[params.locidex_summary.data_profile_key]
     check_key(profile_data, sample_name, meta)
     def allele_data = profile_data[sample_name]
-
+    println allele_data
     // Length of allele data
     def total_loci = allele_data.size()
     def missing_alleles = allele_data.collect { key, value -> value == params.locidex_summary.missing_allele_value}
