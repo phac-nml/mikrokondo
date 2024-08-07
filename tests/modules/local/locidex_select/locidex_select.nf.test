@@ -230,4 +230,33 @@ nextflow_process {
             assert process.errorReport.contains("Allele calling is enabled but there is no allele scheme or locidex allele database location present.")
         }
     }
+
+
+    test("Test no database"){
+        when {
+            process {
+                """
+                input[0] = Channel.of(
+                    [["id": "Vibrio cholerae"], 'Vibrio cholerae', file("$baseDir/tests/data/fake_contigs/vibrio_cholerea/st_120.fa")]
+                )
+
+                input[1] = Channel.of(
+                    file("${projectDir}/tests/data/databases/locidex_dbs/manifest.json")
+                )
+                """
+            }
+
+
+            params {
+                outdir = "locidex_select"
+                lx_allele_database = file("${projectDir}/tests/data/databases/locidex_dbs/manifest.json")
+            }
+
+        }
+
+        then {
+            assert process.success
+            assert process.out[0]
+        }
+    }
 }
