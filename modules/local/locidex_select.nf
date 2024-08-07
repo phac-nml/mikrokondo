@@ -47,9 +47,8 @@ process LOCIDEX_SELECT {
 
     exec:
     if(params.allele_scheme == null && params.locidex.allele_database == null){
-        exit 1, "Allele calling is enabled but there is no allele scheme or locidex allele database location present."
+        error("Allele calling is enabled but there is no allele scheme or locidex allele database location present.")
     }
-    println task.properties.each { println "$it.key -> $it.value" }
 
     // Tokenize the "top_hit" or species value to identify all relevant match parts of the string
     def species_data = top_hit.split('_|\s').collect{ it.toLowerCase() }
@@ -88,8 +87,9 @@ process LOCIDEX_SELECT {
             def match_size = db[DB_TOKES_POS].size()
             def tokens = window_string(species_data, match_size)
             def score_out = compare_lists(db[DB_TOKES_POS], tokens)
-            new Tuple(db[DB_KEY],  score_out)
-    }.sort{dp -> dp[DB_SELECTION_SCORE_POS]}.findAll{ dt -> dt[DB_SELECTION_SCORE_POS] == MINIMUM_MATCH_SCORE }.reverse() // Sort is in descending order by default
+            new Tuple(db[DB_KEY],  score_out * match_size) // Add size multiplier to prioritize longer exact matches
+    }.sort{dp -> dp[DB_SELECTION_SCORE_POS]}.findAll{ dt -> dt[DB_SELECTION_SCORE_POS] >= MINIMUM_MATCH_SCORE }.reverse() // Sort is in descending order by default
+
 
     paired_p = false // Sets predicate for db identification as false by default
     scheme = null
@@ -138,28 +138,29 @@ def select_locidex_db_path(db_values, db_name){
     def database_entries = db_values.size()
     def default_date = new SimpleDateFormat(params.locidex.date_format_string).parse("0001-01-01")
     def max_date = default_date
-    def max_date_entry = null
+    def max_date_entry = null // No null check at the end as there is no way this value can be null without an error being raised elsewhere
     def dates = []
-
     // Validate all input fields
     for(idx in 0..<database_entries){
         def db_entry = db_values[idx]
         if(!db_entry.containsKey(params.locidex.manifest_db_path)){
-            //throw new Exception("Missing path value in locidex config for: ${db_name}")
             error("Missing path value in locidex config for: ${db_name}")
         }
         if(!db_entry.containsKey(params.locidex.manifest_config_key)){
-            throw new Exception("Missing config data for locidex database entry: ${db_name}")
+            error("Missing config data for locidex database entry: ${db_name}")
+        }
+        if(!db_entry[params.locidex.manifest_config_key].containsKey(params.locidex.manifest_config_name)){
+            error ("Missing name value in locidex config for: ${db_name}")
         }
         if(!db_entry[params.locidex.manifest_config_key].containsKey(params.locidex.database_config_value_date)){
-            //throw new Exception("Missing date created value for locidex database entry: ${db_name}")
             error("Missing date created value for locidex database entry: ${db_name}")
         }
         def date_value = db_entry[params.locidex.manifest_config_key][params.locidex.database_config_value_date]
+        def date_check = null
         try{
-            def date_check = new SimpleDateFormat(params.locidex.date_format_string).parse(date_value)
+            date_check = new SimpleDateFormat(params.locidex.date_format_string).parse(date_value)
         }catch (java.text.ParseException e){
-            throw new Exception("Date value ${date_value} does not meet format string required of ${params.locidex.date_format_string}")
+            error("Date value ${date_value} does not meet format string required of ${params.locidex.date_format_string}")
         }
 
         dates.add(date_check)
@@ -171,12 +172,11 @@ def select_locidex_db_path(db_values, db_name){
 
     def max_date_count = dates.count(max_date)
     if(max_date_count > 1){
-        throw new Exception("There are multiple versions of the most recent database for ${db_name}. Mikrokondo could not determine the best database to pick.")
+        error("There are multiple versions of the most recent database for ${db_name}. Mikrokondo could not determine the best database to pick.")
     }else if (max_date_count == 0){
-        throw new Exception("There are not databases created after the year ${defualt_date}. Please set the allele database parameter, or adjust the date your database was created in the 'config.json'")
-    }else if (max_date_entry == null){
-        throw new Exception("Could not select a database for locidex sample. ${meta.id}")
+        error("There are not databases created after the year ${default_date}. Please set the allele database parameter, or adjust the date your database was created in the 'config.json'")
     }
+
     return max_date_entry
 }
 

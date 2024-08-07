@@ -6,6 +6,7 @@ nextflow_process {
     tag "locidex_select"
 
     test("Test failed due to missing date") {
+        tag "test_missing_date"
         when {
             process {
                 """
@@ -14,21 +15,20 @@ nextflow_process {
                 )
 
                 input[1] = Channel.of(
-                    file("${projectDir}/tests/data/databases/locidex_dbs")
+                    file("${projectDir}/tests/data/databases/locidex_dbs/manifest.json")
                 )
                 """
             }
 
             params {
                 outdir = "locidex_select"
-                lx_allele_database = "${projectDir}/tests/data/databases/"
+                lx_allele_database = "${projectDir}/tests/data/databases/locidex_dbs"
             }
         }
 
         then {
-            assert process.failure
-            println process.properties.each { println "$it.key -> $it.value" }
-            //assert process.stdout.contains("Missing date created value for locidex database entry: Bad Date")
+            assert process.failed
+            assert process.errorReport.contains("Missing date created value for locidex database entry: Bad Date")
         }
     }
 
@@ -41,15 +41,15 @@ nextflow_process {
                     [['id': 'Bad Path'], 'Bad Path', file("$baseDir/tests/data/fake_contigs/vibrio_cholerea/st_120.fa")]
                 )
 
-                input[1] = Channel.of([
-                    file("${projectDir}/tests/data/databases/locidex_dbs")
-                ])
+                input[1] = Channel.of(
+                    file("${projectDir}/tests/data/databases/locidex_dbs/manifest.json")
+                )
                 """
             }
 
             params {
                 outdir = "locidex_select"
-                lx_allele_database = "${projectDir}/tests/data/databases/"
+                lx_allele_database = "${projectDir}/tests/data/databases/locidex_dbs"
             }
         }
 
@@ -60,6 +60,7 @@ nextflow_process {
 
     }
     test("Test parsing failed due incorrect date format"){
+        tag "fail_bad_date_format"
         when {
             process {
                 """
@@ -68,7 +69,7 @@ nextflow_process {
                 )
 
                 input[1] = Channel.of(
-                    file("${projectDir}/tests/data/databases/locidex_dbs")
+                    file("${projectDir}/tests/data/databases/locidex_dbs/manifest.json")
                 )
                 """
             }
@@ -76,7 +77,7 @@ nextflow_process {
 
             params {
                 outdir = "locidex_select"
-                lx_allele_database = "${projectDir}/tests/data/databases/"
+                lx_allele_database = "${projectDir}/tests/data/databases/locidex_dbs"
             }
 
         }
@@ -96,7 +97,7 @@ nextflow_process {
                 )
 
                 input[1] = Channel.of(
-                    file("${projectDir}/tests/data/databases/locidex_dbs")
+                    file("${projectDir}/tests/data/databases/locidex_dbs/manifest.json")
                 )
                 """
             }
@@ -104,28 +105,29 @@ nextflow_process {
 
             params {
                 outdir = "locidex_select"
-                lx_allele_database = "${projectDir}/tests/data/databases/"
+                lx_allele_database = "${projectDir}/tests/data/databases/locidex_dbs"
             }
 
         }
 
         then {
             assert process.failed
-            assert process.errorReport.contains("Missing path value in locidex config for: Bad Name")
+            assert process.errorReport.contains("Missing name value in locidex config for: Bad Name")
         }
     }
 
 
-    test("Test parsing failed due to missing database name"){
+    test("Test parsing failed due to missing database config"){
+        tag "test_fail_config_missing"
         when {
             process {
                 """
                 input[0] = Channel.of(
-                    [["id": "No config"], 'No config', file("$baseDir/tests/data/fake_contigs/vibrio_cholerea/st_120.fa")]
+                    [["id": "No Config"], 'No Config', file("$baseDir/tests/data/fake_contigs/vibrio_cholerea/st_120.fa")]
                 )
 
                 input[1] = Channel.of(
-                    file("${projectDir}/tests/data/databases/locidex_dbs")
+                    file("${projectDir}/tests/data/databases/locidex_dbs/manifest.json")
                 )
                 """
             }
@@ -133,14 +135,99 @@ nextflow_process {
 
             params {
                 outdir = "locidex_select"
-                lx_allele_database = "${projectDir}/tests/data/databases/"
+                lx_allele_database = "${projectDir}/tests/data/databases/locidex_dbs"
             }
 
         }
 
         then {
             assert process.failed
-            assert process.errorReport.contains("Missing config data for locidex database entry: No config")
+            assert process.errorReport.contains("Missing config data for locidex database entry: No Config")
+        }
+    }
+
+    test("Test multiple versions of same database"){
+        when {
+            process {
+                """
+                input[0] = Channel.of(
+                    [["id": "Too Many Entries with Same Date"], 'Too Many Entries with Same Date', file("$baseDir/tests/data/fake_contigs/vibrio_cholerea/st_120.fa")]
+                )
+
+                input[1] = Channel.of(
+                    file("${projectDir}/tests/data/databases/locidex_dbs/manifest.json")
+                )
+                """
+            }
+
+
+            params {
+                outdir = "locidex_select"
+                lx_allele_database = "${projectDir}/tests/data/databases/locidex_dbs"
+            }
+
+        }
+
+        then {
+            assert process.failed
+            assert process.errorReport.contains("There are multiple versions of the most recent database for Too Many Entries With Same Date.")
+        }
+    }
+
+    test("Test database is too old"){
+        when {
+            process {
+                """
+                input[0] = Channel.of(
+                    [["id": "Oldest Database"], 'Oldest Database', file("$baseDir/tests/data/fake_contigs/vibrio_cholerea/st_120.fa")]
+                )
+
+                input[1] = Channel.of(
+                    file("${projectDir}/tests/data/databases/locidex_dbs/manifest.json")
+                )
+                """
+            }
+
+
+            params {
+                outdir = "locidex_select"
+                lx_allele_database = "${projectDir}/tests/data/databases/locidex_dbs"
+            }
+
+        }
+
+        then {
+            assert process.failed
+            assert process.errorReport.contains("Please set the allele database parameter, or adjust the date your database was created in the 'config.json'")
+        }
+    }
+
+        test("Test no database"){
+        when {
+            process {
+                """
+                input[0] = Channel.of(
+                    [["id": "Test"], 'Test', file("$baseDir/tests/data/fake_contigs/vibrio_cholerea/st_120.fa")]
+                )
+
+                input[1] = Channel.of(
+                    file("${projectDir}/tests/data/databases/locidex_dbs/manifest.json")
+                )
+                """
+            }
+
+
+            params {
+                outdir = "locidex_select"
+                lx_allele_database = null
+                allele_scheme = null
+            }
+
+        }
+
+        then {
+            assert process.failed
+            assert process.errorReport.contains("Allele calling is enabled but there is no allele scheme or locidex allele database location present.")
         }
     }
 }
