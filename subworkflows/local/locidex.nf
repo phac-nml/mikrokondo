@@ -2,8 +2,7 @@ include { LOCIDEX_EXTRACT } from "../../modules/local/locidex_extract.nf"
 include { LOCIDEX_SEARCH } from "../../modules/local/locidex_search.nf"
 include { LOCIDEX_REPORT } from "../../modules/local/locidex_report.nf"
 include { LOCIDEX_SELECT } from "../../modules/local/locidex_select.nf"
-
-// TODO add to report fields of `count_loci_found (loci that are not "-")`, `count_loci_missing` (loci that are "-"), total_loci (how many loci screened for), `missing` (total loci - found loci)
+include { LOCIDEX_SUMMARIZE } from "../../modules/local/locidex_summarize.nf"
 
 workflow LOCIDEX {
     take:
@@ -22,6 +21,7 @@ workflow LOCIDEX {
             meta, top_hit, contigs -> tuple(meta, contigs, file(params.allele_scheme))
         }
 
+        // TODO add test for report value here
         reports = reports.mix(paired_dbs.map{
             meta, top_hit, contigs -> tuple(meta, params.allele_scheme_selected, params.allele_scheme)
         })
@@ -59,6 +59,12 @@ workflow LOCIDEX {
 
     report_lx = LOCIDEX_REPORT(allele_calls.allele_calls)
     versions = versions.mix(report_lx.versions)
+
+    summary_lx = LOCIDEX_SUMMARIZE(report_lx.report)
+
+    reports = reports.mix(summary_lx.map{
+        meta, summary -> tuple(meta, params.locidex_summary, summary)
+    })
 
     emit:
     versions

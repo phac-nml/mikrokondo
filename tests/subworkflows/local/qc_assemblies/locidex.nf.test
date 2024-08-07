@@ -62,6 +62,7 @@ nextflow_workflow
                 def extract_string = "$launchDir/results/Assembly/Subtyping/Locidex/Extract/${i}/${i}.raw.locidex.extract.extracted.seqs.subtyping.fasta.gz"
                 def search_string = "$launchDir/results/Assembly/Subtyping/Locidex/Search/${i}.locidex.seq_store.json.gz"
                 def report_string = "$launchDir/results/Assembly/Subtyping/Locidex/Report/${i}.locidex.report.profile.mlst.subtyping.json.gz"
+                def summary_string = "$launchDir/results/Assembly/Subtyping/Locidex/Summary/${i}.locidex.summary.json"
                 assert path(select_string).exists()
                 def selected_data = path(select_string).json
                 assert selected_data.path == "locidex_vc"
@@ -70,7 +71,8 @@ nextflow_workflow
                 assert selected_data.config.db_date == "2024-07-30"
                 assert path(extract_string).exists()
                 assert path(search_string).exists()
-                assert path(report_string).exists()
+                assert path(search_string).exists()
+                assert path(summary_string).exists()
             }
 
         }
