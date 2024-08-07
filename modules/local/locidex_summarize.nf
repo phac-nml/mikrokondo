@@ -58,7 +58,7 @@ process LOCIDEX_SUMMARIZE {
     def alleles_contained = allele_data.count {key, value -> value != params.locidex_summary.missing_allele_value}
     def check_size = missing_alleles.size() + alleles_contained
     if(check_size != total_loci){
-        error("Failed allelic tally check sum, please submit an issue and your locidex report. (Alleles Missing: ${missing_alleles.size()} + Alleles Present ${alleles_contained.size()} != Total Alleles ${total_loci})")
+        error("Failed allelic tally check sum, please submit an issue and your locidex report. (Alleles Missing: ${missing_alleles.size()} + Alleles Present ${alleles_contained} != Total Alleles ${total_loci})")
     }
 
     def output_data = ["TotalLoci": total_loci, "AllelesPresent": alleles_contained , "MissingAllelesCount": missing_alleles.size(), "MissingAlleles": missing_alleles ]
