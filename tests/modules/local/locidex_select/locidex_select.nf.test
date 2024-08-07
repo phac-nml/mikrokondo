@@ -232,7 +232,8 @@ nextflow_process {
     }
 
 
-    test("Test no database"){
+    test("select correct database"){
+        tag "pass_db_selection"
         when {
             process {
                 """
@@ -249,14 +250,59 @@ nextflow_process {
 
             params {
                 outdir = "locidex_select"
-                lx_allele_database = file("${projectDir}/tests/data/databases/locidex_dbs/manifest.json")
+                lx_allele_database = "${projectDir}/tests/data/databases/locidex_dbs"
             }
 
         }
 
         then {
             assert process.success
-            assert process.out[0]
+            with(process.out.db_data[0]){
+                assert get(3) == true
+                assert path(get(2)).exists()
+                assert get(2) == "${projectDir}/tests/data/databases/locidex_dbs/locidex_vc"
+                assert get(0).id == "Vibrio cholerae"
+            }
+            with(process.out.config_data[0]){
+                assert path(get(1)).md5 == 'fd1106a3f497ff6c6a5df8a5659f03de'
+            }
+        }
+    }
+
+    test("Pass no database selected"){
+        tag "pass_db_selection"
+        when {
+            process {
+                """
+                input[0] = Channel.of(
+                    [["id": "Nothing"], 'Nothing', file("$baseDir/tests/data/fake_contigs/vibrio_cholerea/st_120.fa")]
+                )
+
+                input[1] = Channel.of(
+                    file("${projectDir}/tests/data/databases/locidex_dbs/manifest.json")
+                )
+                """
+            }
+
+
+            params {
+                outdir = "locidex_select"
+                lx_allele_database = "${projectDir}/tests/data/databases/locidex_dbs"
+            }
+
+        }
+
+        then {
+            assert process.success
+            with(process.out.db_data[0]){
+                assert get(3) == false
+                assert get(2) == null
+                assert get(0).id == "Nothing"
+            }
+
+            with(process.out.config_data[0]){
+                assert path(get(1)).md5 == "c14e400c9492f572c7fb2a2ff87840aa"
+            }
         }
     }
 }
