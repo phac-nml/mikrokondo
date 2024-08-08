@@ -17,17 +17,17 @@ nextflow_workflow
             workflow {
                 """
                     input[0] = Channel.of(
-                        [[id: "ST120"], file("$baseDir/tests/data/fake_contigs/vibrio_cholerae/st_120.fa")],
-                        [[id: "ST176"], file("$baseDir/tests/data/fake_contigs/vibrio_cholerae/st_176.fa")],
-                        [[id: "ST190"], file("$baseDir/tests/data/fake_contigs/vibrio_cholerae/st_190.fa")],
-                        [[id: "ST243"], file("$baseDir/tests/data/fake_contigs/vibrio_cholerae/st_243.fa")],
-                        [[id: "ST25"] , file("$baseDir/tests/data/fake_contigs/vibrio_cholerae/st_25.fa")],
-                        [[id: "ST284"], file("$baseDir/tests/data/fake_contigs/vibrio_cholerae/st_284.fa")],
-                        [[id: "ST307"], file("$baseDir/tests/data/fake_contigs/vibrio_cholerae/st_307.fa")],
-                        [[id: "ST32"] , file("$baseDir/tests/data/fake_contigs/vibrio_cholerae/st_32.fa")],
-                        [[id: "ST61"] , file("$baseDir/tests/data/fake_contigs/vibrio_cholerae/st_61.fa")],
-                        [[id: "ST8"]  , file("$baseDir/tests/data/fake_contigs/vibrio_cholerae/st_8.fa")],
-                        [[id: "Nothing"]  , file("$baseDir/tests/data/fake_contigs/vibrio_cholerae/st_8.fa")],
+                        [[id: "ST120"], file("$baseDir/tests/data/fake_contigs/vibrio_cholerae/st_120.fa.gz")],
+                        [[id: "ST176"], file("$baseDir/tests/data/fake_contigs/vibrio_cholerae/st_176.fa.gz")],
+                        [[id: "ST190"], file("$baseDir/tests/data/fake_contigs/vibrio_cholerae/st_190.fa.gz")],
+                        [[id: "ST243"], file("$baseDir/tests/data/fake_contigs/vibrio_cholerae/st_243.fa.gz")],
+                        [[id: "ST25"] , file("$baseDir/tests/data/fake_contigs/vibrio_cholerae/st_25.fa.gz")],
+                        [[id: "ST284"], file("$baseDir/tests/data/fake_contigs/vibrio_cholerae/st_284.fa.gz")],
+                        [[id: "ST307"], file("$baseDir/tests/data/fake_contigs/vibrio_cholerae/st_307.fa.gz")],
+                        [[id: "ST32"] , file("$baseDir/tests/data/fake_contigs/vibrio_cholerae/st_32.fa.gz")],
+                        [[id: "ST61"] , file("$baseDir/tests/data/fake_contigs/vibrio_cholerae/st_61.fa.gz")],
+                        [[id: "ST8"]  , file("$baseDir/tests/data/fake_contigs/vibrio_cholerae/st_8.fa.gz")],
+                        [[id: "Nothing"]  , file("$baseDir/tests/data/fake_contigs/vibrio_cholerae/st_8.fa.gz")],
                     )
                     input[1] = Channel.of(
                         [[id: "ST120"], 's_Vibrio cholerae'],
@@ -92,7 +92,7 @@ nextflow_workflow
             workflow {
                 """
                     input[0] = Channel.of(
-                        [[id: "Nothing"]  , file("$baseDir/tests/data/fake_contigs/vibrio_cholerae/st_8.fa")],
+                        [[id: "Nothing"]  , file("$baseDir/tests/data/fake_contigs/vibrio_cholerae/st_8.fa.gz")],
                     )
                     input[1] = Channel.of(
                         [[id: "Nothing"]  , 'No species identified'],

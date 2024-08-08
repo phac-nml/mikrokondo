@@ -11,7 +11,7 @@ nextflow_process {
             process {
                 """
                 input[0] = Channel.of(
-                    [["id": "Bad Date"], 'Bad Date', file("$baseDir/tests/data/fake_contigs/vibrio_cholerae/st_120.fa")]
+                    [["id": "Bad Date"], 'Bad Date', file("$baseDir/tests/data/fake_contigs/vibrio_cholerae/st_120.fa.gz")]
                 )
 
                 input[1] = Channel.of(
@@ -38,7 +38,7 @@ nextflow_process {
             process {
                 """
                 input[0] = Channel.of(
-                    [['id': 'Bad Path'], 'Bad Path', file("$baseDir/tests/data/fake_contigs/vibrio_cholerae/st_120.fa")]
+                    [['id': 'Bad Path'], 'Bad Path', file("$baseDir/tests/data/fake_contigs/vibrio_cholerae/st_120.fa.gz")]
                 )
 
                 input[1] = Channel.of(
@@ -65,7 +65,7 @@ nextflow_process {
             process {
                 """
                 input[0] = Channel.of(
-                    [["id": "Bad Date Format"], 'Bad Date Format', file("$baseDir/tests/data/fake_contigs/vibrio_cholerae/st_120.fa")]
+                    [["id": "Bad Date Format"], 'Bad Date Format', file("$baseDir/tests/data/fake_contigs/vibrio_cholerae/st_120.fa.gz")]
                 )
 
                 input[1] = Channel.of(
@@ -93,7 +93,7 @@ nextflow_process {
             process {
                 """
                 input[0] = Channel.of(
-                    [["id": "Bad Name"], 'Bad Name', file("$baseDir/tests/data/fake_contigs/vibrio_cholerae/st_120.fa")]
+                    [["id": "Bad Name"], 'Bad Name', file("$baseDir/tests/data/fake_contigs/vibrio_cholerae/st_120.fa.gz")]
                 )
 
                 input[1] = Channel.of(
@@ -123,7 +123,7 @@ nextflow_process {
             process {
                 """
                 input[0] = Channel.of(
-                    [["id": "No Config"], 'No Config', file("$baseDir/tests/data/fake_contigs/vibrio_cholerae/st_120.fa")]
+                    [["id": "No Config"], 'No Config', file("$baseDir/tests/data/fake_contigs/vibrio_cholerae/st_120.fa.gz")]
                 )
 
                 input[1] = Channel.of(
@@ -151,7 +151,7 @@ nextflow_process {
             process {
                 """
                 input[0] = Channel.of(
-                    [["id": "Too Many Entries with Same Date"], 'Too Many Entries with Same Date', file("$baseDir/tests/data/fake_contigs/vibrio_cholerae/st_120.fa")]
+                    [["id": "Too Many Entries with Same Date"], 'Too Many Entries with Same Date', file("$baseDir/tests/data/fake_contigs/vibrio_cholerae/st_120.fa.gz")]
                 )
 
                 input[1] = Channel.of(
@@ -179,7 +179,7 @@ nextflow_process {
             process {
                 """
                 input[0] = Channel.of(
-                    [["id": "Oldest Database"], 'Oldest Database', file("$baseDir/tests/data/fake_contigs/vibrio_cholerae/st_120.fa")]
+                    [["id": "Oldest Database"], 'Oldest Database', file("$baseDir/tests/data/fake_contigs/vibrio_cholerae/st_120.fa.gz")]
                 )
 
                 input[1] = Channel.of(
@@ -207,7 +207,7 @@ nextflow_process {
             process {
                 """
                 input[0] = Channel.of(
-                    [["id": "Test"], 'Test', file("$baseDir/tests/data/fake_contigs/vibrio_cholerae/st_120.fa")]
+                    [["id": "Test"], 'Test', file("$baseDir/tests/data/fake_contigs/vibrio_cholerae/st_120.fa.gz")]
                 )
 
                 input[1] = Channel.of(
@@ -238,7 +238,7 @@ nextflow_process {
             process {
                 """
                 input[0] = Channel.of(
-                    [["id": "Vibrio cholerae"], 'Vibrio cholerae', file("$baseDir/tests/data/fake_contigs/vibrio_cholerae/st_120.fa")]
+                    [["id": "Vibrio cholerae"], 'Vibrio cholerae', file("$baseDir/tests/data/fake_contigs/vibrio_cholerae/st_120.fa.gz")]
                 )
 
                 input[1] = Channel.of(
@@ -275,7 +275,7 @@ nextflow_process {
             process {
                 """
                 input[0] = Channel.of(
-                    [["id": "Nothing"], 'Nothing', file("$baseDir/tests/data/fake_contigs/vibrio_cholerae/st_120.fa")]
+                    [["id": "Nothing"], 'Nothing', file("$baseDir/tests/data/fake_contigs/vibrio_cholerae/st_120.fa.gz")]
                 )
 
                 input[1] = Channel.of(
