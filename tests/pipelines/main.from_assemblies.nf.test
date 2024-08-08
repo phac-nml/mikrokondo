@@ -653,7 +653,7 @@ nextflow_pipeline {
         }
     }
 
-        test("Test starting from concatemers Vibrio Cholerae") {
+        test("Test starting from concatemers Vibrio cholerae") {
         tag "from_assemblies_vibrio"
 
         when {
@@ -667,6 +667,7 @@ nextflow_pipeline {
                 mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/mash.msh"
                 dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
                 kraken2_db = "$baseDir/tests/data/kraken2/test"
+                lx_allele_database = "$baseDir/tests/data/databases/locidex_dbs"
                 qt_min_contig_length = 1
 
                 skip_bakta = true
@@ -681,7 +682,7 @@ nextflow_pipeline {
 
                 skip_subtyping = false
                 skip_allele_calling = false
-
+                lx_report_max_stop = 100
                 max_memory = "2.GB"
                 max_cpus = 1
             }
@@ -703,32 +704,24 @@ nextflow_pipeline {
             assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Json/final_report.json" }.size() == 1
             assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Tables/final_report.tsv" }.size() == 1
             assert iridanext_samples.st_120.findAll { it.path == "FinalReports/FlattenedReports/st_120.flat_sample.json.gz" }.size() == 1
-            assert iridanext_samples.st_120.findAll { it.path == "/Assembly/Subtyping/Locidex/Report/st_120.mlst.subtyping.json.gz" }.size() == 1
-            assert iridanext_samples.st_120.findAll { it.path == "/Assembly/Subtyping/Locidex/Summary/st_120.locidex.summary.json" }.size() == 1
+            assert iridanext_samples.st_120.findAll { it.path == "Assembly/Subtyping/Locidex/Report/st_120.locidex.report.profile.mlst.subtyping.json.gz" }.size() == 1
+            assert iridanext_samples.st_120.findAll { it.path == "Assembly/Subtyping/Locidex/Summary/st_120.locidex.summary.json" }.size() == 1
 
 
-            assert vibrio_metadata."locidex_db_name" = "Vibrio cholerae"
-            assert vibrio_metadata."locidex_db_date" = "2024-07-30"
-            assert vibrio_metadata."locidex_db_version" = "1.0.0"
-            assert vibrio_metadata."total_loci" = "7"
-            assert vibrio_metadata."count_loci_found" = "6"
-            assert vibrio_metadata."count_loci_missing" = "1"
-
-            // parse final report tsv file
-            def final_report_tmap = [:]
-            def final_report_tsv = path("$launchDir/results/FinalReports/Aggregated/Tables/final_report.tsv").readLines()
-            final_report_tsv.each {
-                def tokens = it.split("\t")
-                final_report_tmap[tokens[0]] = tokens[1]
-            }
+            assert vibrio_metadata.locidex_db_name == "Vibrio cholerae"
+            assert vibrio_metadata.locidex_db_date == "2024-07-30"
+            assert vibrio_metadata.locidex_db_version == "1.0.0"
+            assert vibrio_metadata.total_loci == 7
+            assert vibrio_metadata.count_loci_found == 6
+            assert vibrio_metadata.count_loci_missing == 1
 
 
             // Output files check
-            def select_string = "$launchDir/results/Assembly/Subtyping/Locidex/Select/st_120.st_120_SelectedLocidexConfig.locidex.db.json"
-            def extract_string = "$launchDir/results/Assembly/Subtyping/Locidex/Extract/st_120/st_120.raw.locidex.extract.extracted.seqs.subtyping.fasta.gz"
-            def search_string = "$launchDir/results/Assembly/Subtyping/Locidex/Search/st_120.locidex.seq_store.json.gz"
-            def report_string = "$launchDir/results/Assembly/Subtyping/Locidex/Report/st_120.locidex.report.profile.mlst.subtyping.json.gz"
-            def summary_string = "$launchDir/results/Assembly/Subtyping/Locidex/Summary/st_120.locidex.summary.json"
+            assert path("$launchDir/results/Assembly/Subtyping/Locidex/Select/st_120.st_120_SelectedLocidexConfig.locidex.db.json")
+            assert path("$launchDir/results/Assembly/Subtyping/Locidex/Extract/st_120/st_120.raw.locidex.extract.extracted.seqs.subtyping.fasta.gz")
+            assert path("$launchDir/results/Assembly/Subtyping/Locidex/Search/st_120.locidex.seq_store.json.gz")
+            assert path("$launchDir/results/Assembly/Subtyping/Locidex/Report/st_120.locidex.report.profile.mlst.subtyping.json.gz")
+            assert path("$launchDir/results/Assembly/Subtyping/Locidex/Summary/st_120.locidex.summary.json")
 
         }
     }

@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Fixed spelling issues issues in config values. See [PR 95](https://github.com/phac-nml/mikrokondo/pull/95)
 
+### `Added`
+
+- Updated locidex to version 0.2.2. See [PR 96](https://github.com/phac-nml/mikrokondo/pull/96)
+
+- Added module for automatic selection of locidex databases through configuration of a locidex database collection. See [PR 96](https://github.com/phac-nml/mikrokondo/pull/96)
+
+- Added module for summarization of basic allele metrics, listing of missing alleles and reporting of specific alleles. See [PR 96](https://github.com/phac-nml/mikrokondo/pull/96)
+
 ## [0.3.0] - 2024-07-04
 
 ### `Changed`

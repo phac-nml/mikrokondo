@@ -108,7 +108,9 @@ process LOCIDEX_SELECT {
         scheme = join_database_paths(selected_db)
     }
 
-    write_config_data(selected_db, output_config)
+    // pulling out the config value so that it matches the default selected db format
+    // and to remove a level of nesting from the output JSON as it is unnecessary
+    write_config_data(selected_db[params.locidex.manifest_config_key], output_config)
     output_config
 
 }

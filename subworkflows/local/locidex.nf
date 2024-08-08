@@ -27,6 +27,9 @@ workflow LOCIDEX {
         })
 
     }else{
+        if(params.locidex.allele_database == null && !params.skip_allele_calling){
+            error("Allele calling is enabled, but no locidex database directory has been configured.")
+        }
         def manifest_file_in = [params.locidex.allele_database, params.locidex.manifest_name].join(File.separator)
         manifest_file = file(manifest_file_in, checkIfExists: true)
         matched_dbs = LOCIDEX_SELECT(paired_species, manifest_file)
@@ -61,7 +64,6 @@ workflow LOCIDEX {
     versions = versions.mix(report_lx.versions)
 
     summary_lx = LOCIDEX_SUMMARIZE(report_lx.report)
-
     reports = reports.mix(summary_lx.map{
         meta, summary -> tuple(meta, params.locidex_summary, summary)
     })
