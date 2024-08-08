@@ -50,7 +50,7 @@ nextflow_workflow
                 max_cpus = 1
                 lx_allele_database = "${projectDir}/tests/data/databases/locidex_dbs"
                 lx_report_max_stop = 100
-                locidex_summary { reportable_alleles = ["mdh", "gryB", "pntA", "purM"] }
+                locidex_summary { reportable_alleles = ["mdh", "gyrB", "pntA", "purM"] }
             }
         }
         then {
@@ -74,6 +74,7 @@ nextflow_workflow
                 assert path(search_string).exists()
                 assert path(search_string).exists()
                 assert path(summary_string).exists()
+                assert path(summary_string).json."ReportableAlleles".findAll{['mdh', 'gyrB', 'pntA', 'purM'].contains(it.key)}.size() == 4
             }
 
         }
@@ -117,12 +118,14 @@ nextflow_workflow
                 def extract_string = "$launchDir/results/Assembly/Subtyping/Locidex/Extract/${i}/${i}.raw.locidex.extract.extracted.seqs.subtyping.fasta.gz"
                 def search_string = "$launchDir/results/Assembly/Subtyping/Locidex/Search/${i}.locidex.seq_store.json.gz"
                 def report_string = "$launchDir/results/Assembly/Subtyping/Locidex/Report/${i}.locidex.report.profile.mlst.subtyping.json.gz"
+                def summary_string = "$launchDir/results/Assembly/Subtyping/Locidex/Summary/${i}.locidex.summary.json"
                 assert path(select_string).exists()
                 def selection_json = path(select_string).json
                 assert selection_json[0] == "No database selected"
                 assert !path(extract_string).exists()
                 assert !path(search_string).exists()
                 assert !path(report_string).exists()
+                assert !path(summary_string).exists()
 
             }
 
