@@ -95,7 +95,7 @@ process LOCIDEX_SELECT {
     scheme = null
     report_name = "${meta.id}_${params.locidex.db_config_output_name}"
     output_config = task.workDir.resolve(report_name)
-    def selected_db = [params.locidex.database_config_name: "No Database Selected", params.locidex.database_config_value_date: "No Database Selected", params.locidex.manifest_config_version: "No Database Selected"]
+    def selected_db = [(params.locidex.manifest_config_name): "No Database Selected", (params.locidex.database_config_value_date): "No Database Selected", (params.locidex.manifest_config_version): "No Database Selected"]
 
     if(!matched_databases.isEmpty() &&
         !(matched_databases.size() >= 2 &&

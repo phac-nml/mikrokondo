@@ -121,7 +121,9 @@ nextflow_workflow
                 def summary_string = "$launchDir/results/Assembly/Subtyping/Locidex/Summary/${i}.locidex.summary.json"
                 assert path(select_string).exists()
                 def selection_json = path(select_string).json
-                assert selection_json[0] == "No database selected"
+                assert selection_json['db_name'] == 'No Database Selected'
+                assert selection_json['db_date'] == 'No Database Selected'
+                assert selection_json['db_version'] == 'No Database Selected'
                 assert !path(extract_string).exists()
                 assert !path(search_string).exists()
                 assert !path(report_string).exists()
