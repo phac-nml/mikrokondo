@@ -74,7 +74,7 @@ process LOCIDEX_SUMMARIZE {
                     "AllelesPresent": alleles_contained,
                     "MissingAllelesCount": missing_alleles.size(),
                     "ReportableAlleles": reportable_alleles,
-                    "MissingAlleles": missing_alleles ]
+                    "MissingAlleles": missing_alleles.keySet() ]
     def json_out = new JsonBuilder(output_data).toPrettyString()
 
     def output_name = "${meta.id}.json"
