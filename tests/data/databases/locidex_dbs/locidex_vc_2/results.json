@@ -1,0 +1,15 @@
+{
+    "analysis_start_time": "2024-07-30 10:07:02",
+    "parameters": {
+        "command": "build",
+        "input_file": "./VCDB/locidex.txt",
+        "outdir": "./output_db",
+        "name": "Vibrio cholerae",
+        "author": "Tester",
+        "db_ver": "1.0.0",
+        "db_desc": "The PubMLST 7 gene mlst database for vibrio cholerae",
+        "translation_table": 11,
+        "force": false
+    },
+    "analysis_end_time": "2024-07-30 10:07:03"
+}

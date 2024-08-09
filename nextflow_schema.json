@@ -664,6 +664,13 @@
                     "default": 0,
                     "description": "Maximum number of internal stop codons allowed in a sequence.",
                     "minimum": 0
+                },
+                "lx_allele_database": {
+                    "type": "string",
+                    "description": "Folder of locidex databases. The folder should contain a 'manifest.json' file created by locidex",
+                    "pattern": "^\\S+$",
+                    "exists": true,
+                    "format": "directory-path"
                 }
             }
         },

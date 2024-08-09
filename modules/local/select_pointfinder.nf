@@ -19,7 +19,7 @@ process IDENTIFY_POINTDB {
     def species_data = species.split('_|\s') // tokenize string
     species_data = species_data*.toLowerCase()
 
-    def overly_large_number = 100000
+    def overly_large_number = Integer.MAX_VALUE
     def databases = []
     // tokenize database options
     def shortest_entry = overly_large_number
@@ -57,6 +57,7 @@ process IDENTIFY_POINTDB {
 
 
 def tokenize_values(species, match_size){
+    // Create tiled values to match on, e.g. input is Salmonella enterica entrica -> [Salmonella, Salmonella enterica, Salmonella enterica enterica]
     def tokens = []
     def adj_match_size = match_size - 1
     for(int spot = 0; spot < species.size()-adj_match_size; spot = spot + 1){
