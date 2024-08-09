@@ -264,7 +264,7 @@ nextflow_process {
                 assert get(0).id == "Vibrio cholerae"
             }
             with(process.out.config_data[0]){
-                assert path(get(1)).md5 == 'fd1106a3f497ff6c6a5df8a5659f03de'
+                assert path(get(1)).md5 == 'e9fa68bc91d89ba4450814d015ecbe8b'
             }
         }
     }
@@ -301,7 +301,7 @@ nextflow_process {
             }
 
             with(process.out.config_data[0]){
-                assert path(get(1)).md5 == "c14e400c9492f572c7fb2a2ff87840aa"
+                assert path(get(1)).md5 == "f0088d692615b1281724062a7c3f008b"
             }
         }
     }

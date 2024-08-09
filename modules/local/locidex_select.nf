@@ -95,7 +95,13 @@ process LOCIDEX_SELECT {
     scheme = null
     report_name = "${meta.id}_${params.locidex.db_config_output_name}"
     output_config = task.workDir.resolve(report_name)
-    def selected_db = [(params.locidex.manifest_config_name): "No Database Selected", (params.locidex.database_config_value_date): "No Database Selected", (params.locidex.manifest_config_version): "No Database Selected"]
+
+    /*
+        The default data structure for `selected_db` is created to have a default structure that contains the required fields
+        a selected a real locidex database config file would contain. This is so that the default value denoting that no database
+        was selected are written to the IRIDANext metadata table.
+    */
+    def selected_db = [(params.locidex.manifest_config_key): [(params.locidex.manifest_config_name): "No Database Selected", (params.locidex.database_config_value_date): "No Database Selected", (params.locidex.manifest_config_version): "No Database Selected"]]
 
     if(!matched_databases.isEmpty() &&
         !(matched_databases.size() >= 2 &&
