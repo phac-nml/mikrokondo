@@ -60,18 +60,12 @@ process LOCIDEX_SELECT {
     def allele_db_keys = allele_db_data.keySet() as String[]
 
     // Tokenize all database keys for lookup of species top hit in the database names
-    def databases = []
     def shortest_entry = Integer.MAX_VALUE
-    for(allele_db in allele_db_keys){
-        def db_tokens = allele_db.split('_|\s')
-        for(token in db_tokens){
-            def tok_size = token.size()
-            if(tok_size < shortest_entry){
-                shortest_entry = tok_size
-            }
-        }
-        databases.add(new Tuple(db_tokens*.toLowerCase(), allele_db))
-    }
+    def databases = allele_db_keys.collect{
+                        key -> def db_tokens = key.split('_|\s').collect{ it.toLowerCase() }
+                                // Update the shortest entry in the outer scope
+                                shortest_entry = Math.min(shortest_entry, db_tokens.min{ it.size() }.size())
+                                new Tuple(db_tokens, key) }
 
     def DB_TOKES_POS = 0
     def DB_KEY = 1
