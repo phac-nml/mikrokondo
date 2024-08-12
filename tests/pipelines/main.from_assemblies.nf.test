@@ -654,7 +654,7 @@ nextflow_pipeline {
             assert iridanext_metadata.listeria_GCF_000196035."dapE" == "20"
             assert iridanext_metadata.listeria_GCF_000196035."lhkA" == "1"
             assert iridanext_metadata.listeria_GCF_000196035."7 Gene ST" == "35"
-            assert iridanext_metadata.listeria_GCF_000196035."7 Gene Scheme" == "lmonocytogenes"
+            assert iridanext_metadata.listeria_GCF_000196035."7 Gene Scheme" == "listeria_2"
         }
     }
 
