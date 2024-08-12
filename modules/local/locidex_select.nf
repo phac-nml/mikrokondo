@@ -62,15 +62,22 @@ process LOCIDEX_SELECT {
     // Tokenize all database keys for lookup of species top hit in the database names
     def shortest_entry = Integer.MAX_VALUE
     def databases = allele_db_keys.collect{
-                        key -> def db_tokens = key.split('_|\s').collect{ it.toLowerCase() }
-                                // Update the shortest entry in the outer scope
+                        key ->  // Tokenize the database key and normalize the values into lowercase
+                                def db_tokens = key.split('_|\s').collect{ it.toLowerCase() }
+
+                                // Get the shortest string from the tokenized string (db_tokens), db_tokens.min
+                                // iterates over the tokens, and returns the shortest entry based on its size. Size
+                                // is called again to to get the length of the shortest string, then Math.min is called
+                                // to compare the current shortest_entry with what was identified in the db_tokens
+                                // updating the variable in the outer scope with the smallest value
                                 shortest_entry = Math.min(shortest_entry, db_tokens.min{ it.size() }.size())
                                 new Tuple(db_tokens, key) }
 
     def DB_TOKES_POS = 0
     def DB_KEY = 1
 
-    // Remove spurious characters from tokenized string
+    // Remove characters that are shorter then the shortest database token as they cannot be part of a match
+    // This eliminates tokens that are part of a taxonomic string like `_s` or `spp`
     species_data = species_data.findAll { it.size() >= shortest_entry }
 
     def DB_SELECTION_SCORE_POS = 1
@@ -97,10 +104,13 @@ process LOCIDEX_SELECT {
     */
     def selected_db = [(params.locidex.manifest_config_key): [(params.locidex.manifest_config_name): "No Database Selected", (params.locidex.database_config_value_date): "No Database Selected", (params.locidex.manifest_config_version): "No Database Selected"]]
 
-    if(!matched_databases.isEmpty() &&
-        !(matched_databases.size() >= 2 &&
-        matched_databases[0][DB_SELECTION_SCORE_POS] == matched_databases[1][DB_SELECTION_SCORE_POS])){
+    def too_many_databases = matched_databases.size() >= 2 && matched_databases[0][DB_SELECTION_SCORE_POS] == matched_databases[1][DB_SELECTION_SCORE_POS] ? true : false
 
+    if(too_many_databases){
+        log.info "Cannot pick an optimal locidex database for ${meta.id}. Tied between ${matched_databases[0][DB_DATA_POS]} and ${matched_databases[1][DB_DATA_POS]}"
+    }
+
+    if(!matched_databases.isEmpty() && !too_many_databases){
         // Check first and last databases to verify an optimal match is chosen
         paired_p = true
         def best_database = matched_databases[0][DB_DATA_POS]
@@ -185,7 +195,7 @@ def select_locidex_db_path(db_values, db_name){
 
 def window_string(species, match_size){
     /*
-        Create an array of strings of a various match "match size" for comparison to a given value later one.
+        Generates all array slices of length match_size from the species array.
 
         e.g. spieces is an array of: ["1", "2", "3", "4"] and match_size is 2 the output will be.
             [
@@ -204,6 +214,7 @@ def window_string(species, match_size){
 
 def compare_lists(db_string, species_tokens){
     /* compare the various windows till the right db is found
+
         The db_string is an array of tokenized db values e.g. ["1", "2"] and the species would be tokenized into
         would be [["1", "2"], ["2", "3"]], it would search through the windows of the spcies to see what matches
         the database value best e.g. ["1", "2"].
@@ -211,6 +222,8 @@ def compare_lists(db_string, species_tokens){
         This would match as true, however this allows for multiple matches to be found with similarly named databases.
 
         To get a "better match" we will create a simple score of the the "match size" / length of the the db string tokens
+
+        lengths of the slices differ based on the number of tokens parsed from the  `top-hit` value passed to the pipeline.
     */
 
     for(window in species_tokens){
