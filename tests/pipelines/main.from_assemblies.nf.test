@@ -151,7 +151,7 @@ nextflow_pipeline {
             assert ecoli_metadata."purA" == "7"
             assert ecoli_metadata."mdh" == "9"
             assert ecoli_metadata."7 Gene ST" == "678"
-            assert ecoli_metadata."7 Gene Scheme" == "ecoli"
+            assert ecoli_metadata."7 Gene Scheme" == "ecoli_achtman_4"
 
             assert ecoli_metadata."StarAMR Genotype" == "aph(3'')-Ib, aph(6)-Id, blaCTX-M-15, blaTEM-1B, dfrA7, gyrA (S83A), qacE, sul1, sul2, tet(A)"
             assert ecoli_metadata."StarAMR Predicted Phenotype" == "streptomycin, kanamycin, ampicillin, ceftriaxone, trimethoprim, ciprofloxacin I/R, nalidixic acid, unknown[qacE_1_X68232], sulfisoxazole, tetracycline"
