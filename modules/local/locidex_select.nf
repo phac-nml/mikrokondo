@@ -91,8 +91,9 @@ process LOCIDEX_SELECT {
     output_config = task.workDir.resolve(report_name)
 
     /*
-        A selected database is required for mikrokondos continuation as it simplifies final reporting of which database was selected.
-        The keys required for reporting which database has been selected have been pre-populated with default values in `selected_db` to prevent downstream errors.
+        A database "configuration" is required for mikrokondos continuation as it simplifies final reporting.
+        `selected_db` contains default values required for reporting a locidex database notifying the user that a
+        database could not be selected.
     */
     def selected_db = [(params.locidex.manifest_config_key): [(params.locidex.manifest_config_name): "No Database Selected", (params.locidex.database_config_value_date): "No Database Selected", (params.locidex.manifest_config_version): "No Database Selected"]]
 
