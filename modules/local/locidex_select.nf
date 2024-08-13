@@ -39,7 +39,6 @@ process LOCIDEX_SELECT {
 
     input:
     tuple val(meta), val(top_hit), val(contigs)
-    // TODO update locidex to allow for file passed in
     val manifest // This is a json file to be parsed
     val config // optional path to a database file
 
