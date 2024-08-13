@@ -57,6 +57,9 @@ process LOCIDEX_SELECT {
     }
 
     if(config){ // non null channel should evaluate to true
+        if(manifest){
+            log.warn "A database manifest file was passed along with a config file. Using the allele database specified by '--allele_scheme' "
+        }
         // Create output summary data for a locidex allele database if an allele scheme is passed in directly
         def jsonSlurper = new JsonSlurper()
         String json_data = config.text
@@ -166,19 +169,11 @@ def validate_locidex_db(db_entry, db_name){
     /// Validate the required fields of a locidex database
     /// Errors if fields are missing
 
-    if(!db_entry.containsKey(params.locidex.manifest_db_path)){
-        error("Missing path value in locidex config for: ${db_name}")
-    }
-
-    if(!db_entry.containsKey(params.locidex.manifest_config_key)){
-        error("Missing config data for locidex database entry: ${db_name}")
-    }
-
-    if(!db_entry[params.locidex.manifest_config_key].containsKey(params.locidex.manifest_config_name)){
+    if(!db_entry.containsKey(params.locidex.manifest_config_name)){
         error ("Missing name value in locidex config for: ${db_name}")
     }
 
-    if(!db_entry[params.locidex.manifest_config_key].containsKey(params.locidex.database_config_value_date)){
+    if(!db_entry.containsKey(params.locidex.database_config_value_date)){
         error("Missing date created value for locidex database entry: ${db_name}")
     }
 
@@ -201,7 +196,15 @@ def select_locidex_db_path(db_values, db_name){
     for(idx in 0..<database_entries){
         def db_entry = db_values[idx]
 
-        validate_locidex_db(db_entry, db_name)
+        if(!db_entry.containsKey(params.locidex.manifest_db_path)){
+            error("Missing path value in locidex config for: ${db_name}")
+        }
+
+        if(!db_entry.containsKey(params.locidex.manifest_config_key)){
+            error("Missing config data for locidex database entry: ${db_name}")
+        }
+
+        validate_locidex_db(db_entry[params.locidex.manifest_config_key], db_name)
 
         def date_value = db_entry[params.locidex.manifest_config_key][params.locidex.database_config_value_date]
         def date_check = null

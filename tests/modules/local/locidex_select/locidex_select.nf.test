@@ -17,6 +17,8 @@ nextflow_process {
                 input[1] = Channel.of(
                     file("${projectDir}/tests/data/databases/locidex_dbs/manifest.json")
                 )
+
+                input[2] = Channel.of(null)
                 """
             }
 
@@ -44,6 +46,8 @@ nextflow_process {
                 input[1] = Channel.of(
                     file("${projectDir}/tests/data/databases/locidex_dbs/manifest.json")
                 )
+
+                input[2] = Channel.of(null)
                 """
             }
 
@@ -71,6 +75,8 @@ nextflow_process {
                 input[1] = Channel.of(
                     file("${projectDir}/tests/data/databases/locidex_dbs/manifest.json")
                 )
+
+                input[2] = Channel.of(null)
                 """
             }
 
@@ -99,6 +105,8 @@ nextflow_process {
                 input[1] = Channel.of(
                     file("${projectDir}/tests/data/databases/locidex_dbs/manifest.json")
                 )
+
+                input[2] = Channel.of(null)
                 """
             }
 
@@ -129,6 +137,8 @@ nextflow_process {
                 input[1] = Channel.of(
                     file("${projectDir}/tests/data/databases/locidex_dbs/manifest.json")
                 )
+
+                input[2] = Channel.of(null)
                 """
             }
 
@@ -157,6 +167,8 @@ nextflow_process {
                 input[1] = Channel.of(
                     file("${projectDir}/tests/data/databases/locidex_dbs/manifest.json")
                 )
+
+                input[2] = Channel.of(null)
                 """
             }
 
@@ -185,6 +197,8 @@ nextflow_process {
                 input[1] = Channel.of(
                     file("${projectDir}/tests/data/databases/locidex_dbs/manifest.json")
                 )
+
+                input[2] = Channel.of(null)
                 """
             }
 
@@ -213,6 +227,8 @@ nextflow_process {
                 input[1] = Channel.of(
                     file("${projectDir}/tests/data/databases/locidex_dbs/manifest.json")
                 )
+
+                input[2] = Channel.of(null)
                 """
             }
 
@@ -244,6 +260,8 @@ nextflow_process {
                 input[1] = Channel.of(
                     file("${projectDir}/tests/data/databases/locidex_dbs/manifest.json")
                 )
+
+                input[2] = Channel.of(null)
                 """
             }
 
@@ -281,6 +299,8 @@ nextflow_process {
                 input[1] = Channel.of(
                     file("${projectDir}/tests/data/databases/locidex_dbs/manifest.json")
                 )
+
+                input[2] = Channel.of(null)
                 """
             }
 
@@ -303,6 +323,38 @@ nextflow_process {
             with(process.out.config_data[0]){
                 assert path(get(1)).md5 == "f0088d692615b1281724062a7c3f008b"
             }
+        }
+    }
+
+        test("Pass log default database"){
+        tag "pass_log_default"
+        when {
+            process {
+                """
+                input[0] = Channel.of(
+                    [["id": "Nothing"], 'Nothing', file("$baseDir/tests/data/fake_contigs/vibrio_cholerae/st_120.fa.gz")]
+                )
+
+                input[1] = Channel.of(
+                    file("${projectDir}/tests/data/databases/locidex_dbs/manifest.json")
+                )
+
+                input[2] = Channel.of(file("${projectDir}/tests/data/databases/locidex_dbs/locidex_vc/config.json"))
+                """
+            }
+
+
+            params {
+                outdir = "locidex_select"
+                allele_scheme = "${projectDir}/tests/data/databases/locidex_dbs/locidex_vc"
+                lx_allele_database = "${projectDir}/tests/data/databases/locidex_dbs"
+            }
+
+        }
+
+        then {
+            assert process.success
+            assert process.stdout.contains( 'WARN: A database manifest file was passed along with a config file. Using the allele database specified by \'--allele_scheme\' ')
         }
     }
 }
