@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Updated`
 
-- Updated TSeemann's MLST default container. See [PR 97](https://github.com/phac-nml/mikrokondo/pull/97)
+- Updated TSeemann's MLST default container to use version 2.23.0 of `mlst`. See [PR 97](https://github.com/phac-nml/mikrokondo/pull/97)
 
 ### `Fixed`
 
