@@ -61,6 +61,7 @@ process LOCIDEX_SELECT {
         def jsonSlurper = new JsonSlurper()
         String json_data = config.text
         def locidex_config_data = jsonSlurper.parseText(json_data)
+        validate_locidex_db(locidex_config_data, params.allele_scheme)
         write_config_data(locidex_config_data, output_config)
         scheme = params.allele_scheme // reset the schem path to the passed allele scheme
         paired_p = true

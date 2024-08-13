@@ -782,8 +782,8 @@ nextflow_pipeline {
             assert iridanext_samples.st_120.findAll { it.path == "Assembly/Subtyping/Locidex/Summary/st_120.locidex.summary.json" }.size() == 1
 
             assert vibrio_metadata.AlleleSchemeUsed.contains("locidex_dbs/locidex_vc")
-            assert vibrio_metadata.locidex_db_name == "Vibrio cholerae"
-            assert vibrio_metadata.locidex_db_date == "2024-07-30"
+            assert vibrio_metadata.locidex_db_name == "Vibrio cholerae_1"
+            assert vibrio_metadata.locidex_db_date == "2024-08-01"
             assert vibrio_metadata.locidex_db_version == "1.0.0"
             assert vibrio_metadata.total_loci == 7
             assert vibrio_metadata.count_loci_found == 6
