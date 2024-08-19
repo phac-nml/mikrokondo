@@ -32,19 +32,16 @@ process LOCIDEX_SUMMARIZE {
 
     def json_in = new JsonSlurper()
 
-    def report_data = file(report).withInputStream(){
-        it = report.endsWith('.gz') ? new GZIPInputStream(it) : it
-        return json_in.parse(it)
+    GZIPInputStream report_gz = new GZIPInputStream(new FileInputStream(new java.io.File(report.toString())))
+    BufferedReader br = new BufferedReader(new InputStreamReader(report_gz))
+    String report_text = null
+    StringBuilder text = new StringBuilder()
+
+    while((line = br.readLine()) != null){
+        text.append(line)
     }
-    //GZIPInputStream report_gz = new GZIPInputStream(new FileInputStream(new java.io.File(report.toString())))
-    //BufferedReader br = new BufferedReader(new InputStreamReader(report_gz))
-    //String report_text = null
-    //StringBuilder text = new StringBuilder()
-    //while((line = br.readLine()) != null){
-    //    text.append(line)
-    //}
-    //report_text = text.toString()
-    //def report_data = json_in.parseText(report_text)
+    report_text = text.toString()
+    def report_data = json_in.parseText(report_text)
     check_key(report_data, params.locidex_summary.data_key, meta)
     def data = report_data[params.locidex_summary.data_key]
 
