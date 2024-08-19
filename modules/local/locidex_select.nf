@@ -39,16 +39,18 @@ process LOCIDEX_SELECT {
 
     input:
     tuple val(meta), val(top_hit), val(contigs)
+    // If inputs are not working can pass in the string values of the data directly
     val manifest // This is a json file to be parsed
     val config // optional path to a database file
 
     output:
+    // Note: paired_p is a predicate for whether or not a set of contigs is paired with an allele scheme
     tuple val(meta), val(contigs), val(scheme), val(paired_p), emit: db_data
-    tuple val(meta), path(output_config), emit: config_data
+    tuple val(meta), val(output_config), emit: config_data
 
     exec:
 
-    report_name = "${meta.id}_${params.locidex.db_config_output_name}"
+    def report_name = "${meta.id}_${params.locidex.db_config_output_name}"
     output_config = task.workDir.resolve(report_name)
 
     if(params.allele_scheme == null && params.locidex.allele_database == null){
@@ -67,8 +69,8 @@ process LOCIDEX_SELECT {
         write_config_data(locidex_config_data, output_config)
         scheme = params.allele_scheme // reset the schem path to the passed allele scheme
         paired_p = true
-        output_config
         paired_p
+        output_config
         scheme
 
     }else{
@@ -78,9 +80,10 @@ process LOCIDEX_SELECT {
 
         // De-serialize the manifest file from the database location
         def jsonSlurper = new JsonSlurper()
+
         String json_data = manifest.text
         def allele_db_data = jsonSlurper.parseText(json_data)
-        def allele_db_keys = allele_db_data.keySet() as String[]
+        String[] allele_db_keys = allele_db_data.keySet().collect()
 
         // Tokenize all database keys for lookup of species top hit in the database names
         def shortest_entry = Integer.MAX_VALUE
@@ -109,6 +112,13 @@ process LOCIDEX_SELECT {
         def matched_databases = databases.collect {
             db ->
                 def match_size = db[DB_TOKES_POS].size()
+                /*
+                    window_string converts an array of strings into a set of n-grams e.g. [a, b, c, d] -> [[a, b], [b, c], [c, d]] based on the "match size"
+                    which is derived from the number of tokens in the datbases names.
+
+                    Lists are then compared to generate a collection of best possible matches. using Compare window passing the n-grams to the function for
+                    window comparison.
+                */
                 def tokens = window_string(species_data, match_size)
                 def score_out = compare_lists(db[DB_TOKES_POS], tokens)
                 new Tuple(db[DB_KEY],  score_out * match_size) // Add size multiplier to prioritize longer exact matches
@@ -145,7 +155,6 @@ process LOCIDEX_SELECT {
         write_config_data(selected_db[params.locidex.manifest_config_key], output_config)
         output_config
     }
-
 }
 
 
@@ -262,6 +271,32 @@ def compare_lists(db_string, species_tokens){
         To get a "better match" we will create a simple score of the the "match size" / length of the the db string tokens
 
         lengths of the slices differ based on the number of tokens parsed from the  `top-hit` value passed to the pipeline.
+
+        !!! Important !!!
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        Currently a matched score will always be 1.0, as we use the value later on to compute
+        a value that rewards longer matches with a higher score.
+
+        Returning a float value instead of a bool also allows for later modifications to the calculated metric
+        as later on if we ever want to be more relaxed in database identification we can use
+        something like Damrau-Levenshtein distance instead to deal with issues in taxonomys.
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+        Example:
+            db_string = ["salmonella", "enterica"]
+            species_tokens = [["salmonella", "enterica"], ["enterica", "enterica"]] // Species string originally: salmonella enterica enterica
+
+            for window in species_tokens
+                * window = ["salmonella", "enterica"] on first iteration
+                if window == db_string: (window ["salmonella", "enterica"]) == (db_string ["salmonella", "enterica"])
+                    * Exact match means we found a possible db string
+                    * We will compute a match "score" to aid in computing larger matches.
+                    return the `match_val` score computed
+
+            * Return 0.0 as the default value for no match found
+            return 0.00
+
     */
 
     for(window in species_tokens){

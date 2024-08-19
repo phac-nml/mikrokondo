@@ -261,7 +261,7 @@ nextflow_process {
                     file("${projectDir}/tests/data/databases/locidex_dbs/manifest.json")
                 )
 
-                input[2] = Channel.of(null)
+                input[2] = Channel.of([])
                 """
             }
 
@@ -300,7 +300,7 @@ nextflow_process {
                     file("${projectDir}/tests/data/databases/locidex_dbs/manifest.json")
                 )
 
-                input[2] = Channel.of(null)
+                input[2] = Channel.of([])
                 """
             }
 
