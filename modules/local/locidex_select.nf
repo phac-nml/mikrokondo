@@ -69,9 +69,9 @@ process LOCIDEX_SELECT {
         write_config_data(locidex_config_data, output_config)
         scheme = params.allele_scheme // reset the schem path to the passed allele scheme
         paired_p = true
-        paired_p
-        output_config
-        scheme
+        //paired_p
+        //output_config
+        //scheme
 
     }else{
 
@@ -153,7 +153,7 @@ process LOCIDEX_SELECT {
         // pulling out the config value so that it matches the default selected db format
         // and to remove a level of nesting from the output JSON as it is unnecessary
         write_config_data(selected_db[params.locidex.manifest_config_key], output_config)
-        output_config
+        //output_config
     }
 }
 
