@@ -46,7 +46,7 @@ process LOCIDEX_SELECT {
     output:
     // Note: paired_p is a predicate for whether or not a set of contigs is paired with an allele scheme
     tuple val(meta), val(contigs), val(scheme), val(paired_p), emit: db_data
-    tuple val(meta), val(output_config), emit: config_data
+    tuple val(meta), path(output_config), emit: config_data
 
     exec:
 
