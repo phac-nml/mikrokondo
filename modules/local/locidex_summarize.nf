@@ -30,7 +30,7 @@ process LOCIDEX_SUMMARIZE {
 
     exec:
     def json_in = new JsonSlurper()
-    def report_data = report.withInputStream() {
+    def report_data = report.withInputStream {
         it = new GZIPInputStream(it)
         return json_in.parse(it)
     }
