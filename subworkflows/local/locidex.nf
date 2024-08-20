@@ -68,7 +68,7 @@ workflow LOCIDEX {
     report_lx = LOCIDEX_REPORT(allele_calls.allele_calls)
     versions = versions.mix(report_lx.versions)
 
-    summary_lx = LOCIDEX_SUMMARIZE(report_lx.report)
+    summary_lx = LOCIDEX_SUMMARIZE(report_lx.report.map{ meta, report -> tuple(meta, file(report))})
     reports = reports.mix(summary_lx.map{
         meta, summary -> tuple(meta, params.locidex_summary, summary)
     })
