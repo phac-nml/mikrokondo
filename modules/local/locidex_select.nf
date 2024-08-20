@@ -69,9 +69,6 @@ process LOCIDEX_SELECT {
         write_config_data(locidex_config_data, output_config)
         scheme = params.allele_scheme // reset the schem path to the passed allele scheme
         paired_p = true
-        //paired_p
-        //output_config
-        //scheme
 
     }else{
 
@@ -85,23 +82,10 @@ process LOCIDEX_SELECT {
         def allele_db_data = jsonSlurper.parseText(json_data)
         String[] allele_db_keys = allele_db_data.keySet().collect()
 
-        // Tokenize all database keys for lookup of species top hit in the database names
-        def shortest_entry = Integer.MAX_VALUE
-        def databases = allele_db_keys.collect{
-                            key ->  // Tokenize the database key and normalize the values into lowercase
-                                    def db_tokens = key.split('_|\s').collect{ it.toLowerCase() }
-
-                                    // Get the shortest string from the tokenized string (db_tokens), db_tokens.min
-                                    // iterates over the tokens, and returns the shortest entry based on its size. Size
-                                    // is called again to to get the length of the shortest string, then Math.min is called
-                                    // to compare the current shortest_entry with what was identified in the db_tokens
-                                    // updating the variable in the outer scope with the smallest value
-                                    shortest_entry = Math.min(shortest_entry, db_tokens.min{ it.size() }.size())
-                                    new Tuple(db_tokens, key) }
+        def (databases, shortest_entry) = tokenize_databases(allele_db_keys)
 
         def DB_TOKES_POS = 0
         def DB_KEY = 1
-
         // Remove characters that are shorter then the shortest database token as they cannot be part of a match
         // This eliminates tokens that are part of a taxonomic string like `_s` or `spp`
         species_data = species_data.findAll { it.size() >= shortest_entry }
@@ -153,8 +137,33 @@ process LOCIDEX_SELECT {
         // pulling out the config value so that it matches the default selected db format
         // and to remove a level of nesting from the output JSON as it is unnecessary
         write_config_data(selected_db[params.locidex.manifest_config_key], output_config)
-        //output_config
     }
+}
+
+
+/**
+* Tokenize all database keys for lookup of species top hit in the database names
+
+*   This function performs two operations the primary one is to tokenize the database names passed in.
+*   While the secondary operation is to return the length of the shortest token from the database strings.
+*
+*   The overall algorithm used is done in three steps while iterating over the list of database names:
+*       1. Take the database string and split it on seperating charactars ( _ and whitespace) and convert all tokens to lower case font
+*       2. From the generated list of tokens get the shortest one and compare it with the variable `shortest_entry` in the outer scope
+*           and update the `shortest_entry` with the minimum value.
+*       3. Create a tuple of the tokenize string, and the original string used to generate the token
+*
+* @param database_names String[]: String array of the database names to be tokenized
+* @return []Tuple([]String, String), Minimum: Returns a list of tuples of the tokenized database strings and their original string form, along with the shortest token
+*/
+def tokenize_databases(database_names){
+    def shortest_entry = Integer.MAX_VALUE
+    def tokenized_dbs = database_names.collect{
+                        key ->  // Tokenize the database key and normalize the values into lowercase
+                                def db_tokens = key.split('_|\s').collect{ it.toLowerCase() }
+                                shortest_entry = Math.min(shortest_entry, db_tokens.min{ it.size() }.size())
+                                new Tuple(db_tokens, key) }
+    return [tokenized_dbs, shortest_entry]
 }
 
 
