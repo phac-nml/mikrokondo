@@ -123,7 +123,7 @@ process LOCIDEX_SELECT {
         def too_many_databases = matched_databases.size() >= 2 && matched_databases[0][DB_SELECTION_SCORE_POS] == matched_databases[1][DB_SELECTION_SCORE_POS] ? true : false
 
         if(too_many_databases){
-            log.info "Cannot pick an optimal locidex database for ${meta.id}. Tied between ${matched_databases[0][DB_DATA_POS]} and ${matched_databases[1][DB_DATA_POS]}"
+            log.warn "Cannot pick an optimal locidex database for ${meta.id}. Tied between ${matched_databases[0][DB_DATA_POS]} and ${matched_databases[1][DB_DATA_POS]}"
         }
 
         if(!matched_databases.isEmpty() && !too_many_databases){

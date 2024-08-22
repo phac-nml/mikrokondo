@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Added`
 
-- Updated locidex to version 0.2.2. See [PR 96](https://github.com/phac-nml/mikrokondo/pull/96)
+- Updated locidex to version 0.2.3. See [PR 96](https://github.com/phac-nml/mikrokondo/pull/96)
 
 - Added module for automatic selection of locidex databases through configuration of a locidex database collection. See [PR 96](https://github.com/phac-nml/mikrokondo/pull/96)
 
