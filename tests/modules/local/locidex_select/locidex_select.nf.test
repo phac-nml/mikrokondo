@@ -5,11 +5,16 @@ nextflow_process {
     tag "modules"
     tag "locidex_select"
 
+    /// Terminate is required for exec processes that throw errors as in older versions of nf-test
+    /// processses that threw errors still completed "succesfully".
+    options "-process.errorStrategy=terminate"
+
     test("Test failed due to missing date") {
         tag "test_missing_date"
         when {
             process {
                 """
+
                 input[0] = Channel.of(
                     [["id": "Bad Date"], 'Bad Date', file("$baseDir/tests/data/fake_contigs/vibrio_cholerae/st_120.fa.gz")]
                 )
