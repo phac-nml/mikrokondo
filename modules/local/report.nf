@@ -130,9 +130,9 @@ def generate_coverage_data(sample_data, bp_field, species){
                 && species[species_data_pos].fixed_genome_size != null){
 
                 def length = species[species_data_pos].fixed_genome_size.toLong()
-                def cov = base_pairs / q_length
+                def cov = base_pairs / length
                 entry.value[params.coverage_calc_fields.fixed_cov] = cov.round(2)
-
+                println "Entry data: ${entry.value[params.coverage_calc_fields.fixed_cov]}"
             }
 
         }
@@ -471,7 +471,10 @@ def traverse_values(value, path){
         }else{
             key_val = key
         }
+        /*
 
+            ISSUE SEEMS TO LURK here
+        */
         if(temp.containsKey(key_val)){
             temp = temp[key_val]
         }else{
@@ -642,6 +645,7 @@ def get_qc_data_species(value_data, qc_data){
         k, v ->
         if(v.on){ // only use the fields specified in the config
             def out = recurse_keys(value_data, v)
+            println "OUT: $out"
             if(out != null){
                 def species_data = null
                 if(qc_data == null){

@@ -225,7 +225,7 @@ nextflow_pipeline {
             assert iridanext_metadata.short."Checkm Status" == "PASSED"
             assert iridanext_metadata.short."Checkm Value" == 0.0
             assert iridanext_metadata.short."Average Coverage Status" == "PASSED"
-            assert iridanext_metadata.short."Average Coverage Value" == 47.99
+            assert iridanext_metadata.short."Average Coverage Value" == 237.5
             assert iridanext_metadata.short."n50 Status" == "WARNING"
             assert iridanext_metadata.short."n50 Value" == 4949
             assert iridanext_metadata.short."Raw Average Quality Status" == "PASSED"
