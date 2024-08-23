@@ -120,6 +120,22 @@ nextflow_pipeline {
 
                 skip_allele_calling = true
 
+                QCReport {
+                    fallthrough {
+                        search = "No organism specific QC data available."
+                        raw_average_quality = 30
+                        min_n50 = null
+                        max_n50 = null
+                        min_nr_contigs = null
+                        max_nr_contigs = null
+                        fixed_genome_size = 1000
+                        min_length = null
+                        max_length = null
+                        max_checkm_contamination = 3.0
+                        min_average_coverage = 30
+                    }
+                }
+
 
                 skip_bakta = true
                 skip_staramr = false
@@ -205,11 +221,11 @@ nextflow_pipeline {
             assert iridanext_samples.short.findAll { it.path == "FinalReports/FlattenedReports/short.flat_sample.json.gz" }.size() == 1
 
             // output metadata
-            assert iridanext_metadata.short."QC Status" == "FAILED"
+            assert iridanext_metadata.short."QC Status" == "PASSED"
             assert iridanext_metadata.short."Checkm Status" == "PASSED"
             assert iridanext_metadata.short."Checkm Value" == 0.0
-            assert !iridanext_metadata.short.containsKey("Average Coverage Status")
-            assert !iridanext_metadata.short.containsKey("Average Coverage Value")
+            assert iridanext_metadata.short."Average Coverage Status" == "PASSED"
+            assert iridanext_metadata.short."Average Coverage Value" == 47.99
             assert iridanext_metadata.short."n50 Status" == "WARNING"
             assert iridanext_metadata.short."n50 Value" == 4949
             assert iridanext_metadata.short."Raw Average Quality Status" == "PASSED"
@@ -218,7 +234,7 @@ nextflow_pipeline {
             assert iridanext_metadata.short."Length Value" == 4949
             assert iridanext_metadata.short."nr contigs Status" == "WARNING"
             assert iridanext_metadata.short."nr contigs Value" == 1
-            assert iridanext_metadata.short."QC Summary" == "FAILED Species ID: No Species Identified; Passed Tests: 5/6; Organism QC Criteria: No organism specific QC data available."
+            assert iridanext_metadata.short."QC Summary" == "PASSED Species ID: No Species Identified; Passed Tests: 6/6; Organism QC Criteria: No organism specific QC data available."
 
             assert iridanext_metadata.short."Downsampled" == false
             assert iridanext_metadata.short."predicted_identification_name" == "No Species Identified"
