@@ -259,7 +259,7 @@ def create_action_call(sample_data, species_tag){
                 sample_data[val.key]["QCMessage"] = final_message
                 continue
             }
-            //def terminal_message = populate_qual_message(qual_data)
+
             def qual_message = []
             def failed_p = false
             def checks_failed = 0
