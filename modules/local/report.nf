@@ -668,7 +668,6 @@ def generate_qc_data(data, search_phrases, qc_species_tag){
     def quality_analysis = "QualityAnalysis"
     def shortest_token = get_shortest_token(search_phrases)
     def species_tag_location = 0
-    println "Data keys: ${data.keySet()}"
     for(k in data){
         if(!k.value.meta.metagenomic){
             def species = get_species(k.value[k.key][top_hit_tag], search_phrases, shortest_token)
