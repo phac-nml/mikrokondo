@@ -250,7 +250,7 @@ nextflow_pipeline {
     }
 
     test("Should run without failure.") {
-    tag "succeed_assembly_fail_coverage"
+        tag "succeed_assembly_fail_coverage"
 
         when {
             params {
