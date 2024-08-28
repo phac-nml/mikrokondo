@@ -249,7 +249,7 @@ nextflow_pipeline {
 
     }
 
-    test("Should run without failure.") {
+    test("Should assemble but fail average coverage check") {
         tag "succeed_assembly_fail_coverage"
 
         when {
