@@ -480,7 +480,7 @@ nextflow_pipeline {
             // parse output json file
             def iridanext_json = path("$launchDir/results/iridanext.output.json").json
             assert iridanext_json.metadata.samples."meta-small"."QC Status" == "FAILED"
-            assert iridanext_json.metadata.samples."meta-small"."QC Summary" ==  "FAILED Species ID: null; Passed Tests: 2/6; Organism QC Criteria: No organism specific QC data available."
+            assert iridanext_json.metadata.samples."meta-small"."QC Summary" ==  "[FAILED] Sample was determined to be metagenomic and this was not specified as a metagenomic run indicating contamination.'"
 
         }
     }
