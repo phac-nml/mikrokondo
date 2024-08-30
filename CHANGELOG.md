@@ -5,14 +5,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+
 ### `Changed`
 
 - Removed quay.io docker repo tags [PR 94](https://github.com/phac-nml/mikrokondo/pull/94)
 
+### `Updated`
+
+- Updated TSeemann's MLST default container to use version 2.23.0 of `mlst`. See [PR 97](https://github.com/phac-nml/mikrokondo/pull/97)
+
+
 ### `Fixed`
 
 - Fixed spelling issues issues in config values. See [PR 95](https://github.com/phac-nml/mikrokondo/pull/95)
+- Fixed the headers specified in the nextflow.config file for Kraken2. See [PR 96](https://github.com/phac-nml/mikrokondo/pull/96)
 
+### `Added`
+
+- Updated locidex to version 0.2.3. See [PR 96](https://github.com/phac-nml/mikrokondo/pull/96)
+
+- Added module for automatic selection of locidex databases through configuration of a locidex database collection. See [PR 96](https://github.com/phac-nml/mikrokondo/pull/96)
+
+- Added module for summary of basic allele metrics, listing of missing alleles and reporting of specific alleles. See [PR 96](https://github.com/phac-nml/mikrokondo/pull/96)
 
 ## [0.3.0] - 2024-07-04
 

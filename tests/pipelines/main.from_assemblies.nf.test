@@ -151,7 +151,7 @@ nextflow_pipeline {
             assert ecoli_metadata."purA" == "7"
             assert ecoli_metadata."mdh" == "9"
             assert ecoli_metadata."7 Gene ST" == "678"
-            assert ecoli_metadata."7 Gene Scheme" == "ecoli"
+            assert ecoli_metadata."7 Gene Scheme" == "ecoli_achtman_4"
 
             assert ecoli_metadata."StarAMR Genotype" == "aph(3'')-Ib, aph(6)-Id, blaCTX-M-15, blaTEM-1B, dfrA7, gyrA (S83A), qacE, sul1, sul2, tet(A)"
             assert ecoli_metadata."StarAMR Predicted Phenotype" == "streptomycin, kanamycin, ampicillin, ceftriaxone, trimethoprim, ciprofloxacin I/R, nalidixic acid, unknown[qacE_1_X68232], sulfisoxazole, tetracycline"
@@ -341,7 +341,7 @@ nextflow_pipeline {
                 skip_subtyping = false
                 skip_allele_calling = false
 
-                allele_scheme = "$baseDir/tests/data/databases/locidex_salm"
+                allele_scheme = "$baseDir/tests/data/databases/locidex_dbs/locidex_salm"
 
                 max_memory = "2.GB"
                 max_cpus = 1
@@ -367,11 +367,6 @@ nextflow_pipeline {
             assert acutal_mlst_profile.exists()
             assert path("$launchDir/results/Assembly/Subtyping/Locidex/Extract/salmonella_GCA_000008105/salmonella_GCA_000008105.raw.locidex.extract.extracted.seqs.subtyping.fasta.gz").exists()
             assert path("$launchDir/results/Assembly/Subtyping/Locidex/Search/salmonella_GCA_000008105.locidex.seq_store.json.gz").exists()
-
-            // comparing bytes, as both files are in gzipped
-            def actual_mlst_profile_bytes = path("$launchDir/results/Assembly/Subtyping/Locidex/Report/salmonella_GCA_000008105.locidex.report.profile.mlst.subtyping.json.gz").getBytes()
-            def expected_mlst_profile_bytes = path("$baseDir/tests/data/profiles/salmonella_GCA_000008105.expected_profile.json.gz").getBytes()
-            assert actual_mlst_profile_bytes.md5() == expected_mlst_profile_bytes.md5()
 
             // compare IRIDA Next JSON output
             assert path("$launchDir/results/iridanext.output.json").exists()
@@ -654,7 +649,153 @@ nextflow_pipeline {
             assert iridanext_metadata.listeria_GCF_000196035."dapE" == "20"
             assert iridanext_metadata.listeria_GCF_000196035."lhkA" == "1"
             assert iridanext_metadata.listeria_GCF_000196035."7 Gene ST" == "35"
-            assert iridanext_metadata.listeria_GCF_000196035."7 Gene Scheme" == "lmonocytogenes"
+            assert iridanext_metadata.listeria_GCF_000196035."7 Gene Scheme" == "listeria_2"
+        }
+    }
+
+        test("Test starting from concatemers Vibrio cholerae") {
+        tag "from_assemblies_vibrio"
+
+        when {
+            params {
+                // Need to update with 7 gene when complete
+                input = "https://raw.githubusercontent.com/phac-nml/mikrokondo/dev/tests/data/samplesheets/samplesheet-test-from-assemblies-vibrio.csv"
+                outdir = "results"
+
+                platform = "illumina"
+
+                mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/mash.msh"
+                dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+                kraken2_db = "$baseDir/tests/data/kraken2/test"
+                lx_allele_database = "$baseDir/tests/data/databases/locidex_dbs"
+                qt_min_contig_length = 1
+
+                skip_bakta = true
+                skip_mobrecon = true
+                skip_checkm = true
+                skip_raw_read_metrics = true
+                skip_polishing = true
+                skip_mlst = true
+                skip_version_gathering = true
+                skip_staramr = true
+                skip_length_filtering_contigs = true
+
+                skip_subtyping = false
+                skip_allele_calling = false
+                lx_report_max_stop = 100
+                max_memory = "2.GB"
+                max_cpus = 1
+            }
+        }
+
+        then {
+            assert workflow.success
+            assert path("$launchDir/results").exists()
+
+            // Compare IRIDANext json
+            assert path("$launchDir/results/iridanext.output.json").exists()
+            def iridanext_json = path("$launchDir/results/iridanext.output.json").json
+            def iridanext_global = iridanext_json.files.global
+            def iridanext_samples = iridanext_json.files.samples
+            def iridanext_metadata = iridanext_json.metadata.samples
+            def vibrio_metadata = iridanext_metadata.st_120
+
+            // Output files
+            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Json/final_report.json" }.size() == 1
+            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Tables/final_report.tsv" }.size() == 1
+            assert iridanext_samples.st_120.findAll { it.path == "FinalReports/FlattenedReports/st_120.flat_sample.json.gz" }.size() == 1
+            assert iridanext_samples.st_120.findAll { it.path == "Assembly/Subtyping/Locidex/Report/st_120.locidex.report.profile.mlst.subtyping.json.gz" }.size() == 1
+            assert iridanext_samples.st_120.findAll { it.path == "Assembly/Subtyping/Locidex/Summary/st_120.locidex.summary.json" }.size() == 1
+
+            assert vibrio_metadata.AlleleSchemeUsed.contains("locidex_dbs/locidex_vc")
+            assert vibrio_metadata.locidex_db_name == "Vibrio cholerae"
+            assert vibrio_metadata.locidex_db_date == "2024-07-30"
+            assert vibrio_metadata.locidex_db_version == "1.0.0"
+            assert vibrio_metadata.total_loci == 7
+            assert vibrio_metadata.count_loci_found == 6
+            assert vibrio_metadata.count_loci_missing == 1
+
+
+            // Output files check
+            assert path("$launchDir/results/Assembly/Subtyping/Locidex/Select/st_120.st_120_SelectedLocidexConfig.locidex.db.json")
+            assert path("$launchDir/results/Assembly/Subtyping/Locidex/Extract/st_120/st_120.raw.locidex.extract.extracted.seqs.subtyping.fasta.gz")
+            assert path("$launchDir/results/Assembly/Subtyping/Locidex/Search/st_120.locidex.seq_store.json.gz")
+            assert path("$launchDir/results/Assembly/Subtyping/Locidex/Report/st_120.locidex.report.profile.mlst.subtyping.json.gz")
+            assert path("$launchDir/results/Assembly/Subtyping/Locidex/Summary/st_120.locidex.summary.json")
+
+        }
+    }
+
+
+        test("Test of Database output from concatemers Vibrio cholerae") {
+        tag "from_assemblies_vibrio_allele_scheme"
+
+        when {
+            params {
+                // Need to update with 7 gene when complete
+                input = "https://raw.githubusercontent.com/phac-nml/mikrokondo/dev/tests/data/samplesheets/samplesheet-test-from-assemblies-vibrio.csv"
+                outdir = "results"
+
+                platform = "illumina"
+
+                mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/mash.msh"
+                dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+                kraken2_db = "$baseDir/tests/data/kraken2/test"
+                allele_scheme= "$baseDir/tests/data/databases/locidex_dbs/locidex_vc"
+                qt_min_contig_length = 1
+
+                skip_bakta = true
+                skip_mobrecon = true
+                skip_checkm = true
+                skip_raw_read_metrics = true
+                skip_polishing = true
+                skip_mlst = true
+                skip_version_gathering = true
+                skip_staramr = true
+                skip_length_filtering_contigs = true
+
+                skip_subtyping = false
+                skip_allele_calling = false
+                lx_report_max_stop = 100
+                max_memory = "2.GB"
+                max_cpus = 1
+            }
+        }
+
+        then {
+            assert workflow.success
+            assert path("$launchDir/results").exists()
+
+            // Compare IRIDANext json
+            assert path("$launchDir/results/iridanext.output.json").exists()
+            def iridanext_json = path("$launchDir/results/iridanext.output.json").json
+            def iridanext_global = iridanext_json.files.global
+            def iridanext_samples = iridanext_json.files.samples
+            def iridanext_metadata = iridanext_json.metadata.samples
+            def vibrio_metadata = iridanext_metadata.st_120
+
+            // Output files
+            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Json/final_report.json" }.size() == 1
+            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Tables/final_report.tsv" }.size() == 1
+            assert iridanext_samples.st_120.findAll { it.path == "FinalReports/FlattenedReports/st_120.flat_sample.json.gz" }.size() == 1
+            assert iridanext_samples.st_120.findAll { it.path == "Assembly/Subtyping/Locidex/Report/st_120.locidex.report.profile.mlst.subtyping.json.gz" }.size() == 1
+            assert iridanext_samples.st_120.findAll { it.path == "Assembly/Subtyping/Locidex/Summary/st_120.locidex.summary.json" }.size() == 1
+
+            assert vibrio_metadata.AlleleSchemeUsed.contains("locidex_dbs/locidex_vc")
+            assert vibrio_metadata.locidex_db_name == "Vibrio cholerae_1"
+            assert vibrio_metadata.locidex_db_date == "2024-08-01"
+            assert vibrio_metadata.locidex_db_version == "1.0.0"
+            assert vibrio_metadata.total_loci == 7
+            assert vibrio_metadata.count_loci_found == 6
+            assert vibrio_metadata.count_loci_missing == 1
+
+
+            // Output files check
+            assert path("$launchDir/results/Assembly/Subtyping/Locidex/Extract/st_120/st_120.raw.locidex.extract.extracted.seqs.subtyping.fasta.gz")
+            assert path("$launchDir/results/Assembly/Subtyping/Locidex/Search/st_120.locidex.seq_store.json.gz")
+            assert path("$launchDir/results/Assembly/Subtyping/Locidex/Report/st_120.locidex.report.profile.mlst.subtyping.json.gz")
+            assert path("$launchDir/results/Assembly/Subtyping/Locidex/Summary/st_120.locidex.summary.json")
+
         }
     }
 

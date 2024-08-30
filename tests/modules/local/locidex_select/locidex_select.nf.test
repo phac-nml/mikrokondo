@@ -1,0 +1,370 @@
+nextflow_process {
+    name "Test Process LOCIDEX_SELECT"
+    script "modules/local/locidex_select.nf"
+    process "LOCIDEX_SELECT"
+    tag "modules"
+    tag "locidex_select"
+
+    /// Terminate is required for exec processes that throw errors as in older versions of nf-test
+    /// processses that threw errors still completed "succesfully".
+    options "-process.errorStrategy=terminate"
+
+    test("Test failed due to missing date") {
+        tag "test_missing_date"
+        when {
+            process {
+                """
+
+                input[0] = Channel.of(
+                    [["id": "Bad Date"], 'Bad Date', file("$baseDir/tests/data/fake_contigs/vibrio_cholerae/st_120.fa.gz")]
+                )
+
+                input[1] = Channel.of(
+                    file("${projectDir}/tests/data/databases/locidex_dbs/manifest.json")
+                )
+
+                input[2] = Channel.of(null)
+                """
+            }
+
+            params {
+                outdir = "locidex_select"
+                lx_allele_database = "${projectDir}/tests/data/databases/locidex_dbs"
+            }
+        }
+
+        then {
+            assert process.failed
+            assert process.errorReport.contains("Missing date created value for locidex database entry: Bad Date")
+        }
+    }
+
+
+    test("Test parsing failed due to missing path"){
+        when {
+            process {
+                """
+                input[0] = Channel.of(
+                    [['id': 'Bad Path'], 'Bad Path', file("$baseDir/tests/data/fake_contigs/vibrio_cholerae/st_120.fa.gz")]
+                )
+
+                input[1] = Channel.of(
+                    file("${projectDir}/tests/data/databases/locidex_dbs/manifest.json")
+                )
+
+                input[2] = Channel.of(null)
+                """
+            }
+
+            params {
+                outdir = "locidex_select"
+                lx_allele_database = "${projectDir}/tests/data/databases/locidex_dbs"
+            }
+        }
+
+        then {
+            assert process.failed
+            assert process.errorReport.contains("Missing path value in locidex config for: Bad Path")
+        }
+
+    }
+    test("Test parsing failed due incorrect date format"){
+        tag "fail_bad_date_format"
+        when {
+            process {
+                """
+                input[0] = Channel.of(
+                    [["id": "Bad Date Format"], 'Bad Date Format', file("$baseDir/tests/data/fake_contigs/vibrio_cholerae/st_120.fa.gz")]
+                )
+
+                input[1] = Channel.of(
+                    file("${projectDir}/tests/data/databases/locidex_dbs/manifest.json")
+                )
+
+                input[2] = Channel.of(null)
+                """
+            }
+
+
+            params {
+                outdir = "locidex_select"
+                lx_allele_database = "${projectDir}/tests/data/databases/locidex_dbs"
+            }
+
+        }
+
+        then {
+            assert process.failed
+            assert process.errorReport.contains("Date value 2024/02/25 does not meet format string required of yyyy-MM-dd")
+        }
+    }
+
+    test("Test parsing failed due to missing database name"){
+        when {
+            process {
+                """
+                input[0] = Channel.of(
+                    [["id": "Bad Name"], 'Bad Name', file("$baseDir/tests/data/fake_contigs/vibrio_cholerae/st_120.fa.gz")]
+                )
+
+                input[1] = Channel.of(
+                    file("${projectDir}/tests/data/databases/locidex_dbs/manifest.json")
+                )
+
+                input[2] = Channel.of(null)
+                """
+            }
+
+
+            params {
+                outdir = "locidex_select"
+                lx_allele_database = "${projectDir}/tests/data/databases/locidex_dbs"
+            }
+
+        }
+
+        then {
+            assert process.failed
+            assert process.errorReport.contains("Missing name value in locidex config for: Bad Name")
+        }
+    }
+
+
+    test("Test parsing failed due to missing database config"){
+        tag "test_fail_config_missing"
+        when {
+            process {
+                """
+                input[0] = Channel.of(
+                    [["id": "No Config"], 'No Config', file("$baseDir/tests/data/fake_contigs/vibrio_cholerae/st_120.fa.gz")]
+                )
+
+                input[1] = Channel.of(
+                    file("${projectDir}/tests/data/databases/locidex_dbs/manifest.json")
+                )
+
+                input[2] = Channel.of(null)
+                """
+            }
+
+
+            params {
+                outdir = "locidex_select"
+                lx_allele_database = "${projectDir}/tests/data/databases/locidex_dbs"
+            }
+
+        }
+
+        then {
+            assert process.failed
+            assert process.errorReport.contains("Missing config data for locidex database entry: No Config")
+        }
+    }
+
+    test("Test multiple versions of same database"){
+        when {
+            process {
+                """
+                input[0] = Channel.of(
+                    [["id": "Too Many Entries with Same Date"], 'Too Many Entries with Same Date', file("$baseDir/tests/data/fake_contigs/vibrio_cholerae/st_120.fa.gz")]
+                )
+
+                input[1] = Channel.of(
+                    file("${projectDir}/tests/data/databases/locidex_dbs/manifest.json")
+                )
+
+                input[2] = Channel.of(null)
+                """
+            }
+
+
+            params {
+                outdir = "locidex_select"
+                lx_allele_database = "${projectDir}/tests/data/databases/locidex_dbs"
+            }
+
+        }
+
+        then {
+            assert process.failed
+            assert process.errorReport.contains("There are multiple versions of the most recent database for Too Many Entries With Same Date.")
+        }
+    }
+
+    test("Test database is too old"){
+        when {
+            process {
+                """
+                input[0] = Channel.of(
+                    [["id": "Oldest Database"], 'Oldest Database', file("$baseDir/tests/data/fake_contigs/vibrio_cholerae/st_120.fa.gz")]
+                )
+
+                input[1] = Channel.of(
+                    file("${projectDir}/tests/data/databases/locidex_dbs/manifest.json")
+                )
+
+                input[2] = Channel.of(null)
+                """
+            }
+
+
+            params {
+                outdir = "locidex_select"
+                lx_allele_database = "${projectDir}/tests/data/databases/locidex_dbs"
+            }
+
+        }
+
+        then {
+            assert process.failed
+            assert process.errorReport.contains("Please set the allele database parameter, or adjust the date your database was created in the 'config.json'")
+        }
+    }
+
+        test("Test no database"){
+        when {
+            process {
+                """
+                input[0] = Channel.of(
+                    [["id": "Test"], 'Test', file("$baseDir/tests/data/fake_contigs/vibrio_cholerae/st_120.fa.gz")]
+                )
+
+                input[1] = Channel.of(
+                    file("${projectDir}/tests/data/databases/locidex_dbs/manifest.json")
+                )
+
+                input[2] = Channel.of(null)
+                """
+            }
+
+
+            params {
+                outdir = "locidex_select"
+                lx_allele_database = null
+                allele_scheme = null
+            }
+
+        }
+
+        then {
+            assert process.failed
+            assert process.errorReport.contains("Allele calling is enabled but there is no allele scheme or locidex allele database location present.")
+        }
+    }
+
+
+    test("select correct database"){
+        tag "pass_db_selection"
+        when {
+            process {
+                """
+                input[0] = Channel.of(
+                    [["id": "Vibrio cholerae"], 'Vibrio cholerae', file("$baseDir/tests/data/fake_contigs/vibrio_cholerae/st_120.fa.gz")]
+                )
+
+                input[1] = Channel.of(
+                    file("${projectDir}/tests/data/databases/locidex_dbs/manifest.json")
+                )
+
+                input[2] = Channel.of([])
+                """
+            }
+
+
+            params {
+                outdir = "locidex_select"
+                lx_allele_database = "${projectDir}/tests/data/databases/locidex_dbs"
+            }
+
+        }
+
+        then {
+            assert process.success
+            with(process.out.db_data[0]){
+                assert get(3) == true
+                assert path(get(2)).exists()
+                assert get(2) == "${projectDir}/tests/data/databases/locidex_dbs/locidex_vc"
+                assert get(0).id == "Vibrio cholerae"
+            }
+            with(process.out.config_data[0]){
+                assert path(get(1)).md5 == 'e9fa68bc91d89ba4450814d015ecbe8b'
+            }
+        }
+    }
+
+    test("Pass no database selected"){
+        tag "pass_db_selection"
+        when {
+            process {
+                """
+                input[0] = Channel.of(
+                    [["id": "Nothing"], 'Nothing', file("$baseDir/tests/data/fake_contigs/vibrio_cholerae/st_120.fa.gz")]
+                )
+
+                input[1] = Channel.of(
+                    file("${projectDir}/tests/data/databases/locidex_dbs/manifest.json")
+                )
+
+                input[2] = Channel.of([])
+                """
+            }
+
+
+            params {
+                outdir = "locidex_select"
+                lx_allele_database = "${projectDir}/tests/data/databases/locidex_dbs"
+            }
+
+        }
+
+        then {
+            assert process.success
+            with(process.out.db_data[0]){
+                assert get(3) == false
+                assert get(2) == null
+                assert get(0).id == "Nothing"
+            }
+
+            with(process.out.config_data[0]){
+                assert path(get(1)).md5 == "f0088d692615b1281724062a7c3f008b"
+            }
+        }
+    }
+
+        test("Pass log default database"){
+        tag "pass_log_default"
+        when {
+            process {
+                """
+                input[0] = Channel.of(
+                    [["id": "Nothing"], 'Nothing', file("$baseDir/tests/data/fake_contigs/vibrio_cholerae/st_120.fa.gz")]
+                )
+
+                input[1] = Channel.of(
+                    file("${projectDir}/tests/data/databases/locidex_dbs/manifest.json")
+                )
+
+                input[2] = Channel.of(file("${projectDir}/tests/data/databases/locidex_dbs/locidex_vc/config.json"))
+                """
+            }
+
+
+            params {
+                outdir = "locidex_select"
+                allele_scheme = "${projectDir}/tests/data/databases/locidex_dbs/locidex_vc"
+                lx_allele_database = "${projectDir}/tests/data/databases/locidex_dbs"
+            }
+
+        }
+
+        then {
+            assert process.success
+            // Log message not appearing in Github actions
+            // assert process.stdout.contains( 'WARN: A database manifest file was passed along with a config file. Using the allele database specified by \'--allele_scheme\' ')
+            // Testing correct output file is generated instead
+            with(process.out.config_data[0]){
+                assert path(get(1)).md5 == "e28b115140504a89c527ce7895615c29"
+            }
+        }
+    }
+}

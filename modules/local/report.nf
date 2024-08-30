@@ -130,14 +130,13 @@ def generate_coverage_data(sample_data, bp_field, species){
                 && species[species_data_pos].fixed_genome_size != null){
 
                 def length = species[species_data_pos].fixed_genome_size.toLong()
-                def cov = base_pairs / q_length
+                def cov = base_pairs / length
                 entry.value[params.coverage_calc_fields.fixed_cov] = cov.round(2)
-
             }
 
         }
     }
-
+    return sample_data
 }
 
 
@@ -439,9 +438,9 @@ def convert_type(type, val){
 }
 
 def recurse_keys(value, keys_rk){
-    // TODO add in generic return for if a value is not found
     def temp = traverse_values(value, keys_rk.path)
     def value_found = true
+
     if(temp == null){
         value_found = false;
     }
@@ -455,9 +454,9 @@ def recurse_keys(value, keys_rk){
 }
 
 def traverse_values(value, path){
+
     def temp = value
     def value_found = true
-    def ret_val = null
 
     if(path instanceof String){
         temp = temp[path]
@@ -465,11 +464,9 @@ def traverse_values(value, path){
     }
 
     for(key in path){
-        def key_val
-        if(key.isNumber()){
-            key_val = key.toInteger()
-        }else{
-            key_val = key
+        def key_val = key
+        if(key_val.isNumber()){
+            key_val = key_val.toInteger()
         }
 
         if(temp.containsKey(key_val)){
@@ -674,7 +671,8 @@ def generate_qc_data(data, search_phrases, qc_species_tag){
     for(k in data){
         if(!k.value.meta.metagenomic){
             def species = get_species(k.value[k.key][top_hit_tag], search_phrases, shortest_token)
-            generate_coverage_data(data[k.key], params.coverage_calc_fields.bp_field, species) // update coverage first so its values can be used in generating qc messages
+            // update coverage first so its values can be used in generating qc messages
+            generate_coverage_data(data[k.key], params.coverage_calc_fields.bp_field, species)
             data[k.key][quality_analysis] = get_qc_data_species(k.value[k.key], species)
             data[k.key][qc_species_tag] = species[species_tag_location]
         }else{
