@@ -4,7 +4,7 @@ process PILON_ITER {
     tag "$meta.id"
     label 'process_medium'
     memory  {task.memory * task.attempt}
-    container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.parameters.get('singularity') : task.ext.parameters.get('docker')}"
+    container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.parameters.get('singularity') : task.ext.override_configured_container_registry != false ? task.ext.parameters.get('docker') : task.ext.parameters.get('private_repository')}"
 
     input:
     tuple val(meta), path(reads), path(contigs)
