@@ -244,18 +244,21 @@ def create_action_call(sample_data, species_tag){
                 // nothing to do here
                 if(params.metagenomic_run){
                     final_message = "No QC Summary is provided for metagenomic samples."
+                    qc_summary = "No quality control criteria is applied for metagenomic samples."
                     sample_status = "NA"
                 }else{
-                    final_message = "[FAILED] Sample was determined to be metagenomic, and this was not specied as" +
+                    qc_summary = "[FAILED] Sample was determined to be metagenomic and this was not specified as a metagenomic run indicating contamination."
+                    final_message = "[FAILED] Sample was determined to be metagenomic and this was not specified as" +
                     " a metagenomic run indicating contamination REISOLATION AND RESEQUENCING RECOMMENDED." +
                     "There is additionally a possibility that your sample could not be identified as it is novel and " +
                     "not included in the program used to taxonomically classify your pipeline (however this is an unlikely culprit)."
                 }
                 sample_data[val.key]["QCStatus"] = sample_status
-                sample_data[val.key]["QCSummary"] = final_message
+                sample_data[val.key]["QCSummary"] = qc_summary
+                sample_data[val.key]["QCMessage"] = final_message
                 continue
             }
-            //def terminal_message = populate_qual_message(qual_data)
+
             def qual_message = []
             def failed_p = false
             def checks_failed = 0

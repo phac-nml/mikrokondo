@@ -1,0 +1,2 @@
+sample,fastq_1,fastq_2,long_reads,assembly
+meta-small,https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/reads/metagenomic_reads1.fq.gz,https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/reads/metagenomic_reads2.fq.gz,,

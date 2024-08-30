@@ -653,7 +653,7 @@ nextflow_pipeline {
         }
     }
 
-        test("Test starting from concatemers Vibrio cholerae") {
+    test("Test starting from concatemers Vibrio cholerae") {
         tag "from_assemblies_vibrio"
 
         when {
@@ -726,9 +726,8 @@ nextflow_pipeline {
         }
     }
 
-
-        test("Test of Database output from concatemers Vibrio cholerae") {
-        tag "from_assemblies_vibrio_allele_scheme"
+    test("Test of Database output from concatemers Vibrio cholerae") {
+    tag "from_assemblies_vibrio_allele_scheme"
 
         when {
             params {
