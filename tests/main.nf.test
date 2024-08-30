@@ -233,6 +233,93 @@ nextflow_pipeline {
 
     }
 
+    test("Should run without failure metagenomic.") {
+        tag "succeed_assembly_meta"
+
+        when {
+            params {
+                input = "https://raw.githubusercontent.com/phac-nml/mikrokondo/dev/tests/data/samplesheets/samplesheet-small-assembly.csv"
+                outdir = "results"
+
+                platform = "illumina"
+
+                mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
+                mh_min_kmer = 1
+
+                dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+                kraken2_db = "$baseDir/tests/data/kraken2/test"
+
+                metagenomic_run = true
+                min_reads = 100
+
+                skip_allele_calling = true
+
+
+                skip_bakta = true
+                skip_staramr = false
+                skip_mobrecon = false
+                skip_checkm = false
+                skip_raw_read_metrics = false
+                skip_polishing = false
+
+                max_memory = "2.GB"
+                max_cpus = 1
+            }
+        }
+
+        then {
+
+            assert workflow.success
+            assert path("$launchDir/results").exists()
+            // parse output json file
+            def iridanext_json = path("$launchDir/results/iridanext.output.json").json
+            assert iridanext_json.metadata.samples.short."QC Status" == "NA"
+            assert iridanext_json.metadata.samples.short."QC Summary" ==  "No quality control criteria is applied for metagenomic samples."
+
+        }
+    }
+
+    test("Should run without failure metagenomic viruses.") {
+    tag "succeed_assembly_meta_viruses"
+
+        when {
+            params {
+                input = "$baseDir/tests/data/samplesheets/samplesheet-small-metagenomic.csv"
+                outdir = "results"
+
+                platform = "illumina"
+
+                mash_sketch = "$baseDir/tests/data/databases/virus.msh"
+                mh_min_kmer = 1
+
+                dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+                kraken2_db = "$baseDir/tests/data/kraken2/test"
+                min_reads = 2
+                skip_allele_calling = true
+                skip_bakta = true
+                skip_staramr = false
+                skip_mobrecon = false
+                skip_checkm = false
+                skip_raw_read_metrics = false
+                skip_polishing = false
+
+                max_memory = "2.GB"
+                max_cpus = 1
+            }
+        }
+
+        then {
+
+            assert workflow.success
+            assert path("$launchDir/results").exists()
+            // parse output json file
+            def iridanext_json = path("$launchDir/results/iridanext.output.json").json
+            assert iridanext_json.metadata.samples."meta-small"."QC Status" == "FAILED"
+            assert iridanext_json.metadata.samples."meta-small"."QC Summary" ==  "FAILED Species ID: null; Passed Tests: 2/6; Organism QC Criteria: No organism specific QC data available."
+
+        }
+    }
+
     test("Test validation of platform parameter") {
         tag "fail_validation"
 
