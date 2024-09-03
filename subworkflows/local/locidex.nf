@@ -25,7 +25,7 @@ workflow LOCIDEX {
 
     if(params.force_allele_scheme != null){
         // allele scheme over rides the the manifest file
-        def config_file_in = [params.allele_scheme, params.locidex.config_data_file].join(File.separator)
+        def config_file_in = [params.force_allele_scheme, params.locidex.config_data_file].join(File.separator)
         config_file = file(config_file_in, checkIfExists: true)
     }else{
         def manifest_file_in = [params.locidex.allele_database, params.locidex.manifest_name].join(File.separator)
