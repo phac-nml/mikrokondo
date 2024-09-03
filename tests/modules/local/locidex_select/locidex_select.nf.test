@@ -241,7 +241,7 @@ nextflow_process {
             params {
                 outdir = "locidex_select"
                 lx_allele_database = null
-                force_force_allele_scheme = null
+                force_allele_scheme = null
             }
 
         }
@@ -351,7 +351,7 @@ nextflow_process {
 
             params {
                 outdir = "locidex_select"
-                force_force_allele_scheme = "${projectDir}/tests/data/databases/locidex_dbs/locidex_vc"
+                force_allele_scheme = "${projectDir}/tests/data/databases/locidex_dbs/locidex_vc"
                 lx_allele_database = "${projectDir}/tests/data/databases/locidex_dbs"
             }
 

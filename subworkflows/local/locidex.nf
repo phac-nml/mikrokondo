@@ -16,14 +16,14 @@ workflow LOCIDEX {
     paired_species = top_hit.join(contigs)
     paired_dbs = Channel.empty()
 
-    if(params.force_force_allele_scheme == null && params.locidex.allele_database == null && !params.skip_allele_calling){
+    if(params.force_allele_scheme == null && params.locidex.allele_database == null && !params.skip_allele_calling){
         error("Allele calling is enabled, but no locidex database directory has been configured.")
     }
 
     def manifest_file = [] // Default empty values for entries
     def config_file = []
 
-    if(params.force_force_allele_scheme != null){
+    if(params.force_allele_scheme != null){
         // allele scheme over rides the the manifest file
         def config_file_in = [params.allele_scheme, params.locidex.config_data_file].join(File.separator)
         config_file = file(config_file_in, checkIfExists: true)
