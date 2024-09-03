@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Updated TSeemann's MLST default container to use version 2.23.0 of `mlst`. See [PR 97](https://github.com/phac-nml/mikrokondo/pull/97)
 
+- Moved allele schema parameters under one option in the nextflow_schema.json. See [PR 104](https://github.com/phac-nml/mikrokondo/pull/104)
+
 
 ### `Fixed`
 
