@@ -341,7 +341,7 @@ nextflow_pipeline {
                 skip_subtyping = false
                 skip_allele_calling = false
 
-                allele_scheme = "$baseDir/tests/data/databases/locidex_dbs/locidex_salm"
+                force_allele_scheme = "$baseDir/tests/data/databases/locidex_dbs/locidex_salm"
 
                 max_memory = "2.GB"
                 max_cpus = 1

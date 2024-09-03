@@ -110,13 +110,6 @@
                     "exists": true,
                     "format": "directory-path",
                     "hidden": true
-                },
-                "allele_scheme": {
-                    "type": "string",
-                    "pattern": "^\\S+$",
-                    "exists": true,
-                    "format": "directory-path",
-                    "description": "An allele scheme to to use for Locidex"
                 }
             },
             "required": [
@@ -125,6 +118,25 @@
                 "kraken2_db"
             ],
             "description": "The location of databases used by mikrokondo"
+        },
+        "allele_schema_options": {
+            "title": "Allele Schema Options",
+            "type": "object",
+            "description": "Specify an allele calling schema.",
+            "default": "",
+            "properties": {
+                "force_allele_scheme": {
+                    "type": "string",
+                    "description": "Specify the path to an allele calling schema to be used. This schema will be used for allele calling of all samples."
+                },
+                "lx_allele_database": {
+                    "type": "string",
+                    "description": "Folder of locidex databases. The folder should contain a 'manifest.json' file created by locidex",
+                    "pattern": "^\\S+$",
+                    "exists": true,
+                    "format": "directory-path"
+                }
+            }
         },
         "institutional_config_options": {
             "title": "Institutional config options",
@@ -664,13 +676,6 @@
                     "default": 0,
                     "description": "Maximum number of internal stop codons allowed in a sequence.",
                     "minimum": 0
-                },
-                "lx_allele_database": {
-                    "type": "string",
-                    "description": "Folder of locidex databases. The folder should contain a 'manifest.json' file created by locidex",
-                    "pattern": "^\\S+$",
-                    "exists": true,
-                    "format": "directory-path"
                 }
             }
         },
@@ -742,6 +747,9 @@
         },
         {
             "$ref": "#/definitions/databases_and_pre_computed_files"
+        },
+        {
+            "$ref": "#/definitions/allele_schema_options"
         },
         {
             "$ref": "#/definitions/institutional_config_options"

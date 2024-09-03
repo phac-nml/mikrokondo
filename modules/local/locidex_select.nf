@@ -53,7 +53,7 @@ process LOCIDEX_SELECT {
     def report_name = "${meta.id}_${params.locidex.db_config_output_name}"
     output_config = task.workDir.resolve(report_name)
 
-    if(params.allele_scheme == null && params.locidex.allele_database == null){
+    if(params.force_force_allele_scheme == null && params.locidex.allele_database == null){
         error("Allele calling is enabled but there is no allele scheme or locidex allele database location present.")
     }
 
@@ -67,7 +67,7 @@ process LOCIDEX_SELECT {
         def locidex_config_data = jsonSlurper.parseText(json_data)
         validate_locidex_db(locidex_config_data, params.allele_scheme)
         write_config_data(locidex_config_data, output_config)
-        scheme = params.allele_scheme // reset the schem path to the passed allele scheme
+        scheme = params.force_force_allele_scheme // reset the schem path to the passed allele scheme
         paired_p = true
 
     }else{
