@@ -740,7 +740,7 @@ nextflow_pipeline {
                 mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/mash.msh"
                 dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
                 kraken2_db = "$baseDir/tests/data/kraken2/test"
-                allele_scheme= "$baseDir/tests/data/databases/locidex_dbs/locidex_vc"
+                force_allele_scheme= "$baseDir/tests/data/databases/locidex_dbs/locidex_vc"
                 qt_min_contig_length = 1
 
                 skip_bakta = true
