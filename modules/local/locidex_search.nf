@@ -6,8 +6,7 @@ process LOCIDEX_SEARCH {
 
     tag "$meta.id"
     label "process_medium"
-    container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.parameters.get('singularity') : task.ext.parameters.get('docker')}"
-
+    container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.parameters.get('singularity') : task.ext.override_configured_container_registry != false ? task.ext.parameters.get('docker') : task.ext.parameters.get('private_repository')}"
 
     input:
     tuple val(meta), path(fasta), path(db)
@@ -43,7 +42,7 @@ process LOCIDEX_SEARCH {
     --min_aa_match_cov ${params.locidex.min_aa_match_cov} \\
     --max_target_seqs ${params.locidex.max_target_seqs}
 
-    gzip -c seq_store.json > $output_json && rm seq_store.json
+    test -f seq_store.json && gzip -c seq_store.json > $output_json && rm seq_store.json
     test -f annotations.gbk && gzip -c annotations.gbk > $output_gbk && rm annotations.gbk
 
     cat <<-END_VERSIONS > versions.yml

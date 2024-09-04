@@ -3,6 +3,39 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] - 2024-09-04
+
+### `Changed`
+
+- Removed quay.io docker repo tags [PR 94](https://github.com/phac-nml/mikrokondo/pull/94)
+
+### `Updated`
+
+- Added QCMessage and QCSummary fields for metagenomic sequencing runs. See [PR 103](https://github.com/phac-nml/mikrokondo/pull/103)
+
+- Updated TSeemann's MLST default container to use version 2.23.0 of `mlst`. See [PR 97](https://github.com/phac-nml/mikrokondo/pull/97)
+
+- Moved allele schema parameters under one option in the nextflow_schema.json. See [PR 104](https://github.com/phac-nml/mikrokondo/pull/104)
+
+
+### `Fixed`
+
+- Fixed typo in metagenomic QC message. See [PR 103](https://github.com/phac-nml/mikrokondo/pull/103)
+
+- Fixed spelling issues issues in config values. See [PR 95](https://github.com/phac-nml/mikrokondo/pull/95)
+
+- Fixed the headers specified in the nextflow.config file for Kraken2. See [PR 96](https://github.com/phac-nml/mikrokondo/pull/96)
+
+### `Added`
+
+- Added additional organism QC parameters to defaults. See [PR 105](https://github.com/phac-nml/mikrokondo/pull/105)
+
+- Updated locidex to version 0.2.3. See [PR 96](https://github.com/phac-nml/mikrokondo/pull/96)
+
+- Added module for automatic selection of locidex databases through configuration of a locidex database collection. See [PR 96](https://github.com/phac-nml/mikrokondo/pull/96)
+
+- Added module for summary of basic allele metrics, listing of missing alleles and reporting of specific alleles. See [PR 96](https://github.com/phac-nml/mikrokondo/pull/96)
+
 ## [0.3.0] - 2024-07-04
 
 ### `Changed`
@@ -57,7 +90,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Updated StarAMR point finder DB selection to resolve error when in db selection when a database is not selected addressing issue. See [PR 74](https://github.com/phac-nml/mikrokondo/pull/74)
 
-- Fixed calculation of SeqtkBaseCount value include counts for both pairs of paird-end reads. See [PR 65](https://github.com/phac-nml/mikrokondo/pull/65).
+- Fixed calculation of SeqtkBaseCount value include counts for both pairs of paired-end reads. See [PR 65](https://github.com/phac-nml/mikrokondo/pull/65).
 
 ## `Changed`
 
@@ -72,7 +105,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Changed default values for database parameters `--dehosting_idx`, `--mash_sketch`, `--kraken2_db`, and `--bakta_db` to null. See [PR 71](https://github.com/phac-nml/mikrokondo/pull/71)
-- Enabled checking for existance of database files in JSON Schema to avoid issues with staging non-existent files in Azure. See [PR 71](https://github.com/phac-nml/mikrokondo/pull/71).
+- Enabled checking for existence of database files in JSON Schema to avoid issues with staging non-existent files in Azure. See [PR 71](https://github.com/phac-nml/mikrokondo/pull/71).
 - Set `--kraken2_db` to be a required parameter for the pipeline. See [PR 71](https://github.com/phac-nml/mikrokondo/pull/71)
 - Hide bakta parameters from IRIDA Next UI. See [PR 71](https://github.com/phac-nml/mikrokondo/pull/71)
 
@@ -110,6 +143,7 @@ Initial release of phac-nml/mikrokondo. Mikrokondo currently supports: read trim
 
 - Added integration testing using [nf-test](https://www.nf-test.com/).
 
+[0.4.0]: https://github.com/phac-nml/mikrokondo/releases/tag/0.4.0
 [0.3.0]: https://github.com/phac-nml/mikrokondo/releases/tag/0.3.0
 [0.2.1]: https://github.com/phac-nml/mikrokondo/releases/tag/0.2.1
 [0.2.0]: https://github.com/phac-nml/mikrokondo/releases/tag/0.2.0

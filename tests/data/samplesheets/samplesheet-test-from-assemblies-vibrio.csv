@@ -1,0 +1,2 @@
+sample,fastq_1,fastq_2,long_reads,assembly
+st_120,,,,https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/fake_contigs/vibrio_cholerae/st_120.fa.gz
