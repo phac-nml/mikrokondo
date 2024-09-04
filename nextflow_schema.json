@@ -125,15 +125,18 @@
             "description": "Specify an allele calling schema.",
             "default": "",
             "properties": {
-                "force_allele_scheme": {
-                    "type": "string",
-                    "description": "Specify the path to an allele calling schema to be used. This schema will be used for allele calling of all samples."
-                },
                 "lx_allele_database": {
                     "type": "string",
-                    "description": "Folder of locidex databases. The folder should contain a 'manifest.json' file created by locidex",
+                    "description": "The path to a folder containing a collection of locidex databases to allow for automatic allele database selection. The folder should contain a 'manifest.json' file created by locidex. If you wish to force a certain allele scheme to be used you can specify an option for the `override_allele_scheme` argument which will perform allele calling with the specified scheme.",
                     "pattern": "^\\S+$",
                     "exists": true,
+                    "format": "directory-path"
+                },
+                "override_allele_scheme": {
+                    "type": "string",
+                    "description": "Specify the path to an allele calling schema to be used. This schema will be used for allele calling of all samples.",
+                    "exists": true,
+                    "pattern": "^\\S+$",
                     "format": "directory-path"
                 }
             }
