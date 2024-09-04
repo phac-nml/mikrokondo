@@ -53,21 +53,21 @@ process LOCIDEX_SELECT {
     def report_name = "${meta.id}_${params.locidex.db_config_output_name}"
     output_config = task.workDir.resolve(report_name)
 
-    if(params.allele_scheme == null && params.locidex.allele_database == null){
+    if(params.override_allele_scheme == null && params.locidex.allele_database == null){
         error("Allele calling is enabled but there is no allele scheme or locidex allele database location present.")
     }
 
     if(config){ // non null channel should evaluate to true
         if(manifest){
-            log.warn "A database manifest file was passed along with a config file. Using the allele database specified by '--allele_scheme' "
+            log.warn "A database manifest file was passed along with a config file. Using the allele database specified by '--override_allele_scheme' "
         }
         // Create output summary data for a locidex allele database if an allele scheme is passed in directly
         def jsonSlurper = new JsonSlurper()
         String json_data = config.text
         def locidex_config_data = jsonSlurper.parseText(json_data)
-        validate_locidex_db(locidex_config_data, params.allele_scheme)
+        validate_locidex_db(locidex_config_data, params.override_allele_scheme)
         write_config_data(locidex_config_data, output_config)
-        scheme = params.allele_scheme // reset the schem path to the passed allele scheme
+        scheme = params.override_allele_scheme // reset the schem path to the passed allele scheme
         paired_p = true
 
     }else{

@@ -3,8 +3,7 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
-
+## [0.4.0] - 2024-09-04
 
 ### `Changed`
 
@@ -15,6 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added QCMessage and QCSummary fields for metagenomic sequencing runs. See [PR 103](https://github.com/phac-nml/mikrokondo/pull/103)
 
 - Updated TSeemann's MLST default container to use version 2.23.0 of `mlst`. See [PR 97](https://github.com/phac-nml/mikrokondo/pull/97)
+
+- Moved allele schema parameters under one option in the nextflow_schema.json. See [PR 104](https://github.com/phac-nml/mikrokondo/pull/104)
 
 
 ### `Fixed`
@@ -142,6 +143,7 @@ Initial release of phac-nml/mikrokondo. Mikrokondo currently supports: read trim
 
 - Added integration testing using [nf-test](https://www.nf-test.com/).
 
+[0.4.0]: https://github.com/phac-nml/mikrokondo/releases/tag/0.4.0
 [0.3.0]: https://github.com/phac-nml/mikrokondo/releases/tag/0.3.0
 [0.2.1]: https://github.com/phac-nml/mikrokondo/releases/tag/0.2.1
 [0.2.0]: https://github.com/phac-nml/mikrokondo/releases/tag/0.2.0
