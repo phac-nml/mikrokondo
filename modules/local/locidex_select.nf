@@ -59,13 +59,13 @@ process LOCIDEX_SELECT {
 
     if(config){ // non null channel should evaluate to true
         if(manifest){
-            log.warn "A database manifest file was passed along with a config file. Using the allele database specified by '--allele_scheme' "
+            log.warn "A database manifest file was passed along with a config file. Using the allele database specified by '--override_allele_scheme' "
         }
         // Create output summary data for a locidex allele database if an allele scheme is passed in directly
         def jsonSlurper = new JsonSlurper()
         String json_data = config.text
         def locidex_config_data = jsonSlurper.parseText(json_data)
-        validate_locidex_db(locidex_config_data, params.allele_scheme)
+        validate_locidex_db(locidex_config_data, params.override_allele_scheme)
         write_config_data(locidex_config_data, output_config)
         scheme = params.override_allele_scheme // reset the schem path to the passed allele scheme
         paired_p = true

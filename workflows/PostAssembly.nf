@@ -95,12 +95,12 @@ workflow POST_ASSEMBLY {
 
 
     if(!params.skip_allele_calling){
-        if (!params.skip_species_classification || params.allele_scheme){
+        if (!params.skip_species_classification || params.override_allele_scheme){
             LOCIDEX(ch_filtered_contigs, top_hit)
             ch_versions = ch_versions.mix(LOCIDEX.out.versions)
             ch_reports = ch_reports.mix(LOCIDEX.out.reports)
         }else{
-            log.info "Skipping locidex since there is no '--allele_scheme' set and '--skip_species_classification' is enabled"
+            log.info "Skipping locidex since there is no '--override_allele_scheme' set and '--skip_species_classification' is enabled"
         }
     }
 
