@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Changed`
 
-- Changed default option for `override_allele_scheme` from `null` to "" (evaluates to false).
+- Changed default option for `override_allele_scheme` from `null` to "" (evaluates to false). [PR 109](https://github.com/phac-nml/mikrokondo/pull/109)
 
 ## [0.4.0] - 2024-09-04
 
