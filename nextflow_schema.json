@@ -137,7 +137,9 @@
                     "description": "Specify the path to an allele calling schema to be used. This schema will be used for allele calling of all samples.",
                     "exists": true,
                     "pattern": "^\\S+$",
-                    "format": "directory-path"
+                    "format": "directory-path",
+                    "default": "\"\"",
+                    "help_text": ""
                 }
             }
         },
