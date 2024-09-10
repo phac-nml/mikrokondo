@@ -138,7 +138,7 @@
                     "exists": true,
                     "pattern": "^\\S+$",
                     "format": "directory-path",
-                    "default": "\"\"",
+                    "default": "",
                     "help_text": ""
                 }
             }
