@@ -373,7 +373,12 @@ def create_action_call(sample_data, species_tag){
             def tests_passed = "Passed Tests: ${checks - checks_failed - checks_ignored}/${checks}"
             qual_message.add(tests_passed)
 
-            def species_id = "Species ID: ${val.value[val.key][params.top_hit_species.report_tag]}"
+
+            def species_selected = val.value[val.key][params.top_hit_species.report_tag]
+            if(species_selected == null){
+                species_selected = organism_criteria
+            }
+            def species_id = "Species ID: ${species_selected}"
             qual_message.add(species_id)
 
             // Qual summary not final message
