@@ -53,7 +53,7 @@ process LOCIDEX_SELECT {
     def report_name = "${meta.id}_${params.locidex.db_config_output_name}"
     output_config = task.workDir.resolve(report_name)
 
-    if(params.override_allele_scheme && params.locidex.allele_database == null){
+    if(!params.override_allele_scheme && params.locidex.allele_database == null){
         error("Allele calling is enabled but there is no allele scheme or locidex allele database location present.")
     }
 

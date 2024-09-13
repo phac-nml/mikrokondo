@@ -16,7 +16,7 @@ workflow LOCIDEX {
     paired_species = top_hit.join(contigs)
     paired_dbs = Channel.empty()
 
-    if(params.override_allele_scheme && params.locidex.allele_database == null && !params.skip_allele_calling){
+    if(!params.override_allele_scheme && params.locidex.allele_database == null && !params.skip_allele_calling){
         error("Allele calling is enabled, but no locidex database directory has been configured.")
     }
 
