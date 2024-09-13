@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Fixed`
 
-- Fixed null species ID in QCMessage when no organism qc data available.
+- Fixed null species ID in QCMessage when no organism qc data available. [PR 111](https://github.com/phac-nml/mikrokondo/pull/111)
 
 ## [0.4.0] - 2024-09-04
 
