@@ -88,7 +88,7 @@ nextflow_pipeline {
             assert !iridanext_metadata.CSE.containsKey("Length Value")
             assert !iridanext_metadata.CSE.containsKey("nr contigs Status")
             assert !iridanext_metadata.CSE.containsKey("nr contigs Value")
-            assert iridanext_metadata.CSE."QC Summary" == "FAILED Species ID: null; Passed Tests: 0/6; Organism QC Criteria: No organism specific QC data available."
+            assert iridanext_metadata.CSE."QC Summary" == "FAILED Species ID: No organism specific QC data available.; Passed Tests: 0/6; Organism QC Criteria: No organism specific QC data available."
 
             assert iridanext_metadata.CSE."Downsampled" == false
             assert !iridanext_metadata.CSE.containsKey("predicted_identification_name")
