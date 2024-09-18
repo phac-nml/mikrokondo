@@ -152,7 +152,7 @@ Mikrokondo requires two things as input:
    - long_reads
    - assembly
 
-For more information see the [usage docs](https://phac-nml.github.io/mikrokondo/usage/).
+For more information see the [usage docs](https://phac-nml.github.io/mikrokondo/usage/installation/).
 
 ### Output/Results
 
