@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Fixed broken link in readme. [PR 117](https://github.com/phac-nml/mikrokondo/pull/117)
 
+- Fixed ectyper parameter types in the `nextflow_schema.json` from `number` to `integer`. [PR 121](https://github.com/phac-nml/mikrokondo/pull/121)
+
 ## [0.4.1] - 2024-09-16
 
 ### `Fixed`
