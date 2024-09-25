@@ -444,28 +444,28 @@
             "default": "",
             "properties": {
                 "ec_opid": {
-                    "type": "number",
+                    "type": "integer",
                     "default": 90,
                     "description": "Minimum percent identity to determine O antigens presence",
                     "minimum": 0,
                     "maximum": 100
                 },
                 "ec_opcov": {
-                    "type": "number",
+                    "type": "integer",
                     "default": 90,
                     "description": "Minimum percent coverage of O antigen",
                     "minimum": 0,
                     "maximum": 100
                 },
                 "ec_hpid": {
-                    "type": "number",
+                    "type": "integer",
                     "default": 95,
                     "description": "Miniumum percent identity to determine H antigens presence",
                     "minimum": 0,
                     "maximum": 100
                 },
                 "ec_hpcov": {
-                    "type": "number",
+                    "type": "integer",
                     "default": 50,
                     "description": "Minimum percent coverage of H antigen",
                     "minimum": 0,
