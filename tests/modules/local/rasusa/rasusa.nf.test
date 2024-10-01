@@ -1,0 +1,39 @@
+/*
+    Rasusa tests are using the tests provided by nf-core here: https://github.com/nf-core/modules/blob/master/modules/nf-core/rasusa/tests/main.nf.test
+*/
+
+
+nextflow_process {
+    name "Test RASUSA"
+    script "modules/local/rasusa.nf"
+    process "RASUSA"
+    tag "rasusa"
+
+
+    test("Should run without failure") {
+
+        when {
+            params {
+                outdir = "rasusa_test1"
+                modules_testdata_base_path = 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            }
+
+            process {
+                """
+                input[0] = [ [id:'testfile', single_end:true],
+                        [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)],
+                        0.5,]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                {assert process.success }
+            )
+        }
+
+    }
+
+}
+

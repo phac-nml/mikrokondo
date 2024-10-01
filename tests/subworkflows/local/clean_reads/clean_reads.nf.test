@@ -1,0 +1,148 @@
+nextflow_workflow {
+    name "Test workflow QC_READS"
+    script "subworkflows/local/clean_reads.nf"
+    workflow "QC_READS"
+    tag "subworkflow"
+    tag "clean_reads"
+
+    test("Test clean reads run without failure illumina") {
+        tag "clean_illumina"
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of(
+                    [
+                        [id: "SAMPlE1", hybrid:
+                        false, assembly: false,
+                        downsampled: false,
+                        single_end: false,
+                        merge: false],
+                        [
+                            file("$baseDir/tests/data/reads/campy-staph1.fq.gz"),
+                            file("$baseDir/tests/data/reads/campy-staph2.fq.gz")
+                        ],
+                        "illumina"
+                    ])
+                input[1] = "illumina"
+                """
+            }
+
+            params {
+                outdir = "results"
+
+                mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
+                mh_min_kmer = 1
+
+                dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+
+                kraken2_db = "$baseDir/tests/data/kraken2/test"
+
+
+                max_memory = "2.GB"
+                max_cpus = 1
+            }
+
+        }
+
+        then {
+            assert workflow.success
+        }
+
+    }
+
+
+    test("Test clean reads run without failure fake nanopore") {
+        tag "fake_ont"
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of(
+                    [
+                        [id: "SAMPlE1", hybrid:
+                        false, assembly: false,
+                        downsampled: false,
+                        single_end: true,
+                        merge: false],
+                        [
+                            file("$baseDir/tests/data/reads/campy-staph1.fq.gz"),
+                        ],
+                        "nanopore"
+                    ])
+                input[1] = "nanopore"
+                """
+            }
+
+            params {
+                outdir = "results"
+
+                mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
+                mh_min_kmer = 1
+
+                dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+
+                kraken2_db = "$baseDir/tests/data/kraken2/test"
+
+
+                max_memory = "2.GB"
+                max_cpus = 1
+            }
+
+        }
+
+        then {
+            assert workflow.success
+        }
+
+    }
+
+
+    test("Test clean reads run without failure fake nanopore (downsampling)") {
+        tag "fake_ont_downsample"
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of(
+                    [
+                        [id: "SAMPlE1", hybrid: false,
+                        assembly: false,
+                        downsampled: false,
+                        single_end: true,
+                        merge: false],
+                        [
+                            file("$baseDir/tests/data/reads/campy-staph1.fq.gz"),
+                            file("$baseDir/tests/data/reads/campy-staph2.fq.gz"),
+                        ],
+                        "nanopore"
+                    ])
+                input[1] = "nanopore"
+                """
+            }
+
+            params {
+                outdir = "results"
+
+                mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
+                mh_min_kmer = 1
+
+                dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+
+                kraken2_db = "$baseDir/tests/data/kraken2/test"
+                target_depth = 1
+
+                max_memory = "2.GB"
+                max_cpus = 1
+            }
+
+        }
+
+        then {
+            assert workflow.success
+        }
+
+    }
+
+
+}
