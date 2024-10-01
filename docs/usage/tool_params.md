@@ -347,7 +347,7 @@ StarAMR provides annotation of antimicrobial resistance genes within your data. 
     - report_tag: The field name of StarAMR in the final summary report. Do not alter this field unless doing pipeline development.
     - header_p: Indicates the final report from StarAMR contains a header line. Do not alter this field unless doing pipeline development.
 
-### Bakta
+## Bakta
 Bakta is used to provide annotation of genomes, it is very reliable but it can be slow.
 
 - bakta
@@ -368,7 +368,7 @@ Bakta is used to provide annotation of genomes, it is very reliable but it can b
     - txt_ext: The file extension of the txt report. Do not alter this field unless doing pipeline development.
     - min_contig_length: The minimum contig length to be annotated by Bakta. This can be set from the command line using the argument `--ba_min_contig_length`.
 
-### Bandage
+## Bandage
 Bandage is included to make bandage plots of the initial assemblies e.g. Spades, Flye or Unicycler. These images can be useful in determining the quality of an assembly.
 
 - bandage
@@ -377,7 +377,7 @@ Bandage is included to make bandage plots of the initial assemblies e.g. Spades,
     - svg_ext: The extension of the SVG file created by bandage. Do not alter this field unless doing pipeline development.
     - outdir: The output directory of the bandage images.
 
-### Subtyping Report
+## Subtyping Report
 All sub typing report tools contain a common report tag so that they can be identified by the program.
 
 - subtyping_report
@@ -394,6 +394,11 @@ ECTyper is used to perform *in-silico* typing of *Escherichia coli* and is autom
     - txt_ext: Text file extension of ECTyper output. Do not alter this field unless doing pipeline development.
     - report_tag: Report tag for ECTyper data. Do not alter this field unless doing pipeline development.
     - header_p: denotes if the table output from ECTyper contains a header. Do not alter this field unless doing pipeline development.
+    - ec_opid`: The minimum percent identity to determine an O antigens presence, It must be an integer.
+    - ec_opcov: The minimum percent coverage of O antigen, It must be an integer.
+    - ec_hpid: The minimum percent identity to determine an H antigens presence, It must be an integer.
+    - ec_hcov: The minimum percent coverage of the H antigen, It must be an integer.
+    - ec_enable_verification: A boolean value to enable species verification in ECTyper.
 
 ### Kleborate
 Kleborate performs automatic typing of *Kelbsiella*.
@@ -463,9 +468,60 @@ Code still remains but it will likely be removed later on.
     - report_tag: The report tag for Shigatyper. Do not alter this field unless doing pipeline development.
     - header_p: Denotes if the report output contains a header. Do not alter this field unless doing pipeline development.
 
-### Kraken2 Contig Binning
+## Kraken2 Contig Binning
 Bins contigs based on the Kraken2 output for contaminated/metagenomic samples. This is implemeted by using a custom script.
 
 - kraken_bin
     - **taxonomic_level**: The taxonomic level to bin contigs at. Binning at species level is not recommended the default is to bin at a genus level which is specied by a character of `G`. To bin at a higher level such as family you would specify `F`.
     - fasta_ext: The extension of the fasta files output. Do not alter this field unless doing pipeline development.
+
+## Locidex (Allele Calling)
+Parameters for use of locidex in allele calling.
+
+- Locidex
+    - singularity: The Singularity container containing Locidex.
+    - docker: The path to the Docker container containing Locidex.
+    - private_repository: The path to the Docker container containing Locidex in a private repository (this helps in cloud execution environments).
+    - min_evalue = See `--lx_min_evalue`.
+    - min_dna_len = See `--lx_min_dna_len`.
+    - min_aa_len = See `--lx_min_aa_len`.
+    - max_dna_len = See `--lx_max_dna_len`.
+    - max_aa_len = See `--lx_max_aa_len`.
+    - min_dna_ident = See `--lx_min_dna_ident`.
+    - min_aa_ident = See `--lx_min_aa_ident`.
+    - min_dna_match_cov = See `--lx_min_dna_match_cov`.
+    - min_aa_match_cov = See `--lx_min_aa_match_cov`
+    - max_target_seqs = See `--lx_max_target_seqs`.
+    - extraction_mode = See `--lx_extraction_mode`.
+    - report_mode = See `--lx_report_mode`.
+    - report_prop = See `--lx_report_prop`.
+    - report_max_ambig = See `--lx_report_max_ambig`.
+    - report_max_stop = See `--lx_report_max_stop`.
+    - allele_database = See `--lx_allele_database`.
+    - date_format_string: The date format used in parsing the locidex `manifest.json` file. Do not alter this field unless doing pipeline development.
+    - manifest_db_path: Do not alter this field unless doing pipeline development.
+    - manifest_config_key: The name of key holding config data. Do not alter this field unless doing pipeline development.
+    - manifest_config_name: The name field to use in the locidex `manifest.json` file for db identification. Do not alter this field unless doing pipeline development.
+    - manifest_config_version: Config key field containing the version information for locidex. Do not alter this field unless doing pipeline development.
+    - manifest_name: The name of the `manifest.json` file for locidex. Do not alter this field unless doing pipeline development.
+    - config_data_file: The name of the locidex database file containing config information. Do not alter this field unless doing pipeline development.
+    - database_config_value_date: Name of the field containing the date in the locidex `manifest.json`. Do not alter this field unless doing pipeline development.
+    - extracted_seqs_suffix: Extracted sequences file suffix. Do not alter this field unless doing pipeline development.
+    - seq_store_suffix: Seq store suffix. Do not alter this field unless doing pipeline development.
+    - gbk_suffix: Extension name of the generated GBK file. Do not alter this field unless doing pipeline development.
+    - extraction_dir: Directory name of the locidex extract outputs. Do not alter this field unless doing pipeline development.
+    - report_suffix: Report suffix of the locidex outputs. Do not alter this field unless doing pipeline development.
+    - db_config_output_name: Output name of the selected database used for locidex. Do not alter this field unless doing pipeline development.
+    - report_tag: The report tag for Locidex Report. Do not alter this field unless doing pipeline development.
+
+## Locidex Summary
+The information used in creating a summary of the locidex outputs.
+
+- locidex_summary
+    - report_tag: The report tag for the locidex summary. Do not alter this field unless doing pipeline development.
+    - data_key: The field containing the relevant data to summarize. Do not alter this field unless doing pipeline development.
+    - data_profile_key: The key containing the profile information. Do not alter this field unless doing pipeline development.
+    - data_sample_key: The name of the key containing the sample info. Do not alter this field unless doing pipeline development.
+    - missing_allele_value: The field used for the missing allele value. Do not alter this field unless doing pipeline development.
+    - **reportable_alleles**: A list of alleles to show their prescence or abscence of in the final output.
+    - report_exclude_fields: Fields to exclude from the final summary report. Do not alter this field unless doing pipeline development.
