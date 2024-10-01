@@ -30,15 +30,15 @@ All Command line arguments and defaults can be set and/or altered in the `nextfl
 >nanopore_chemistry = "r1041_e82_400bps_hac_v4.2.0" // Note the quotes around the value
 >```
 >
->With this change, you would no longer need to explicitly state the nanopore chemistry as an extra CLI argument when running mikrokondo. 
+>With this change, you would no longer need to explicitly state the nanopore chemistry as an extra CLI argument when running mikrokondo.
 
 ## Quality control report configuration
 > **WARNING:** Tread carefully here, as this will require modification of the `nextflow.config` file. **Make sure you have saved a back up of your `nextflow.config` file before playing with these option**
 
-### QCReport field desciption
+### QCReport field description
 The section of interest is the `QCReport` fields in the params section of the `nextflow.config`. There are multiple sections with values that can be modified or you can add data for a different organism. The default values in the pipeline are set up for **Illumina data** so you may need to adjust settingS for Nanopore or Pacbio data.
 
-An example of the QCReport structure is shown below. With annotation describing the values. 
+An example of the QCReport structure is shown below. With annotation describing the values.
 >**NOTE:** The values below do not affect the running of the pipeline, these values only affect the final quality messages output by the pipeline.
 ```
 QCReport {
@@ -51,7 +51,7 @@ QCReport {
         min_nr_contigs = 1 // the minimum number of contigs a sample is allowed to have, a value of 1 works as a sanity check
         max_nr_contigs = 500 // The maximum number of contigs the organism in the search field is allowed to have. to many contigs could indicate a bad assembly or contamination
         min_length = 4500000 // The minimum genome length allowed for the organism specified in the search field
-        max_length = 6000000 // The maxmimum genome length the organism in the search field is allowed to have
+        max_length = 6000000 // The maximum genome length the organism in the search field is allowed to have
         max_checkm_contamination = 3.0 // The maximum level of allowed contamination allowed by CheckM
         min_average_coverage = 30 // The minimum average coverage allowed
     }
@@ -83,7 +83,7 @@ VAR_NAME { // Replace VAR name with the genus name of your sample, only use ASCI
     min_n50 = // Set your minimum n50 value
     max_n50 = // Set a maximum n50 value
     min_nr_contigs = // Set a minimum number of contigs
-    max_nr_contigs = // The maximum number of contings
+    max_nr_contigs = // The maximum number of contigs
     min_length = // Set a minimum genome length
     max_length = // set a maximum genome length
     max_checkm_contamination = // Set a maximum level of contamination to use
@@ -150,15 +150,13 @@ After having my values filled out, I can simply add them to the QCReport section
 ```
 
 ## Quality Control Fields
-This section affects the behaviours of the final summary quality control messages and is noted in the `QCReportFields` within the `nextflow.config`. **I would advise against manipulating this section unless you really know what you are doing**.
-
-TODO test what happens if no quality msg is available for the bool fields types.
+This section affects the behavior of the final summary quality control messages and is noted in the `QCReportFields` within the `nextflow.config`. **I would advise against manipulating this section unless you really know what you are doing**.
 
 Each value in the QC report fields contains the following fields.
 
 - Field name
     - path: path to the information in the summary report JSON
-    - coerce_type: Type to be coreced too, can be a Float, Integer, or Bool
+    - coerce_type: Type to be coerced too, can be a Float, Integer, or Bool
     - compare_fields: A list of fields corresponding to fields in the `QCReport` section of the `nextflow.config`. If two values are specified it will be assumed you wish to check that a value is in between a range of values.
     - comp_type: The comparison type specified, 'ge' for greater or equal, 'le' for less than or equal, 'bool' for true or false or 'range' for checking if a value is between two values.
     - on: A boolean value for disabling a comparison
@@ -180,3 +178,113 @@ QCReportFields {
 }
 ```
 
+## Locidex Manifest File
+Automated selection allele calling databases is supported within mikrokondo. This is accomplished with the help of Locidex itself, which offers a utility to generate a `manifest.json` file.
+
+The directory of a database set for Locidex contains the following structure as the `manifest.json` keeps track of the paths relative too the location of the manifest file itself:
+```
+--|
+  |- Database 1
+  |- Database 2
+  |- Database n
+  |- manifest.json
+```
+
+An example `manifest.json` file can be found in the mikrokondo [test data sets here](https://github.com/phac-nml/mikrokondo/tree/main/tests/data/databases/locidex_dbs).
+
+Internally the `manifest.json` contains the following structure. Modifications to what `locidex manifest` outputs can be made as long as all fields populated. In the below example the `manifest.json` file generated by locidex has been modified to create two separate entries for *Escherichia coli* and *Shigella*.
+
+```
+{
+  "Salmonella": [
+    {
+      "path": "wgmlst_salmonella",
+      "config": {
+        "db_name": "Salmonella",
+        "db_version": "1.0.0",
+        "db_date": "2024-03-17",
+        "db_author": "Tester",
+        "db_desc": "Salmonella Database",
+        "db_num_seqs": 51251,
+        "is_nucl": true,
+        "is_prot": true,
+        "nucleotide_db_name": "nucleotide",
+        "protein_db_name": "protein"
+      }
+    }
+  ],
+  "Escherichia coli": [
+    {
+      "path": "wgmlst_escherichia_shigella",
+      "config": {
+        "db_name": "EC and Shigella",
+        "db_version": "1.0.0",
+        "db_date": "2024-04-30",
+        "db_author": "Tester",
+        "db_desc": "Shigella and E.coli",
+        "db_num_seqs": 57692,
+        "is_nucl": true,
+        "is_prot": true,
+        "nucleotide_db_name": "nucleotide",
+        "protein_db_name": "protein"
+      }
+    }
+  ],
+  "Shigella": [
+    {
+      "path": "wgmlst_escherichia_shigella",
+      "config": {
+        "db_name": "EC and Shigella",
+        "db_version": "1.0.0",
+        "db_date": "2024-04-30",
+        "db_author": "Tester",
+        "db_desc": "Shigella and E.coli",
+        "db_num_seqs": 57692,
+        "is_nucl": true,
+        "is_prot": true,
+        "nucleotide_db_name": "nucleotide",
+        "protein_db_name": "protein"
+      }
+    }
+  ],
+  "Listeria Monocytogenes": [
+    {
+      "path": "wgmlst_listeria",
+      "config": {
+        "db_name": "Listeria Monocytogenes wgMLST",
+        "db_version": "1.0.0",
+        "db_date": "2024-04-16",
+        "db_author": "Tester",
+        "db_desc": "Listeria Monocytogenes wgMLST",
+        "db_num_seqs": 22404,
+        "is_nucl": true,
+        "is_prot": true,
+        "nucleotide_db_name": "nucleotide",
+        "protein_db_name": "protein"
+      }
+    }
+  ]
+}
+```
+
+### How automated selection works.
+Mikrokondo is able to identify the species that a sample represents internally, but in order to identify the correct WgMLST scheme to use for allele calling the top-level key in the `manifest.json` file must be a name that can be parsed from the speciation output of Mash or Kraken2 e.g. *Salmonella enterica*, *Campylobacter_A anatolicus*, *Escherichia* etc.
+
+> **Note:** The database and organism names are not case sensitive.
+
+Mikrokondo will then be able to match the bacterial name outputs to what is in the `manifest.json`. In the following example below the three bacteria (*Salmonella enterica*, *Campylobacter_A anatolicus*, *Escherichia coli*) would all be matched to the correct scheme:
+```
+{
+  "Salmonella": [
+    ...
+  ],
+  "Escherichia coli": [
+    ...
+  ],
+  "Campylobacter": [
+    ...
+  ]
+}
+```
+
+This is because mikrokondo looks for the best exact match from the database names in the output species name. So spurious tokens like the `_A` in *Campylobacter_A anatolicus* would be removed and the `Campylobacter` database would be selected. For Salmonella, as the key value `Salmonella` overlaps entirely with the *Salmonella* of *Salmonella enterica* the Salmonella database would be selected. If There was a `Salmonella Enterica` database that would be selected over the generic `Salmonella` scheme. The `Escherichia coli` database would be selected for *Escherichia coli* as there they are a 100% match.
