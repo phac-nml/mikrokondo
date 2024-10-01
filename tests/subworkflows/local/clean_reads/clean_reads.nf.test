@@ -154,14 +154,14 @@ nextflow_workflow {
                         [id: "SAMPlE1", hybrid: false,
                         assembly: false,
                         downsampled: false,
-                        single_end: true,
+                        single_end: false,
                         merge: false],
                         [
                             file("$baseDir/tests/data/reads/metagenomic_reads1.fq.gz"),
                             file("$baseDir/tests/data/reads/metagenomic_reads2.fq.gz")
                         ],
                     ])
-                input[1] = "nanopore"
+                input[1] = "illumina"
                 """
             }
 
@@ -184,6 +184,8 @@ nextflow_workflow {
 
         then {
             assert workflow.success
+            assert path("${launchDir}/results/Reads/Processing/Dehosting/Trimmed/DownSampled/SeqTK/SAMPlE1.SAMPlE1_R1.seqtk.sample.sampled.reads.fastq.gz").exists()
+            assert path("${launchDir}/results/Reads/Processing/Dehosting/Trimmed/DownSampled/SeqTK/SAMPlE1.SAMPlE1_R2.seqtk.sample.sampled.reads.fastq.gz").exists()
         }
 
     }
