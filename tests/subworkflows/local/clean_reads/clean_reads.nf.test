@@ -112,10 +112,8 @@ nextflow_workflow {
                         single_end: true,
                         merge: false],
                         [
-                            file("$baseDir/tests/data/reads/campy-staph1.fq.gz"),
-                            file("$baseDir/tests/data/reads/campy-staph2.fq.gz"),
+                            file("$baseDir/tests/data/reads/metagenomic_reads1.fq.gz"),
                         ],
-                        "nanopore"
                     ])
                 input[1] = "nanopore"
                 """
@@ -140,6 +138,7 @@ nextflow_workflow {
 
         then {
             assert workflow.success
+            assert path("${launchDir}/results/Reads/Processing/Dehosting/Trimmed/DownSampled/Rasusa/SAMPlE1.SAMPlE1_.rasusa.sample.sampled.reads.fastq.gz").exists()
         }
 
     }

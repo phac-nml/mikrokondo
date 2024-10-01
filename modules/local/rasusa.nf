@@ -17,7 +17,7 @@ process RASUSA {
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    rasusa reads -f ${sample_fraction} -s ${params.rasusa.seed} -O g -o ${prefix}_${params.rasusa.reads_ext}
+    rasusa reads -f ${sample_fraction} -s ${params.rasusa.seed} -O g -o ${prefix}_${params.rasusa.reads_ext} ${reads.join(" ")}
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         rasusa: \$(rasusa --version 2>&1 | sed -e "s/rasusa //g")

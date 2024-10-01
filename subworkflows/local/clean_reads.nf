@@ -47,7 +47,7 @@ workflow QC_READS {
 
     // TODO add in nanoplot for nanopore data
     take:
-    reads // channel [[meta etc], [Read paths], opt: long reads]
+    reads // channel [[meta etc], [[Read paths], opt: long reads]]
     platform // platform opt
 
     main:
@@ -145,7 +145,7 @@ workflow QC_READS {
 
         to_down_sample = reads_sample.sub_sample.branch { meta, reads, sample_frac ->
             short_reads: !meta.single_end // Hybrid and short reads sets still go to seqtk
-            long_reads: meta.long_reads
+            long_reads: meta.single_end
         }
 
         // Short reads and hybrid reads sets get sampled with seqtk still.
