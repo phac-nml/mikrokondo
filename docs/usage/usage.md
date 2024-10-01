@@ -112,6 +112,8 @@ Numerous steps within mikrokondo can be turned off without compromising the stab
 - `--skip_metagenomic_detection`: Skips classification of sample as metagnomic and forces a sample to be analyzed as an isolate.
 - `--skip_raw_read_metrics`: Prevents generation of raw read metrics, e.g. metrics generated about the reads before any trimming or filtering is performed.
 - `--skip_mlst`: Skip seven gene MLST.
+- `--skip_length_filtering_contigs`: Skip length filtering of contigs based on the `--qt_min_contig_length` parameter.
+- `--skip_allele_calling`: Skip allele calling with Locidex.
 
 #### Datasets
 Different databases/pre-computed files are required for usage within mikrokondo. These can be downloaded or created by the user, and if not configured within the `nextflow.config` file they can be passed in as files with the following command-line arguments.
@@ -121,6 +123,14 @@ Different databases/pre-computed files are required for usage within mikrokondo.
 - `--bakta_db`: Bakta database for genome annotation.
 - `--kraken2_db`: Kraken2 database that can be used for speciation and binning of meta-genomically assembled contigs.
 - `--staramr_db`: An optional StarAMR database to be passed in, it is recommended to use the database packaged in the container.
+
+#### Allele Scheme Options
+Allele scheme selection parameters.
+
+- `--override_allele_scheme`: Provide the path to an allele scheme (currently only locidex is supported) that will be used for all samples provided. e.g. no automated allele database selection is performed, this scheme will be applied.
+- `--lx_allele_database`: A path to a `manifest.json` file used by locidex for automated allele selection. This option cannot be used along side `--overrided_allele_scheme`.
+  >**Note:** The provide only a path to the `manifest.json` file as `some/directory` **NOT** `some/directory/manifest.json`
+
 
 #### FastP Arguments
 For simplicity parameters affecting FastP have been moved to the top level. Each argument matches one listed within the [FastP](https://phac-nml.github.io/mikrokondo/usage/tool_params/#fastp) usage section with only a `fp_` being appended to the front of the argument. For a more detailed description of what each argument does please review the tool specific parameters for [FastP](https://phac-nml.github.io/mikrokondo/usage/tool_params/#fastp) here.
@@ -148,11 +158,44 @@ Top level parameters that can be passed to Quast.
 
 - `--qt_min_contig_length`: Minimum length of a contig to be analyzed within Quast.
 
-#### Mash parameters
+#### Mash Parameters
 Top level parameters to be passed to Mash.
 
 - `--mh_min_kmer`: The minimum time a kmer needs to appear to be used in genome size estimation by mash.
 
+#### ECTyper Parameters
+Top level parameters to pass to ECTyper. Each argument corresponds to one within ECTyper.
+
+- `--ec_opid`: The minimum percent identity to determine an O antigens presence, It must be an integer.
+- `--ec_opcov`: The minimum percent coverage of O antigen, It must be an integer.
+- `--ec_hpid`: The minimum percent identity to determine an H antigens presence, It must be an integer.
+- `--ec_hcov`: The minimum percent coverage of the H antigen, It must be an integer.
+- `--ec_enable_verification`: A boolean value to enable species verification in ECTyper.
+
+#### SISTR Parameters
+Top level parameters for SISTR.
+
+- `--sr_full_cgmlst`: A boolean value (default is true) to use the full cgMLST set of alleles for SISTR which includes some highly similar alleles.
+
+
+#### Locidex Parameters
+Top level parameters for Locidex. The currently implemented allele caller, do not that internally Locidex uses blast so many of the parameters correspond to blast options.
+
+- `--lx_min_evalue`: Minimum e-value required for a match.
+- `--lx_min_dna_len`: Global minimum query length of DNA strand.
+- `--lx_min_aa_len`: Global minimum query length of an Amino Acid strand.
+- `--lx_max_dna_len`: Global maximum query length of DNA strand.
+- `--lx_max_aa_len`: Global maximum query length of Amino Acid strand.
+- `--lx_min_dna_ident`: Global minimum DNA percent identity required for match. (float).
+- `--lx_min_aa_ident`: Global minimum Amino Acid percent identiy required for match. (float).
+- `--lx_min_dna_match_cov`: Global minimum DNA percent hit coverage identity required for match (float).
+- `--lx_min_aa_match_cov`: Global minimum Amino Acid hit coverage identity required for match (float).
+- `--lx_max_target_seqs`: Maximum number of sequence hits per query.
+- `--lx_extraction_mode`: Different ways to run locidex (Options: snps, trim, raw, extend).
+- `--lx_report_mode`: Allele profile assignment (Options: normal or conservative).
+- `--lx_report_prop`: Metadata label to use for aggregation. Only alphanumeric characters, underscores and dashes are allowed in names.
+- `--lx_report_max_ambig`: Maximum number of ambiguous characters allowed in a sequence.
+- `--lx_report_max_stop`: Maximum number of internal stop codons allowed in a sequence.
 
 #### Containers
 

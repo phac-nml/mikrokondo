@@ -26,7 +26,7 @@ A custom Python script that gathers quality metrics for each fastq file.
     - report_tag: this field determines the name of the Raw Read Metric field in the final summary report. **Do no touch this unless doing pipeline development.**
 
 ### Coreutils
-In cases where a process uses bash scripting only, Nextflow by default will utilize system binaries when they are available and no container is specified. For reproducability, we have chosen to use containers in such cases. When a better container is available, you can direct the pipeline to use it via below commands:
+In cases where a process uses bash scripting only, Nextflow by default will utilize system binaries when they are available and no container is specified. For reproducibility, we have chosen to use containers in such cases. When a better container is available, you can direct the pipeline to use it via below commands:
 
 - coreutils
     - singularity: coreutils singularity container
@@ -34,7 +34,7 @@ In cases where a process uses bash scripting only, Nextflow by default will util
 
 
 ### Python
-Some scripts require Python3, therefore a well tested Python3 container is provided for reproducability. However, as all the scripts within mikrokondo use only the standard library you can swap these containers to use any python interpreter version. For instance, swapping in **pypy3** may result a massive performance boost from the scripts, though this is currently untested.
+Some scripts require Python3, therefore a well tested Python3 container is provided for reproducibility. However, as all the scripts within mikrokondo use only the standard library you can swap these containers to use any python interpreter version. For instance, swapping in **pypy3** may result a massive performance boost from the scripts, though this is currently untested.
 
 - python3
     - singularity: Python3 singularity container
@@ -44,7 +44,7 @@ Some scripts require Python3, therefore a well tested Python3 container is provi
 Kat was previously used to estimate genome size, however at the time of writing KAT appears to be only infrequently updated and newer versions would have issues running/sometimes giving an incorrect output due to failures in peak recognition. Therefore, KAT has been removed from the pipeline, It's code still remains but it **will be removed in the future**.
 
 ### Seqtk
-Seqtk is used for both the sub-sampling of reads and conversion of fasta files to fastq files in mikrokondo. The usage of seqtk to convert a fasta to a fastq is needed in certain typing tools requiring reads as input (this was a design decision for generalizability of the pipeline).
+Seqtk is used for both the sub-sampling of reads and conversion of fasta files to fastq files in mikrokondo. The usage of seqtk to convert a fasta to a fastq is needed in certain typing tools requiring reads as input (this was a design decision to keep the pipeline generalizable).
 
 - seqtk
     - singularity: singularity container for seqtk
@@ -58,7 +58,7 @@ Seqtk is used for both the sub-sampling of reads and conversion of fasta files t
 Fastp is fast and widely used program for gathering of read quality metrics, adapter trimming, read filtering and read trimming. FastP has extensive options for configuration which are detailed in their documentation, but sensible defaults have been set. **Adapter trimming in Fastp is performed using overlap analysis, however if you do not trust this you can specify the sequencing adapters used directly in the additional arguments for Fastp**.
 
 - fastp
-    - singulartiy: singularity container for FastP
+    - singularity: singularity container for FastP
     - docker: docker container for FastP
     - fastq_ext: extension of the output Fastp trimmed reads, do not touch this unless doing pipeline development.
     - html_ext: Extension of the html report output by fastp, do no touch unless doing pipeline development.
@@ -104,10 +104,10 @@ Flye is used for assembly of Nanopore data.
     - log_ext: the file extension for the Flye log files. Do not alter this field unless doing pipeline development
     - json_ext: the file extension for the Flye json files. Do not alter this field unless doing pipeline development
     - **polishing_iterations**: The number of polishing iterations for Flye.
-    - ext_args: Extra commandline options to pass to Flye
+    - ext_args: Extra command line options to pass to Flye
 
 ### Spades
-Usef for paired end read assembly
+Used for paired end read assembly
 
 - spades
     - singularity: Singularity container for spades
@@ -120,7 +120,7 @@ Usef for paired end read assembly
     - outdir: The name of the output directory for assemblies. Do not alter this field unless doing pipeline development
 
 ### FastQC
-This is a defualt tool added to nf-core pipelines. This feature will likely be removed in the future but for those fond of it, the outputs of FastQC still remain.
+This is a default tool added to nf-core pipelines. This feature will likely be removed in the future but for those fond of it, the outputs of FastQC still remain.
 
 - fastqc
     - html_ext: The file extension of the fastqc html file. Do not alter this field unless doing pipeline development
@@ -145,12 +145,12 @@ Assemblies can be prevented from going into further analyses based on the Quast 
 - quast_filter
     - n50_field: The name of the field to search for and filter. Do not alter this field unless doing pipeline development.
     - n50_value: The minimum value the field specified is allowed to contain.
-    - nr_contigs_field: The name of field in the Quast report to fiter on. Do not alter this field unless doing pipeline development.
+    - nr_contigs_field: The name of field in the Quast report to filter on. Do not alter this field unless doing pipeline development.
     - nr_contigs_value: The minimum number of contigs an assembly must have to proceed further through the pipeline.
     - sample_header: The column name in the Quast output containing the sample information. Do not alter this field unless doing pipeline development.
 
 ### CheckM
-CheckM is used within the pipeline for assesing contamination in assemblies.
+CheckM is used within the pipeline for assessing contamination in assemblies.
 
 - checkm
     - singularity: Singularity container containing CheckM
@@ -189,13 +189,13 @@ Run Torsten Seemann's seven gene MLST program.
 - mlst
     - singularity: Singularity container for mlst.
     - docker: Docker container for mlst.
-    - **args**: Addtional arguments to pass to mlst.
+    - **args**: Additional arguments to pass to mlst.
     - tsv_ext: Extension of the mlst tabular file.  Do not alter this field unless doing pipeline development.
     - json_ext: Extension of the mlst output JSON file.  Do not alter this field unless doing pipeline development.
     - report_tag: Name of the data outputs in the final report.  Do not alter this field unless doing pipeline development.
 
 ### Mash
-Mash is used repeatedly througout the pipeline for estimation of genome size from reads, contamination detection and for determining the final species of an assembly.
+Mash is used repeatedly throughout the pipeline for estimation of genome size from reads, contamination detection and for determining the final species of an assembly.
 
 - mash
     - singularity: Singularity container for mash.
@@ -233,14 +233,14 @@ This step is used to remove contaminants from read data, it exists to perform de
     - docker: Docker container used to perform dehosting, this container contains minimap2 and samtools.
     - phix_fa: The path to file containing the phiX fasta.
     - homo_sapiens_fa: The path to file containing the human genomes fasta.
-    - pacbio_mg: The path to file containg the pacbio sequencing control.
+    - pacbio_mg: The path to file containing the pacbio sequencing control.
     - output_ext: The extension of the deconned fastq files. Do not alter this field unless doing pipeline development.
     - mega_mm2_idx: The path to the minimap2 index used for dehosting. Do not alter this field unless doing pipeline development.
     - mm2_illumina: The arguments passed to minimap2 for Illumina data. Do not alter this field unless doing pipeline development.
     - mm2_pac: The arguments passed to minimap2 for Pacbio Data. Do not alter this field unless doing pipeline development.
     - mm2_ont: The arguments passed to minimap2 for Nanopore data. Do not alter this field unless doing pipeline development.
     - samtools_output_ext: The extension of the output from samtools. Do not alter this field unless doing pipeline development.
-    - samtools_singletons_ext: The extension of singelton reads from samtools.  Do not alter this field unless doing pipeline development.
+    - samtools_singletons_ext: The extension of singleton reads from samtools.  Do not alter this field unless doing pipeline development.
     - output_ext: The name of the files output from samtools. Do not alter this field unless doing pipeline development.
     - output_dir: The directory where deconned reads are placed. Do not alter this field unless doing pipeline development.
 
@@ -248,8 +248,8 @@ This step is used to remove contaminants from read data, it exists to perform de
 Minimap2 is used frequently throughout the pipeline for decontamination and mapping reads back to assemblies for polishing.
 
 - minimap2
-    - singularity: The singularity container for minimap2, the same one is used for contmaination removal.
-    - docker: The Docker container for minimap2, the same one is used for contmaination removal.
+    - singularity: The singularity container for minimap2, the same one is used for contamination removal.
+    - docker: The Docker container for minimap2, the same one is used for contamination removal.
     - index_outdir: The directory where created indices are output. Do not alter this field unless doing pipeline development.
     - index_ext: The file extension of create indices. Do not alter this field unless doing pipeline development.
 
@@ -273,7 +273,7 @@ Racon is used as a first pass for polishing assemblies.
     - outdir: The directory containing the polished sequences.  Do not alter this field unless doing pipeline development.
 
 ### Pilon
-Pilon was added to the pipeline, but it is run iteratively which at the time of writing this pipeline was not well supported in Nextflow so a seperate script and containers are provided to utilize Pilon. The code for Pilon remains in the pipeline so that when able to do so easily, iterative Pilon polishing can be integrated directly into the pipeline.
+Pilon was added to the pipeline, but it is run iteratively which at the time of writing this pipeline was not well supported in Nextflow so a separate script and containers are provided to utilize Pilon. The code for Pilon remains in the pipeline so that when able to do so easily, iterative Pilon polishing can be integrated directly into the pipeline.
 
 ### Pilon Iterative Polishing
 This process is a wrapper around minimap2, samtools and Pilon for iterative polishing containers are built **but if you ever have problems with this step, disabling polishing will fix your issue (at the cost of polishing)**.
@@ -290,9 +290,9 @@ This process is a wrapper around minimap2, samtools and Pilon for iterative poli
     - bai_ext: Bam index file extension. Do not alter this field unless doing pipeline development.
     - changes_ext: File extensions for the pilon output containing the changes applied to the assembly. Do not alter this field unless doing pipeline development.
     - changes_outdir: The output directory for the pilon changes.  Do not alter this field unless doing pipeline development.
-    - max_memory_multiplier: On failure this program will try again with more memory, the mulitplier is the factor that the amount of memory passed to the program will be increased by. Do not alter this field unless doing pipeline development.
-    - **max_polishing_illumina**: Number of iterations for polishing an illuina assembly with illumina reads.
-    - **max_polishing_nanopre**: Number of iterations to polish a Nanopore assembly with (will use illumina reads if provided).
+    - max_memory_multiplier: On failure this program will try again with more memory, the multiplier is the factor that the amount of memory passed to the program will be increased by. Do not alter this field unless doing pipeline development.
+    - **max_polishing_illumina**: Number of iterations for polishing an illumina assembly with illumina reads.
+    - **max_polishing_nanopore**: Number of iterations to polish a Nanopore assembly with (will use illumina reads if provided).
     - **max_polishing_pacbio**: Number iterations to polish assembly with (will use illumina reads if provided).
 
 ### Medaka Polishing
@@ -301,12 +301,12 @@ Medaka is used for polishing of Nanopore assemblies, make sure you specify a med
 - medaka
     - singularity: Singularity container with Medaka.
     - docker: Docker container with Medaka.
-    - model: This parameter will be autofilled with the model specified at the top level by the `nanopore_chemistry` option. Do not alter this field unless doing pipeline development.
+    - model: This parameter will be auto filled with the model specified at the top level by the `nanopore_chemistry` option. Do not alter this field unless doing pipeline development.
     - fasta_ext: Polished fasta output. Do not alter this field unless doing pipeline development.
     - batch_size: The batch size passed to medaka, this can improve performance. Do not alter this field unless doing pipeline development.
 
 ### Unicycler
-Unicycler is an option provided for hybrid assembly, it is a great option and outputs an excellent assembly but it requires **A lot** of resources. Which is why the alternate hybrid assembly option using Flye->Racon->Pilon is available. As well there can be a fairly cryptic Spades error generated by Unicycler that usaully relates to memory usage, it will typically say something involving `tputs`.
+Unicycler is an option provided for hybrid assembly, it is a great option and outputs an excellent assembly but it requires **A lot** of resources. Which is why the alternate hybrid assembly option using Flye->Racon->Pilon is available. As well there can be a fairly cryptic Spades error generated by Unicycler that usually relates to memory usage, it will typically say something involving `tputs`.
 
 - unicycler
     - singularity: The Singularity container containing Unicycler.
@@ -337,8 +337,8 @@ StarAMR provides annotation of antimicrobial resistance genes within your data. 
 
 - staramr
     - singularity: The singularity container containing staramr.
-    - docker: The Docker container containing starmar.
-    - **db**: The database for StarAMR. The default value of `null` tells the pipeline to use the database included in the StarAMR container. However you can specify a path to a valid StarAMR datbase and use that instead.
+    - docker: The Docker container containing StarAMR.
+    - **db**: The database for StarAMR. The default value of `null` tells the pipeline to use the database included in the StarAMR container. However you can specify a path to a valid StarAMR database and use that instead.
     - tsv_ext: File extension of the reports from StarAMR. Do not alter this field unless doing pipeline development.
     - txt_ext: File extension of the text reports from StarAMR. Do not alter this field unless doing pipeline development.
     - xlsx_ext: File extension of the excel spread sheet from StarAMR. Do not alter this field unless doing pipeline development.
@@ -347,7 +347,7 @@ StarAMR provides annotation of antimicrobial resistance genes within your data. 
     - report_tag: The field name of StarAMR in the final summary report. Do not alter this field unless doing pipeline development.
     - header_p: Indicates the final report from StarAMR contains a header line. Do not alter this field unless doing pipeline development.
 
-### Bakta
+## Bakta
 Bakta is used to provide annotation of genomes, it is very reliable but it can be slow.
 
 - bakta
@@ -368,7 +368,7 @@ Bakta is used to provide annotation of genomes, it is very reliable but it can b
     - txt_ext: The file extension of the txt report. Do not alter this field unless doing pipeline development.
     - min_contig_length: The minimum contig length to be annotated by Bakta. This can be set from the command line using the argument `--ba_min_contig_length`.
 
-### Bandage
+## Bandage
 Bandage is included to make bandage plots of the initial assemblies e.g. Spades, Flye or Unicycler. These images can be useful in determining the quality of an assembly.
 
 - bandage
@@ -377,7 +377,7 @@ Bandage is included to make bandage plots of the initial assemblies e.g. Spades,
     - svg_ext: The extension of the SVG file created by bandage. Do not alter this field unless doing pipeline development.
     - outdir: The output directory of the bandage images.
 
-### Subtyping Report
+## Subtyping Report
 All sub typing report tools contain a common report tag so that they can be identified by the program.
 
 - subtyping_report
@@ -394,6 +394,11 @@ ECTyper is used to perform *in-silico* typing of *Escherichia coli* and is autom
     - txt_ext: Text file extension of ECTyper output. Do not alter this field unless doing pipeline development.
     - report_tag: Report tag for ECTyper data. Do not alter this field unless doing pipeline development.
     - header_p: denotes if the table output from ECTyper contains a header. Do not alter this field unless doing pipeline development.
+    - ec_opid`: The minimum percent identity to determine an O antigens presence, It must be an integer.
+    - ec_opcov: The minimum percent coverage of O antigen, It must be an integer.
+    - ec_hpid: The minimum percent identity to determine an H antigens presence, It must be an integer.
+    - ec_hcov: The minimum percent coverage of the H antigen, It must be an integer.
+    - ec_enable_verification: A boolean value to enable species verification in ECTyper.
 
 ### Kleborate
 Kleborate performs automatic typing of *Kelbsiella*.
@@ -415,7 +420,7 @@ Performs typing of *Staphylococcus* species.
     - report_tag: The report tag for Spatyper. Do not alter this field unless doing pipeline development.
     - header_p: denotes whether or not the output table contains a header. Do not alter this field unless doing pipeline development.
     - repeats: An optional file specifying repeats can be passed to Spatyper.
-    - repeat_order: An optional file containing a repeat ordet to pass to Spatyper.
+    - repeat_order: An optional file containing a repeat order to pass to Spatyper.
 
 ### SISTR
 *In-silico Salmonella* serotype prediction.
@@ -463,9 +468,60 @@ Code still remains but it will likely be removed later on.
     - report_tag: The report tag for Shigatyper. Do not alter this field unless doing pipeline development.
     - header_p: Denotes if the report output contains a header. Do not alter this field unless doing pipeline development.
 
-### Kraken2 Contig Binning
-Bins contigs based on the Kraken2 output for contaminated/metagenomic samples. This is implemeted by using a custom script.
+## Kraken2 Contig Binning
+Bins contigs based on the Kraken2 output for contaminated/metagenomic samples. This is implemented by using a custom script.
 
 - kraken_bin
-    - **taxonomic_level**: The taxonomic level to bin contigs at. Binning at species level is not recommended the default is to bin at a genus level which is specied by a character of `G`. To bin at a higher level such as family you would specify `F`.
+    - **taxonomic_level**: The taxonomic level to bin contigs at. Binning at species level is not recommended the default is to bin at a genus level which is species by a character of `G`. To bin at a higher level such as family you would specify `F`.
     - fasta_ext: The extension of the fasta files output. Do not alter this field unless doing pipeline development.
+
+## Locidex (Allele Calling)
+Parameters for use of locidex in allele calling.
+
+- Locidex
+    - singularity: The Singularity container containing Locidex.
+    - docker: The path to the Docker container containing Locidex.
+    - private_repository: The path to the Docker container containing Locidex in a private repository (this helps in cloud execution environments).
+    - min_evalue = See `--lx_min_evalue`.
+    - min_dna_len = See `--lx_min_dna_len`.
+    - min_aa_len = See `--lx_min_aa_len`.
+    - max_dna_len = See `--lx_max_dna_len`.
+    - max_aa_len = See `--lx_max_aa_len`.
+    - min_dna_ident = See `--lx_min_dna_ident`.
+    - min_aa_ident = See `--lx_min_aa_ident`.
+    - min_dna_match_cov = See `--lx_min_dna_match_cov`.
+    - min_aa_match_cov = See `--lx_min_aa_match_cov`
+    - max_target_seqs = See `--lx_max_target_seqs`.
+    - extraction_mode = See `--lx_extraction_mode`.
+    - report_mode = See `--lx_report_mode`.
+    - report_prop = See `--lx_report_prop`.
+    - report_max_ambig = See `--lx_report_max_ambig`.
+    - report_max_stop = See `--lx_report_max_stop`.
+    - allele_database = See `--lx_allele_database`.
+    - date_format_string: The date format used in parsing the locidex `manifest.json` file. Do not alter this field unless doing pipeline development.
+    - manifest_db_path: Do not alter this field unless doing pipeline development.
+    - manifest_config_key: The name of key holding config data. Do not alter this field unless doing pipeline development.
+    - manifest_config_name: The name field to use in the locidex `manifest.json` file for db identification. Do not alter this field unless doing pipeline development.
+    - manifest_config_version: Config key field containing the version information for locidex. Do not alter this field unless doing pipeline development.
+    - manifest_name: The name of the `manifest.json` file for locidex. Do not alter this field unless doing pipeline development.
+    - config_data_file: The name of the locidex database file containing config information. Do not alter this field unless doing pipeline development.
+    - database_config_value_date: Name of the field containing the date in the locidex `manifest.json`. Do not alter this field unless doing pipeline development.
+    - extracted_seqs_suffix: Extracted sequences file suffix. Do not alter this field unless doing pipeline development.
+    - seq_store_suffix: Seq store suffix. Do not alter this field unless doing pipeline development.
+    - gbk_suffix: Extension name of the generated GBK file. Do not alter this field unless doing pipeline development.
+    - extraction_dir: Directory name of the locidex extract outputs. Do not alter this field unless doing pipeline development.
+    - report_suffix: Report suffix of the locidex outputs. Do not alter this field unless doing pipeline development.
+    - db_config_output_name: Output name of the selected database used for locidex. Do not alter this field unless doing pipeline development.
+    - report_tag: The report tag for Locidex Report. Do not alter this field unless doing pipeline development.
+
+## Locidex Summary
+The information used in creating a summary of the locidex outputs.
+
+- locidex_summary
+    - report_tag: The report tag for the locidex summary. Do not alter this field unless doing pipeline development.
+    - data_key: The field containing the relevant data to summarize. Do not alter this field unless doing pipeline development.
+    - data_profile_key: The key containing the profile information. Do not alter this field unless doing pipeline development.
+    - data_sample_key: The name of the key containing the sample info. Do not alter this field unless doing pipeline development.
+    - missing_allele_value: The field used for the missing allele value. Do not alter this field unless doing pipeline development.
+    - **reportable_alleles**: A list of alleles to show their presence or absence of in the final output.
+    - report_exclude_fields: Fields to exclude from the final summary report. Do not alter this field unless doing pipeline development.

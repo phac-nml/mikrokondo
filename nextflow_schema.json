@@ -613,14 +613,14 @@
                 "lx_min_dna_ident": {
                     "type": "number",
                     "default": 80,
-                    "description": "Global minimum DNA percent identity required for match. (Float value)",
+                    "description": "Global minimum DNA percent identity required for match. (float).",
                     "minimum": 0,
                     "maximum": 100
                 },
                 "lx_min_aa_ident": {
                     "type": "number",
                     "default": 80,
-                    "description": "Global minimum Amino Acid percent identiy required for match. (Float value)",
+                    "description": "Global minimum Amino Acid percent identiy required for match. (float)",
                     "minimum": 0,
                     "maximum": 100
                 },
@@ -667,7 +667,7 @@
                 "lx_report_prop": {
                     "type": "string",
                     "default": "locus_name",
-                    "description": "Metadata label to use for aggregation. Only alphanumeric characters, underscores and dashes are allowed in names",
+                    "description": "Metadata label to use for aggregation. Only alphanumeric characters, underscores and dashes are allowed in names.",
                     "pattern": "^[A-Za-z0-9_-]*$"
                 },
                 "lx_report_max_ambig": {
