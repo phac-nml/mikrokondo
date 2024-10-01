@@ -138,7 +138,52 @@ nextflow_workflow {
 
         then {
             assert workflow.success
-            assert path("${launchDir}/results/Reads/Processing/Dehosting/Trimmed/DownSampled/Rasusa/SAMPlE1.SAMPlE1_.rasusa.sample.sampled.reads.fastq.gz").exists()
+            assert path("${launchDir}/results/Reads/Processing/Dehosting/Trimmed/DownSampled/Rasusa/SAMPlE1.rasusa.sample.sampled.reads.fastq.gz").exists()
+        }
+
+    }
+
+    test("Test clean reads run without failure illumina (downsampling)") {
+        tag "fake_ill_downsample"
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of(
+                    [
+                        [id: "SAMPlE1", hybrid: false,
+                        assembly: false,
+                        downsampled: false,
+                        single_end: true,
+                        merge: false],
+                        [
+                            file("$baseDir/tests/data/reads/metagenomic_reads1.fq.gz"),
+                            file("$baseDir/tests/data/reads/metagenomic_reads2.fq.gz")
+                        ],
+                    ])
+                input[1] = "nanopore"
+                """
+            }
+
+            params {
+                outdir = "results"
+
+                mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
+                mh_min_kmer = 1
+
+                dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+
+                kraken2_db = "$baseDir/tests/data/kraken2/test"
+                target_depth = 1
+
+                max_memory = "2.GB"
+                max_cpus = 1
+            }
+
+        }
+
+        then {
+            assert workflow.success
         }
 
     }
