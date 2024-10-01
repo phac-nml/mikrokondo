@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Updated`
 
-- Documentation and workflow diagram has been updated
+- Documentation and workflow diagram has been updated. [PR 123](https://github.com/phac-nml/mikrokondo/pull/123)
 
 ## [0.4.2] - 2024-09-25
 
