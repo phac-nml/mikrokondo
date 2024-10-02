@@ -47,6 +47,7 @@ nextflow_workflow {
 
         then {
             assert workflow.success
+            snapshot(workflow.out).match()
         }
 
     }
@@ -93,6 +94,7 @@ nextflow_workflow {
 
         then {
             assert workflow.success
+            snapshot(workflow.out).match()
         }
 
     }
@@ -139,6 +141,7 @@ nextflow_workflow {
         then {
             assert workflow.success
             assert path("${launchDir}/results/Reads/Processing/Dehosting/Trimmed/DownSampled/Rasusa/SAMPlE1.rasusa.sample.sampled.reads.fastq.gz").exists()
+            snapshot(workflow.out).match()
         }
 
     }
@@ -186,9 +189,8 @@ nextflow_workflow {
             assert workflow.success
             assert path("${launchDir}/results/Reads/Processing/Dehosting/Trimmed/DownSampled/SeqTK/SAMPlE1.SAMPlE1_R1.seqtk.sample.sampled.reads.fastq.gz").exists()
             assert path("${launchDir}/results/Reads/Processing/Dehosting/Trimmed/DownSampled/SeqTK/SAMPlE1.SAMPlE1_R2.seqtk.sample.sampled.reads.fastq.gz").exists()
+            snapshot(workflow.out).match()
         }
-
     }
-
 
 }

@@ -55,17 +55,10 @@ workflow QC_READS {
     versions = Channel.empty()
     def platform_comp = platform.toString()
 
-
-    // TODO add in code to check that there are always enough reads left over after decontamination
-    // TODO need to make sure that if one read is unmapped the other is not included as well
     deconned_reads = REMOVE_CONTAMINANTS(reads, params.r_contaminants.mega_mm2_idx ? file(params.r_contaminants.mega_mm2_idx) : error("--dehosting_idx ${params.dehosting_idx} is invalid"), Channel.value(platform_comp))
     versions = versions.mix(REMOVE_CONTAMINANTS.out.versions)
 
-
     ch_meta_cleaned_reads = FASTP_TRIM(deconned_reads.reads) // can use the json output of this to decide if chopper should be run
-
-
-
     reports = reports.mix(ch_meta_cleaned_reads.fastp_json.map{
         meta, json -> tuple(meta, params.fastp, json)
     })
@@ -79,7 +72,6 @@ workflow QC_READS {
         passed: it[1] >= params.min_reads
         failed: true
     }
-
 
     // This can be condensed to one line...
     reports = reports.mix(reads_passed.failed.map{
