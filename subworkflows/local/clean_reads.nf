@@ -135,9 +135,9 @@ workflow QC_READS {
             log.info "Not down sampling ${it[0].id} as estimated sample depth is already below targeted depth of ${params.target_depth}."
         }
 
-        to_down_sample = reads_sample.sub_sample.branch { meta, reads, sample_frac ->
-            short_reads: !meta.single_end // Hybrid and short reads sets still go to seqtk
-            long_reads: meta.single_end
+        to_down_sample = reads_sample.sub_sample.branch { it ->
+            short_reads: !it[0].single_end
+            long_reads: true
         }
 
         // Short reads and hybrid reads sets get sampled with seqtk still.
@@ -178,7 +178,6 @@ workflow QC_READS {
     }
 
     mash_screen_out = MASH_SCREEN(ch_prepped_reads, params.mash.mash_sketch ? file(params.mash.mash_sketch) : error("--mash_sketch ${params.mash_sketch} is invalid"))
-
     versions = versions.mix(mash_screen_out.versions)
 
     // Determine if sample is metagenomic

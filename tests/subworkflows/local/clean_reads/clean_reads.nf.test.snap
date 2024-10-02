@@ -3,16 +3,59 @@
         "content": [
             {
                 "0": [
-                    
+                    [
+                        {
+                            "id": "SAMPlE1",
+                            "hybrid": false,
+                            "sample": "SAMPLE1",
+                            "assembly": false,
+                            "downsampled": false,
+                            "single_end": false,
+                            "merge": false,
+                            "metagenomic": false
+                        },
+                        [
+                            "SAMPlE1.R1.trimmed.fastq.gz:md5,b556c9169c14812c9413a66441ef7a52",
+                            "SAMPlE1.R2.trimmed.fastq.gz:md5,2ab187b817ff8afb8f83fdbc51a7e287"
+                        ]
+                    ]
                 ],
                 "1": [
-                    
+                    [
+                        {
+                            "id": "SAMPlE1",
+                            "hybrid": false,
+                            "sample": "SAMPLE1",
+                            "assembly": false,
+                            "downsampled": false,
+                            "single_end": false,
+                            "merge": false
+                        },
+                        22797
+                    ]
                 ],
                 "2": [
                     [
                         {
                             "id": "SAMPlE1",
                             "hybrid": false,
+                            "sample": "SAMPLE1",
+                            "assembly": false,
+                            "downsampled": false,
+                            "single_end": false,
+                            "merge": false,
+                            "metagenomic": false
+                        },
+                        {
+                            "report_tag": "MashMeta"
+                        },
+                        "false"
+                    ],
+                    [
+                        {
+                            "id": "SAMPlE1",
+                            "hybrid": false,
+                            "sample": "SAMPLE1",
                             "assembly": false,
                             "downsampled": false,
                             "single_end": false,
@@ -56,30 +99,61 @@
                         {
                             "id": "SAMPlE1",
                             "hybrid": false,
+                            "sample": "SAMPLE1",
                             "assembly": false,
                             "downsampled": false,
                             "single_end": false,
                             "merge": false
                         },
                         {
-                            "threshold": 1000,
+                            "threshold": 1,
                             "report_tag": "MeetsReadThreshold"
                         },
-                        false
+                        true
                     ]
                 ],
                 "3": [
+                    "versions.yml:md5,24650bb863b10ea27510d94eafc0f6ff",
+                    "versions.yml:md5,3879b6c1eb5ca6e84d9f6d67c3b7c97a",
                     "versions.yml:md5,662de06a73ecf3af0c3a670b6cbdb130",
                     "versions.yml:md5,9f9fdde5178fcb4d6a69e86c6f7d61b2"
                 ],
                 "genome_size": [
-                    
+                    [
+                        {
+                            "id": "SAMPlE1",
+                            "hybrid": false,
+                            "sample": "SAMPLE1",
+                            "assembly": false,
+                            "downsampled": false,
+                            "single_end": false,
+                            "merge": false
+                        },
+                        22797
+                    ]
                 ],
                 "reports": [
                     [
                         {
                             "id": "SAMPlE1",
                             "hybrid": false,
+                            "sample": "SAMPLE1",
+                            "assembly": false,
+                            "downsampled": false,
+                            "single_end": false,
+                            "merge": false,
+                            "metagenomic": false
+                        },
+                        {
+                            "report_tag": "MashMeta"
+                        },
+                        "false"
+                    ],
+                    [
+                        {
+                            "id": "SAMPlE1",
+                            "hybrid": false,
+                            "sample": "SAMPLE1",
                             "assembly": false,
                             "downsampled": false,
                             "single_end": false,
@@ -123,22 +197,40 @@
                         {
                             "id": "SAMPlE1",
                             "hybrid": false,
+                            "sample": "SAMPLE1",
                             "assembly": false,
                             "downsampled": false,
                             "single_end": false,
                             "merge": false
                         },
                         {
-                            "threshold": 1000,
+                            "threshold": 1,
                             "report_tag": "MeetsReadThreshold"
                         },
-                        false
+                        true
                     ]
                 ],
                 "trimmed_reads": [
-                    
+                    [
+                        {
+                            "id": "SAMPlE1",
+                            "hybrid": false,
+                            "sample": "SAMPLE1",
+                            "assembly": false,
+                            "downsampled": false,
+                            "single_end": false,
+                            "merge": false,
+                            "metagenomic": false
+                        },
+                        [
+                            "SAMPlE1.R1.trimmed.fastq.gz:md5,b556c9169c14812c9413a66441ef7a52",
+                            "SAMPlE1.R2.trimmed.fastq.gz:md5,2ab187b817ff8afb8f83fdbc51a7e287"
+                        ]
+                    ]
                 ],
                 "versions": [
+                    "versions.yml:md5,24650bb863b10ea27510d94eafc0f6ff",
+                    "versions.yml:md5,3879b6c1eb5ca6e84d9f6d67c3b7c97a",
                     "versions.yml:md5,662de06a73ecf3af0c3a670b6cbdb130",
                     "versions.yml:md5,9f9fdde5178fcb4d6a69e86c6f7d61b2"
                 ]
@@ -148,7 +240,7 @@
             "nf-test": "0.9.0",
             "nextflow": "24.04.4"
         },
-        "timestamp": "2024-10-02T09:12:02.784693019"
+        "timestamp": "2024-10-02T15:22:59.669978749"
     },
     "Test clean reads run without failure fake nanopore (downsampling)": {
         "content": [
@@ -158,6 +250,7 @@
                         {
                             "id": "SAMPlE1",
                             "hybrid": false,
+                            "sample": "SAMPLE1",
                             "assembly": false,
                             "downsampled": true,
                             "single_end": true,
@@ -172,6 +265,7 @@
                         {
                             "id": "SAMPlE1",
                             "hybrid": false,
+                            "sample": "SAMPLE1",
                             "assembly": false,
                             "downsampled": false,
                             "single_end": true,
@@ -185,6 +279,7 @@
                         {
                             "id": "SAMPlE1",
                             "hybrid": false,
+                            "sample": "SAMPLE1",
                             "assembly": false,
                             "downsampled": true,
                             "single_end": true,
@@ -200,6 +295,7 @@
                         {
                             "id": "SAMPlE1",
                             "hybrid": false,
+                            "sample": "SAMPLE1",
                             "assembly": false,
                             "downsampled": true,
                             "single_end": true,
@@ -217,6 +313,7 @@
                         {
                             "id": "SAMPlE1",
                             "hybrid": false,
+                            "sample": "SAMPLE1",
                             "assembly": false,
                             "downsampled": true,
                             "single_end": true,
@@ -260,6 +357,7 @@
                         {
                             "id": "SAMPlE1",
                             "hybrid": false,
+                            "sample": "SAMPLE1",
                             "assembly": false,
                             "downsampled": true,
                             "single_end": true,
@@ -284,6 +382,7 @@
                         {
                             "id": "SAMPlE1",
                             "hybrid": false,
+                            "sample": "SAMPLE1",
                             "assembly": false,
                             "downsampled": false,
                             "single_end": true,
@@ -297,6 +396,7 @@
                         {
                             "id": "SAMPlE1",
                             "hybrid": false,
+                            "sample": "SAMPLE1",
                             "assembly": false,
                             "downsampled": true,
                             "single_end": true,
@@ -312,6 +412,7 @@
                         {
                             "id": "SAMPlE1",
                             "hybrid": false,
+                            "sample": "SAMPLE1",
                             "assembly": false,
                             "downsampled": true,
                             "single_end": true,
@@ -329,6 +430,7 @@
                         {
                             "id": "SAMPlE1",
                             "hybrid": false,
+                            "sample": "SAMPLE1",
                             "assembly": false,
                             "downsampled": true,
                             "single_end": true,
@@ -372,6 +474,7 @@
                         {
                             "id": "SAMPlE1",
                             "hybrid": false,
+                            "sample": "SAMPLE1",
                             "assembly": false,
                             "downsampled": true,
                             "single_end": true,
@@ -389,6 +492,7 @@
                         {
                             "id": "SAMPlE1",
                             "hybrid": false,
+                            "sample": "SAMPLE1",
                             "assembly": false,
                             "downsampled": true,
                             "single_end": true,
@@ -411,7 +515,7 @@
             "nf-test": "0.9.0",
             "nextflow": "24.04.4"
         },
-        "timestamp": "2024-10-02T09:12:58.150055653"
+        "timestamp": "2024-10-02T15:23:48.645310821"
     },
     "Test clean reads run without failure illumina (downsampling)": {
         "content": [
@@ -421,6 +525,7 @@
                         {
                             "id": "SAMPlE1",
                             "hybrid": false,
+                            "sample": "SAMPLE1",
                             "assembly": false,
                             "downsampled": true,
                             "single_end": false,
@@ -438,6 +543,7 @@
                         {
                             "id": "SAMPlE1",
                             "hybrid": false,
+                            "sample": "SAMPLE1",
                             "assembly": false,
                             "downsampled": false,
                             "single_end": false,
@@ -451,6 +557,7 @@
                         {
                             "id": "SAMPlE1",
                             "hybrid": false,
+                            "sample": "SAMPLE1",
                             "assembly": false,
                             "downsampled": true,
                             "single_end": false,
@@ -466,6 +573,7 @@
                         {
                             "id": "SAMPlE1",
                             "hybrid": false,
+                            "sample": "SAMPLE1",
                             "assembly": false,
                             "downsampled": true,
                             "single_end": false,
@@ -509,6 +617,7 @@
                         {
                             "id": "SAMPlE1",
                             "hybrid": false,
+                            "sample": "SAMPLE1",
                             "assembly": false,
                             "downsampled": true,
                             "single_end": false,
@@ -528,6 +637,7 @@
                         {
                             "id": "SAMPlE1",
                             "hybrid": false,
+                            "sample": "SAMPLE1",
                             "assembly": false,
                             "downsampled": true,
                             "single_end": false,
@@ -552,6 +662,7 @@
                         {
                             "id": "SAMPlE1",
                             "hybrid": false,
+                            "sample": "SAMPLE1",
                             "assembly": false,
                             "downsampled": false,
                             "single_end": false,
@@ -565,6 +676,7 @@
                         {
                             "id": "SAMPlE1",
                             "hybrid": false,
+                            "sample": "SAMPLE1",
                             "assembly": false,
                             "downsampled": true,
                             "single_end": false,
@@ -580,6 +692,7 @@
                         {
                             "id": "SAMPlE1",
                             "hybrid": false,
+                            "sample": "SAMPLE1",
                             "assembly": false,
                             "downsampled": true,
                             "single_end": false,
@@ -623,6 +736,7 @@
                         {
                             "id": "SAMPlE1",
                             "hybrid": false,
+                            "sample": "SAMPLE1",
                             "assembly": false,
                             "downsampled": true,
                             "single_end": false,
@@ -642,6 +756,7 @@
                         {
                             "id": "SAMPlE1",
                             "hybrid": false,
+                            "sample": "SAMPLE1",
                             "assembly": false,
                             "downsampled": true,
                             "single_end": false,
@@ -659,6 +774,7 @@
                         {
                             "id": "SAMPlE1",
                             "hybrid": false,
+                            "sample": "SAMPLE1",
                             "assembly": false,
                             "downsampled": true,
                             "single_end": false,
@@ -684,16 +800,39 @@
             "nf-test": "0.9.0",
             "nextflow": "24.04.4"
         },
-        "timestamp": "2024-10-02T09:13:28.292223121"
+        "timestamp": "2024-10-02T15:24:12.552717116"
     },
     "Test clean reads run without failure fake nanopore": {
         "content": [
             {
                 "0": [
-                    
+                    [
+                        {
+                            "id": "SAMPlE1",
+                            "hybrid": false,
+                            "assembly": false,
+                            "sample": "SAMPLE1",
+                            "downsampled": false,
+                            "single_end": true,
+                            "merge": false,
+                            "metagenomic": false
+                        },
+                        "SAMPlE1.trimmed.fastq.gz:md5,0c0a1017fbf2821190d207bac34d8fbb"
+                    ]
                 ],
                 "1": [
-                    
+                    [
+                        {
+                            "id": "SAMPlE1",
+                            "hybrid": false,
+                            "assembly": false,
+                            "sample": "SAMPLE1",
+                            "downsampled": false,
+                            "single_end": true,
+                            "merge": false
+                        },
+                        16980
+                    ]
                 ],
                 "2": [
                     [
@@ -701,6 +840,23 @@
                             "id": "SAMPlE1",
                             "hybrid": false,
                             "assembly": false,
+                            "sample": "SAMPLE1",
+                            "downsampled": false,
+                            "single_end": true,
+                            "merge": false,
+                            "metagenomic": false
+                        },
+                        {
+                            "report_tag": "MashMeta"
+                        },
+                        "false"
+                    ],
+                    [
+                        {
+                            "id": "SAMPlE1",
+                            "hybrid": false,
+                            "assembly": false,
+                            "sample": "SAMPLE1",
                             "downsampled": false,
                             "single_end": true,
                             "merge": false
@@ -744,23 +900,37 @@
                             "id": "SAMPlE1",
                             "hybrid": false,
                             "assembly": false,
+                            "sample": "SAMPLE1",
                             "downsampled": false,
                             "single_end": true,
                             "merge": false
                         },
                         {
-                            "threshold": 1000,
+                            "threshold": 1,
                             "report_tag": "MeetsReadThreshold"
                         },
-                        false
+                        true
                     ]
                 ],
                 "3": [
+                    "versions.yml:md5,24650bb863b10ea27510d94eafc0f6ff",
+                    "versions.yml:md5,3879b6c1eb5ca6e84d9f6d67c3b7c97a",
                     "versions.yml:md5,662de06a73ecf3af0c3a670b6cbdb130",
                     "versions.yml:md5,9f9fdde5178fcb4d6a69e86c6f7d61b2"
                 ],
                 "genome_size": [
-                    
+                    [
+                        {
+                            "id": "SAMPlE1",
+                            "hybrid": false,
+                            "assembly": false,
+                            "sample": "SAMPLE1",
+                            "downsampled": false,
+                            "single_end": true,
+                            "merge": false
+                        },
+                        16980
+                    ]
                 ],
                 "reports": [
                     [
@@ -768,6 +938,23 @@
                             "id": "SAMPlE1",
                             "hybrid": false,
                             "assembly": false,
+                            "sample": "SAMPLE1",
+                            "downsampled": false,
+                            "single_end": true,
+                            "merge": false,
+                            "metagenomic": false
+                        },
+                        {
+                            "report_tag": "MashMeta"
+                        },
+                        "false"
+                    ],
+                    [
+                        {
+                            "id": "SAMPlE1",
+                            "hybrid": false,
+                            "assembly": false,
+                            "sample": "SAMPLE1",
                             "downsampled": false,
                             "single_end": true,
                             "merge": false
@@ -811,21 +998,36 @@
                             "id": "SAMPlE1",
                             "hybrid": false,
                             "assembly": false,
+                            "sample": "SAMPLE1",
                             "downsampled": false,
                             "single_end": true,
                             "merge": false
                         },
                         {
-                            "threshold": 1000,
+                            "threshold": 1,
                             "report_tag": "MeetsReadThreshold"
                         },
-                        false
+                        true
                     ]
                 ],
                 "trimmed_reads": [
-                    
+                    [
+                        {
+                            "id": "SAMPlE1",
+                            "hybrid": false,
+                            "assembly": false,
+                            "sample": "SAMPLE1",
+                            "downsampled": false,
+                            "single_end": true,
+                            "merge": false,
+                            "metagenomic": false
+                        },
+                        "SAMPlE1.trimmed.fastq.gz:md5,0c0a1017fbf2821190d207bac34d8fbb"
+                    ]
                 ],
                 "versions": [
+                    "versions.yml:md5,24650bb863b10ea27510d94eafc0f6ff",
+                    "versions.yml:md5,3879b6c1eb5ca6e84d9f6d67c3b7c97a",
                     "versions.yml:md5,662de06a73ecf3af0c3a670b6cbdb130",
                     "versions.yml:md5,9f9fdde5178fcb4d6a69e86c6f7d61b2"
                 ]
@@ -835,6 +1037,6 @@
             "nf-test": "0.9.0",
             "nextflow": "24.04.4"
         },
-        "timestamp": "2024-10-02T09:12:30.613388911"
+        "timestamp": "2024-10-02T15:23:24.663457495"
     }
 }

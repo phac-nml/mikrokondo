@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Changed`
 
-- Added RASUSA for downsampling of nanopore or pacbio data.
+- Added RASUSA for downsampling of Nanopore or PacBio data. [PR 125](https://github.com/phac-nml/mikrokondo/pull/125)
 
 ### `Updated`
 
