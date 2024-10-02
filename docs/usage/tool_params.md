@@ -52,7 +52,16 @@ Seqtk is used for both the sub-sampling of reads and conversion of fasta files t
     - seed: A seed value for sub-sampling
     - reads_ext: Extension of reads after sub-sampling, do not touch alter this unless doing pipeline development.
     - assembly_fastq: Extension of the fastas after being converted to fastq files. Do no touch this unless doing pipeline development.
-    - report_tag: Name of seqtk data in the final summary report. Do no touch this unless doing pipeline development.
+    - report_tag: Name of seqtk data in the fi nal summary report. Do no touch this unless doing pipeline development.
+
+### Rasusa
+For long read data Rasusa is used for down sampling as it take read length into consideration when down sampling.
+
+- rasusa
+    - singularity: singularity container for rasusa
+    - docker: docker container for rasusa
+    - seed: A seed value for sub-sampling
+    - reads_ext: The extension of the generated fastq files. Do no touch this unless doing pipeline development.
 
 ### FastP
 Fastp is fast and widely used program for gathering of read quality metrics, adapter trimming, read filtering and read trimming. FastP has extensive options for configuration which are detailed in their documentation, but sensible defaults have been set. **Adapter trimming in Fastp is performed using overlap analysis, however if you do not trust this you can specify the sequencing adapters used directly in the additional arguments for Fastp**.
