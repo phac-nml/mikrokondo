@@ -171,3 +171,7 @@ Samplesheet
 TSeemann's
 RASUSA
 downsampling
+Christy
+Marinier
+Petkau
+
