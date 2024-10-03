@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Documentation and workflow diagram has been updated. [PR 123](https://github.com/phac-nml/mikrokondo/pull/123)
 
+- Documentation and Readme has been updated. [PR 126](https://github.com/phac-nml/mikrokondo/pull/126)
+
 ## [0.4.2] - 2024-09-25
 
 ### `Fixed`

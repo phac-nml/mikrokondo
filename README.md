@@ -53,7 +53,7 @@ This workflow will detect what pathogen(s) is present and apply the applicable m
 
 This software (currently unpublished) can be cited as:
 
-- Wells, M. "mikrokondo" Github <https://github.com/phac-nml/mikrokondo/>
+- Matthew Wells, James Robertson, Aaron Petkau, Christy-Lynn Peterson, Eric Marinier. "mikrokondo" Github <https://github.com/phac-nml/mikrokondo/>
 
 An extensive list of references for the tools used by the pipeline can be found in the [`CITATIONS.md`](CITATIONS.md) file.
 
@@ -103,32 +103,23 @@ The above downloadable resources must be updated in the following places in your
 
 ```
 // Bakta db path, note the quotation marks
-bakta {
-    db = "/PATH/TO/BAKTA/DB"
-}
+bakta_db = "/PATH/TO/BAKTA/DB"
 
 // Decontamination minimap2 index, note the quotation marks
-r_contaminants {
-    mega_mm2_idx = "/PATH/TO/DECONTAMINATION/INDEX"
-}
+dehosting_idx = "/PATH/TO/DECONTAMINATION/INDEX"
 
 // kraken db path, not the quotation marks
-kraken {
-    db = "/PATH/TO/KRAKEN/DATABASE/"
-}
+kraken2_db = "/PATH/TO/KRAKEN/DATABASE/"
 
 // GTDB Mash sketch, note the quotation marks
-mash {
-    mash_sketch = "/PATH/TO/MASH/SKETCH/"
-}
+mash_sketch = "/PATH/TO/MASH/SKETCH/"
 
 // STARAMR database path, note the quotation marks
 // Passing in a StarAMR database is optional if one is not specified the database in the container will be used. You can just leave the db option as null if you do not wish to pass one
-staramr {
-  db = "/PATH/TO/STARMAR/DB"
-}
-
+staramr_db = "/PATH/TO/STARMAR/DB"
 ```
+
+The above parameters can be accessed for the command line as for passing arguments to the pipeline if not set in the `nextflow.config` file.
 
 # Getting Started
 ## Usage

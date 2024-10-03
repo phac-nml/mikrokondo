@@ -109,7 +109,7 @@ Numerous steps within mikrokondo can be turned off without compromising the stab
 - `--skip_subtyping`: to turn off automatic triggering of subtyping in the pipeline (useful when target organism does not have a subtyping tool installed within mikrokondo).
 - `--skip_version_gathering`: prevents the collation of tool versions. This process generally takes a couple minutes (at worst) but can be useful when during recurrent runs of the pipeline (like when testing settings).
 - `--skip_report`: Prevents creation of final report summary report amalgamating outputs of all other files, this will also turnoff the creation of individual sub-reports.
-- `--skip_metagenomic_detection`: Skips classification of sample as metagnomic and forces a sample to be analyzed as an isolate.
+- `--skip_metagenomic_detection`: Skips classification of sample as metagenomic and forces a sample to be analyzed as an isolate.
 - `--skip_raw_read_metrics`: Prevents generation of raw read metrics, e.g. metrics generated about the reads before any trimming or filtering is performed.
 - `--skip_mlst`: Skip seven gene MLST.
 - `--skip_length_filtering_contigs`: Skip length filtering of contigs based on the `--qt_min_contig_length` parameter.
@@ -128,7 +128,7 @@ Different databases/pre-computed files are required for usage within mikrokondo.
 Allele scheme selection parameters.
 
 - `--override_allele_scheme`: Provide the path to an allele scheme (currently only locidex is supported) that will be used for all samples provided. e.g. no automated allele database selection is performed, this scheme will be applied.
-- `--lx_allele_database`: A path to a `manifest.json` file used by locidex for automated allele selection. This option cannot be used along side `--overrided_allele_scheme`.
+- `--lx_allele_database`: A path to a `manifest.json` file used by locidex for automated allele selection. This option cannot be used along side `--override_allele_scheme`.
   >**Note:** The provide only a path to the `manifest.json` file as `some/directory` **NOT** `some/directory/manifest.json`
 
 
@@ -187,7 +187,7 @@ Top level parameters for Locidex. The currently implemented allele caller, do no
 - `--lx_max_dna_len`: Global maximum query length of DNA strand.
 - `--lx_max_aa_len`: Global maximum query length of Amino Acid strand.
 - `--lx_min_dna_ident`: Global minimum DNA percent identity required for match. (float).
-- `--lx_min_aa_ident`: Global minimum Amino Acid percent identiy required for match. (float).
+- `--lx_min_aa_ident`: Global minimum Amino Acid percent identity required for match. (float).
 - `--lx_min_dna_match_cov`: Global minimum DNA percent hit coverage identity required for match (float).
 - `--lx_min_aa_match_cov`: Global minimum Amino Acid hit coverage identity required for match (float).
 - `--lx_max_target_seqs`: Maximum number of sequence hits per query.
@@ -219,7 +219,7 @@ Different container services can be specified from the command line when running
 
 #### Slurm options
 
-- `slurm_p true`: slurm execurtor will be used.
+- `slurm_p true`: slurm executor will be used.
 - `slurm_profile STRING`: a string to allow the user to specify which slurm partition to use.
 
 ## Output
