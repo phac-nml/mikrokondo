@@ -169,3 +169,5 @@ dependentRequired
 errorMessage
 Samplesheet
 TSeemann's
+RASUSA
+downsampling

@@ -1,0 +1,256 @@
+nextflow_workflow {
+    name "Test workflow QC_READS"
+    script "subworkflows/local/clean_reads.nf"
+    workflow "QC_READS"
+    tag "subworkflow"
+    tag "clean_reads"
+
+    test("Test clean reads run without failure illumina") {
+        tag "clean_illumina"
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of(
+                    [
+                        [id: "SAMPlE1",
+                        hybrid: false,
+                        sample: "SAMPLE1",
+                        assembly: false,
+                        downsampled: false,
+                        single_end: false,
+                        merge: false],
+                        [
+                            file("$baseDir/tests/data/reads/campy-staph1.fq.gz"),
+                            file("$baseDir/tests/data/reads/campy-staph2.fq.gz")
+                        ]
+                    ])
+                input[1] = "illumina"
+                """
+            }
+
+            params {
+                outdir = "results"
+                min_reads = 1
+                mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
+                mh_min_kmer = 1
+
+                dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+
+                kraken2_db = "$baseDir/tests/data/kraken2/test"
+
+
+                max_memory = "2.GB"
+                max_cpus = 1
+            }
+
+        }
+
+        then {
+
+            assert workflow.success
+            assert path("${launchDir}/results/Reads/FinalReads/SAMPLE1/SAMPlE1.final.R1.trimmed.reads.fastq.gz").exists()
+            assert path("${launchDir}/results/Reads/FinalReads/SAMPLE1/SAMPlE1.final.R2.trimmed.reads.fastq.gz").exists()
+            assert path("${launchDir}/results/Reads/Processing/Dehosting/SAMPlE1.deconned.R1.deconned.reads.fastq.gz").exists()
+            assert path("${launchDir}/results/Reads/Processing/Dehosting/SAMPlE1.deconned.R2.deconned.reads.fastq.gz").exists()
+            assert path("${launchDir}/results/Reads/Processing/Dehosting/Trimmed/FastP/SAMPlE1.fastp.R1.trimmed.reads.fastq.gz").exists()
+            assert path("${launchDir}/results/Reads/Processing/Dehosting/Trimmed/FastP/SAMPlE1.fastp.R2.trimmed.reads.fastq.gz").exists()
+            assert path("${launchDir}/results/Reads/Processing/Dehosting/Trimmed/MashSketches/SAMPlE1.mash.estimate.msh").exists()
+            assert path("${launchDir}/results/Reads/Quality/Trimmed/FastP/SAMPlE1.fastp.summary.html").exists()
+            assert path("${launchDir}/results/Reads/Quality/Trimmed/FastP/SAMPlE1.fastp.summary.json").exists()
+            assert path("${launchDir}/results/Reads/Quality/Trimmed/MashScreen/SAMPlE1.mash.screen.reads.screen.screen").exists()
+            assert path("${launchDir}/results/Reads/Processing/Dehosting/SAMPlE1.deconned.R1.deconned.reads.fastq.gz").linesGzip.size() == 496
+            assert path("${launchDir}/results/Reads/Processing/Dehosting/SAMPlE1.deconned.R2.deconned.reads.fastq.gz").linesGzip.size() == 496
+            assert path("${launchDir}/results/Reads/Processing/Dehosting/Trimmed/FastP/SAMPlE1.fastp.R1.trimmed.reads.fastq.gz").linesGzip.size() == 496
+            assert path("${launchDir}/results/Reads/Processing/Dehosting/Trimmed/FastP/SAMPlE1.fastp.R2.trimmed.reads.fastq.gz").linesGzip.size() == 496
+            snapshot(workflow.out).match()
+
+        }
+
+    }
+
+
+    test("Test clean reads run without failure fake nanopore") {
+        tag "fake_ont"
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of(
+                    [
+                        [id: "SAMPlE1",
+                        hybrid: false,
+                        assembly: false,
+                        sample: "SAMPLE1",
+                        downsampled: false,
+                        single_end: true,
+                        merge: false],
+                        [
+                            file("$baseDir/tests/data/reads/campy-staph1.fq.gz"),
+                        ]
+                    ])
+                input[1] = "nanopore"
+                """
+            }
+
+            params {
+                outdir = "results"
+                min_reads = 1
+                mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
+                mh_min_kmer = 1
+
+                dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+
+                kraken2_db = "$baseDir/tests/data/kraken2/test"
+
+
+                max_memory = "2.GB"
+                max_cpus = 1
+            }
+
+        }
+
+        then {
+            assert workflow.success
+            assert path("${launchDir}/results/Reads/FinalReads/SAMPLE1/SAMPlE1.final.trimmed.reads.fastq.gz").exists()
+            assert path("${launchDir}/results/Reads/Processing/Dehosting/SAMPlE1.deconned.deconned.reads.fastq.gz").exists()
+            assert path("${launchDir}/results/Reads/Processing/Dehosting/Trimmed/FastP/SAMPlE1.fastp.trimmed.reads.fastq.gz").exists()
+            assert path("${launchDir}/results/Reads/Processing/Dehosting/Trimmed/MashSketches/SAMPlE1.mash.estimate.msh").exists()
+            assert path("${launchDir}/results/Reads/Quality/Trimmed/FastP/SAMPlE1.fastp.summary.html").exists()
+            assert path("${launchDir}/results/Reads/Quality/Trimmed/FastP/SAMPlE1.fastp.summary.json").exists()
+            assert path("${launchDir}/results/Reads/Quality/Trimmed/MashScreen/SAMPlE1.mash.screen.reads.screen.screen").exists()
+            assert path("${launchDir}/results/Reads/Processing/Dehosting/SAMPlE1.deconned.deconned.reads.fastq.gz").linesGzip.size() == 500
+            assert path("${launchDir}/results/Reads/Processing/Dehosting/Trimmed/FastP/SAMPlE1.fastp.trimmed.reads.fastq.gz").linesGzip.size() == 500
+            assert path("${launchDir}/results/Reads/FinalReads/SAMPLE1/SAMPlE1.final.trimmed.reads.fastq.gz").linesGzip.size() == 500
+            snapshot(workflow.out).match()
+
+        }
+
+    }
+
+
+    test("Test clean reads run without failure fake nanopore (downsampling)") {
+        tag "fake_ont_downsample"
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of(
+                    [
+                        [id: "SAMPlE1",
+                        hybrid: false,
+                        sample: "SAMPLE1",
+                        assembly: false,
+                        downsampled: false,
+                        single_end: true,
+                        merge: false],
+                        [
+                            file("$baseDir/tests/data/reads/metagenomic_reads1.fq.gz"),
+                        ],
+                    ])
+                input[1] = "nanopore"
+                """
+            }
+
+            params {
+                outdir = "results"
+
+                mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
+                mh_min_kmer = 1
+
+                dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+
+                kraken2_db = "$baseDir/tests/data/kraken2/test"
+                target_depth = 1
+
+                max_memory = "2.GB"
+                max_cpus = 1
+            }
+
+        }
+
+        then {
+                assert workflow.success
+                assert path("${launchDir}/results/Reads/FinalReads/SAMPLE1/SAMPlE1.final.sampled.reads.fastq.gz").exists()
+                assert path("${launchDir}/results/Reads/Processing/Dehosting/SAMPlE1.deconned.deconned.reads.fastq.gz").exists()
+                assert path("${launchDir}/results/Reads/Processing/Dehosting/Trimmed/DownSampled/Rasusa/SAMPlE1.rasusa.sample.sampled.reads.fastq.gz").exists()
+                assert path("${launchDir}/results/Reads/Processing/Dehosting/Trimmed/FastP/SAMPlE1.fastp.trimmed.reads.fastq.gz").exists()
+                assert path("${launchDir}/results/Reads/Quality/Trimmed/FastP/SAMPlE1.fastp.summary.html").exists()
+                assert path("${launchDir}/results/Reads/Quality/Trimmed/FastP/SAMPlE1.fastp.summary.json").exists()
+                assert path("${launchDir}/results/Reads/FinalReads/SAMPLE1/SAMPlE1.final.sampled.reads.fastq.gz").linesGzip.size() == 5656
+                assert path("${launchDir}/results/Reads/Processing/Dehosting/SAMPlE1.deconned.deconned.reads.fastq.gz").linesGzip.size() == 16680
+                assert path("${launchDir}/results/Reads/Processing/Dehosting/Trimmed/DownSampled/Rasusa/SAMPlE1.rasusa.sample.sampled.reads.fastq.gz").linesGzip.size() == 5656
+                assert path("${launchDir}/results/Reads/Processing/Dehosting/Trimmed/FastP/SAMPlE1.fastp.trimmed.reads.fastq.gz").linesGzip.size() == 16680
+                snapshot(workflow.out).match()
+
+        }
+
+    }
+
+    test("Test clean reads run without failure illumina (downsampling)") {
+        tag "fake_ill_downsample"
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of(
+                    [
+                        [id: "SAMPlE1",
+                        hybrid: false,
+                        sample: "SAMPLE1",
+                        assembly: false,
+                        downsampled: false,
+                        single_end: false,
+                        merge: false],
+                        [
+                            file("$baseDir/tests/data/reads/metagenomic_reads1.fq.gz"),
+                            file("$baseDir/tests/data/reads/metagenomic_reads2.fq.gz")
+                        ],
+                    ])
+                input[1] = "illumina"
+                """
+            }
+
+            params {
+                outdir = "results"
+
+                mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
+                mh_min_kmer = 1
+
+                dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+
+                kraken2_db = "$baseDir/tests/data/kraken2/test"
+                target_depth = 1
+
+                max_memory = "2.GB"
+                max_cpus = 1
+            }
+
+        }
+
+        then {
+            assert workflow.success
+            assert path("${launchDir}/results/Reads/Processing/Dehosting/Trimmed/FastP/SAMPlE1.fastp.R1.trimmed.reads.fastq.gz").exists()
+            assert path("${launchDir}/results/Reads/Processing/Dehosting/Trimmed/FastP/SAMPlE1.fastp.R2.trimmed.reads.fastq.gz").exists()
+            assert path("${launchDir}/results/Reads/Quality/Trimmed/FastP/SAMPlE1.fastp.summary.html").exists()
+            assert path("${launchDir}/results/Reads/Quality/Trimmed/FastP/SAMPlE1.fastp.summary.json").exists()
+            assert path("${launchDir}/results/Reads/FinalReads/SAMPLE1/SAMPlE1.SAMPlE1_R2.final.sampled.reads.fastq.gz").exists()
+            assert path("${launchDir}/results/Reads/Processing/Dehosting/SAMPlE1.deconned.R1.deconned.reads.fastq.gz").exists()
+            assert path("${launchDir}/results/Reads/Processing/Dehosting/SAMPlE1.deconned.R2.deconned.reads.fastq.gz").exists()
+            assert path("${launchDir}/results/Reads/Processing/Dehosting/Trimmed/DownSampled/SeqTK/SAMPlE1.SAMPlE1_R1.seqtk.sample.sampled.reads.fastq.gz").exists()
+            assert path("${launchDir}/results/Reads/Processing/Dehosting/Trimmed/DownSampled/SeqTK/SAMPlE1.SAMPlE1_R2.seqtk.sample.sampled.reads.fastq.gz").exists()
+            assert path("${launchDir}/results/Reads/Processing/Dehosting/Trimmed/FastP/SAMPlE1.fastp.R1.trimmed.reads.fastq.gz").exists()
+            assert path("${launchDir}/results/Reads/Processing/Dehosting/Trimmed/FastP/SAMPlE1.fastp.R2.trimmed.reads.fastq.gz").exists()
+            assert path("${launchDir}/results/Reads/FinalReads/SAMPLE1/SAMPlE1.SAMPlE1_R1.final.sampled.reads.fastq.gz").linesGzip.size() == 4860
+            assert path("${launchDir}/results/Reads/FinalReads/SAMPLE1/SAMPlE1.SAMPlE1_R2.final.sampled.reads.fastq.gz").linesGzip.size() == 4860
+            assert path("${launchDir}/results/Reads/Processing/Dehosting/SAMPlE1.deconned.R1.deconned.reads.fastq.gz").linesGzip.size() == 16680
+            assert path("${launchDir}/results/Reads/Processing/Dehosting/SAMPlE1.deconned.R2.deconned.reads.fastq.gz").linesGzip.size() == 16680
+            assert path("${launchDir}/results/Reads/Processing/Dehosting/Trimmed/DownSampled/SeqTK/SAMPlE1.SAMPlE1_R1.seqtk.sample.sampled.reads.fastq.gz").linesGzip.size() == 4860
+            assert path("${launchDir}/results/Reads/Processing/Dehosting/Trimmed/DownSampled/SeqTK/SAMPlE1.SAMPlE1_R2.seqtk.sample.sampled.reads.fastq.gz").linesGzip.size() == 4860
+            assert path("${launchDir}/results/Reads/Processing/Dehosting/Trimmed/FastP/SAMPlE1.fastp.R1.trimmed.reads.fastq.gz").linesGzip.size() == 16680
+            assert path("${launchDir}/results/Reads/Processing/Dehosting/Trimmed/FastP/SAMPlE1.fastp.R2.trimmed.reads.fastq.gz").linesGzip.size() == 16680
+            snapshot(workflow.out).match()
+        }
+    }
+
+}

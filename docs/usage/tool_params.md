@@ -15,15 +15,15 @@ Screens contigs for antimicrobial and virulence genes. If you wish to use a diff
     - singularity: Abricate singularity container
     - docker: Abricate docker container
     - **args**: Can be a string of additional command line arguments to pass to abricate
-    - report_tag: determines the name of the Abricate output in the final summary file. **Do no touch this unless doing pipeline development.**
-    - header_p: This field tells the report module that the Abricate output contains headers. **Do no touch this unless doing pipeline development.**
+    - report_tag: determines the name of the Abricate output in the final summary file. **Do not change this unless doing pipeline development.**
+    - header_p: This field tells the report module that the Abricate output contains headers. **Do not change this unless doing pipeline development.**
 
 ### Raw Read Metrics
 A custom Python script that gathers quality metrics for each fastq file.
 
 - raw_reads
     - high_precision: When set to true, floating point precision of values output are accurate down to very small decimal places. Recommended to leave this setting as false (use the standard floats), it is much faster and having such precise decimal places is not needed for this module.
-    - report_tag: this field determines the name of the Raw Read Metric field in the final summary report. **Do no touch this unless doing pipeline development.**
+    - report_tag: this field determines the name of the Raw Read Metric field in the final summary report. **Do not change this unless doing pipeline development.**
 
 ### Coreutils
 In cases where a process uses bash scripting only, Nextflow by default will utilize system binaries when they are available and no container is specified. For reproducibility, we have chosen to use containers in such cases. When a better container is available, you can direct the pipeline to use it via below commands:
@@ -47,12 +47,21 @@ Kat was previously used to estimate genome size, however at the time of writing 
 Seqtk is used for both the sub-sampling of reads and conversion of fasta files to fastq files in mikrokondo. The usage of seqtk to convert a fasta to a fastq is needed in certain typing tools requiring reads as input (this was a design decision to keep the pipeline generalizable).
 
 - seqtk
-    - singularity: singularity container for seqtk
-    - docker: docker container for seqtk
+    - singularity: Singularity container for seqtk
+    - docker: Docker container for seqtk
     - seed: A seed value for sub-sampling
     - reads_ext: Extension of reads after sub-sampling, do not touch alter this unless doing pipeline development.
-    - assembly_fastq: Extension of the fastas after being converted to fastq files. Do no touch this unless doing pipeline development.
-    - report_tag: Name of seqtk data in the final summary report. Do no touch this unless doing pipeline development.
+    - assembly_fastq: Extension of the fastas after being converted to fastq files. Do not change this unless doing pipeline development.
+    - report_tag: Name of seqtk data in the final summary report. Do not change this unless doing pipeline development.
+
+### Rasusa
+For long read data Rasusa is used for down sampling as it take read length into consideration when down sampling.
+
+- rasusa
+    - singularity: singularity container for rasusa
+    - docker: docker container for rasusa
+    - seed: A seed value for sub-sampling
+    - reads_ext: The extension of the generated fastq files. Do not change this unless doing pipeline development.
 
 ### FastP
 Fastp is fast and widely used program for gathering of read quality metrics, adapter trimming, read filtering and read trimming. FastP has extensive options for configuration which are detailed in their documentation, but sensible defaults have been set. **Adapter trimming in Fastp is performed using overlap analysis, however if you do not trust this you can specify the sequencing adapters used directly in the additional arguments for Fastp**.
@@ -60,8 +69,8 @@ Fastp is fast and widely used program for gathering of read quality metrics, ada
 - fastp
     - singularity: singularity container for FastP
     - docker: docker container for FastP
-    - fastq_ext: extension of the output Fastp trimmed reads, do not touch this unless doing pipeline development.
-    - html_ext: Extension of the html report output by fastp, do no touch unless doing pipeline development.
+    - fastq_ext: extension of the output Fastp trimmed reads, Do not change this unless doing pipeline development.
+    - html_ext: Extension of the html report output by fastp, Do not touch unless doing pipeline development.
     - json_ext: Extension of json report output by FastP do not touch unless doing pipeline development.
     - report_tag: Title of FastP data in the summary report.
     - **average_quality_e**: If a read/read-pair quality is less than this value it is discarded. Can be set from the command line with `--fp_average_quality`.

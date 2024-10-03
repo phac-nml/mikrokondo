@@ -57,7 +57,6 @@ process REMOVE_CONTAMINANTS {
         reads_out = "-1 ${meta.id}.R1.${params.r_contaminants.samtools_output_suffix}${params.r_contaminants.samtools_output_ext} -2 ${meta.id}.R2.${params.r_contaminants.samtools_output_suffix}${params.r_contaminants.samtools_output_ext} -s ${meta.id}${params.r_contaminants.samtools_singletons_ext}"
     }
     def zip_singletons = singled_ended ? "" : "gzip *${params.r_contaminants.samtools_singletons_ext}"
-    // TODO currently using a megaindex, but there may be a better way
 
     // -f4 in samtool view filters out unmapped reads
     // -N added to add /1 and /2 to reads with the same name
