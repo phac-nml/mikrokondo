@@ -10,7 +10,7 @@ process SEQTK_SAMPLE{
     tuple val(meta), path(reads), val(sample_fraction)
 
     output:
-    // TODO outputting sample fraction to match cardinality of non sampled read set, need to find a better solution...
+    // Outputting sample fraction to match cardinality of non sampled read set, should not be passed to the process in the future.
     tuple val(meta), path("*${params.seqtk.reads_ext}"), val(sample_fraction), emit: sampled_reads
     path "versions.yml", emit: versions
 

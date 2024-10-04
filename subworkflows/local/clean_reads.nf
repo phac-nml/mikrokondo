@@ -1,5 +1,5 @@
 // Workflow for the cleaning up reads
-// TODO Kat can take in all hybrid assembly files at once
+
 include { FASTP_TRIM } from '../../modules/local/fastp_trim.nf'
 include { PARSE_FASTP } from '../../modules/local/parse_fastp.nf'
 include { CHOPPER_TRIM } from '../../modules/local/chopper_trim.nf'
@@ -7,11 +7,10 @@ include { MASH_SCREEN } from '../../modules/local/mash_screen.nf'
 include { MASH_ESTIMATE } from '../../modules/local/mash_estimate.nf'
 include { REMOVE_CONTAMINANTS } from '../../modules/local/remove_contaminants.nf'
 include { PARSE_MASH } from '../../modules/local/parse_mash.nf'
-include { KAT_HIST } from '../../modules/local/kat_hist.nf'
-include { PARSE_KAT } from '../../modules/local/parse_kat.nf'
 include { CHECK_ONT } from '../../modules/local/check_ont.nf'
 include { FASTQC } from '../../modules/nf-core/fastqc/main.nf'
 include { SEQTK_SAMPLE } from '../../modules/local/seqtk_sample.nf'
+include { RASUSA } from '../../modules/local/rasusa.nf'
 
 
 
@@ -48,7 +47,7 @@ workflow QC_READS {
 
     // TODO add in nanoplot for nanopore data
     take:
-    reads // channel [[meta etc], [Read paths], opt: long reads]
+    reads // channel [[meta etc], [[Read paths], opt: long reads]]
     platform // platform opt
 
     main:
@@ -56,17 +55,10 @@ workflow QC_READS {
     versions = Channel.empty()
     def platform_comp = platform.toString()
 
-
-    // TODO add in code to check that there are always enough reads left over after decontamination
-    // TODO need to make sure that if one read is unmapped the other is not included as well
     deconned_reads = REMOVE_CONTAMINANTS(reads, params.r_contaminants.mega_mm2_idx ? file(params.r_contaminants.mega_mm2_idx) : error("--dehosting_idx ${params.dehosting_idx} is invalid"), Channel.value(platform_comp))
     versions = versions.mix(REMOVE_CONTAMINANTS.out.versions)
 
-
     ch_meta_cleaned_reads = FASTP_TRIM(deconned_reads.reads) // can use the json output of this to decide if chopper should be run
-
-
-
     reports = reports.mix(ch_meta_cleaned_reads.fastp_json.map{
         meta, json -> tuple(meta, params.fastp, json)
     })
@@ -80,7 +72,6 @@ workflow QC_READS {
         passed: it[1] >= params.min_reads
         failed: true
     }
-
 
     // This can be condensed to one line...
     reports = reports.mix(reads_passed.failed.map{
@@ -105,11 +96,9 @@ workflow QC_READS {
         hyb_lr = true
     }
 
-    // TODO move subsampling into a seperate workflow
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Sampling depth estimation for each set of reads
     // It is requested that only sub-sampled reads go on for further analysis e.g. when calculating coverage only downsampled reads are used
-    // TODO determine if metagenomic samples should be down sampled
     read_sketch = MASH_ESTIMATE(filtered_samples, Channel.value(hyb_lr))
     genome_sizes = read_sketch.gsize.map{
         meta, gsize -> tuple(meta, get_size(gsize))
@@ -146,19 +135,38 @@ workflow QC_READS {
             log.info "Not down sampling ${it[0].id} as estimated sample depth is already below targeted depth of ${params.target_depth}."
         }
 
+        to_down_sample = reads_sample.sub_sample.branch { it ->
+            short_reads: !it[0].single_end
+            long_reads: true
+        }
 
-        down_sampled_reads = SEQTK_SAMPLE(reads_sample.sub_sample)
-        reports = reports.mix(down_sampled_reads.sampled_reads.map{
+        // Short reads and hybrid reads sets get sampled with seqtk still.
+        //*~~~~~~~~~~~~~~~~~~~~~~~
+        //* Seqtk is still being used for short reads and hybrid read sets until validation is finished.
+        //* as rasusa can then be validated for the rest of the workflow afterwards
+        //*~~~~~~~~~~~~~~~~~~~~~~~~
+        down_sampled_reads_sr_hybr = SEQTK_SAMPLE(to_down_sample.short_reads)
+        reports = reports.mix(down_sampled_reads_sr_hybr.sampled_reads.map{
             meta, reads, down_sampling -> tuple(meta, params.seqtk, down_sampling)
         })
+        versions = versions.mix(down_sampled_reads_sr_hybr.versions)
 
-        reads_down_sampled_updated = down_sampled_reads.sampled_reads.map{
+
+        // Long reads get downsampled with RASUSA
+        down_sampled_reads_lr = RASUSA(to_down_sample.long_reads)
+        reports = reports.mix(down_sampled_reads_lr.sampled_reads.map{
+            meta, reads, down_sampling -> tuple(meta, params.rasusa, down_sampling)
+        })
+        versions = versions.mix(down_sampled_reads_lr.versions)
+
+        // Mix downsampled reads back into same channel
+        down_sampled_reads = down_sampled_reads_sr_hybr.sampled_reads.mix(down_sampled_reads_lr.sampled_reads)
+
+        reads_down_sampled_updated = down_sampled_reads.map{
             meta, reads, sampling_factor ->
             meta.downsampled = true
             tuple(meta, reads, sampling_factor)
         }
-
-        versions = versions.mix(down_sampled_reads.versions)
 
         ch_prepped_reads = reads_sample.other.mix(reads_down_sampled_updated).map{
             meta, reads, sampling_factor -> tuple(meta, reads)
@@ -170,7 +178,6 @@ workflow QC_READS {
     }
 
     mash_screen_out = MASH_SCREEN(ch_prepped_reads, params.mash.mash_sketch ? file(params.mash.mash_sketch) : error("--mash_sketch ${params.mash_sketch} is invalid"))
-
     versions = versions.mix(mash_screen_out.versions)
 
     // Determine if sample is metagenomic
