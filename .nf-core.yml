@@ -1,5 +1,5 @@
 repository_type: pipeline
-nf_core_version: "3.0.1"
+nf_core_version: "3.0.2"
 lint:
   files_exist:
     - CODE_OF_CONDUCT.md
