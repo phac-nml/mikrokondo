@@ -23,3 +23,4 @@ docs/TODO.md
 assets/schema_input_nfv2.0.0.json
 nextflow_schema_nfv2.json
 .vscode
+.nf-test.log
