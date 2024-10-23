@@ -174,4 +174,5 @@ downsampling
 Christy
 Marinier
 Petkau
+gzipped
 

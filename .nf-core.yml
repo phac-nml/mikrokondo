@@ -1,5 +1,5 @@
 repository_type: pipeline
-nf_core_version: "2.14.1"
+nf_core_version: "3.0.2"
 lint:
   files_exist:
     - CODE_OF_CONDUCT.md
@@ -27,6 +27,9 @@ lint:
   nextflow_config:
     - manifest.name
     - manifest.homePage
+    - params.max_cpus
+    - params.max_memory
+    - params.max_time
   multiqc_config: False
 template:
   prefix: phac-nml

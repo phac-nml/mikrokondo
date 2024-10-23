@@ -1,5 +1,5 @@
 {
-    "$schema": "http://json-schema.org/draft-07/schema",
+    "$schema": "https://json-schema.org/draft-07/schema",
     "$id": "https://raw.githubusercontent.com/mk-kondo/mikrokondo/master/assets/schema_input.json",
     "title": "Samplesheet schema validation",
     "description": "Schema for the file provided with params.input",
@@ -15,7 +15,7 @@
             },
             "fastq_1": {
                 "type": "string",
-                "pattern": "^\\S+\\.f(ast)?q\\.gz$",
+                "pattern": "^\\S+\\.f(ast)?q(\\.gz)?$",
                 "format": "file-path",
                 "errorMessage": "FastQ file for reads 1 (forward reads) must be provided, cannot contain spaces and must have extension '.fq.gz' or '.fastq.gz'. If this is meant to be a run of mikrokondo with long read data please specify the paths under long_reads",
                 "dependentRequired": ["fastq_2"],
@@ -24,7 +24,7 @@
             },
             "fastq_2": {
                 "type": "string",
-                "pattern": "^\\S+\\.f(ast)?q\\.gz$",
+                "pattern": "^\\S+\\.f(ast)?q(\\.gz)?$",
                 "format": "file-path",
                 "errorMessage": "FastQ file for reads 2 (reverse reads) cannot contain spaces and must have extension '.fq.gz' or '.fastq.gz'",
                 "meta": ["fastq_2"],
@@ -32,7 +32,7 @@
             },
             "long_reads": {
                 "type": "string",
-                "pattern": "^\\S+\\.f(ast)?q\\.gz$",
+                "pattern": "^\\S+\\.f(ast)?q(\\.gz)?$",
                 "format": "file-path",
                 "errorMessage": "FastQ file for long reads must be provided, cannot contain spaces and must have extension '.fq.gz' or '.fastq.gz'.",
                 "meta": ["long_reads"],
@@ -40,7 +40,7 @@
             },
             "assembly": {
                 "type": "string",
-                "pattern": "^\\S+\\.f(ast)?n?a\\.gz$",
+                "pattern": "^\\S+\\.f(ast)?n?a(\\.gz)?$",
                 "format": "file-path",
                 "errorMessage": "Fasta file, cannot contain spaces and must have extension '.fa.gz' or '.fasta.gz'.",
                 "meta": ["assembly"],
