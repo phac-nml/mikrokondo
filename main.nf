@@ -112,6 +112,7 @@ workflow MIKROKONDO {
         ch_versions = ch_versions.mix(REPORT_AGGREGATE.out.versions)
 
 
+        // TODO need to add logic to merge this channel with a previous one to get its INX id
         updated_samples = REPORT_AGGREGATE.out.flat_samples.flatten().map{
                     sample ->
                         def name_trim = sample.getName()
