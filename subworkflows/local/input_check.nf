@@ -9,7 +9,6 @@ workflow INPUT_CHECK {
 
     main:
 
-    // TODO add in automatic gzipping of all samples in
     versions = Channel.empty()
     def sample_sheet = params.input
     reads_in = Channel.fromSamplesheet(
@@ -102,8 +101,15 @@ def check_file_exists(def file_path){
 def format_reads(ArrayList sheet_data){
     def meta = [:]
     def error_occured = false
-    meta.id = sheet_data[0] // id is first value
-    meta.sample = sheet_data[0] // Sample will be id currently
+    if(sheet_data[1].irida_id != null){
+        meta.irida_id = sheet_data[1].irida_id
+        meta.id = sheet_data[0] // id is first value
+        meta.sample = sheet_data[0] // Sample will be id currently
+    }else{
+        meta.id = sheet_data[0] // id is first value
+        meta.sample = sheet_data[0] // Sample will be id currently
+    }
+
     meta.hybrid = false
     meta.assembly = false
     meta.downsampled = false
