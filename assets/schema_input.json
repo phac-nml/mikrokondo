@@ -7,10 +7,17 @@
     "items": {
         "type": "object",
         "properties": {
+            "sample_name": {
+                "type": "string",
+                "pattern": "^\\S+$",
+                "meta": ["irida_id"],
+                "unique": true,
+                "errorMessage": "Sample name must be provided and cannot contain spaces"
+            },
             "sample": {
                 "type": "string",
                 "pattern": "^\\S+$",
-                "errorMessage": "Sample name must be provided and cannot contain spaces",
+                "errorMessage": "Optional. Used to override sample when used in tools like IRIDA-Next.",
                 "meta": ["id"]
             },
             "fastq_1": {
