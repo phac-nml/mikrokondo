@@ -118,9 +118,8 @@ workflow MIKROKONDO {
                             "sample": trimmed_name,
                             "external_id": trimmed_name]
 
-                        def inx_sample_p = trimmed_name.contains(inx_string_suffix)
-                        println "inx_sample_p: ${}"
-                        if(inx_sample_p){
+                        def inx_sample_p = trimmed_name.indexOf(inx_string_suffix)
+                        if(inx_sample_p > 0){ // -1 was not being evaluated as true
                             def inx_id = trimmed_name.substring(inx_sample_p + inx_string_suffix.length(), trimmed_name.length())
                             trimmed_name = trimmed_name.substring(0, inx_sample_p)
                             output_map.id = trimmed_name
