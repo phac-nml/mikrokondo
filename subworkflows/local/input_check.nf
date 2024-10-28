@@ -5,6 +5,9 @@
 include { COMBINE_DATA } from '../../modules/local/combine_data.nf'
 include { fromSamplesheet } from 'plugin/nf-validation'
 
+
+
+
 workflow INPUT_CHECK {
 
     main:
@@ -69,7 +72,7 @@ def reset_combined_map(LinkedHashMap meta, sun.nio.fs.UnixPath f_reads, sun.nio.
     /*Re-format the data to make it similar to make it match the input format again
 
     */
-    // TODO find a way to make this cleaner
+
     def new_meta = meta
     new_meta.merge = true
 
@@ -101,13 +104,11 @@ def check_file_exists(def file_path){
 def format_reads(ArrayList sheet_data){
     def meta = [:]
     def error_occured = false
-    if(sheet_data[1].irida_id != null){
-        meta.irida_id = sheet_data[1].irida_id
-        meta.id = sheet_data[0] // id is first value
-        meta.sample = sheet_data[0] // Sample will be id currently
-    }else{
-        meta.id = sheet_data[0] // id is first value
-        meta.sample = sheet_data[0] // Sample will be id currently
+    meta.id = sheet_data[0] // id is first value
+    meta.sample = sheet_data[0] // Sample will be id currently
+    meta.external_id = sheet_data[0] // This is duplicated to keep later scripting cleaner
+    if(sheet_data[1].external_id != null){
+        meta.external_id = sheet_data[1].external_id
     }
 
     meta.hybrid = false

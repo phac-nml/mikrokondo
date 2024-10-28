@@ -42,9 +42,6 @@ if (params.help) {
 if (params.input) { ch_input = file(params.input) } else { exit 1, 'Input samplesheet not specified!' }
 
 
-
-
-
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     NAMED WORKFLOW FOR PIPELINE
@@ -111,16 +108,35 @@ workflow MIKROKONDO {
         REPORT_AGGREGATE(REPORT.out.final_report)
         ch_versions = ch_versions.mix(REPORT_AGGREGATE.out.versions)
 
-
-        // TODO need to add logic to merge this channel with a previous one to get its INX id
         updated_samples = REPORT_AGGREGATE.out.flat_samples.flatten().map{
                     sample ->
+                        def inx_string_suffix = params.report_aggregate.inx_string_insertion
                         def name_trim = sample.getName()
                         def trimmed_name = name_trim.substring(0, name_trim.length() - params.report_aggregate.sample_flat_suffix.length())
-                        tuple([
+                        def output_map = [
                             "id": trimmed_name,
-                            "sample": trimmed_name],
-                            sample)
+                            "sample": trimmed_name,
+                            "external_id": trimmed_name]
+
+                        def inx_sample_p = trimmed_name.indexOf(params.report_aggregate.inx_string_insertion)
+                        if(inx_sample_p){
+                            if(trimmed_name[0..<inx_string_suffix.length()] == inx_string_suffix && trimmed_name.count(inx_string_suffix) == 2){
+                                // Gaurd statement for the very unlikely situation where someone named there sample whatever the variable inx_string_suffix is set too
+                                output_map.id = inx_string_suffix
+                                output_map.sample = inx_string_suffix
+                                output_map.external_id = inx_string_suffix
+
+                            }else{
+                                def inx_id = trimmed_name.substring(inx_sample_p + inx_string_suffix.length(), trimmed_name.length())
+                                trimmed_name = trimmed_name.substring(0, inx_sample_p)
+                                output_map.id = trimmed_name
+                                output_map.sample = trimmed_name
+                                output_map.external_id = inx_id
+                            }
+
+                        }
+
+                        tuple(output_map, sample)
                     }
 
         GZIP_FILES(updated_samples)

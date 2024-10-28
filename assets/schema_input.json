@@ -9,10 +9,10 @@
         "properties": {
             "sample_name": {
                 "type": "string",
-                "pattern": "^\\S+$",
-                "meta": ["irida_id"],
+                "pattern": "^[^\\s\\.]+$",
+                "meta": ["external_id"],
                 "unique": true,
-                "errorMessage": "Sample name must be provided and cannot contain spaces"
+                "errorMessage": "This field cannot contain .iridanext_output."
             },
             "sample": {
                 "type": "string",

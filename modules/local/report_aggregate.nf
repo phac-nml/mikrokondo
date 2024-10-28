@@ -20,7 +20,7 @@ process REPORT_AGGREGATE{
     script:
     sample_flat_suffix = params.report_aggregate.sample_flat_suffix
     """
-    report_summaries.py -f ${summary_report} -o final_report.tsv -s ${sample_flat_suffix}
+    report_summaries.py -f ${summary_report} -o final_report.tsv -s ${sample_flat_suffix} -x ${params.report_aggregate.inx_string_insertion}
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         python: \$(python --version | sed 's/Python //g')

@@ -43,15 +43,11 @@ process REPORT{
 
         if(!sample_data.containsKey(meta_data.sample)){
             sample_data[meta_data.sample] = [:]
-            // TODO add strings to constants file
             sample_data[meta_data.sample]["meta"] = [:]
         }
 
-
-        // TODO add a condition around this to only be appened if iridanext is enabled
-        update_map_values(sample_data, meta_data, "irida_id")
-
         update_map_values(sample_data, meta_data, "metagenomic")
+        update_map_values(sample_data, meta_data, "external_id")
         update_map_values(sample_data, meta_data, "assembly")
         update_map_values(sample_data, meta_data, "hybrid")
         update_map_values(sample_data, meta_data, "single_end")
