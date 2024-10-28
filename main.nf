@@ -118,22 +118,14 @@ workflow MIKROKONDO {
                             "sample": trimmed_name,
                             "external_id": trimmed_name]
 
-                        def inx_sample_p = trimmed_name.indexOf(params.report_aggregate.inx_string_insertion)
+                        def inx_sample_p = trimmed_name.contains(inx_string_suffix)
+                        println "inx_sample_p: ${}"
                         if(inx_sample_p){
-                            if(trimmed_name[0..<inx_string_suffix.length()] == inx_string_suffix && trimmed_name.count(inx_string_suffix) == 2){
-                                // Gaurd statement for the very unlikely situation where someone named there sample whatever the variable inx_string_suffix is set too
-                                output_map.id = inx_string_suffix
-                                output_map.sample = inx_string_suffix
-                                output_map.external_id = inx_string_suffix
-
-                            }else{
-                                def inx_id = trimmed_name.substring(inx_sample_p + inx_string_suffix.length(), trimmed_name.length())
-                                trimmed_name = trimmed_name.substring(0, inx_sample_p)
-                                output_map.id = trimmed_name
-                                output_map.sample = trimmed_name
-                                output_map.external_id = inx_id
-                            }
-
+                            def inx_id = trimmed_name.substring(inx_sample_p + inx_string_suffix.length(), trimmed_name.length())
+                            trimmed_name = trimmed_name.substring(0, inx_sample_p)
+                            output_map.id = trimmed_name
+                            output_map.sample = trimmed_name
+                            output_map.external_id = inx_id
                         }
 
                         tuple(output_map, sample)

@@ -243,7 +243,7 @@ class JsonImport:
         report_fp: File path to the json report to be read in
         """
         data = None
-        with open(report_fp, "r", encoding="utf8") as report:
+        with open(report_fp, "r") as report:
             data = json.load(report)
         return data
 
@@ -267,7 +267,8 @@ class JsonImport:
         for k, v in flattened_data.items():
             out_path = os.path.join(self.output_dir, k + self.flat_sample_string)
             out_key = k
-            if inx_id := v.get(self.__inx_irida_key):
+            if v.get(self.__inx_irida_key) != k:
+                inx_id = v[self.__inx_irida_key]
                 #! this field affects the identification of the irida next id being passed out of the pipeline
                 out_path = os.path.join(self.output_dir, k + self.inx_id_token + inx_id + self.flat_sample_string)
                 out_key = inx_id # this field must be overwritten for iridanext to identify the correct metdata field
