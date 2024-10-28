@@ -5,9 +5,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
-### `Changed`
+### `Added`
 
 - Added RASUSA for down sampling of Nanopore or PacBio data. [PR 125](https://github.com/phac-nml/mikrokondo/pull/125)
+
+- Added a new field to the `schema_input.json` file to allow for sample ID's from external systems such as IRIDA Next: [PR 140](https://github.com/phac-nml/mikrokondo/pull/140)
+
+### `Changed`
+
+- Added a `sample_name` field, `sample` still exists but is used for different purposes [PR 140](https://github.com/phac-nml/mikrokondo/pull/140)
+
+- RASUSA now used for down sampling of Nanopore or PacBio data. [PR 125](https://github.com/phac-nml/mikrokondo/pull/125)
 
 ### `Updated`
 
