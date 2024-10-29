@@ -16,8 +16,8 @@
             },
             "sample_name": {
                 "type": "string",
-                "pattern": "^\\S+$",
-                "errorMessage": "Optional. Used to override sample when used in tools like IRIDA-Next.",
+                "pattern": "^[^\\.]\\S+$",
+                "errorMessage": "Optional. Used to override sample when used in tools like IRIDA-Next. Input cannot start with period.",
                 "meta": ["id"]
             },
             "fastq_1": {
