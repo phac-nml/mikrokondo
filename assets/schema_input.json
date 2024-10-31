@@ -7,14 +7,14 @@
     "items": {
         "type": "object",
         "properties": {
-            "sample": {
+            "sample_name": {
                 "type": "string",
                 "pattern": "^[^\\s\\.]+$",
                 "meta": ["external_id"],
                 "unique": true,
                 "errorMessage": "This field cannot contain .iridanext_output."
             },
-            "sample_name": {
+            "sample": {
                 "type": "string",
                 "pattern": "^[^\\.]\\S+$",
                 "errorMessage": "Optional. Used to override sample when used in tools like IRIDA-Next. Input cannot start with period.",
@@ -54,6 +54,6 @@
                 "unique": true
             }
         },
-        "required": ["sample_name"]
+        "required": ["sample"]
     }
 }

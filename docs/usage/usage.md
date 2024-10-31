@@ -17,7 +17,7 @@ This pipeline requires sample files to be gzipped (symlinks may be problematic).
 ### Samplesheet (CSV)
 Mikrokondo requires a sample sheet to be run. This FOFN (file of file names) contains the samples names and allows a user to combine read-sets based on that name if provided. The sample-sheet can utilize the following header fields:
 
-- sample_name
+- sample
 - fastq_1
 - fastq_2
 - long_reads
@@ -28,31 +28,31 @@ Example layouts for different sample-sheets include:
 
 _Illumina paired-end data_
 
-|sample_name|fastq_1|fastq_2|
+|sample|fastq_1|fastq_2|
 |------|-------|-------|
-|sample_name|path_to_forward_reads|path_to_reversed_reads|
+|sample|path_to_forward_reads|path_to_reversed_reads|
 
 _Nanopore_
 
-|sample_name|long_reads|
+|sample|long_reads|
 |------|----------|
-|sample_name|path_to_reads|
+|sample|path_to_reads|
 
 _Hybrid Assembly_
 
-|sample_name|fastq_1|fastq_2|long_reads|
+|sample|fastq_1|fastq_2|long_reads|
 |-------|-------|------|----------|
-|sample_name|path_to_forward_reads|path_to_reversed_reads|path_to_long_reads|
+|sample|path_to_forward_reads|path_to_reversed_reads|path_to_long_reads|
 
 _Starting with assembly only_
 
-|sample_name|assembly|
+|sample|assembly|
 |------|--------|
-|sample_name|path_to_assembly|
+|sample|path_to_assembly|
 
 _Example merging paired-end data_
 
-|sample_name|fastq_1|fastq_2|
+|sample|fastq_1|fastq_2|
 |------|-------|-------|
 |my_sample|path_to_forward_reads_1|path_to_reversed_reads_1|
 |my_sample|path_to_forward_reads_2|path_to_reversed_reads_2|
