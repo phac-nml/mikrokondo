@@ -110,22 +110,13 @@ workflow MIKROKONDO {
 
         updated_samples = REPORT_AGGREGATE.out.flat_samples.flatten().map{
                     sample ->
-                        def inx_string_suffix = params.report_aggregate.inx_string_insertion
                         def name_trim = sample.getName()
                         def trimmed_name = name_trim.substring(0, name_trim.length() - params.report_aggregate.sample_flat_suffix.length())
+                        def external_id_name = trimmed_name.getParent().getBaseName()
                         def output_map = [
                             "id": trimmed_name,
                             "sample": trimmed_name,
-                            "external_id": trimmed_name]
-
-                        def inx_sample_p = trimmed_name.indexOf(inx_string_suffix)
-                        if(inx_sample_p > 0){ // -1 was not being evaluated as true
-                            def inx_id = trimmed_name.substring(inx_sample_p + inx_string_suffix.length(), trimmed_name.length())
-                            trimmed_name = trimmed_name.substring(0, inx_sample_p)
-                            output_map.id = trimmed_name
-                            output_map.sample = trimmed_name
-                            output_map.external_id = inx_id
-                        }
+                            "external_id": external_id_name]
 
                         tuple(output_map, sample)
                     }

@@ -39,8 +39,7 @@ class JsonImport:
     __key_delimiter = "."
     __inx_irida_key = "meta.external_id"
 
-    def __init__(self, report_fp, output_name, sample_suffix, inx_id_token):
-        self.inx_id_token = inx_id_token
+    def __init__(self, report_fp, output_name, sample_suffix):
         self.tool_data = None
         self.output_name = output_name
         self.output_transposed = os.path.splitext(os.path.basename(self.output_name))[0] + "_transposed.tsv"
@@ -265,13 +264,16 @@ class JsonImport:
         """
         updated_items = dict()
         for k, v in flattened_data.items():
-            out_path = os.path.join(self.output_dir, k + self.flat_sample_string)
+            #out_path = os.path.join(self.output_dir, k + self.flat_sample_string)
             out_key = k
+            sample_dir = k
             if v.get(self.__inx_irida_key) != k:
-                inx_id = v[self.__inx_irida_key]
+                sample_dir = v[self.__inx_irida_key]
                 #! this field affects the identification of the irida next id being passed out of the pipeline
-                out_path = os.path.join(self.output_dir, k + self.inx_id_token + inx_id + self.flat_sample_string)
-                out_key = inx_id # this field must be overwritten for iridanext to identify the correct metdata field
+                out_key = sample_dir # this field must be overwritten for iridanext to identify the correct metdata field
+            out_path = os.path.join(self.output_dir, sample_dir, k + self.flat_sample_string)
+            if not os.is_dir(out_path): # Check for directory existence, as it will still exist on pipeline resumes
+                os.mkdir(out_path)
 
             with open(out_path, "w") as output:
                 json_data = json.dumps({k: v}, indent=2)
@@ -310,10 +312,9 @@ def main(args_in):
     parser.add_argument("-f", "--file-in", help="Path to the mikrokondo json summary")
     parser.add_argument("-s", "--sample-tag", help="Optional suffix and extension to name output samples.", default=default_samp_suffix)
     parser.add_argument("-o", "--out-file", help="output name plus the .tsv extension e.g. prefix.tsv")
-    parser.add_argument("-x", "--inx-id-token", help="A token to insert into the flattened json file names for separation of the irida next sample id.")
     args = parser.parse_args(args_in)
     if os.path.isfile(args.file_in):
-        JsonImport(args.file_in, args.out_file, args.sample_tag, args.inx_id_token)
+        JsonImport(args.file_in, args.out_file, args.sample_tag)
     else:
         sys.stderr.write(f"{args.file_in} does not exist.\n")
         sys.exit(-1)
