@@ -271,9 +271,11 @@ class JsonImport:
                 sample_dir = v[self.__inx_irida_key]
                 #! this field affects the identification of the irida next id being passed out of the pipeline
                 out_key = sample_dir # this field must be overwritten for iridanext to identify the correct metdata field
-            out_path = os.path.join(self.output_dir, sample_dir, k + self.flat_sample_string)
-            if not os.is_dir(out_path): # Check for directory existence, as it will still exist on pipeline resumes
-                os.mkdir(out_path)
+
+            out_dir = os.path.join(self.output_dir, sample_dir)
+            out_path = os.path.join(out_dir, k + self.flat_sample_string)
+            if not os.path.isdir(out_dir): # Check for directory existence, as it will still exist on pipeline resumes
+                os.mkdir(out_dir)
 
             with open(out_path, "w") as output:
                 json_data = json.dumps({k: v}, indent=2)

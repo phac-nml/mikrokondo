@@ -216,7 +216,7 @@ nextflow_pipeline {
             assert iridanext_samples.INX.findAll { it.path == "Reads/Quality/Trimmed/MashScreen/short.mash.screen.reads.screen.screen" }.size() == 1
             assert iridanext_samples.INX.findAll { it.path == "Reads/Quality/Trimmed/FastP/short.fastp.summary.json" }.size() == 1
             assert iridanext_samples.INX.findAll { it.path == "Reads/Quality/RawReadQuality/short.read.scan.summary.json" }.size() == 1
-            assert iridanext_samples.INX.findAll { it.path == "FinalReports/FlattenedReports/short.iridanext_output.INX.flat_sample.json.gz" }.size() == 1
+            assert iridanext_samples.INX.findAll { it.path == "FinalReports/FlattenedReports/short.flat_sample.json.gz" }.size() == 1
 
             // output metadata
             assert iridanext_metadata.INX."QC Status" == "PASSED"

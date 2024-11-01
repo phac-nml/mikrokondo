@@ -112,7 +112,7 @@ workflow MIKROKONDO {
                     sample ->
                         def name_trim = sample.getName()
                         def trimmed_name = name_trim.substring(0, name_trim.length() - params.report_aggregate.sample_flat_suffix.length())
-                        def external_id_name = trimmed_name.getParent().getBaseName()
+                        def external_id_name = sample.getParent().getBaseName() //Calling getBaseName after getParent does not work as the output items is a string not Path
                         def output_map = [
                             "id": trimmed_name,
                             "sample": trimmed_name,
