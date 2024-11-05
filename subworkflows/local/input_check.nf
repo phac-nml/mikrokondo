@@ -19,7 +19,11 @@ workflow INPUT_CHECK {
         parameters_schema: 'nextflow_schema.json',
         skip_duplicate_check: true).map {
             // Create grouping value
-            meta -> tuple(meta.id[0], meta[0])
+            meta -> println meta
+                if (meta[0].external_id != null) {
+                    meta[0].id = meta[0].external_id
+                }
+                tuple(meta[0].id, meta[0])
         }
 
     if(params.opt_platforms.ont == params.platform && params.nanopore_chemistry == null){
