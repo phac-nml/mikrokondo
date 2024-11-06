@@ -11,7 +11,6 @@
                 "type": "string",
                 "pattern": "^\\S+$",
                 "meta": ["id"],
-                "unique": true,
                 "errorMessage": "Sample name to be used in report generation. Invalid characters are replaces with underscores."
             },
             "sample_name": {

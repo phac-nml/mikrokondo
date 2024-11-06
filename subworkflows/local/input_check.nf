@@ -6,8 +6,6 @@ include { COMBINE_DATA } from '../../modules/local/combine_data.nf'
 include { fromSamplesheet } from 'plugin/nf-validation'
 
 
-
-
 workflow INPUT_CHECK {
 
     main:
@@ -96,7 +94,7 @@ workflow INPUT_CHECK {
     versions = versions // channel: [ versions.yml ]
 }
 
-def reset_combined_map(LinkedHashMap meta, sun.nio.fs.UnixPath f_reads, sun.nio.fs.UnixPath r_reads, sun.nio.fs.UnixPath long_reads, sun.nio.fs.UnixPath assembly){
+def reset_combined_map(LinkedHashMap meta, Path f_reads, Path r_reads, Path long_reads, Path assembly){
     /*Re-format the data to make it similar to make it match the input format again
 
     */
@@ -124,7 +122,7 @@ def reset_combined_map(LinkedHashMap meta, sun.nio.fs.UnixPath f_reads, sun.nio.
 
 def check_file_exists(def file_path){
     if(!file(file_path).exists()){
-        exit 1, "ERROR: Please check input samplesheet -> $file_path does not exist. If your file in you sample sheet does not exist make sure you do not have spaces in your path name."
+        exit 1, "ERROR: Please check input samplesheet -> $file_path does not exist. Check that you do not have spaces in your path."
     }
     return true
 }
@@ -134,10 +132,6 @@ def format_reads(ArrayList sheet_data){
     def error_occured = false
     meta.id = sheet_data[0] // id is first value
     meta.sample = sheet_data[0] // Sample will be id currently
-    meta.external_id = sheet_data[0] // This is duplicated to keep later scripting cleaner
-    if(sheet_data[1].external_id != null){
-        meta.external_id = sheet_data[1].external_id
-    }
 
     meta.hybrid = false
     meta.assembly = false
@@ -222,7 +216,7 @@ def group_reads(ArrayList read_data){
                 reads_combine[item] = []
             }
             if(group[item] && check_file_exists(group[item])){
-                reads_combine[item] << group[item]
+                reads_combine[item] << file(group[item])
             }
         }
     }

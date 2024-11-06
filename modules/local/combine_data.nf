@@ -20,16 +20,16 @@ process COMBINE_DATA{
     def fields_merge = meta.fields_merge
 
     if(fastq_1){
-        cmd_ << "cat ${meta.fastq_1.join(' ')} > out/${prefix}_R1.merged.fastq.gz;"
+        cmd_ << "cat ${fastq_1.join(' ')} > out/${prefix}_R1.merged.fastq.gz;"
     }
     if(fastq_2){
-        cmd_ << "cat ${meta.fastq_2.join(' ')} > out/${prefix}_R2.merged.fastq.gz;"
+        cmd_ << "cat ${fastq_2.join(' ')} > out/${prefix}_R2.merged.fastq.gz;"
     }
     if(long_reads){
-        cmd_ << "cat ${meta.fastq_2.join(' ')} > out/${prefix}.merged.fastq.gz;"
+        cmd_ << "cat ${long_reads.join(' ')} > out/${prefix}.merged.fastq.gz;"
     }
     if(assembly){
-        cmd_ << "cat ${meta.fastq_2.join(' ')} > out/${prefix}.merged.fastq.gz;"
+        cmd_ << "cat ${assembly.join(' ')} > out/${prefix}.merged.fastq.gz;"
     }
     def cmd = cmd_.join("\n")
     // creating dummy outputs so that all outputs exist for any scenario
