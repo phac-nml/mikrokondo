@@ -1,0 +1,76 @@
+nextflow_workflow {
+    name "Test workflow INPUT_CHECK"
+    script "subworkflows/local/input_check.nf"
+    workflow "INPUT_CHECK"
+    tag "subworkflow"
+    tag "input_check"
+
+    test("Test input check") {
+        tag "pass_input_screen"
+
+        when {
+
+            params {
+                input = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/samplesheets/samplesheet-campy-staph.csv"
+                outdir = "results"
+                min_reads = 1
+                mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
+                mh_min_kmer = 1
+
+                dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+
+                kraken2_db = "$baseDir/tests/data/kraken2/test"
+
+
+                max_memory = "2.GB"
+                max_cpus = 1
+            }
+
+        }
+
+        then {
+            assert workflow.success
+            assert workflow.out.reads == [[['id':'CSE', 'sample':'CSE', 'hybrid':false, 'assembly':false, 'downsampled':false, 'single_end':false, 'merge':false], ['/phac-nml/mikrokondo/raw/dev/tests/data/reads/campy-staph1.fq.gz', '/phac-nml/mikrokondo/raw/dev/tests/data/reads/campy-staph2.fq.gz']]]
+        }
+    }
+
+    test("Test reads are merged") {
+    tag "pass_merge_reads"
+
+        when {
+
+            params {
+                input = "$baseDir/tests/data/samplesheets/samplesheet-merge-test.csv"
+                outdir = "results"
+                min_reads = 1
+                mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
+                mh_min_kmer = 1
+                skip_read_merging = false
+
+                dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+
+                kraken2_db = "$baseDir/tests/data/kraken2/test"
+
+
+                max_memory = "2.GB"
+                max_cpus = 1
+            }
+
+        }
+
+        then {
+            assert workflow.success
+            assert workflow.out.reads[0][0].id == 'CSE'
+            assert workflow.out.reads[0][0].merge == true
+            assert workflow.out.reads[0][1][0].endsWith("CSE_R1.merged.fastq.gz")
+            assert workflow.out.reads[0][1][1].endsWith("CSE_R2.merged.fastq.gz")
+
+            assert workflow.out.reads[1][0].id == 'un-merged'
+            assert workflow.out.reads[1][0].merge == false
+            assert workflow.out.reads[1][1][0].endsWith("metagenomic_reads1.fq.gz")
+            assert workflow.out.reads[1][1][1].endsWith("metagenomic_reads2.fq.gz")
+        }
+
+    }
+
+}
