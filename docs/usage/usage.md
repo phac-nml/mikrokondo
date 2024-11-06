@@ -23,6 +23,7 @@ Mikrokondo requires a sample sheet to be run. This FOFN (file of file names) con
 - long_reads
 - assembly
 
+> **Note:** Illegal characters (e.g. characters that match the expression [^A-Za-z0-9_.\-] ) in the sample name will be replaced with underscores.
 
 Example layouts for different sample-sheets include:
 
@@ -96,6 +97,8 @@ _Example merging paired-end data_
 Numerous steps within mikrokondo can be turned off without compromising the stability of the pipeline. This skip options can reduce run-time of the pipeline or allow for completion of the pipeline despite errors.
 ** All of the above options can be turned on by entering `--{skip_option} true` in the command line arguments to the pipeline (where optional parameters can be added)**
 
+
+- `--skip_read_merging`: Do not merge reads, if duplicate sample names are present the names will be made unique.
 - `--skip_abricate`: turn off abricate AMR detection
 - `--skip_bakta`: turn off bakta annotation pipeline (generally a slow step, requiring a database to be specified).
 - `--skip_checkm`: used as part of the contamination detection within mikrokondo, its run time and resource usage can be quite lengthy.

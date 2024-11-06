@@ -380,6 +380,12 @@
                     "type": "boolean",
                     "description": "Do not enter the subtyping workflow, e.g. ECTyper, SISTR etc will not be ran."
                 },
+                "skip_read_merging": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Do not merge reads",
+                    "hidden": true
+                },
                 "skip_bakta": {
                     "type": "boolean",
                     "default": true,

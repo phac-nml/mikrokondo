@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added a new field to the `schema_input.json` file to allow for sample ID's from external systems such as IRIDA Next: [PR 140](https://github.com/phac-nml/mikrokondo/pull/140)
 
+- Incorporated a `--skip_read_merging` parameter to prevent read merging [PR 140](https://github.com/phac-nml/mikrokondo/pull/140)
+
 ### `Changed`
 
 - Added a `sample_name` field, `sample` still exists but is used for different purposes [PR 140](https://github.com/phac-nml/mikrokondo/pull/140)
