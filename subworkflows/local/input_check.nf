@@ -14,15 +14,40 @@ workflow INPUT_CHECK {
 
     versions = Channel.empty()
     def sample_sheet = params.input
+
+    // Thank you snvphylnfc for the ideas :)
+    // https://github.com/phac-nml/snvphylnfc/blob/f1e5fae76af276acf0a8c98174978cb21ca5d7e0/workflows/snvphylnfc.nf#L98-L109
+    def processedIDs = [] as Set
+
     reads_in = Channel.fromSamplesheet(
         "input", // apparentely input maps to params.input...
         parameters_schema: 'nextflow_schema.json',
         skip_duplicate_check: true).map {
             // Create grouping value
-            meta -> println meta
+            meta ->
+                // Remove any unallowed charactars in the meta.id field
+                meta[0].id = meta[0].id.replaceAll(/[^A-Za-z0-9_.\-]/, '_')
+
                 if (meta[0].external_id != null) {
-                    meta[0].id = meta[0].external_id
+                    // remove any charactars in the external_id that should not be used
+                    meta[0].id = meta[0].external_id.replaceAll(/[^A-Za-z0-9_.\-]/, '_')
                 }
+
+                if(processedIDs.contains(meta.id) && params.skip_read_merging){
+                    // If the id is already contained and read merging is not to be
+                    // performed, then we make the id's unique to proceed with processing
+                    // read merging is set to false by default, so that when it is run
+                    // in IRIDANext reads are only merged in irida next
+                    while (processedIDs.contains(meta.id)) {
+                        meta.id = "${meta.id}_${meta.external_id}"
+                    }
+                }else{
+                    // Set the external id to the input ID.
+                    meta[0].external_id = meta[0].id
+                }
+
+
+                processedIDs << meta.id
                 tuple(meta[0].id, meta[0])
         }
 

@@ -9,15 +9,14 @@
         "properties": {
             "sample": {
                 "type": "string",
-                "pattern": "^[^\\.]\\S+$",
+                "pattern": "^\\S+$",
                 "meta": ["id"],
                 "unique": true,
-                "errorMessage": "Sample name to be used in report generation."
+                "errorMessage": "Sample name to be used in report generation. Invalid characters are replaces with underscores."
             },
             "sample_name": {
                 "type": "string",
-                "pattern": "^[^\\.]\\S+$",
-                "errorMessage": "Optional. Used to override sample when used in tools like IRIDA-Next. Input cannot start with period.",
+                "errorMessage": "Optional. Used to override sample when used in tools like IRIDA-Next. Invalid characters will be replaced with underscores.",
                 "meta": ["external_id"]
             },
             "fastq_1": {
