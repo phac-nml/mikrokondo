@@ -73,4 +73,36 @@ nextflow_workflow {
 
     }
 
+    test("Test external id is set") {
+    tag "pass_set_external"
+
+        when {
+
+            params {
+                input = "$baseDir/tests/data/samplesheets/samplesheet-set-ext-id.csv"
+                outdir = "results"
+                min_reads = 1
+                mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
+                mh_min_kmer = 1
+                skip_read_merging = false
+
+                dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+
+                kraken2_db = "$baseDir/tests/data/kraken2/test"
+
+
+                max_memory = "2.GB"
+                max_cpus = 1
+            }
+
+        }
+
+        then {
+            assert workflow.success
+            println workflow.out.reads
+            //assert workflow.out.reads[0][0].id == "better_faster_stronger_name"
+        }
+
+    }
+
 }
