@@ -98,11 +98,15 @@ nextflow_workflow {
         }
 
         then {
+
+            // TODO beef up assertions
             assert workflow.success
             println workflow.out.reads
             //assert workflow.out.reads[0][0].id == "better_faster_stronger_name"
         }
 
     }
+
+    // TODO add test case for making read ids unique
 
 }

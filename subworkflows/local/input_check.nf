@@ -29,7 +29,10 @@ workflow INPUT_CHECK {
                 if (meta[0].external_id != null) {
                     // remove any charactars in the external_id that should not be used
                     meta[0].id = meta[0].external_id.replaceAll(/[^A-Za-z0-9_.\-]/, '_')
+                }else{
+                    meta[0].external_id = meta[0].id
                 }
+
 
                 if(processedIDs.contains(meta.id) && params.skip_read_merging){
                     // If the id is already contained and read merging is not to be
@@ -132,6 +135,7 @@ def format_reads(ArrayList sheet_data){
     def error_occured = false
     meta.id = sheet_data[0] // id is first value
     meta.sample = sheet_data[0] // Sample will be id currently
+    meta.external_id = sheet_data[1].external_id
 
     meta.hybrid = false
     meta.assembly = false
