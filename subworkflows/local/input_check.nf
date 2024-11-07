@@ -23,24 +23,25 @@ workflow INPUT_CHECK {
         skip_duplicate_check: true).map {
             // Create grouping value
             meta ->
+
                 // Remove any unallowed charactars in the meta.id field
-                meta[0].id = meta[0].id.replaceAll(/[^A-Za-z0-9_.\-]/, '_')
+                meta[0].id = meta[0].id.replaceAll(/[^A-Za-z0-9_\-]/, '_')
 
                 if (meta[0].external_id != null) {
                     // remove any charactars in the external_id that should not be used
-                    meta[0].id = meta[0].external_id.replaceAll(/[^A-Za-z0-9_.\-]/, '_')
+                    meta[0].id = meta[0].external_id.replaceAll(/[^A-Za-z0-9_\-]/, '_')
                 }else{
                     meta[0].external_id = meta[0].id
                 }
 
 
-                if(processedIDs.contains(meta.id) && params.skip_read_merging){
+                if(processedIDs.contains(meta[0].id) && params.skip_read_merging){
                     // If the id is already contained and read merging is not to be
                     // performed, then we make the id's unique to proceed with processing
                     // read merging is set to false by default, so that when it is run
                     // in IRIDANext reads are only merged in irida next
-                    while (processedIDs.contains(meta.id)) {
-                        meta.id = "${meta.id}_${meta.external_id}"
+                    while (processedIDs.contains(meta[0].id)) {
+                        meta[0].id = "${meta[0].id}_${meta[0].external_id}"
                     }
                 }else{
                     // Set the external id to the input ID.
@@ -48,7 +49,7 @@ workflow INPUT_CHECK {
                 }
 
 
-                processedIDs << meta.id
+                processedIDs << meta[0].id
                 tuple(meta[0].id, meta[0])
         }
 

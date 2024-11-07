@@ -99,14 +99,52 @@ nextflow_workflow {
 
         then {
 
-            // TODO beef up assertions
             assert workflow.success
-            println workflow.out.reads
-            //assert workflow.out.reads[0][0].id == "better_faster_stronger_name"
+            assert workflow.out.reads[0][0].id == 'an_even_stronger_name_'
+            assert workflow.out.reads[0][0].merge == false
+            assert workflow.out.reads[1][0].id == 'better_faster_stronger_name'
+            assert workflow.out.reads[1][0].merge == false
+            assert workflow.out.reads[2][0].id == 'this_is_getting_ridiculous'
+            assert workflow.out.reads[2][0].merge == true
+            assert workflow.out.reads[2][1][0].endsWith("this_is_getting_ridiculous_R1.merged.fastq.gz")
+            assert workflow.out.reads[2][1][1].endsWith("this_is_getting_ridiculous_R2.merged.fastq.gz")
         }
 
     }
 
-    // TODO add test case for making read ids unique
+    test("Test make ids unique") {
+    tag "pass_make_ids_unique"
+
+        when {
+
+            params {
+                input = "$baseDir/tests/data/samplesheets/samplesheet-make-names-unique.csv"
+                outdir = "results"
+                min_reads = 1
+                mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
+                mh_min_kmer = 1
+                skip_read_merging = true
+                dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+
+                kraken2_db = "$baseDir/tests/data/kraken2/test"
+
+
+                max_memory = "2.GB"
+                max_cpus = 1
+            }
+
+        }
+
+        then {
+
+            assert workflow.success
+            assert workflow.out.reads[0][0].id = ha
+            assert workflow.out.reads[1][0].id = ha_ha
+            assert workflow.out.reads[2][0].id = ha_ha_ha
+            assert workflow.out.reads[3][0].id = ha_ha_ha_ha
+        }
+
+    }
+
 
 }
