@@ -10,13 +10,13 @@
             "sample": {
                 "type": "string",
                 "pattern": "^\\S+$",
-                "meta": ["id"],
+                "meta": ["external_id"],
                 "errorMessage": "Sample name to be used in report generation. Invalid characters are replaces with underscores."
             },
             "sample_name": {
                 "type": "string",
                 "errorMessage": "Optional. Used to override sample when used in tools like IRIDA-Next. Invalid characters will be replaced with underscores.",
-                "meta": ["external_id"]
+                "meta": ["id"]
             },
             "fastq_1": {
                 "type": "string",

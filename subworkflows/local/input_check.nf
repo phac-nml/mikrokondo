@@ -24,14 +24,16 @@ workflow INPUT_CHECK {
             // Create grouping value
             meta ->
 
-                // Remove any unallowed charactars in the meta.id field
-                meta[0].id = meta[0].id.replaceAll(/[^A-Za-z0-9_\-]/, '_')
+                // Verify file names do not start with periods as the files can end up being treated as
+                // hidden files causing odd issues later on in the pipeline
 
-                if (meta[0].external_id != null) {
-                    // remove any charactars in the external_id that should not be used
-                    meta[0].id = meta[0].external_id.replaceAll(/[^A-Za-z0-9_\-]/, '_')
-                }else{
-                    meta[0].external_id = meta[0].id
+                if(meta[0].id == null){
+                    // Remove any unallowed charactars in the meta.id field
+                    meta[0].id = meta[0].external_id.replaceAll(/^\./, '_')
+                    meta[0].id = meta[0].id.replaceAll(/[^A-Za-z0-9_.\-]/, '_')
+                }else {
+                    meta[0].id = meta[0].id.replaceAll(/^\./, '_')
+                    meta[0].id = meta[0].id.replaceAll(/[^A-Za-z0-9_.\-]/, '_')
                 }
 
 
@@ -43,11 +45,7 @@ workflow INPUT_CHECK {
                     while (processedIDs.contains(meta[0].id)) {
                         meta[0].id = "${meta[0].id}_${meta[0].external_id}"
                     }
-                }else{
-                    // Set the external id to the input ID.
-                    meta[0].external_id = meta[0].id
                 }
-
 
                 processedIDs << meta[0].id
                 tuple(meta[0].id, meta[0])
@@ -135,7 +133,7 @@ def format_reads(ArrayList sheet_data){
     def meta = [:]
     def error_occured = false
     meta.id = sheet_data[0] // id is first value
-    meta.sample = sheet_data[0] // Sample will be id currently
+    meta.sample = sheet_data[1].external_id
     meta.external_id = sheet_data[1].external_id
 
     meta.hybrid = false
