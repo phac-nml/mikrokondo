@@ -47,7 +47,6 @@ workflow INPUT_CHECK {
                         meta[0].id = "${meta[0].id}_${meta[0].external_id}"
                     }
                 }
-                println "${meta[0].id} ${meta[0]}"
                 processedIDs << meta[0].id
                 tuple(meta[0].id, meta[0])
         }
@@ -135,7 +134,7 @@ def format_reads(ArrayList sheet_data){
     def error_occured = false
     meta.id = sheet_data[0] // id is first value
     meta.sample = sheet_data[1].external_id
-    meta.external_id = sheet_data[0]
+    meta.external_id = sheet_data[1].external_id
 
     meta.hybrid = false
     meta.assembly = false

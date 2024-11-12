@@ -264,11 +264,10 @@ class JsonImport:
         """
         updated_items = dict()
         for k, v in flattened_data.items():
-            #out_path = os.path.join(self.output_dir, k + self.flat_sample_string)
             out_key = k
             sample_dir = k
-            if v.get(self.__inx_irida_key) != k:
-                sample_dir = v[self.__inx_irida_key]
+            if dir_name := v.get(self.__inx_irida_key) != k:
+                sample_dir = dir_name
                 #! this field affects the identification of the irida next id being passed out of the pipeline
                 out_key = sample_dir # this field must be overwritten for iridanext to identify the correct metdata field
 

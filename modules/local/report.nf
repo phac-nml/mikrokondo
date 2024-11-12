@@ -41,6 +41,7 @@ process REPORT{
         def report_tag = test_in[i+1]
         def report_value = test_in[i+2]
 
+        println meta_data
         if(!sample_data.containsKey(meta_data.sample)){
             // Todo issue grabbing correct tag is here
             sample_data[meta_data.sample] = [:]
@@ -48,18 +49,16 @@ process REPORT{
         }
 
         update_map_values(sample_data, meta_data, "metagenomic")
-        //update_map_values(sample_data, meta_data, "sample")
-        //update_map_values(sample_data, meta_data, "external_id")
-        //update_map_values(sample_data, meta_data, "id")
+        update_map_values(sample_data, meta_data, "sample")
+        update_map_values(sample_data, meta_data, "external_id")
         update_map_values(sample_data, meta_data, "assembly")
         update_map_values(sample_data, meta_data, "hybrid")
         update_map_values(sample_data, meta_data, "single_end")
         update_map_values(sample_data, meta_data, "merge")
         update_map_values(sample_data, meta_data, "downsampled")
 
-
-        if(!sample_data[meta_data.sample].containsKey(meta_data.id)){
-            sample_data[meta_data.sample][meta_data.id] = [:]
+        if(!sample_data[meta_data.sample].containsKey(meta_data.external_id)){
+            sample_data[meta_data.sample][meta_data.external_id] = [:]
         }
 
         if(report_value instanceof Path){
@@ -67,14 +66,13 @@ process REPORT{
             if(!check_file_params(report_tag, extension)){
                 continue
             }
-            // TODO pass in report metadata
             def output_data = parse_data(report_value, extension, report_tag, headers_list)
             if(output_data){
                 report_value = output_data
             }
         }
 
-        sample_data[meta_data.sample][meta_data.id][report_tag.report_tag] = report_value
+        sample_data[meta_data.sample][meta_data.external_id][report_tag.report_tag] = report_value
     }
 
 
