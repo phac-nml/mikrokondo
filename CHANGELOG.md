@@ -19,7 +19,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - RASUSA now used for down sampling of Nanopore or PacBio data. [PR 125](https://github.com/phac-nml/mikrokondo/pull/125)
 
-- Sample names (`sample_name` field) can no longer begin with a period. [PR 125](https://github.com/phac-nml/mikrokondo/pull/125)
 
 ### `Updated`
 
