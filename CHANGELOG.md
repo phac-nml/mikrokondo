@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Changed`
 
-- Added a `sample_name` field, `sample` still exists but is used for different purposes [PR 140](https://github.com/phac-nml/mikrokondo/pull/140)
+- Added a `sample_name` field, `sample` still exists but is used to incorporate additional names/identifiers in IRIDANext [PR 140](https://github.com/phac-nml/mikrokondo/pull/140)
 
 - RASUSA now used for down sampling of Nanopore or PacBio data. [PR 125](https://github.com/phac-nml/mikrokondo/pull/125)
 
