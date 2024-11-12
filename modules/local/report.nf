@@ -41,9 +41,7 @@ process REPORT{
         def report_tag = test_in[i+1]
         def report_value = test_in[i+2]
 
-        println meta_data
         if(!sample_data.containsKey(meta_data.sample)){
-            // Todo issue grabbing correct tag is here
             sample_data[meta_data.sample] = [:]
             sample_data[meta_data.sample]["meta"] = [:]
         }
@@ -680,8 +678,6 @@ def generate_qc_data(data, search_phrases, qc_species_tag){
     def species_tag_location = 0
     for(k in data){
         if(!k.value.meta.metagenomic){
-            println k.value
-            println k.key
             def species = get_species(k.value[k.key][top_hit_tag], search_phrases, shortest_token)
             // update coverage first so its values can be used in generating qc messages
             generate_coverage_data(data[k.key], params.coverage_calc_fields.bp_field, species)
