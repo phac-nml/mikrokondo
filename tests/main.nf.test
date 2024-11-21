@@ -154,46 +154,45 @@ nextflow_pipeline {
 
             // parse output json file
             def json = path("$launchDir/results/FinalReports/Aggregated/Json/final_report.json").json
+            assert json.short.short.RawReadSummary.R1."total_bp".equals(118750)
+            assert json.short.short.RawReadSummary.R1."total_reads".equals(475)
+            assert json.short.short.RawReadSummary.R1."read_qual_mean".equals(40.0)
+            assert json.short.short.RawReadSummary.R1."mean_sequence_length".equals(250.0)
 
-            assert json.INX.INX.RawReadSummary.R1."total_bp".equals(118750)
-            assert json.INX.INX.RawReadSummary.R1."total_reads".equals(475)
-            assert json.INX.INX.RawReadSummary.R1."read_qual_mean".equals(40.0)
-            assert json.INX.INX.RawReadSummary.R1."mean_sequence_length".equals(250.0)
-
-            assert json.INX.INX.FastP.summary.sequencing.equals("paired end (250 cycles + 250 cycles)")
-            assert json.INX.INX.FastP.summary.before_filtering.total_reads.equals(950)
-            assert json.INX.INX.FastP.filtering_result.passed_filter_reads.equals(950)
-            assert json.INX.INX.FastP.filtering_result.low_quality_reads.equals(0)
-            assert json.INX.INX.FastP.insert_size.peak.equals(347)
+            assert json.short.short.FastP.summary.sequencing.equals("paired end (250 cycles + 250 cycles)")
+            assert json.short.short.FastP.summary.before_filtering.total_reads.equals(950)
+            assert json.short.short.FastP.filtering_result.passed_filter_reads.equals(950)
+            assert json.short.short.FastP.filtering_result.low_quality_reads.equals(0)
+            assert json.short.short.FastP.insert_size.peak.equals(347)
 
             //assert json.INX.meta.metagenomic.equals(false)  // Currently, this is "null".
-            assert json.INX.meta.assembly.equals(false)
-            assert json.INX.meta.hybrid.equals(false)
-            assert json.INX.meta.single_end.equals(false)
-            assert json.INX.meta.merge.equals(false)
-            assert json.INX.meta.downsampled.equals(false)
+            assert json.short.meta.assembly.equals(false)
+            assert json.short.meta.hybrid.equals(false)
+            assert json.short.meta.single_end.equals(false)
+            assert json.short.meta.merge.equals(false)
+            assert json.short.meta.downsampled.equals(false)
 
-            assert json.INX.INX.AssemblyCompleted.equals(true)
-            assert json.INX.INX.QUAST."0"."Total length (>= 0 bp)".equals("4949")
-            assert json.INX.INX.QUAST."0"."Largest contig".equals("4949")
-            assert json.INX.INX.QUAST."0"."GC (%)".equals("52.96")
-            assert json.INX.INX.QUAST."0"."Avg. coverage depth".equals("47")
+            assert json.short.short.AssemblyCompleted.equals(true)
+            assert json.short.short.QUAST."0"."Total length (>= 0 bp)".equals("4949")
+            assert json.short.short.QUAST."0"."Largest contig".equals("4949")
+            assert json.short.short.QUAST."0"."GC (%)".equals("52.96")
+            assert json.short.short.QUAST."0"."Avg. coverage depth".equals("47")
 
             // Below two values should be empty
-            assert json.INX.INX.StarAMR."0"."Genotype".equals("None")
-            assert json.INX.INX.StarAMR."0"."Predicted Phenotype".equals("Susceptible")
-            assert json.INX.INX.StarAMR."0"."Genome Length".equals("4949")
+            assert json.short.short.StarAMR."0"."Genotype".equals("None")
+            assert json.short.short.StarAMR."0"."Predicted Phenotype".equals("Susceptible")
+            assert json.short.short.StarAMR."0"."Genome Length".equals("4949")
 
-            assert json.INX.INX.CheckM."0"."# genomes".equals("5656")
-            assert json.INX.INX.CheckM."0"."# markers".equals("56")
-            assert json.INX.INX.CheckM."0"."# marker sets".equals("24")
-            assert json.INX.INX.CheckM."0".Contamination.equals("0.00")
+            assert json.short.short.CheckM."0"."# genomes".equals("5656")
+            assert json.short.short.CheckM."0"."# markers".equals("56")
+            assert json.short.short.CheckM."0"."# marker sets".equals("24")
+            assert json.short.short.CheckM."0".Contamination.equals("0.00")
 
-            assert json.INX.INX.SevenGeneMLSTReport[0].filename.equals("short.filtered.fasta.gz")
+            assert json.short.short.SevenGeneMLSTReport[0].filename.equals("short.filtered.fasta.gz")
 
-            assert json.INX.INX.Abricate."0".RESISTANCE.equals("NoData")  // All Abricate results for this are "NoData".
+            assert json.short.short.Abricate."0".RESISTANCE.equals("NoData")  // All Abricate results for this are "NoData".
 
-            def assembly_path = "$launchDir/results/Assembly/FinalAssembly/INX/short.final.filtered.assembly.fasta.gz"
+            def assembly_path = "$launchDir/results/Assembly/FinalAssembly/short/short.final.filtered.assembly.fasta.gz"
             assert path(assembly_path).exists()
 
             // parse assembly file
@@ -209,14 +208,14 @@ nextflow_pipeline {
             // output files
             assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Json/final_report.json" }.size() == 1
             assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Tables/final_report.tsv" }.size() == 1
-            assert iridanext_samples.INX.findAll { it.path == "Assembly/FinalAssembly/INX/short.final.filtered.assembly.fasta.gz" }.size() == 1
+            assert iridanext_samples.INX.findAll { it.path == "Assembly/FinalAssembly/short/short.final.filtered.assembly.fasta.gz" }.size() == 1
             assert iridanext_samples.INX.findAll { it.path == "Assembly/Quality/QUAST/short/short.transposed_short.quast.quality.tsv" }.size() == 1
             assert iridanext_samples.INX.findAll { it.path == "Assembly/Quality/SeqKitStats/short.seqkit.stats.summary.tsv" }.size() == 1
             assert iridanext_samples.INX.findAll { it.path == "Assembly/PostProcessing/Speciation/MashScreen/short.mash.screen.taxa.screen.screen" }.size() == 1
             assert iridanext_samples.INX.findAll { it.path == "Reads/Quality/Trimmed/MashScreen/short.mash.screen.reads.screen.screen" }.size() == 1
             assert iridanext_samples.INX.findAll { it.path == "Reads/Quality/Trimmed/FastP/short.fastp.summary.json" }.size() == 1
             assert iridanext_samples.INX.findAll { it.path == "Reads/Quality/RawReadQuality/short.read.scan.summary.json" }.size() == 1
-            assert iridanext_samples.INX.findAll { it.path == "FinalReports/FlattenedReports/INX.flat_sample.json.gz" }.size() == 1
+            assert iridanext_samples.INX.findAll { it.path == "FinalReports/FlattenedReports/short.flat_sample.json.gz" }.size() == 1
 
             // output metadata
             assert iridanext_metadata.INX."QC Status" == "PASSED"

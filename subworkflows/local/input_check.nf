@@ -30,10 +30,10 @@ workflow INPUT_CHECK {
 
                 if(meta[0].id == null){
                     // Remove any unallowed characters in the meta.id field
-                    meta[0].id = meta[0].external_id.replaceAll(/^\./, '_')
+                    meta[0].id = meta[0].external_id.replaceAll(/\./, '_')
                     meta[0].id = meta[0].id.replaceAll(/[^A-Za-z0-9_\.\-]/, '_')
                 }else {
-                    meta[0].id = meta[0].id.replaceAll(/^\./, '_')
+                    meta[0].id = meta[0].id.replaceAll(/\./, '_')
                     meta[0].id = meta[0].id.replaceAll(/[^A-Za-z0-9_\.\-]/, '_')
                 }
 

@@ -23,7 +23,7 @@ Mikrokondo requires a sample sheet to be run. This FOFN (file of file names) con
 - long_reads
 - assembly
 
-> **Note:** Illegal characters (e.g. characters that match the expression [^A-Za-z0-9_.\-] ) in the sample name will be replaced with underscores.
+> **Note:** Illegal characters (e.g. characters that match the expression [^A-Za-z0-9_\-] ) in the sample name will be replaced with underscores.
 
 Example layouts for different sample-sheets include:
 

@@ -133,25 +133,6 @@ class JsonImport:
                 del table[previous]
         return sorted(processed_keys), poisoned_keys
 
-    def key_saver(self, sample_name, keys):
-        """
-        As we split on the period delimiter, and periods are allowed in
-        sample names, some special care needs to be considered in splitting
-        the sample names as to not accidentally drop characters in the names.
-
-        sample_name str: The sample name to be saved from the split string
-        keys list[str]: List of keys to split
-        """
-        return_values = []
-        for k in keys:
-            if k.startswith(sample_name):
-                sample_name_len = len(sample_name) + 1# adding one to the list to get the trailing delimiter that is left behind
-                split_string = k[sample_name_len:]
-                sample_keys = [sample_name, *[i for i in split_string.split(self.__key_delimiter)]]
-                return_values.append(sample_keys)
-                continue
-            return_values.append(k.split(self.__key_delimiter))
-        return return_values
 
     def make_table(self, data):
         """Create an aggregated table of report data from mikrokondo
@@ -163,7 +144,7 @@ class JsonImport:
 
         sample_data = defaultdict(list)
         for k, v in data.items():
-            keys = self.key_saver(k, v.keys())
+            keys = [i.split(self.__key_delimiter) for i in v.keys()]
             copy_keys = []
             tool_keys = set()
             for i in keys:
