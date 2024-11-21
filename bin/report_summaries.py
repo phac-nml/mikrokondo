@@ -145,11 +145,7 @@ class JsonImport:
         return_values = []
         for k in keys:
             if k.startswith(sample_name):
-                sample_name_len = len(sample_name)
-                if sample_name.endswith(self.__key_delimiter):
-                    # Need to remove the next delimiter as well if the sample
-                    # ends with one. Or else we end up with an empty string inserted
-                    sample_name_len += 1
+                sample_name_len = len(sample_name) + 1# adding one to the list to get the trailing delimiter that is left behind
                 split_string = k[sample_name_len:]
                 sample_keys = [sample_name, *[i for i in split_string.split(self.__key_delimiter)]]
                 return_values.append(sample_keys)
