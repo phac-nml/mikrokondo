@@ -47,6 +47,7 @@ process REPORT{
         }
 
         update_map_values(sample_data, meta_data, "metagenomic")
+        update_map_values(sample_data, meta_data, "id")
         update_map_values(sample_data, meta_data, "sample")
         update_map_values(sample_data, meta_data, "external_id")
         update_map_values(sample_data, meta_data, "assembly")
@@ -55,8 +56,8 @@ process REPORT{
         update_map_values(sample_data, meta_data, "merge")
         update_map_values(sample_data, meta_data, "downsampled")
 
-        if(!sample_data[meta_data.sample].containsKey(meta_data.external_id)){
-            sample_data[meta_data.sample][meta_data.external_id] = [:]
+        if(!sample_data[meta_data.sample].containsKey(meta_data.id)){
+            sample_data[meta_data.sample][meta_data.id] = [:]
         }
 
         if(report_value instanceof Path){
@@ -70,7 +71,7 @@ process REPORT{
             }
         }
 
-        sample_data[meta_data.sample][meta_data.external_id][report_tag.report_tag] = report_value
+        sample_data[meta_data.sample][meta_data.id][report_tag.report_tag] = report_value
     }
 
 

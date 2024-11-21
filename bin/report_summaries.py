@@ -65,7 +65,6 @@ class JsonImport:
         """
         keys = set([k for k in table_data])
         ordered_keys = []
-
         # Get the wanted information to the top of the page
         poisoned_keys = set()
         for option in self.__key_order:
@@ -80,7 +79,6 @@ class JsonImport:
         ordered_keys.extend(scalar_keys)
         ordered_keys.extend(sorted([i for i in keys if i not in ordered_keys and i not in poisoned_keys]))
         row_labels = sorted([i for i in next(iter(table_data.values()))])
-
         self.write_tsv(table_data, row_labels, ordered_keys)
         self.write_transposed_tsv(table_data, row_labels, ordered_keys)
 
@@ -135,6 +133,29 @@ class JsonImport:
                 del table[previous]
         return sorted(processed_keys), poisoned_keys
 
+    def key_saver(self, sample_name, keys):
+        """
+        As we split on the period delimiter, and periods are allowed in
+        sample names, some special care needs to be considered in splitting
+        the sample names as to not accidentally drop characters in the names.
+
+        sample_name str: The sample name to be saved from the split string
+        keys list[str]: List of keys to split
+        """
+        return_values = []
+        for k in keys:
+            if k.startswith(sample_name):
+                sample_name_len = len(sample_name)
+                if sample_name.endswith(self.__key_delimiter):
+                    # Need to remove the next delimiter as well if the sample
+                    # ends with one. Or else we end up with an empty string inserted
+                    sample_name_len += 1
+                split_string = k[sample_name_len:]
+                sample_keys = [sample_name, *[i for i in split_string.split(self.__key_delimiter)]]
+                return_values.append(sample_keys)
+                continue
+            return_values.append(k.split(self.__key_delimiter))
+        return return_values
 
     def make_table(self, data):
         """Create an aggregated table of report data from mikrokondo
@@ -146,7 +167,7 @@ class JsonImport:
 
         sample_data = defaultdict(list)
         for k, v in data.items():
-            keys = [i.split(self.__key_delimiter) for i in v.keys()]
+            keys = self.key_saver(k, v.keys())
             copy_keys = []
             tool_keys = set()
             for i in keys:
@@ -266,11 +287,11 @@ class JsonImport:
         for k, v in flattened_data.items():
             out_key = k
             sample_dir = k
-            if dir_name := v.get(self.__inx_irida_key) != k:
+            dir_name = v.get(self.__inx_irida_key)
+            if k != dir_name:
                 sample_dir = dir_name
                 #! this field affects the identification of the irida next id being passed out of the pipeline
                 out_key = sample_dir # this field must be overwritten for iridanext to identify the correct metdata field
-
             out_dir = os.path.join(self.output_dir, sample_dir)
             out_path = os.path.join(out_dir, k + self.flat_sample_string)
             if not os.path.isdir(out_dir): # Check for directory existence, as it will still exist on pipeline resumes
@@ -298,7 +319,6 @@ class JsonImport:
                         out_file.write(f'"{val_write}"')
                     else:
                         out_file.write(val_write)
-                        # out_file.write(str(ii[1][i]).replace('\n', ' \\'))
                     out_file.write(self.__delimiter)
                 out_file.write("\n")
 

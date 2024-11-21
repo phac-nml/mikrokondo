@@ -29,7 +29,7 @@ workflow INPUT_CHECK {
                 // hidden files causing odd issues later on in the pipeline
 
                 if(meta[0].id == null){
-                    // Remove any unallowed charactars in the meta.id field
+                    // Remove any unallowed characters in the meta.id field
                     meta[0].id = meta[0].external_id.replaceAll(/^\./, '_')
                     meta[0].id = meta[0].id.replaceAll(/[^A-Za-z0-9_\.\-]/, '_')
                 }else {
@@ -133,7 +133,8 @@ def format_reads(ArrayList sheet_data){
     def meta = [:]
     def error_occured = false
     meta.id = sheet_data[0] // id is first value
-    meta.sample = sheet_data[1].external_id
+    //meta.sample = sheet_data[1].external_id
+    meta.sample = sheet_data[0]
     meta.external_id = sheet_data[1].external_id
 
     meta.hybrid = false
