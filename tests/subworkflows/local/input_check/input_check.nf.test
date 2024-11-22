@@ -73,7 +73,9 @@ nextflow_workflow {
             assert workflow.out.reads[0][0].id == 'CSE'
             assert workflow.out.reads[0][0].merge == true
             assert workflow.out.reads[0][1][0].endsWith("CSE_R1.merged.fastq.gz")
+            assert path(workflow.out.reads[0][1][0]).linesGzip.size() == 12400
             assert workflow.out.reads[0][1][1].endsWith("CSE_R2.merged.fastq.gz")
+            assert path(workflow.out.reads[0][1][1]).linesGzip.size() == 12400
 
             assert workflow.out.reads[1][0].id == 'un-merged'
             assert workflow.out.reads[1][0].merge == false
@@ -112,7 +114,7 @@ nextflow_workflow {
             assert workflow.success
             assert workflow.out.reads[0][0].id == 'an_even_stronger_name_'
             assert workflow.out.reads[0][0].merge == false
-            assert workflow.out.reads[1][0].id == 'better.faster.stronger.name'
+            assert workflow.out.reads[1][0].id == 'better_faster_stronger_name'
             assert workflow.out.reads[1][0].merge == false
             assert workflow.out.reads[2][0].id == 'this_is_getting_ridiculous'
             assert workflow.out.reads[2][0].merge == true
