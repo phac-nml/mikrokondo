@@ -11,11 +11,11 @@
                 "type": "string",
                 "pattern": "^\\S+$",
                 "meta": ["external_id"],
-                "errorMessage": "Sample name to be used in report generation. Invalid characters are replaces with underscores."
+                "errorMessage": "Sample name to be used in report generation. Valid characters include alphanumeric and "-". All other characters will be replaced by underscores."
             },
             "sample_name": {
                 "type": "string",
-                "errorMessage": "Optional. Used to override sample when used in tools like IRIDA-Next. Invalid characters will be replaced with underscores.",
+                "errorMessage": "Optional. Used to override sample when used in tools like IRIDA-Next. Valid characters include alphanumeric and "-". All other characters will be replaced by underscores.",
                 "meta": ["id"]
             },
             "fastq_1": {
