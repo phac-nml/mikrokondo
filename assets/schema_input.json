@@ -10,7 +10,12 @@
             "sample": {
                 "type": "string",
                 "pattern": "^\\S+$",
-                "errorMessage": "Sample name must be provided and cannot contain spaces",
+                "meta": ["external_id"],
+                "errorMessage": "Sample name to be used in report generation. Valid characters include alphanumeric and -. All other characters will be replaced by underscores."
+            },
+            "sample_name": {
+                "type": "string",
+                "errorMessage": "Optional. Used to override sample when used in tools like IRIDA-Next. Valid characters include alphanumeric and -. All other characters will be replaced by underscores.",
                 "meta": ["id"]
             },
             "fastq_1": {

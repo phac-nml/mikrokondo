@@ -37,9 +37,10 @@ class JsonImport:
     __keep_keys = frozenset(__key_order.keys())
     __delimiter = "\t"
     __key_delimiter = "."
+    __inx_irida_key = "meta.external_id"
 
     def __init__(self, report_fp, output_name, sample_suffix):
-        self.tool_data = None # TODO set this in output of group tool fields
+        self.tool_data = None
         self.output_name = output_name
         self.output_transposed = os.path.splitext(os.path.basename(self.output_name))[0] + "_transposed.tsv"
         self.output_dir = os.path.dirname(self.output_name)
@@ -49,7 +50,7 @@ class JsonImport:
         self.flat_sample_string = sample_suffix
         self.data = self.ingest_report(self.report_fp)
         self.flat_data, self.common_fields, self.tool_fields, self.table = self.flatten_json(self.data)
-        self.output_indv_json(self.flat_data)
+        self.flat_data = self.output_indv_json(self.flat_data)
         self.output_flat_json(self.flat_data)
         self.write_table(self.table)
 
@@ -64,7 +65,6 @@ class JsonImport:
         """
         keys = set([k for k in table_data])
         ordered_keys = []
-
         # Get the wanted information to the top of the page
         poisoned_keys = set()
         for option in self.__key_order:
@@ -79,7 +79,6 @@ class JsonImport:
         ordered_keys.extend(scalar_keys)
         ordered_keys.extend(sorted([i for i in keys if i not in ordered_keys and i not in poisoned_keys]))
         row_labels = sorted([i for i in next(iter(table_data.values()))])
-
         self.write_tsv(table_data, row_labels, ordered_keys)
         self.write_transposed_tsv(table_data, row_labels, ordered_keys)
 
@@ -233,7 +232,6 @@ class JsonImport:
                     top_level_keys.add(item_key)
                 temp[item_key] = v
 
-        #self.tool_data = tool_data
         return reformatted_data, top_level_keys, tool_keys
 
 
@@ -242,7 +240,7 @@ class JsonImport:
         report_fp: File path to the json report to be read in
         """
         data = None
-        with open(report_fp, "r", encoding="utf8") as report:
+        with open(report_fp, "r") as report:
             data = json.load(report)
         return data
 
@@ -262,11 +260,27 @@ class JsonImport:
         Args:
             flattened_data (json: Dict[sample_id: Dict[tool_info: value]]):
         """
+        updated_items = dict()
         for k, v in flattened_data.items():
-            with open(os.path.join(self.output_dir, k + self.flat_sample_string), "w") as output:
+            out_key = k
+            sample_dir = k
+            dir_name = v.get(self.__inx_irida_key)
+            if k != dir_name:
+                sample_dir = dir_name
+                #! this field affects the identification of the irida next id being passed out of the pipeline
+                out_key = sample_dir # this field must be overwritten for iridanext to identify the correct metdata field
+            out_dir = os.path.join(self.output_dir, sample_dir)
+            out_path = os.path.join(out_dir, k + self.flat_sample_string)
+            if not os.path.isdir(out_dir): # Check for directory existence, as it will still exist on pipeline resumes
+                os.mkdir(out_dir)
+
+            with open(out_path, "w") as output:
                 json_data = json.dumps({k: v}, indent=2)
                 output.write(json_data)
+            updated_items[out_key] = v
 
+        flattened_data = updated_items
+        return flattened_data
 
     def to_file(self):
         with open(self.output_name, "w") as out_file:
@@ -282,7 +296,6 @@ class JsonImport:
                         out_file.write(f'"{val_write}"')
                     else:
                         out_file.write(val_write)
-                        # out_file.write(str(ii[1][i]).replace('\n', ' \\'))
                     out_file.write(self.__delimiter)
                 out_file.write("\n")
 
@@ -291,7 +304,7 @@ class JsonImport:
 
 
 
-def main_(args_in):
+def main(args_in):
     default_samp_suffix = "_flat_sample.json"
     parser = argparse.ArgumentParser("Table Summary")
     parser.add_argument("-f", "--file-in", help="Path to the mikrokondo json summary")
@@ -307,4 +320,4 @@ def main_(args_in):
 
 if __name__ == "__main__":
     # pass json file to program to parse it
-    main_(sys.argv[1:])
+    main(sys.argv[1:])

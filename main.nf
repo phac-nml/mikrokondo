@@ -42,9 +42,6 @@ if (params.help) {
 if (params.input) { ch_input = file(params.input) } else { exit 1, 'Input samplesheet not specified!' }
 
 
-
-
-
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     NAMED WORKFLOW FOR PIPELINE
@@ -111,15 +108,17 @@ workflow MIKROKONDO {
         REPORT_AGGREGATE(REPORT.out.final_report)
         ch_versions = ch_versions.mix(REPORT_AGGREGATE.out.versions)
 
-
         updated_samples = REPORT_AGGREGATE.out.flat_samples.flatten().map{
                     sample ->
                         def name_trim = sample.getName()
                         def trimmed_name = name_trim.substring(0, name_trim.length() - params.report_aggregate.sample_flat_suffix.length())
-                        tuple([
+                        def external_id_name = sample.getParent().getBaseName()
+                        def output_map = [
                             "id": trimmed_name,
-                            "sample": trimmed_name],
-                            sample)
+                            "sample": trimmed_name,
+                            "external_id": external_id_name]
+
+                        tuple(output_map, sample)
                     }
 
         GZIP_FILES(updated_samples)
