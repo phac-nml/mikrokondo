@@ -1,0 +1,2 @@
+sample,sample_name,fastq_1,fastq_2,long_reads,assembly
+INX,short,https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/reads/1_R1.fq,https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/reads/1_R2.fq,,

@@ -1,5 +1,5 @@
 {
-    "$schema": "http://json-schema.org/draft-07/schema",
+    "$schema": "https://json-schema.org/draft-07/schema",
     "$id": "https://raw.githubusercontent.com/phac-nml/mikrokondo/main/nextflow_schema.json",
     "title": "phac-nml/mikrokondo pipeline parameters",
     "description": "Mikrokondo beta",
@@ -379,6 +379,12 @@
                 "skip_subtyping": {
                     "type": "boolean",
                     "description": "Do not enter the subtyping workflow, e.g. ECTyper, SISTR etc will not be ran."
+                },
+                "skip_read_merging": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Do not merge reads",
+                    "hidden": true
                 },
                 "skip_bakta": {
                     "type": "boolean",

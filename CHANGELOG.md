@@ -3,17 +3,33 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## [0.5.0] - 2024-11-27
+
+### `Added`
+
+- Added RASUSA for down sampling of Nanopore or PacBio data. [PR 125](https://github.com/phac-nml/mikrokondo/pull/125)
+
+- Added a new `sample_name` field to the `schema_input.json` file: [PR 140](https://github.com/phac-nml/mikrokondo/pull/140)
+
+- Incorporated a `--skip_read_merging` parameter to prevent read merging [PR 140](https://github.com/phac-nml/mikrokondo/pull/140)
 
 ### `Changed`
 
-- Added RASUSA for down sampling of Nanopore or PacBio data. [PR 125](https://github.com/phac-nml/mikrokondo/pull/125)
+- Added a `sample_name` field, `sample` still exists but is used to incorporate additional names/identifiers in IRIDANext [PR 140](https://github.com/phac-nml/mikrokondo/pull/140)
+
+- RASUSA now used for down sampling of Nanopore or PacBio data. [PR 125](https://github.com/phac-nml/mikrokondo/pull/125)
+
+- Default *Listeria* quality control parameters apply only to *monocytogenes* now. [PR 142](https://github.com/phac-nml/mikrokondo/pull/142)
 
 ### `Updated`
 
 - Documentation and workflow diagram has been updated. [PR 123](https://github.com/phac-nml/mikrokondo/pull/123)
 
 - Documentation and Readme has been updated. [PR 126](https://github.com/phac-nml/mikrokondo/pull/126)
+
+- Adjusted `schema_input.json` to allow for non-gzipped inputs. [PR 137](https://github.com/phac-nml/mikrokondo/pull/137)
+
+- Updated github actions workflows for nf-core version 3.0.1. [PR 137](https://github.com/phac-nml/mikrokondo/pull/137)
 
 ## [0.4.2] - 2024-09-25
 
@@ -176,6 +192,7 @@ Initial release of phac-nml/mikrokondo. Mikrokondo currently supports: read trim
 
 - Added integration testing using [nf-test](https://www.nf-test.com/).
 
+[0.5.0]: https://github.com/phac-nml/mikrokondo/releases/tag/0.5.0
 [0.4.2]: https://github.com/phac-nml/mikrokondo/releases/tag/0.4.2
 [0.4.1]: https://github.com/phac-nml/mikrokondo/releases/tag/0.4.1
 [0.4.0]: https://github.com/phac-nml/mikrokondo/releases/tag/0.4.0

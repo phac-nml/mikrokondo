@@ -1038,5 +1038,248 @@
             "nextflow": "24.04.4"
         },
         "timestamp": "2024-10-02T15:23:24.663457495"
+    },
+    "Test clean reads run without failure illumina unzipped": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "SAMPlE1",
+                            "hybrid": false,
+                            "sample": "SAMPLE1",
+                            "assembly": false,
+                            "downsampled": false,
+                            "single_end": false,
+                            "merge": false,
+                            "metagenomic": false
+                        },
+                        [
+                            "SAMPlE1.R1.trimmed.fastq.gz:md5,b556c9169c14812c9413a66441ef7a52",
+                            "SAMPlE1.R2.trimmed.fastq.gz:md5,2ab187b817ff8afb8f83fdbc51a7e287"
+                        ]
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "SAMPlE1",
+                            "hybrid": false,
+                            "sample": "SAMPLE1",
+                            "assembly": false,
+                            "downsampled": false,
+                            "single_end": false,
+                            "merge": false
+                        },
+                        22797
+                    ]
+                ],
+                "2": [
+                    [
+                        {
+                            "id": "SAMPlE1",
+                            "hybrid": false,
+                            "sample": "SAMPLE1",
+                            "assembly": false,
+                            "downsampled": false,
+                            "single_end": false,
+                            "merge": false,
+                            "metagenomic": false
+                        },
+                        {
+                            "report_tag": "MashMeta"
+                        },
+                        "false"
+                    ],
+                    [
+                        {
+                            "id": "SAMPlE1",
+                            "hybrid": false,
+                            "sample": "SAMPLE1",
+                            "assembly": false,
+                            "downsampled": false,
+                            "single_end": false,
+                            "merge": false
+                        },
+                        {
+                            "fastq_ext": ".trimmed.fastq.gz",
+                            "singularity": "https://depot.galaxyproject.org/singularity/fastp%3A0.23.2--hb7a2d85_2",
+                            "docker": "biocontainers/fastp:0.23.2--hb7a2d85_2",
+                            "html_ext": ".html",
+                            "json_ext": ".json",
+                            "report_tag": "FastP",
+                            "average_quality_e": 25,
+                            "cut_tail_mean_quality": 15,
+                            "cut_tail_window_size": 4,
+                            "complexity_threshold": 20,
+                            "qualified_quality_phred": 15,
+                            "unqualified_percent_limit": 40,
+                            "polyg_min_len": 10,
+                            "polyx_min_len": 10,
+                            "illumina_length_min": 35,
+                            "illumina_length_max": 400,
+                            "single_end_length_min": 1000,
+                            "dedup_reads": false,
+                            "args": {
+                                "illumina": "-Q",
+                                "single_end": "-Q"
+                            },
+                            "report_exclude_fields": [
+                                "content_curves",
+                                "quality_curves",
+                                "mean",
+                                "kmer_count",
+                                "histogram",
+                                "overrepresented_sequences"
+                            ]
+                        },
+                        "SAMPlE1.json:md5,b1e96c37c41a9753485d40b1f0cf7033"
+                    ],
+                    [
+                        {
+                            "id": "SAMPlE1",
+                            "hybrid": false,
+                            "sample": "SAMPLE1",
+                            "assembly": false,
+                            "downsampled": false,
+                            "single_end": false,
+                            "merge": false
+                        },
+                        {
+                            "threshold": 1,
+                            "report_tag": "MeetsReadThreshold"
+                        },
+                        true
+                    ]
+                ],
+                "3": [
+                    "versions.yml:md5,24650bb863b10ea27510d94eafc0f6ff",
+                    "versions.yml:md5,3879b6c1eb5ca6e84d9f6d67c3b7c97a",
+                    "versions.yml:md5,662de06a73ecf3af0c3a670b6cbdb130",
+                    "versions.yml:md5,9f9fdde5178fcb4d6a69e86c6f7d61b2"
+                ],
+                "genome_size": [
+                    [
+                        {
+                            "id": "SAMPlE1",
+                            "hybrid": false,
+                            "sample": "SAMPLE1",
+                            "assembly": false,
+                            "downsampled": false,
+                            "single_end": false,
+                            "merge": false
+                        },
+                        22797
+                    ]
+                ],
+                "reports": [
+                    [
+                        {
+                            "id": "SAMPlE1",
+                            "hybrid": false,
+                            "sample": "SAMPLE1",
+                            "assembly": false,
+                            "downsampled": false,
+                            "single_end": false,
+                            "merge": false,
+                            "metagenomic": false
+                        },
+                        {
+                            "report_tag": "MashMeta"
+                        },
+                        "false"
+                    ],
+                    [
+                        {
+                            "id": "SAMPlE1",
+                            "hybrid": false,
+                            "sample": "SAMPLE1",
+                            "assembly": false,
+                            "downsampled": false,
+                            "single_end": false,
+                            "merge": false
+                        },
+                        {
+                            "fastq_ext": ".trimmed.fastq.gz",
+                            "singularity": "https://depot.galaxyproject.org/singularity/fastp%3A0.23.2--hb7a2d85_2",
+                            "docker": "biocontainers/fastp:0.23.2--hb7a2d85_2",
+                            "html_ext": ".html",
+                            "json_ext": ".json",
+                            "report_tag": "FastP",
+                            "average_quality_e": 25,
+                            "cut_tail_mean_quality": 15,
+                            "cut_tail_window_size": 4,
+                            "complexity_threshold": 20,
+                            "qualified_quality_phred": 15,
+                            "unqualified_percent_limit": 40,
+                            "polyg_min_len": 10,
+                            "polyx_min_len": 10,
+                            "illumina_length_min": 35,
+                            "illumina_length_max": 400,
+                            "single_end_length_min": 1000,
+                            "dedup_reads": false,
+                            "args": {
+                                "illumina": "-Q",
+                                "single_end": "-Q"
+                            },
+                            "report_exclude_fields": [
+                                "content_curves",
+                                "quality_curves",
+                                "mean",
+                                "kmer_count",
+                                "histogram",
+                                "overrepresented_sequences"
+                            ]
+                        },
+                        "SAMPlE1.json:md5,b1e96c37c41a9753485d40b1f0cf7033"
+                    ],
+                    [
+                        {
+                            "id": "SAMPlE1",
+                            "hybrid": false,
+                            "sample": "SAMPLE1",
+                            "assembly": false,
+                            "downsampled": false,
+                            "single_end": false,
+                            "merge": false
+                        },
+                        {
+                            "threshold": 1,
+                            "report_tag": "MeetsReadThreshold"
+                        },
+                        true
+                    ]
+                ],
+                "trimmed_reads": [
+                    [
+                        {
+                            "id": "SAMPlE1",
+                            "hybrid": false,
+                            "sample": "SAMPLE1",
+                            "assembly": false,
+                            "downsampled": false,
+                            "single_end": false,
+                            "merge": false,
+                            "metagenomic": false
+                        },
+                        [
+                            "SAMPlE1.R1.trimmed.fastq.gz:md5,b556c9169c14812c9413a66441ef7a52",
+                            "SAMPlE1.R2.trimmed.fastq.gz:md5,2ab187b817ff8afb8f83fdbc51a7e287"
+                        ]
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,24650bb863b10ea27510d94eafc0f6ff",
+                    "versions.yml:md5,3879b6c1eb5ca6e84d9f6d67c3b7c97a",
+                    "versions.yml:md5,662de06a73ecf3af0c3a670b6cbdb130",
+                    "versions.yml:md5,9f9fdde5178fcb4d6a69e86c6f7d61b2"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2024-10-22T15:37:55.171306844"
     }
 }

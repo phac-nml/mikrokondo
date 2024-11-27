@@ -5,21 +5,51 @@
 include { COMBINE_DATA } from '../../modules/local/combine_data.nf'
 include { fromSamplesheet } from 'plugin/nf-validation'
 
+
 workflow INPUT_CHECK {
 
     main:
 
-    // TODO add in automatic gzipping of all samples in
     versions = Channel.empty()
     def sample_sheet = params.input
+
+    // Thank you snvphylnfc for the ideas :)
+    // https://github.com/phac-nml/snvphylnfc/blob/f1e5fae76af276acf0a8c98174978cb21ca5d7e0/workflows/snvphylnfc.nf#L98-L109
+    def processedIDs = [] as Set
+
     reads_in = Channel.fromSamplesheet(
         "input", // apparentely input maps to params.input...
         parameters_schema: 'nextflow_schema.json',
         skip_duplicate_check: true).map {
             // Create grouping value
-            meta -> tuple(meta.id[0], meta[0])
-        }
+            meta ->
 
+
+                // Verify file names do not start with periods as the files can end up being treated as
+                // hidden files causing odd issues later on in the pipeline
+
+                if(meta[0].id == null){
+                    // Remove any unallowed characters in the meta.id field
+                    meta[0].id = meta[0].external_id.replaceAll(/\./, '_')
+                    meta[0].id = meta[0].id.replaceAll(/[^A-Za-z0-9_\.\-]/, '_')
+                }else {
+                    meta[0].id = meta[0].id.replaceAll(/\./, '_')
+                    meta[0].id = meta[0].id.replaceAll(/[^A-Za-z0-9_\.\-]/, '_')
+                }
+
+
+                if(processedIDs.contains(meta[0].id) && params.skip_read_merging){
+                    // If the id is already contained and read merging is not to be
+                    // performed, then we make the id's unique to proceed with processing
+                    // read merging is set to false by default, so that when it is run
+                    // in IRIDANext reads are only merged in irida next
+                    while (processedIDs.contains(meta[0].id)) {
+                        meta[0].id = "${meta[0].id}_${meta[0].external_id}"
+                    }
+                }
+                processedIDs << meta[0].id
+                tuple(meta[0].id, meta[0])
+        }
 
     if(params.opt_platforms.ont == params.platform && params.nanopore_chemistry == null){
         exit 1, "ERROR: Nanopore data was selected without a model being specified."
@@ -66,11 +96,11 @@ workflow INPUT_CHECK {
     versions = versions // channel: [ versions.yml ]
 }
 
-def reset_combined_map(LinkedHashMap meta, sun.nio.fs.UnixPath f_reads, sun.nio.fs.UnixPath r_reads, sun.nio.fs.UnixPath long_reads, sun.nio.fs.UnixPath assembly){
+def reset_combined_map(LinkedHashMap meta, Path f_reads, Path r_reads, Path long_reads, Path assembly){
     /*Re-format the data to make it similar to make it match the input format again
 
     */
-    // TODO find a way to make this cleaner
+
     def new_meta = meta
     new_meta.merge = true
 
@@ -94,7 +124,7 @@ def reset_combined_map(LinkedHashMap meta, sun.nio.fs.UnixPath f_reads, sun.nio.
 
 def check_file_exists(def file_path){
     if(!file(file_path).exists()){
-        exit 1, "ERROR: Please check input samplesheet -> $file_path does not exist. If your file in you sample sheet does not exist make sure you do not have spaces in your path name."
+        exit 1, "ERROR: Please check input samplesheet -> $file_path does not exist. Check that you do not have spaces in your path."
     }
     return true
 }
@@ -103,7 +133,10 @@ def format_reads(ArrayList sheet_data){
     def meta = [:]
     def error_occured = false
     meta.id = sheet_data[0] // id is first value
-    meta.sample = sheet_data[0] // Sample will be id currently
+    //meta.sample = sheet_data[1].external_id
+    meta.sample = sheet_data[0]
+    meta.external_id = sheet_data[1].external_id
+
     meta.hybrid = false
     meta.assembly = false
     meta.downsampled = false
@@ -187,7 +220,7 @@ def group_reads(ArrayList read_data){
                 reads_combine[item] = []
             }
             if(group[item] && check_file_exists(group[item])){
-                reads_combine[item] << group[item]
+                reads_combine[item] << file(group[item])
             }
         }
     }

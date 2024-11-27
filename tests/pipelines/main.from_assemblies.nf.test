@@ -555,7 +555,7 @@ nextflow_pipeline {
             assert listeria_metadata."Length Value" == 2944528
             assert listeria_metadata."nr contigs Status" == "PASSED"
             assert listeria_metadata."nr contigs Value" == 1
-            assert listeria_metadata."QC Summary" == "FAILED Species ID: Listeria monocytogenes; Passed Tests: 3/4; Organism QC Criteria: Listeria"
+            assert listeria_metadata."QC Summary" == "FAILED Species ID: Listeria monocytogenes; Passed Tests: 3/4; Organism QC Criteria: Listeria monocytogenes"
 
             assert listeria_metadata."Downsampled" == false
 
@@ -795,5 +795,67 @@ nextflow_pipeline {
 
         }
     }
+
+        test("Test Stupid Name in Input Sheet") {
+        tag "from_assemblies_stupidnames"
+
+        when {
+            params {
+                // Need to update with 7 gene when complete
+                input = "$baseDir/tests/data/samplesheets/samplesheet-test-from-assemblies-vibrio-stupid-names.csv"
+                outdir = "results"
+
+                platform = "illumina"
+
+                mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/mash.msh"
+                dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+                kraken2_db = "$baseDir/tests/data/kraken2/test"
+                lx_allele_database = "$baseDir/tests/data/databases/locidex_dbs"
+                qt_min_contig_length = 1
+
+                skip_bakta = true
+                skip_mobrecon = true
+                skip_checkm = true
+                skip_raw_read_metrics = true
+                skip_polishing = true
+                skip_mlst = true
+                skip_version_gathering = true
+                skip_staramr = true
+                skip_length_filtering_contigs = true
+
+                skip_subtyping = false
+                skip_allele_calling = false
+                lx_report_max_stop = 100
+                max_memory = "2.GB"
+                max_cpus = 1
+            }
+        }
+
+        then {
+            assert workflow.success
+            assert path("$launchDir/results").exists()
+
+            // Compare IRIDANext json
+            assert path("$launchDir/results/iridanext.output.json").exists()
+            def iridanext_json = path("$launchDir/results/iridanext.output.json").json
+            def iridanext_global = iridanext_json.files.global
+            def iridanext_samples = iridanext_json.files.samples
+            def iridanext_metadata = iridanext_json.metadata.samples
+            def vibrio_metadata = iridanext_metadata.INX
+
+            // Output files
+            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Json/final_report.json" }.size() == 1
+            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Tables/final_report.tsv" }.size() == 1
+
+            assert vibrio_metadata.locidex_db_name == "Vibrio cholerae"
+            assert vibrio_metadata.locidex_db_date == "2024-07-30"
+            assert vibrio_metadata.locidex_db_version == "1.0.0"
+            assert vibrio_metadata.total_loci == 7
+            assert vibrio_metadata.count_loci_found == 6
+            assert vibrio_metadata.count_loci_missing == 1
+
+        }
+    }
+
 
 }

@@ -14,7 +14,7 @@ process REPORT_AGGREGATE{
     path("final_report.tsv"), emit: final_report
     path("final_report_transposed.tsv"), emit: final_report_transposed
     path("final_report_flattened.json"), emit: flattened_files
-    path("*${sample_flat_suffix}"), emit: flat_samples
+    path("*/*${sample_flat_suffix}"), emit: flat_samples
     path "versions.yml", emit: versions
 
     script:
