@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - RASUSA now used for down sampling of Nanopore or PacBio data. [PR 125](https://github.com/phac-nml/mikrokondo/pull/125)
 
+- Default *Listeria* quality control parameters apply only to *monocytogenes* now. [PR 142](https://github.com/phac-nml/mikrokondo/pull/142)
 
 ### `Updated`
 
