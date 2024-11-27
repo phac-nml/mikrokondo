@@ -555,7 +555,7 @@ nextflow_pipeline {
             assert listeria_metadata."Length Value" == 2944528
             assert listeria_metadata."nr contigs Status" == "PASSED"
             assert listeria_metadata."nr contigs Value" == 1
-            assert listeria_metadata."QC Summary" == "FAILED Species ID: Listeria monocytogenes; Passed Tests: 3/4; Organism QC Criteria: Listeria"
+            assert listeria_metadata."QC Summary" == "FAILED Species ID: Listeria monocytogenes; Passed Tests: 3/4; Organism QC Criteria: Listeria monocytogenes"
 
             assert listeria_metadata."Downsampled" == false
 
