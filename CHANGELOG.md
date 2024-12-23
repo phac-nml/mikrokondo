@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Changed`
 
-- Changed `lx_report_mode` default from `normal` to `conservative`. [PR]
+- Changed `lx_report_mode` default from `normal` to `conservative`. [PR 146](https://github.com/phac-nml/mikrokondo/pull/146)
 
 ## [0.5.0] - 2024-11-27
 
