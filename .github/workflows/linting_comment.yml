@@ -1,6 +1,6 @@
 name: nf-core linting comment
 # This workflow is triggered after the linting action is complete
-# It posts an automated comment to the PR, even if the PR is coming from a fork
+# It posts an automated comment to the PR, even if the PR is coming from a fork {%- raw %}
 
 on:
   workflow_run:
@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download lint results
-        uses: dawidd6/action-download-artifact@bf251b5aa9c2f7eeb574a96ee720e24f801b7c11 # v6
+        uses: dawidd6/action-download-artifact@80620a5d27ce0ae443b965134db88467fc607b43 # v7
         with:
           workflow: linting.yml
           workflow_conclusion: completed
@@ -25,4 +25,4 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           number: ${{ steps.pr_number.outputs.pr_number }}
-          path: linting-logs/lint_results.md
+          path: linting-logs/lint_results.md {%- endraw %}
