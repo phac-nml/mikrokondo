@@ -20,7 +20,7 @@ process QUAST {
     def args =  task.ext.args ?: ""
     def reads = null
     prefix = meta.id
-    
+
     def quast_table_name = "${params.quast.report_prefix}${meta.id}${params.quast.report_ext}"
 
     def long_read_string = "--single"
@@ -67,3 +67,4 @@ process QUAST {
     """
 
 }
+

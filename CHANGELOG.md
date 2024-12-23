@@ -3,6 +3,12 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+### `Changed`
+
+- Changed `lx_report_mode` default from `normal` to `conservative`. [PR 146](https://github.com/phac-nml/mikrokondo/pull/146)
+
 ## [0.5.0] - 2024-11-27
 
 ### `Added`
@@ -19,7 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - RASUSA now used for down sampling of Nanopore or PacBio data. [PR 125](https://github.com/phac-nml/mikrokondo/pull/125)
 
-- Default *Listeria* quality control parameters apply only to *monocytogenes* now. [PR 142](https://github.com/phac-nml/mikrokondo/pull/142)
+- Default _Listeria_ quality control parameters apply only to _monocytogenes_ now. [PR 142](https://github.com/phac-nml/mikrokondo/pull/142)
 
 ### `Updated`
 
@@ -51,7 +57,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Changed default option for `override_allele_scheme` from `null` to "" (evaluates to false). [PR 109](https://github.com/phac-nml/mikrokondo/pull/109)
 
-
 ## [0.4.0] - 2024-09-04
 
 ### `Changed`
@@ -65,7 +70,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated TSeemann's MLST default container to use version 2.23.0 of `mlst`. See [PR 97](https://github.com/phac-nml/mikrokondo/pull/97)
 
 - Moved allele schema parameters under one option in the nextflow_schema.json. See [PR 104](https://github.com/phac-nml/mikrokondo/pull/104)
-
 
 ### `Fixed`
 
@@ -106,7 +110,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### `Added`
 
 - Altered name of stored `SpeciesTopHit` field in the irida-next.config, and added a field displaying the field name used addressing [PR 90](https://github.com/phac-nml/mikrokondo/pull/90)
-
 
 ## [0.2.1] - 2024-06-03
 

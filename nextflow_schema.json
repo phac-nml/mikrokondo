@@ -663,7 +663,7 @@
                 },
                 "lx_report_mode": {
                     "type": "string",
-                    "default": "normal",
+                    "default": "conservative",
                     "description": "Allele profile assignment.",
                     "enum": [
                         "normal",
