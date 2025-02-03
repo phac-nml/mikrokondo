@@ -74,29 +74,29 @@ nextflow_pipeline {
             assert iridanext_samples.CSE.findAll { it.path.contains("Assembly/FinalReports/FlattenedReports/CSE.flat_sample.json.gz") }.size() == 0
 
             // metadata
-            assert iridanext_metadata.CSE.containsKey("QC Status")
-            assert iridanext_metadata.CSE."QC Status" == "FAILED"
-            assert !iridanext_metadata.CSE.containsKey("Checkm Status")
-            assert !iridanext_metadata.CSE.containsKey("Checkm Value")
-            assert !iridanext_metadata.CSE.containsKey("Average Coverage Status")
-            assert !iridanext_metadata.CSE.containsKey("Average Coverage Value")
+            assert iridanext_metadata.CSE.containsKey("qc_status_overall")
+            assert iridanext_metadata.CSE."qc_status_overall" == "FAILED"
+            assert !iridanext_metadata.CSE.containsKey("qc_status_contamination")
+            assert !iridanext_metadata.CSE.containsKey("checkm_value")
+            assert !iridanext_metadata.CSE.containsKey("qc_status_read_depth_fixed")
+            assert !iridanext_metadata.CSE.containsKey("mean_read_depth_fixed")
             assert !iridanext_metadata.CSE.containsKey("n50 Status")
             assert !iridanext_metadata.CSE.containsKey("n50 Value")
             assert !iridanext_metadata.CSE.containsKey("Raw Average Quality Status")
             assert !iridanext_metadata.CSE.containsKey("Raw Average Quality Value")
-            assert !iridanext_metadata.CSE.containsKey("Length Status")
-            assert !iridanext_metadata.CSE.containsKey("Length Value")
-            assert !iridanext_metadata.CSE.containsKey("nr contigs Status")
-            assert !iridanext_metadata.CSE.containsKey("nr contigs Value")
-            assert iridanext_metadata.CSE."QC Summary" == "FAILED Species ID: No organism specific QC data available.; Passed Tests: 0/6; Organism QC Criteria: No organism specific QC data available."
+            assert !iridanext_metadata.CSE.containsKey("qc_status_assembly_genome_size")
+            assert !iridanext_metadata.CSE.containsKey("assembly_length")
+            assert !iridanext_metadata.CSE.containsKey("qc_status_assembly_num_contigs")
+            assert !iridanext_metadata.CSE.containsKey("assembly_num_contigs")
+            assert iridanext_metadata.CSE."qc_summary" == "FAILED Species ID: No organism specific QC data available.; Passed Tests: 0/6; Organism QC Criteria: No organism specific QC data available."
 
             assert iridanext_metadata.CSE."Downsampled" == false
             assert !iridanext_metadata.CSE.containsKey("predicted_identification_name")
             assert !iridanext_metadata.CSE.containsKey("predicted_identification_method")
-            assert !iridanext_metadata.CSE.containsKey("GC (%)")
+            assert !iridanext_metadata.CSE.containsKey("gc")
             //assert iridanext_metadata.CSE."Mean Sequence Length Forward" == 150
             // Base count after decontamination
-            assert iridanext_metadata.CSE."BaseCount" == 37200
+            assert iridanext_metadata.CSE."total_sequenced_bases" == 37200
         }
     }
 
@@ -218,7 +218,7 @@ nextflow_pipeline {
             assert iridanext_samples.INX.findAll { it.path == "FinalReports/FlattenedReports/short.flat_sample.json.gz" }.size() == 1
 
             // output metadata
-            assert iridanext_metadata.INX."QC Status" == "PASSED"
+            assert iridanext_metadata.INX."qc_status_overall" == "PASSED"
 
         }
 
