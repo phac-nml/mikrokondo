@@ -563,7 +563,7 @@ nextflow_pipeline {
             assert path("$launchDir/results").exists()
             // parse output json file
             def iridanext_json = path("$launchDir/results/iridanext.output.json").json
-            assert iridanext_json.metadata.samples.short."QC Status" == "NA"
+            assert iridanext_json.metadata.samples.short."qc_status_overall" == "NA"
             assert iridanext_json.metadata.samples.short."QC Summary" ==  "No quality control criteria is applied for metagenomic samples."
 
         }
