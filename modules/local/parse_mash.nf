@@ -18,7 +18,7 @@ process PARSE_MASH{
     path "versions.yml", emit: versions
 
     script:
-    def taxa_path = equivalent_taxa.exists() ? equivalent_taxa : ""
+    def taxa_path = equivalent_taxa && equivalent_taxa.exists() ? equivalent_taxa : ""
     """
     mash_parse.py $run_mode $mash_screen $taxa_path
 

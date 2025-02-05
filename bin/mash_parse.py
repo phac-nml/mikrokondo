@@ -55,7 +55,8 @@ class MashScreen:
     alternate_taxa_allowed = 1  # The number of unique elements allowed in a set before the sample is classified as metagenomic, works with the taxonomic_classification_level constant
 
     def __init__(self, prog, mash_input, equivalent_taxa: t.Optional[p.Path]) -> None:
-        self.equivalent_taxa = self.parse_equivalent_taxa(p.Path(equivalent_taxa))
+        if equivalent_taxa is not None:
+            self.equivalent_taxa = self.parse_equivalent_taxa(p.Path(equivalent_taxa))
         self.mash_input = mash_input
         self._mash_data = self.parse_mash_screen()
         if self.meta_genome_prog == prog:
