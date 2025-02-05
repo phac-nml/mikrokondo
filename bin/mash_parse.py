@@ -20,7 +20,7 @@ import json as j
 class MashRow:
     __slots__ = ("identity", "shared_hashes", "median_multiplicity", "p_value", "query_id", "query_note")
     identity: float
-    shared_hashes: List[int]
+    shared_hashes: t.List[int]
     median_multiplicity: int
     p_value: float
     query_id: str
