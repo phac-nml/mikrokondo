@@ -3,6 +3,12 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+### `Added`
+
+- Added a configuration file  `conf/equivalent_taxa.json` for denoting equivalent taxa to prevent falsely flagging samples as metagenomic when multiple genera are present. [PR 150](https://github.com/phac-nml/mikrokondo/pull/150)
+
 ## [0.5.0] - 2024-11-27
 
 ### `Added`
