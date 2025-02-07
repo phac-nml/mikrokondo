@@ -81,4 +81,29 @@ nextflow_process {
             }
         }
     }
+
+    test("Test top hit"){
+        tag "test_sample_metagenomic"
+        when{
+            process{
+                """
+                    input[0] = Channel.of(
+                        [["id": "iso"], file("$baseDir/tests/data/contaminated_mash.screen")]
+                    )
+                    input[1] = Channel.of([])
+
+                    input[2] = channel.of("top")
+                """
+            }
+
+            params {
+                outdir = "mash_parse_classify"
+            }
+
+            then {
+                assert process.success
+                assert process.out.mash_out[0][1] == 's__Escherichia coli'
+            }
+        }
+    }
 }

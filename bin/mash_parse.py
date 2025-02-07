@@ -10,17 +10,22 @@
 #! have ties return a null result
 from dataclasses import dataclass
 from collections import defaultdict
+import argparse
 import itertools
 import sys
-import typing as t
-import pathlib as p
-import json as j
+import typing
+import pathlib
+import json
+
+
+__META_GENOME_PROG__ = "classify"
+__BEST_MATCH__ = "top"
 
 @dataclass
 class MashRow:
     __slots__ = ("identity", "shared_hashes", "median_multiplicity", "p_value", "query_id", "query_note")
     identity: float
-    shared_hashes: t.List[int]
+    shared_hashes: typing.List[int]
     median_multiplicity: int
     p_value: float
     query_id: str
@@ -47,16 +52,16 @@ class MashScreen:
     coefficient_of_variation_cutoff = 0.40
     skewness_cutoff = 4
     percent_identity_cutoff = 0.90
-    meta_genome_prog = "classify"
-    best_match = "top"
+    meta_genome_prog = __META_GENOME_PROG__
+    best_match = __BEST_MATCH__
     report_taxon_delimiter = ";"
     taxon_level_split = "__"
     taxonomic_classification_level = "g"  # the level at which to check for if sample is metagenomic
     alternate_taxa_allowed = 1  # The number of unique elements allowed in a set before the sample is classified as metagenomic, works with the taxonomic_classification_level constant
 
-    def __init__(self, prog, mash_input, equivalent_taxa: t.Optional[p.Path]) -> None:
+    def __init__(self, prog, mash_input, equivalent_taxa: typing.Optional[pathlib.Path]):
         if equivalent_taxa is not None:
-            self.equivalent_taxa = self.parse_equivalent_taxa(p.Path(equivalent_taxa))
+            self.equivalent_taxa = self.parse_equivalent_taxa(pathlib.Path(equivalent_taxa))
         self.mash_input = mash_input
         self._mash_data = self.parse_mash_screen()
         if self.meta_genome_prog == prog:
@@ -78,7 +83,7 @@ class MashScreen:
         """
         return taxa[:taxa.index(self.taxon_level_split)]
 
-    def parse_equivalent_taxa(self, taxa: p.Path):
+    def parse_equivalent_taxa(self, taxa: pathlib.Path):
         """
         Parse the equivalent taxa from the input JSON
 
@@ -86,12 +91,42 @@ class MashScreen:
         the shared key used for assigning equivalent taxa.
         """
         with taxa.open() as data_in:
-            data = j.load(data_in)
+            data = json.load(data_in)
 
         taxa_equivalent = defaultdict(lambda: set())
         for key, value in data.items():
+            """
+            The below operation takes in the array of equivalent taxonomy values from  `equivalent_taxa.json`
+            an example of the array can be seen below:
+            [
+                f__Enterobacteriaceae;g__Escherichia;s__Escherichia coli",
+                f__Enterobacteriaceae;g__Shigella;s__Shigella dysenteriae"
+            ]
+
+            The map process, splits each value in the array on the taxon delimiter value e.g. ';'
+                e.g.
+                    [
+                        [f__Enterobacteriaceae, g__Escherichia, s__Escherichia coli],
+                        [f__Enterobacteriaceae, g__Shigella, s__Shigella dysenteriae]
+                    ]
+
+            The values split on the delimited will then be in separate lists, that need to be flattened
+            which itertools.chain.from_iterable does for us.
+
+            The listed values are then iterated over and only the taxonomic level
+            of interest (specified taxonomic_classification_level) is stored in the dictionary of equivalent values.
+
+            Only the taxonomic level of interest is stored to prevent the stored sets from increasing in size.
+
+            The final result is a dictionary with the hits of:
+            taxa_equivalent: {
+                Escherichia: { g__Escherichia, g__Shigella},
+                Example: { g__genera1, g__genera2},
+            }
+
+            """
             equivalent_values = itertools.chain.from_iterable(
-                (map(lambda x: x.split(self.report_taxon_delimiter), value)))
+                map(lambda x: x.split(self.report_taxon_delimiter), value))
 
             for v in equivalent_values:
                 if self.get_taxa_level(v) == self.taxonomic_classification_level:
@@ -109,13 +144,40 @@ class MashScreen:
     def normalize_taxa(self, taxa_levels: dict[str, set[str]]):
         """
         Reduce equivalent taxa into homogenous groups.
+
+        The taxa levels is a dictionary containing the set of the contained taxa
+        at a given taxonomic level.
+        An example of the input data is as follows:
+        taxa_levels = {
+            k: {bacteria},
+            p: {Pseudomonadota},
+            c: {Gammaproteobacteria},
+            o: {Enterobacterales},
+            f: {Enterobacteriaceae},
+            g: {g__Escherichia, g__Shigella}
+        }
+
+        As only one taxonomic level is used for differentiation of contamination
+        we extract only the required level to process (e.g. self.taxonomic_classification_level = 'g')
+
+        {g: {g__Escherichia, g__Shigella}} = taxa_levels[self.taxonomic_classification_level]
+
+        Within the equivalent_taxa object each taxa at a specific level is mapped back to a key.
+        e.g. {Escherichia: {g__Escherichia, g__Shigella}}
+
+        we then loop through each key and value of the equivalent taxa, and check if each value of the
+        equivalent taxa exists in the our input levels e.g. {g: {g__Escherichia, g__Shigella}}
+
+        Every time a value of our equivalent taxa is found in our input values we remove it and add in
+        the or "equivalent value" which is the key of our equivalent taxa.
+
         """
+
         levels = taxa_levels[self.taxonomic_classification_level]
         for k, v in self.equivalent_taxa.items():
-            for taxa in v:
-                if taxa in levels:
-                    levels.remove(taxa)
-                    levels.add(k)
+            if levels & v: # check if sets contain shared items
+                levels -= v # remove the shared items
+                levels.add(k) # add in the shared key for the equivalent taxa
         return taxa_levels
 
     def metagenomic_p(self, mash_data):
@@ -159,8 +221,26 @@ class MashScreen:
         return mash_rows
 
 if __name__ == "__main__":
-    classify_arg_count = 4
-    if len(sys.argv) == classify_arg_count:
-        MashScreen(sys.argv[1], sys.argv[2], sys.argv[3])
+    parser = argparse.ArgumentParser(
+        description="Script for parsing mash outputs in mikrokondo",
+    )
+
+    parser.add_argument("-r", "--run-mode",
+                        help="Run mode for the mash parse script.",
+                        choices=[__META_GENOME_PROG__, __BEST_MATCH__],
+                        required=True)
+
+    parser.add_argument("-i", "--input",
+                        help="Mash screen input samples.",
+                        required=True)
+
+    parser.add_argument("-e", "--equivalent-taxa",
+                        help="Configuration file containing equivalent taxa.",
+                        required=False,
+                        default=None)
+
+    args = parser.parse_args()
+    if args.run_mode == __META_GENOME_PROG__ :
+        MashScreen(args.run_mode, args.input, args.equivalent_taxa)
     else:
-        MashScreen(sys.argv[1], sys.argv[2], None)
+        MashScreen(args.run_mode, args.input, None)
