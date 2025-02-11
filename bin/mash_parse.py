@@ -178,7 +178,6 @@ class MashScreen:
             if levels & v: # check if sets contain shared items
                 levels -= v # remove the shared items
                 levels.add(k) # add in the shared key for the equivalent taxa
-        return taxa_levels
 
     def metagenomic_p(self, mash_data):
         """Generate summary metrics of the mash screen data
@@ -188,7 +187,7 @@ class MashScreen:
         """
         data = filter(lambda x: x.identity > self.percent_identity_cutoff, mash_data)
         taxa_levels = self.parse_flatten_queries(data)
-        taxa_levels = self.normalize_taxa(taxa_levels)
+        self.normalize_taxa(taxa_levels)
         if len(taxa_levels[self.taxonomic_classification_level]) > self.alternate_taxa_allowed:
             return True
         return False
