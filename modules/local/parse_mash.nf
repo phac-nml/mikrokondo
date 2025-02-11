@@ -10,6 +10,7 @@ process PARSE_MASH{
 
     input:
     tuple val(meta), path(mash_screen)
+    path equivalent_taxa
     val run_mode
 
     output:
@@ -17,14 +18,10 @@ process PARSE_MASH{
     path "versions.yml", emit: versions
 
     script:
+    def taxa_path = equivalent_taxa && equivalent_taxa.exists() ? "-e $equivalent_taxa" : ""
     """
-    mash_parse.py $run_mode $mash_screen
+    mash_parse.py -r $run_mode -i $mash_screen $taxa_path
 
-    # If no species identified, emit that from the pipeline
-    #if [ \$? -ne 0 ] && [ "$run_mode" = "top" ]
-    #then
-    #    echo "No Species Identified"
-    #fi
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         python: \$(python --version | sed 's/Python //g')

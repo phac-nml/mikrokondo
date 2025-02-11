@@ -7,6 +7,8 @@ The following files contain configuration settings:
 
 - `conf/modules.config`: contains error strategy, output director structure and execution instruction parameters. **It is unadvised to alter this file unless involved in pipeline development, or tuning to a system.**
 
+- `conf/equivalent_taxa.json`: Contains a set of keys to arrays containing the query notes from the mash sketch denoting "equivalent taxa". This typically contains a list of organisms that are genetically similar but phenotypically distinct, as mobile elements or genome segments may be shared across organisms. e.g. *Shigella* and *Escherichia*
+
 - `nextflow.config`: contains default tool settings that tie to CLI options. These options can be directly set within the `params` section of this file in cases when a user has optimized their pipeline usage and has identified the flags they will use every time the pipeline is run.
 
 ### Base configuration (conf/base.config)
