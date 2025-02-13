@@ -74,29 +74,29 @@ nextflow_pipeline {
             assert iridanext_samples.CSE.findAll { it.path.contains("Assembly/FinalReports/FlattenedReports/CSE.flat_sample.json.gz") }.size() == 0
 
             // metadata
-            assert iridanext_metadata.CSE.containsKey("QC Status")
-            assert iridanext_metadata.CSE."QC Status" == "FAILED"
-            assert !iridanext_metadata.CSE.containsKey("Checkm Status")
-            assert !iridanext_metadata.CSE.containsKey("Checkm Value")
-            assert !iridanext_metadata.CSE.containsKey("Average Coverage Status")
-            assert !iridanext_metadata.CSE.containsKey("Average Coverage Value")
+            assert iridanext_metadata.CSE.containsKey("qc_status_overall")
+            assert iridanext_metadata.CSE."qc_status_overall" == "FAILED"
+            assert !iridanext_metadata.CSE.containsKey("qc_status_contamination")
+            assert !iridanext_metadata.CSE.containsKey("checkm_value")
+            assert !iridanext_metadata.CSE.containsKey("qc_status_read_depth_fixed")
+            assert !iridanext_metadata.CSE.containsKey("mean_read_depth_fixed")
             assert !iridanext_metadata.CSE.containsKey("n50 Status")
             assert !iridanext_metadata.CSE.containsKey("n50 Value")
             assert !iridanext_metadata.CSE.containsKey("Raw Average Quality Status")
             assert !iridanext_metadata.CSE.containsKey("Raw Average Quality Value")
-            assert !iridanext_metadata.CSE.containsKey("Length Status")
-            assert !iridanext_metadata.CSE.containsKey("Length Value")
-            assert !iridanext_metadata.CSE.containsKey("nr contigs Status")
-            assert !iridanext_metadata.CSE.containsKey("nr contigs Value")
-            assert iridanext_metadata.CSE."QC Summary" == "FAILED Species ID: No organism specific QC data available.; Passed Tests: 0/6; Organism QC Criteria: No organism specific QC data available."
+            assert !iridanext_metadata.CSE.containsKey("qc_status_assembly_genome_size")
+            assert !iridanext_metadata.CSE.containsKey("assembly_length")
+            assert !iridanext_metadata.CSE.containsKey("qc_status_assembly_num_contigs")
+            assert !iridanext_metadata.CSE.containsKey("assembly_num_contigs")
+            assert iridanext_metadata.CSE."qc_summary" == "FAILED Species ID: No organism specific QC data available.; Passed Tests: 0/6; Organism QC Criteria: No organism specific QC data available."
 
             assert iridanext_metadata.CSE."Downsampled" == false
             assert !iridanext_metadata.CSE.containsKey("predicted_identification_name")
             assert !iridanext_metadata.CSE.containsKey("predicted_identification_method")
-            assert !iridanext_metadata.CSE.containsKey("GC (%)")
+            assert !iridanext_metadata.CSE.containsKey("gc")
             //assert iridanext_metadata.CSE."Mean Sequence Length Forward" == 150
             // Base count after decontamination
-            assert iridanext_metadata.CSE."BaseCount" == 37200
+            assert iridanext_metadata.CSE."total_sequenced_bases" == 37200
         }
     }
 
@@ -218,7 +218,7 @@ nextflow_pipeline {
             assert iridanext_samples.INX.findAll { it.path == "FinalReports/FlattenedReports/short.flat_sample.json.gz" }.size() == 1
 
             // output metadata
-            assert iridanext_metadata.INX."QC Status" == "PASSED"
+            assert iridanext_metadata.INX."qc_status_overall" == "PASSED"
 
         }
 
@@ -346,27 +346,27 @@ nextflow_pipeline {
             assert iridanext_samples.short.findAll { it.path == "FinalReports/FlattenedReports/short.flat_sample.json.gz" }.size() == 1
 
             // output metadata
-            assert iridanext_metadata.short."QC Status" == "PASSED"
-            assert iridanext_metadata.short."Checkm Status" == "PASSED"
-            assert iridanext_metadata.short."Checkm Value" == 0.0
+            assert iridanext_metadata.short."qc_status_overall" == "PASSED"
+            assert iridanext_metadata.short."qc_status_contamination" == "PASSED"
+            assert iridanext_metadata.short."checkm_value" == 0.0
             assert iridanext_metadata.short."Average Coverage Status" == "PASSED"
             assert iridanext_metadata.short."Average Coverage Value" == 237.5
             assert iridanext_metadata.short."n50 Status" == "WARNING"
             assert iridanext_metadata.short."n50 Value" == 4949
-            assert iridanext_metadata.short."Raw Average Quality Status" == "PASSED"
+            assert iridanext_metadata.short."qc_status_read_qual" == "PASSED"
             assert iridanext_metadata.short."Raw Average Quality Value" == 40.0
-            assert iridanext_metadata.short."Length Status" == "WARNING"
-            assert iridanext_metadata.short."Length Value" == 4949
-            assert iridanext_metadata.short."nr contigs Status" == "WARNING"
-            assert iridanext_metadata.short."nr contigs Value" == 1
-            assert iridanext_metadata.short."QC Summary" == "PASSED Species ID: No Species Identified; Passed Tests: 6/6; Organism QC Criteria: No organism specific QC data available."
+            assert iridanext_metadata.short."qc_status_assembly_genome_size" == "WARNING"
+            assert iridanext_metadata.short."assembly_length" == 4949
+            assert iridanext_metadata.short."qc_status_assembly_num_contigs" == "WARNING"
+            assert iridanext_metadata.short."assembly_num_contigs" == 1
+            assert iridanext_metadata.short."qc_status_overall" == "PASSED Species ID: No Species Identified; Passed Tests: 6/6; Organism QC Criteria: No organism specific QC data available."
 
             assert iridanext_metadata.short."Downsampled" == false
             assert iridanext_metadata.short."predicted_identification_name" == "No Species Identified"
             assert iridanext_metadata.short."predicted_identification_method" == "Mash"
-            assert iridanext_metadata.short."GC (%)" == "52.96"
+            assert iridanext_metadata.short."gc" == "52.96"
             assert iridanext_metadata.short."Mean Sequence Length Forward" == 250
-            assert iridanext_metadata.short."BaseCount" == 237500
+            assert iridanext_metadata.short."total_sequenced_bases" == 237500
 
             assert iridanext_metadata.short."StarAMR Genotype" == "None"
             assert iridanext_metadata.short."StarAMR Predicted Phenotype" == "Susceptible"
@@ -495,27 +495,27 @@ nextflow_pipeline {
             assert iridanext_samples.short.findAll { it.path == "FinalReports/FlattenedReports/short.flat_sample.json.gz" }.size() == 1
 
             // output metadata
-            assert iridanext_metadata.short."QC Status" == "FAILED"
-            assert iridanext_metadata.short."Checkm Status" == "PASSED"
-            assert iridanext_metadata.short."Checkm Value" == 0.0
-            assert iridanext_metadata.short."Average Coverage Status" == "FAILED"
-            assert iridanext_metadata.short."Average Coverage Value" == 0.24
+            assert iridanext_metadata.short."qc_status_overall" == "FAILED"
+            assert iridanext_metadata.short."qc_status_contamination" == "PASSED"
+            assert iridanext_metadata.short."checkm_value" == 0.0
+            assert iridanext_metadata.short."qc_status_read_depth_fixed" == "FAILED"
+            assert iridanext_metadata.short."mean_read_depth_fixed" == 0.24
             assert iridanext_metadata.short."n50 Status" == "WARNING"
             assert iridanext_metadata.short."n50 Value" == 4949
-            assert iridanext_metadata.short."Raw Average Quality Status" == "PASSED"
+            assert iridanext_metadata.short."qc_status_read_qual" == "PASSED"
             assert iridanext_metadata.short."Raw Average Quality Value" == 40.0
-            assert iridanext_metadata.short."Length Status" == "WARNING"
-            assert iridanext_metadata.short."Length Value" == 4949
-            assert iridanext_metadata.short."nr contigs Status" == "WARNING"
-            assert iridanext_metadata.short."nr contigs Value" == 1
+            assert iridanext_metadata.short."qc_status_assembly_genome_size" == "WARNING"
+            assert iridanext_metadata.short."assembly_length" == 4949
+            assert iridanext_metadata.short."qc_status_assembly_num_contigs" == "WARNING"
+            assert iridanext_metadata.short."assembly_num_contigs" == 1
             assert iridanext_metadata.short."QC Summary" == "FAILED Species ID: No Species Identified; Passed Tests: 5/6; Organism QC Criteria: No organism specific QC data available."
 
             assert iridanext_metadata.short."Downsampled" == false
             assert iridanext_metadata.short."predicted_identification_name" == "No Species Identified"
             assert iridanext_metadata.short."predicted_identification_method" == "Mash"
-            assert iridanext_metadata.short."GC (%)" == "52.96"
+            assert iridanext_metadata.short."gc" == "52.96"
             assert iridanext_metadata.short."Mean Sequence Length Forward" == 250
-            assert iridanext_metadata.short."BaseCount" == 237500
+            assert iridanext_metadata.short."total_sequenced_bases" == 237500
 
             assert iridanext_metadata.short."StarAMR Genotype" == "None"
             assert iridanext_metadata.short."StarAMR Predicted Phenotype" == "Susceptible"
@@ -563,7 +563,7 @@ nextflow_pipeline {
             assert path("$launchDir/results").exists()
             // parse output json file
             def iridanext_json = path("$launchDir/results/iridanext.output.json").json
-            assert iridanext_json.metadata.samples.short."QC Status" == "NA"
+            assert iridanext_json.metadata.samples.short."qc_status_overall" == "NA"
             assert iridanext_json.metadata.samples.short."QC Summary" ==  "No quality control criteria is applied for metagenomic samples."
 
         }
@@ -604,7 +604,7 @@ nextflow_pipeline {
             assert path("$launchDir/results").exists()
             // parse output json file
             def iridanext_json = path("$launchDir/results/iridanext.output.json").json
-            assert iridanext_json.metadata.samples."meta-small"."QC Status" == "FAILED"
+            assert iridanext_json.metadata.samples."meta-small"."qc_status_overall" == "FAILED"
             assert iridanext_json.metadata.samples."meta-small"."QC Summary" ==  "[FAILED] Sample was determined to be metagenomic and this was not specified as a metagenomic run indicating contamination."
 
         }
