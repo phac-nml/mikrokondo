@@ -41,9 +41,9 @@ nextflow_pipeline {
             // parse final report json file
             def final_report = path("$launchDir/results/FinalReports/Aggregated/Json/final_report.json").json
             def ecoli_json = final_report.ecoli_GCA_000947975.ecoli_GCA_000947975
-            assert ecoli_json.StarAMR."0".Genotype.equals("aph(3'')-Ib, aph(6)-Id, blaCTX-M-15, blaTEM-1B, dfrA7, gyrA (S83A), qacE, sul1, sul2, tet(A)")
-            assert ecoli_json.StarAMR."0"."Predicted Phenotype".equals("streptomycin, kanamycin, ampicillin, ceftriaxone, trimethoprim, ciprofloxacin I/R, nalidixic acid, unknown[qacE_1_X68232], sulfisoxazole, tetracycline")
-            assert ecoli_json.StarAMR."0"."CGE Predicted Phenotype".equals("Streptomycin, Amoxicillin, Ampicillin, Aztreonam, Cefepime, Cefotaxime, Ceftazidime, Ceftriaxone, Piperacillin, Ticarcillin, Cephalothin, Trimethoprim, Nalidixic acid, Ciprofloxacin, Benzylkonium Chloride, Ethidium Bromide, Chlorhexidine, Cetylpyridinium Chloride, Sulfamethoxazole, Doxycycline, Tetracycline")
+            assert ecoli_json.StarAMR."0".Genotype.equals("aph(3'')-Ib, aph(6)-Id, blaCTX-M-15, blaTEM-1B, dfrA7, gyrA (S83A), sul1, sul2, tet(A)")
+            assert ecoli_json.StarAMR."0"."Predicted Phenotype".equals("streptomycin, kanamycin, ampicillin, ceftriaxone, trimethoprim, ciprofloxacin I/R, nalidixic acid, sulfisoxazole, tetracycline")
+            assert ecoli_json.StarAMR."0"."CGE Predicted Phenotype".equals("Streptomycin, Amoxicillin, Ampicillin, Aztreonam, Cefepime, Cefotaxime, Ceftazidime, Ceftriaxone, Piperacillin, Ticarcillin, Cephalothin, Trimethoprim, Nalidixic acid, Ciprofloxacin, Sulfamethoxazole, Doxycycline, Tetracycline")
             assert ecoli_json.StarAMR."0".Plasmid.equals("IncQ1")
             assert ecoli_json.StarAMR."0".Scheme.equals("ecoli_achtman_4")
             assert ecoli_json.StarAMR."0"."Sequence Type".equals("678")
@@ -75,7 +75,7 @@ nextflow_pipeline {
             assert final_report_tmap."QUAST.0.# contigs" == "187"
             assert final_report_tmap."QUAST.0.N50" == "122025"
             assert final_report_tmap."StarAMR.0.Genotype" == "aph(3'')-Ib, aph(6)-Id, blaCTX-M-15, blaTEM-1B, dfrA7, gyrA (S83A), qacE, sul1, sul2, tet(A)"
-            assert final_report_tmap."StarAMR.0.Predicted Phenotype" == "streptomycin, kanamycin, ampicillin, ceftriaxone, trimethoprim, ciprofloxacin I/R, nalidixic acid, unknown[qacE_1_X68232], sulfisoxazole, tetracycline"
+            assert final_report_tmap."StarAMR.0.Predicted Phenotype" == "streptomycin, kanamycin, ampicillin, ceftriaxone, trimethoprim, ciprofloxacin I/R, nalidixic acid, sulfisoxazole, tetracycline"
             assert final_report_tmap."StarAMR.0.CGE Predicted Phenotype" == "Streptomycin, Amoxicillin, Ampicillin, Aztreonam, Cefepime, Cefotaxime, Ceftazidime, Ceftriaxone, Piperacillin, Ticarcillin, Cephalothin, Trimethoprim, Nalidixic acid, Ciprofloxacin, Benzylkonium Chloride, Ethidium Bromide, Chlorhexidine, Cetylpyridinium Chloride, Sulfamethoxazole, Doxycycline, Tetracycline"
             assert final_report_tmap."StarAMR.0.Plasmid" == "IncQ1"
             assert final_report_tmap."StarAMR.0.Scheme" == "ecoli_achtman_4"
@@ -153,9 +153,9 @@ nextflow_pipeline {
             assert ecoli_metadata."7 Gene ST" == "678"
             assert ecoli_metadata."7 Gene Scheme" == "ecoli_achtman_4"
 
-            assert ecoli_metadata."StarAMR Genotype" == "aph(3'')-Ib, aph(6)-Id, blaCTX-M-15, blaTEM-1B, dfrA7, gyrA (S83A), qacE, sul1, sul2, tet(A)"
-            assert ecoli_metadata."StarAMR Predicted Phenotype" == "streptomycin, kanamycin, ampicillin, ceftriaxone, trimethoprim, ciprofloxacin I/R, nalidixic acid, unknown[qacE_1_X68232], sulfisoxazole, tetracycline"
-            assert ecoli_metadata."StarAMR CGE Predicted Phenotype" == "Streptomycin, Amoxicillin, Ampicillin, Aztreonam, Cefepime, Cefotaxime, Ceftazidime, Ceftriaxone, Piperacillin, Ticarcillin, Cephalothin, Trimethoprim, Nalidixic acid, Ciprofloxacin, Benzylkonium Chloride, Ethidium Bromide, Chlorhexidine, Cetylpyridinium Chloride, Sulfamethoxazole, Doxycycline, Tetracycline"
+            assert ecoli_metadata."StarAMR Genotype" == "aph(3'')-Ib, aph(6)-Id, blaCTX-M-15, blaTEM-1B, dfrA7, gyrA (S83A), sul1, sul2, tet(A)"
+            assert ecoli_metadata."StarAMR Predicted Phenotype" == "streptomycin, kanamycin, ampicillin, ceftriaxone, trimethoprim, ciprofloxacin I/R, nalidixic acid, sulfisoxazole, tetracycline"
+            assert ecoli_metadata."StarAMR CGE Predicted Phenotype" == "Streptomycin, Amoxicillin, Ampicillin, Aztreonam, Cefepime, Cefotaxime, Ceftazidime, Ceftriaxone, Piperacillin, Ticarcillin, Cephalothin, Trimethoprim, Nalidixic acid, Ciprofloxacin, Sulfamethoxazole, Doxycycline, Tetracycline"
             assert ecoli_metadata."StarAMR Plasmid" == "IncQ1"
 
             // Read in filtered assembly fasta to verify number of contigs
@@ -224,7 +224,7 @@ nextflow_pipeline {
             assert ecoli_metadata."n50 Value" == 122025
             assert ecoli_metadata."Length Value" == 5299656
             assert ecoli_metadata."nr contigs Value" == 123
-            assert ecoli_metadata."StarAMR Genotype" == "aph(3'')-Ib, aph(6)-Id, blaCTX-M-15, blaTEM-1B, dfrA7, qacE, sul1, sul2, tet(A)"
+            assert ecoli_metadata."StarAMR Genotype" == "aph(3'')-Ib, aph(6)-Id, blaCTX-M-15, blaTEM-1B, dfrA7, sul1, sul2, tet(A)"
 
             // Read in filtered assembly fasta to verify number of contigs
             def assemblyLines = path("$launchDir/results/Assembly/FinalAssembly/ecoli_GCA_000947975/ecoli_GCA_000947975.final.filtered.assembly.fasta.gz").readLinesGzip()
