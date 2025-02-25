@@ -45,7 +45,7 @@ workflow DETERMINE_SPECIES {
         MASH_SCREEN(contigs, params.mash.mash_sketch ? file(params.mash.mash_sketch) : error("--mash_sketch ${params.mash_sketch} is invalid"))
         results = results.mix(MASH_SCREEN.out.mash_data)
 
-        parsed = PARSE_MASH(MASH_SCREEN.out.mash_data, Channel.value("top"))
+        parsed = PARSE_MASH(MASH_SCREEN.out.mash_data, [], Channel.value("top"))
         taxon_identifications = parsed.mash_out
         versions = versions.mix(MASH_SCREEN.out.versions)
         versions = versions.mix(parsed.versions)
