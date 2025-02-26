@@ -1,0 +1,60 @@
+{
+    "overrides": {
+        "definitions": {
+            "input_output_options": {
+                "description": {
+                    "en": "Define where the pipeline should find input data and save output data.",
+                    "fr": "Définir où le pipeline doit trouver les données d’entrée et sauvegarder les données de sortie."
+                }
+            },
+            "ectyper": {
+                "description": {
+                    "en": "Options for ECTyper (E.coli serotyping)",
+                    "fr": "Options pour ECTyper (E.coli serotyping)"
+                }
+            },
+            "sistr": {
+                "description": {
+                    "en": "Options for SISTR (Salmonella serotyping)",
+                    "fr": "Options pour SISTR (Salmonella serotyping)"
+                }
+            },
+            "control_flow_options": {
+                "description": {
+                    "en": "Options to alter control flow of the pipeline",
+                    "fr": "Options pour modifier le débit de contrôle du pipeline"
+                }
+            },
+            "fastp_options": {
+                "description": {
+                    "en": "Options to pass to FastP for read quality assurance",
+                    "fr": "Options de transmission au FastP pour l’assurance de la qualité de la lecture"
+                }
+            },
+            "other": {
+                "description": {
+                    "en": "Other parameters",
+                    "fr": "Autres paramètres"
+                }
+            },
+            "allele_schema_options": {
+                "description": {
+                    "en": "Specify an allele calling schema.",
+                    "fr": "Préciser un schéma d’appel d’allèle."
+                }
+            },
+            "databases_and_pre_computed_files": {
+                "description": {
+                    "en": "The location of databases used by Mikrokondo",
+                    "fr": "L’emplacement des bases de données utilisées par Mikrokondo"
+                }
+            },
+            "data_processing_thresholds": {
+                "description": {
+                    "en": "Thresholds for processing or quality assurance of data",
+                    "fr": "Seuils de traitement ou d’assurance de la qualité des données"
+                }
+            }
+        }
+    }
+}
