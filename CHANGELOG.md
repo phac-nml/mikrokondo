@@ -3,6 +3,12 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+### `Added`
+
+- Added an `assets/iridanext-messages.json` file which contains translations of messages for Mikrokondo to be rendered in IRIDA Next.
+
 ## [0.5.1] - 2025-02-25
 
 ### `Added`
