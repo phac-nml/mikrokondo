@@ -839,7 +839,7 @@ nextflow_pipeline {
             // parse output json file
             def iridanext_json = path("$launchDir/results/iridanext.output.json").json
             assert iridanext_json.metadata.samples."meta-small"."QC Status" == "FAILED"
-            assert iridanext_json.metadata.samples."meta-small"."QC Summary" ==  "[FAILED] Sample was determined to be metagenomic and this was not specified as a metagenomic run indicating contamination."
+            assert iridanext_json.metadata.samples."meta-small"."QC Summary" ==  "[FAILED] Sample was determined to be metagenomic and 'fail_on_metagenomic' was set to true."
 
         }
     }
@@ -881,7 +881,7 @@ nextflow_pipeline {
             // parse output json file
             def iridanext_json = path("$launchDir/results/iridanext.output.json").json
             assert iridanext_json.metadata.samples."meta-small"."QC Status" == "FAILED"
-            assert iridanext_json.metadata.samples."meta-small"."QC Summary" ==  "[FAILED] Sample was determined to be metagenomic and this was not specified as a metagenomic run indicating contamination."
+            assert iridanext_json.metadata.samples."meta-small"."QC Summary" ==  "[FAILED] Sample was determined to be metagenomic and 'fail_on_metagenomic' was set to true."
 
             def json = path("$launchDir/results/FinalReports/Aggregated/Json/final_report.json").json
 
