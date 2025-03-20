@@ -1,7 +1,5 @@
 /*Generate mikrokondo report
 
-
-TODO test fallthrough QC params
 */
 
 import groovy.json.JsonSlurper
