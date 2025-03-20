@@ -222,8 +222,8 @@ workflow QC_READS {
 
             // Check if samples are contaminated/metagenomic and save the user computational time
             if (params.fail_on_metagenomic){
-                temp_channel = ch_cleaned_reads.branch{ v, fastq ->
-                    metagenomic: v.metagenomic
+                temp_channel = ch_cleaned_reads.branch{ meta, fastq ->
+                    metagenomic: meta.metagenomic
                     non_metagenomic: true
                 }
 
