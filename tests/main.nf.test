@@ -551,7 +551,7 @@ nextflow_pipeline {
                 skip_checkm = false
                 skip_raw_read_metrics = false
                 skip_polishing = false
-
+                fail_on_metagenomic = false
                 max_memory = "2.GB"
                 max_cpus = 1
             }
