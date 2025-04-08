@@ -108,10 +108,10 @@ nextflow_pipeline {
             // output metadata
             def ecoli_metadata = iridanext_metadata.ecoli_GCA_000947975
 
-            assert ecoli_metadata."QC Status" == "FAILED"
-            assert !ecoli_metadata.containsKey("Checkm Status")
+            assert ecoli_metadata."qc_status_overall" == "FAILED"
+            assert !ecoli_metadata.containsKey("qc_status_contamination")
             assert !ecoli_metadata.containsKey("Checkm Value")
-            assert !ecoli_metadata.containsKey("Average Coverage Status")
+            assert !ecoli_metadata.containsKey("qc_status_read_depth_fixed")
             assert !ecoli_metadata.containsKey("Average Coverage Value")
             assert ecoli_metadata."n50 Status" == "PASSED"
             assert ecoli_metadata."n50 Value" == 122025
@@ -296,9 +296,9 @@ nextflow_pipeline {
             def ecoli_metadata = iridanext_metadata.ecoli_GCA_000947975
 
             assert ecoli_metadata."QC Status" == "FAILED"
-            assert !ecoli_metadata.containsKey("Checkm Status")
+            assert !ecoli_metadata.containsKey("qc_status_contamination")
             assert !ecoli_metadata.containsKey("Checkm Value")
-            assert !ecoli_metadata.containsKey("Average Coverage Status")
+            assert !ecoli_metadata.containsKey("qc_status_read_depth_fixed")
             assert !ecoli_metadata.containsKey("Average Coverage Value")
             assert ecoli_metadata."n50 Status" == "PASSED"
             assert ecoli_metadata."n50 Value" == 122025
@@ -380,9 +380,9 @@ nextflow_pipeline {
             def salmonella_metadata = iridanext_metadata.salmonella_GCA_000008105
 
             assert salmonella_metadata."QC Status" == "FAILED"
-            assert !salmonella_metadata.containsKey("Checkm Status")
+            assert !salmonella_metadata.containsKey("qc_status_contamination")
             assert !salmonella_metadata.containsKey("Checkm Value")
-            assert !salmonella_metadata.containsKey("Average Coverage Status")
+            assert !salmonella_metadata.containsKey("qc_status_read_depth_fixed")
             assert !salmonella_metadata.containsKey("Average Coverage Value")
             assert salmonella_metadata."n50 Status" == "PASSED"
             assert salmonella_metadata."n50 Value" == 4755700
@@ -548,18 +548,18 @@ nextflow_pipeline {
             def listeria_metadata = iridanext_metadata.listeria_GCF_000196035
 
             assert listeria_metadata."QC Status" == "FAILED"
-            assert !listeria_metadata.containsKey("Checkm Status")
-            assert !listeria_metadata.containsKey("Checkm Value")
-            assert !listeria_metadata.containsKey("Average Coverage Status")
-            assert !listeria_metadata.containsKey("Average Coverage Value")
+            assert !listeria_metadata.containsKey("qc_status_contamination")
+            assert !listeria_metadata.containsKey("checkm_value")
+            assert !listeria_metadata.containsKey("qc_status_read_depth_fixed")
+            assert !listeria_metadata.containsKey("mean_read_depth_fixed")
             assert listeria_metadata."n50 Status" == "PASSED"
             assert listeria_metadata."n50 Value" == 2944528
-            assert !listeria_metadata.containsKey("Raw Average Quality Status")
+            assert !listeria_metadata.containsKey("qc_status_read_qual")
             assert !listeria_metadata.containsKey("Raw Average Quality Value")
-            assert listeria_metadata."Length Status" == "PASSED"
-            assert listeria_metadata."Length Value" == 2944528
-            assert listeria_metadata."nr contigs Status" == "PASSED"
-            assert listeria_metadata."nr contigs Value" == 1
+            assert listeria_metadata."qc_status_assembly_genome_size" == "PASSED"
+            assert listeria_metadata."assembly_length" == 2944528
+            assert listeria_metadata."qc_status_assembly_num_contigs" == "PASSED"
+            assert listeria_metadata."assembly_num_contigs" == 1
             assert listeria_metadata."QC Summary" == "FAILED Species ID: Listeria monocytogenes; Passed Tests: 3/4; Organism QC Criteria: Listeria monocytogenes"
 
             assert listeria_metadata."Downsampled" == false
@@ -715,7 +715,7 @@ nextflow_pipeline {
             assert vibrio_metadata.locidex_db_name == "Vibrio cholerae"
             assert vibrio_metadata.locidex_db_date == "2024-07-30"
             assert vibrio_metadata.locidex_db_version == "1.0.0"
-            assert vibrio_metadata.total_loci == 7
+            assert vibrio_metadata.locidex_db_loci_total_count == 7
             assert vibrio_metadata.count_loci_found == 6
             assert vibrio_metadata.count_loci_missing == 1
 
@@ -787,7 +787,7 @@ nextflow_pipeline {
             assert vibrio_metadata.locidex_db_name == "Vibrio cholerae_1"
             assert vibrio_metadata.locidex_db_date == "2024-08-01"
             assert vibrio_metadata.locidex_db_version == "1.0.0"
-            assert vibrio_metadata.total_loci == 7
+            assert vibrio_metadata.locidex_db_loci_total_count == 7
             assert vibrio_metadata.count_loci_found == 6
             assert vibrio_metadata.count_loci_missing == 1
 
@@ -855,7 +855,7 @@ nextflow_pipeline {
             assert vibrio_metadata.locidex_db_name == "Vibrio cholerae"
             assert vibrio_metadata.locidex_db_date == "2024-07-30"
             assert vibrio_metadata.locidex_db_version == "1.0.0"
-            assert vibrio_metadata.total_loci == 7
+            assert vibrio_metadata.locidex_db_loci_total_count == 7
             assert vibrio_metadata.count_loci_found == 6
             assert vibrio_metadata.count_loci_missing == 1
 
