@@ -488,10 +488,16 @@ def check_predicted_id(value_data, species_data){
 
     def predicted_id = value_data[params.top_hit_species.report_tag]
     def predicted_method = value_data[params.top_hit_method.report_tag]
+
+    if(species_data[1].IDField == null && species_data[1].IDTool == null){
+        return [predicted_id, predicted_method]
+    }
+
     if((species_data[1].IDField != null) ^ (species_data[1].IDTool != null)){
         log.warn "Both IDfield and IDTool must be set for ${species_data[0]}. IDField: ${species_data[1].IDField} IDTool: ${species_data[1].IDTool}"
         return [predicted_id, predicted_method]
     }
+
     def species_value = traverse_values(value_data, species_data[1].IDField)
     if(species_value == null){
         return [predicted_id, predicted_method]
