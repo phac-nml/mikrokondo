@@ -117,11 +117,11 @@ nextflow_pipeline {
             assert ecoli_metadata."n50 Value" == 122025
             assert !ecoli_metadata.containsKey("Raw Average Quality Status")
             assert !ecoli_metadata.containsKey("Raw Average Quality Value")
-            assert ecoli_metadata."Length Status" == "PASSED"
-            assert ecoli_metadata."Length Value" == 5333525
-            assert ecoli_metadata."nr contigs Status" == "PASSED"
-            assert ecoli_metadata."nr contigs Value" == 187
-            assert ecoli_metadata."QC Summary" == "FAILED Species ID: Escherichia coli; Passed Tests: 3/4; Organism QC Criteria: Escherichia coli"
+            assert ecoli_metadata.qc_status_assembly_genome_size == "PASSED"
+            assert ecoli_metadata.assembly_length == 5333525
+            assert ecoli_metadata.qc_status_assembly_num_contigs == "PASSED"
+            assert ecoli_metadata.assembly_num_contigs == 187
+            assert ecoli_metdata.qc_summary == "FAILED Species ID: Escherichia coli; Passed Tests: 3/4; Organism QC Criteria: Escherichia coli"
 
             assert ecoli_metadata."Downsampled" == false
             assert ecoli_metadata."predicted_identification_name" == "Escherichia coli"
@@ -142,7 +142,7 @@ nextflow_pipeline {
             assert ecoli_metadata."ECTyper Subtyping" == "Escherichia coli"
             assert ecoli_metadata."ECTyper Warnings" == "-"
 
-            assert ecoli_metadata."GC (%)" == "50.58"
+            assert ecoli_metadata."gc" == "50.58"
             assert !ecoli_metadata.containsKey("Mean Sequence Length Forward")
             assert !ecoli_metadata.containsKey("BaseCount")
 
@@ -223,10 +223,10 @@ nextflow_pipeline {
 
             // output metadata
             def ecoli_metadata = iridanext_metadata.ecoli_GCA_000947975
-            assert ecoli_metadata."QC Status" == "FAILED"
+            assert ecoli_metadata.qc_status_overall == "FAILED"
             assert ecoli_metadata."n50 Value" == 122025
-            assert ecoli_metadata."Length Value" == 5299656
-            assert ecoli_metadata."nr contigs Value" == 123
+            assert ecoli_metadata.assembly_length == 5299656
+            assert ecoli_metadata.assembly_num_contigs == 123
             assert ecoli_metadata."StarAMR Genotype" == "aph(3'')-Ib, aph(6)-Id, blaCTX-M-15, blaTEM-1B, dfrA7, sul1, sul2, tet(A)"
 
             // Read in filtered assembly fasta to verify number of contigs
@@ -295,7 +295,7 @@ nextflow_pipeline {
             // output metadata
             def ecoli_metadata = iridanext_metadata.ecoli_GCA_000947975
 
-            assert ecoli_metadata."QC Status" == "FAILED"
+            assert ecoli_metadata.qc_status_overall == "FAILED"
             assert !ecoli_metadata.containsKey("qc_status_contamination")
             assert !ecoli_metadata.containsKey("Checkm Value")
             assert !ecoli_metadata.containsKey("qc_status_read_depth_fixed")
@@ -304,11 +304,11 @@ nextflow_pipeline {
             assert ecoli_metadata."n50 Value" == 122025
             assert !ecoli_metadata.containsKey("Raw Average Quality Status")
             assert !ecoli_metadata.containsKey("Raw Average Quality Value")
-            assert ecoli_metadata."Length Status" == "PASSED"
-            assert ecoli_metadata."Length Value" == 5299656
-            assert ecoli_metadata."nr contigs Status" == "PASSED"
-            assert ecoli_metadata."nr contigs Value" == 123
-            assert ecoli_metadata."QC Summary" == "FAILED Species ID: Escherichia coli; Passed Tests: 3/4; Organism QC Criteria: Escherichia coli"
+            assert ecoli_metadata.qc_status_assembly_genome_size == "PASSED"
+            assert ecoli_metadata.assembly_length == 5299656
+            assert ecoli_metadata.qc_status_assembly_num_contigs == "PASSED"
+            assert ecoli_metadata.assembly_num_contigs == 123
+            assert ecoli_metdata.qc_summary == "FAILED Species ID: Escherichia coli; Passed Tests: 3/4; Organism QC Criteria: Escherichia coli"
 
             // Read in filtered assembly fasta to verify number of contigs
             def assemblyLines = path("$launchDir/results/Assembly/FinalAssembly/ecoli_GCA_000947975/ecoli_GCA_000947975.final.filtered.assembly.fasta.gz").readLinesGzip()
@@ -379,7 +379,7 @@ nextflow_pipeline {
             def iridanext_metadata = iridanext_json.metadata.samples
             def salmonella_metadata = iridanext_metadata.salmonella_GCA_000008105
 
-            assert salmonella_metadata."QC Status" == "FAILED"
+            assert salmonella_metadata.qc_status_overall == "FAILED"
             assert !salmonella_metadata.containsKey("qc_status_contamination")
             assert !salmonella_metadata.containsKey("Checkm Value")
             assert !salmonella_metadata.containsKey("qc_status_read_depth_fixed")
@@ -388,11 +388,11 @@ nextflow_pipeline {
             assert salmonella_metadata."n50 Value" == 4755700
             assert !salmonella_metadata.containsKey("Raw Average Quality Status")
             assert !salmonella_metadata.containsKey("Raw Average Quality Value")
-            assert salmonella_metadata."Length Status" == "PASSED"
-            assert salmonella_metadata."Length Value" == 4944000
-            assert salmonella_metadata."nr contigs Status" == "PASSED"
-            assert salmonella_metadata."nr contigs Value" == 3
-            assert salmonella_metadata."QC Summary" == "FAILED Species ID: Salmonella enterica; Passed Tests: 3/4; Organism QC Criteria: Salmonella"
+            assert salmonella_metadata.qc_status_assembly_genome_size == "PASSED"
+            assert salmonella_metadata.assembly_length == 4944000
+            assert salmonella_metadata.qc_status_assembly_num_contigs == "PASSED"
+            assert salmonella_metadata.assembly_num_contigs == 3
+            assert salmonella_metadata.qc_summary == "FAILED Species ID: Salmonella enterica; Passed Tests: 3/4; Organism QC Criteria: Salmonella"
 
             assert salmonella_metadata."Downsampled" == false
 
@@ -482,7 +482,7 @@ nextflow_pipeline {
             assert final_report_tmap."SISTRSubtyping.0.serovar_antigen" == "Hissar|Choleraesuis|Paratyphi C|Typhisuis|Chiredzi"
 
             // other metadata for IRIDA Next
-            assert iridanext_metadata.salmonella_GCA_000008105."GC (%)" == "52.13"
+            assert iridanext_metadata.salmonella_GCA_000008105."gc" == "52.13"
             assert !iridanext_metadata.salmonella_GCA_000008105.containsKey("Mean Sequence Length Forward")
             assert !iridanext_metadata.salmonella_GCA_000008105.containsKey("BaseCount")
             assert iridanext_metadata.salmonella_GCA_000008105."SISTR cgMLST ST" == "2572600197"
@@ -547,7 +547,7 @@ nextflow_pipeline {
             def iridanext_metadata = iridanext_json.metadata.samples
             def listeria_metadata = iridanext_metadata.listeria_GCF_000196035
 
-            assert listeria_metadata."QC Status" == "FAILED"
+            assert listeria_metadata.qc_status_overall == "FAILED"
             assert !listeria_metadata.containsKey("qc_status_contamination")
             assert !listeria_metadata.containsKey("checkm_value")
             assert !listeria_metadata.containsKey("qc_status_read_depth_fixed")
@@ -560,7 +560,7 @@ nextflow_pipeline {
             assert listeria_metadata."assembly_length" == 2944528
             assert listeria_metadata."qc_status_assembly_num_contigs" == "PASSED"
             assert listeria_metadata."assembly_num_contigs" == 1
-            assert listeria_metadata."QC Summary" == "FAILED Species ID: Listeria monocytogenes; Passed Tests: 3/4; Organism QC Criteria: Listeria monocytogenes"
+            assert listeria_metdata.qc_summary == "FAILED Species ID: Listeria monocytogenes; Passed Tests: 3/4; Organism QC Criteria: Listeria monocytogenes"
 
             assert listeria_metadata."Downsampled" == false
 
@@ -642,7 +642,7 @@ nextflow_pipeline {
             assert listeria_json.LISSEROSubtyping."0".ORF2110 == "NONE"
             assert final_report_tmap."LISSEROSubtyping.0.ORF2110" == "NONE"
 
-            assert iridanext_metadata.listeria_GCF_000196035."GC (%)" == "37.98"
+            assert iridanext_metadata.listeria_GCF_000196035."gc" == "37.98"
             assert !iridanext_metadata.listeria_GCF_000196035.containsKey("Mean Sequence Length Forward")
             assert !iridanext_metadata.listeria_GCF_000196035.containsKey("BaseCount")
 
