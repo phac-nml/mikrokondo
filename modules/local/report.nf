@@ -29,7 +29,7 @@ process REPORT{
         return
     }
 
-    def sample_data = [:] // Where to aggergate and create json data
+    def sample_data = [:] // Where to aggregate and create json data
     def data_stride = 3 // report values added in groups of three, e.g sample meta info, parameters, output file of interest
     def headers_list = 'headers' // ! TODO this string exists twice, need to fix that
     def arr_size = test_in.size()
@@ -68,7 +68,6 @@ process REPORT{
                 report_value = output_data
             }
         }
-
         sample_data[meta_data.sample][meta_data.id][report_tag.report_tag] = report_value
     }
 
@@ -463,7 +462,6 @@ def recurse_keys(value, keys_rk){
 def traverse_values(value, path){
 
     def temp = value
-    def value_found = true
 
     if(path instanceof String){
         temp = temp[path]
@@ -471,11 +469,10 @@ def traverse_values(value, path){
     }
 
     for(key in path){
-        def key_val = key
+        def key_val = key.toString() // Calling `toString` to convert a gstring to a plain string type as the gstring method is not overloaded properly
         if(key_val.isNumber()){
             key_val = key_val.toInteger()
         }
-
         if(temp.containsKey(key_val)){
             temp = temp[key_val]
         }else{
@@ -484,6 +481,25 @@ def traverse_values(value, path){
         }
     }
     return temp
+}
+
+
+def check_predicted_id(value_data, species_data){
+
+    def predicted_id = value_data[params.top_hit_species.report_tag]
+    def predicted_method = value_data[params.top_hit_method.report_tag]
+    if((species_data[1].IDField != null) ^ (species_data[1].IDTool != null)){
+        log.warn "Both IDfield and IDTool must be set for ${species_data[0]}. IDField: ${species_data[1].IDField} IDTool: ${species_data[1].IDTool}"
+        return [predicted_id, predicted_method]
+    }
+    def species_value = traverse_values(value_data, species_data[1].IDField)
+    if(species_value == null){
+        return [predicted_id, predicted_method]
+    }
+    predicted_id = species_value
+    predicted_method = species_data[1].IDTool
+
+    return [predicted_id, predicted_method]
 }
 
 def range_comp(fields, qc_data, comp_val, qc_obj){
@@ -590,7 +606,7 @@ def prep_qc_vals(qc_vals, qc_data, comp_val, field_val){
             }
             break;
         default:
-            log.warn "Unknow comparison type: ${comp_fields}"
+            log.warn "Unknown comparison type: ${comp_fields}"
             break;
     }
     return status
@@ -681,11 +697,18 @@ def generate_qc_data(data, search_phrases, qc_species_tag){
             // update coverage first so its values can be used in generating qc messages
             generate_coverage_data(data[k.key], params.coverage_calc_fields.bp_field, species)
             data[k.key][quality_analysis] = get_qc_data_species(k.value[k.key], species)
+
+            // More advanced logic to add in smarter typing information from select
+            // tools that provide it.
+            def (predicted_id, predicted_method) = check_predicted_id(k.value[k.key], species)
+            k.value[k.key][params.predicted_id_fields.predicted_id] = predicted_id
+            k.value[k.key][params.predicted_id_fields.predicted_id_method] = predicted_method
+
             data[k.key][qc_species_tag] = species[species_tag_location]
         }else{
             data[k.key][quality_analysis] = ["Metagenomic": ["message": null, "status": false]]
             data[k.key][quality_analysis]["Metagenomic"].message = "The sample was determined to be metagenomic, summary metrics will not be generated" +
-                    " e.g. multiple genus are present in the sample. If your sample is supposed to be an isolate it is recommended" +
+                    " e.g. multiple genera are present in the sample. If your sample is supposed to be an isolate it is recommended" +
                     " you re-isolate and re-sequence this sample"
         }
     }

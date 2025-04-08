@@ -125,7 +125,10 @@ nextflow_pipeline {
 
             assert ecoli_metadata."Downsampled" == false
             assert ecoli_metadata."predicted_identification_name" == "Escherichia coli"
-            assert ecoli_metadata."predicted_identification_method" == "Mash"
+            assert ecoli_metadata."predicted_identification_method" == "ECTyper"
+
+            assert ecoli_metadata.SpeciesTopHit == "Escherichia coli"
+            assert ecoli_metadata.IdentificationMethod == "Mash"
 
             assert ecoli_metadata."ECTyper Database" == "v1.0 (11-03-2020)"
             assert ecoli_metadata."ECTyper Evidence" == "Based on 3 allele(s)"
@@ -426,7 +429,9 @@ nextflow_pipeline {
             assert final_report.salmonella_GCA_000008105.QualityAnalysis.length.qc_status == "PASSED"
 
             // Tests
-            assert salmonella_json.SpeciesTopHit == "Salmonella enterica"
+            assert iridanext_metadata.salmonella_GCA_000008105.SpeciesTopHit == "Salmonella enterica"
+            assert iridanext_metadata.salmonella_GCA_000008105.IdentificationMethod == "Mash"
+            assert iridanext_metadata.salmonella_GCA_000008105."predicted_identification_method" == "Mash"
             assert iridanext_metadata.salmonella_GCA_000008105."predicted_identification_name" == "Salmonella enterica"
             assert iridanext_metadata.salmonella_GCA_000008105."predicted_identification_method" == "Mash"
 
