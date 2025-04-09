@@ -880,7 +880,7 @@ nextflow_pipeline {
             assert path("$launchDir/results").exists()
             // parse output json file
             def iridanext_json = path("$launchDir/results/iridanext.output.json").json
-            assert iridanext_json.metadata.samples."meta-small".qc_status == "FAILED"
+            assert iridanext_json.metadata.samples."meta-small".qc_status_overall == "FAILED"
             assert iridanext_json.metadata.samples."meta-small".qc_summary ==  "[FAILED] Sample was determined to be metagenomic and 'fail_on_metagenomic' was set to true."
 
             def json = path("$launchDir/results/FinalReports/Aggregated/Json/final_report.json").json
@@ -948,7 +948,7 @@ nextflow_pipeline {
             assert iridanext_samples.short.findAll { it.path == "FinalReports/FlattenedReports/short.flat_sample.json.gz" }.size() == 1
 
             // output metadata
-            assert iridanext_metadata.short.qc_status == "FAILED"
+            assert iridanext_metadata.short.qc_status_overall == "FAILED"
         }
     }
 }
