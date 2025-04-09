@@ -121,7 +121,7 @@ nextflow_pipeline {
             assert ecoli_metadata.assembly_length == 5333525
             assert ecoli_metadata.qc_status_assembly_num_contigs == "PASSED"
             assert ecoli_metadata.assembly_num_contigs == 187
-            assert ecoli_metdata.qc_summary == "FAILED Species ID: Escherichia coli; Passed Tests: 3/4; Organism QC Criteria: Escherichia coli"
+            assert ecoli_metadata.qc_summary == "FAILED Species ID: Escherichia coli; Passed Tests: 3/4; Organism QC Criteria: Escherichia coli"
 
             assert ecoli_metadata."Downsampled" == false
             assert ecoli_metadata."predicted_identification_name" == "Escherichia coli"
@@ -308,7 +308,7 @@ nextflow_pipeline {
             assert ecoli_metadata.assembly_length == 5299656
             assert ecoli_metadata.qc_status_assembly_num_contigs == "PASSED"
             assert ecoli_metadata.assembly_num_contigs == 123
-            assert ecoli_metdata.qc_summary == "FAILED Species ID: Escherichia coli; Passed Tests: 3/4; Organism QC Criteria: Escherichia coli"
+            assert ecoli_metadata.qc_summary == "FAILED Species ID: Escherichia coli; Passed Tests: 3/4; Organism QC Criteria: Escherichia coli"
 
             // Read in filtered assembly fasta to verify number of contigs
             def assemblyLines = path("$launchDir/results/Assembly/FinalAssembly/ecoli_GCA_000947975/ecoli_GCA_000947975.final.filtered.assembly.fasta.gz").readLinesGzip()
@@ -560,7 +560,7 @@ nextflow_pipeline {
             assert listeria_metadata."assembly_length" == 2944528
             assert listeria_metadata."qc_status_assembly_num_contigs" == "PASSED"
             assert listeria_metadata."assembly_num_contigs" == 1
-            assert listeria_metdata.qc_summary == "FAILED Species ID: Listeria monocytogenes; Passed Tests: 3/4; Organism QC Criteria: Listeria monocytogenes"
+            assert listeria_metadata.qc_summary == "FAILED Species ID: Listeria monocytogenes; Passed Tests: 3/4; Organism QC Criteria: Listeria monocytogenes"
 
             assert listeria_metadata."Downsampled" == false
 
@@ -715,9 +715,9 @@ nextflow_pipeline {
             assert vibrio_metadata.locidex_db_name == "Vibrio cholerae"
             assert vibrio_metadata.locidex_db_date == "2024-07-30"
             assert vibrio_metadata.locidex_db_version == "1.0.0"
-            assert vibrio_metadata.locidex_db_loci_total_count == 7
-            assert vibrio_metadata.count_loci_found == 6
-            assert vibrio_metadata.count_loci_missing == 1
+            assert vibrio_metadata.locidex_db_total_loci_count == 7
+            assert vibrio_metadata.locidex_count_loci_found == 6
+            assert vibrio_metadata.locidex_count_loci_missing == 1
 
 
             // Output files check
@@ -787,9 +787,9 @@ nextflow_pipeline {
             assert vibrio_metadata.locidex_db_name == "Vibrio cholerae_1"
             assert vibrio_metadata.locidex_db_date == "2024-08-01"
             assert vibrio_metadata.locidex_db_version == "1.0.0"
-            assert vibrio_metadata.locidex_db_loci_total_count == 7
-            assert vibrio_metadata.count_loci_found == 6
-            assert vibrio_metadata.count_loci_missing == 1
+            assert vibrio_metadata.locidex_db_total_loci_count == 7
+            assert vibrio_metadata.locidex_count_loci_found == 6
+            assert vibrio_metadata.locidex_count_loci_missing == 1
 
 
             // Output files check
@@ -855,9 +855,9 @@ nextflow_pipeline {
             assert vibrio_metadata.locidex_db_name == "Vibrio cholerae"
             assert vibrio_metadata.locidex_db_date == "2024-07-30"
             assert vibrio_metadata.locidex_db_version == "1.0.0"
-            assert vibrio_metadata.locidex_db_loci_total_count == 7
-            assert vibrio_metadata.count_loci_found == 6
-            assert vibrio_metadata.count_loci_missing == 1
+            assert vibrio_metadata.locidex_db_total_loci_count == 7
+            assert vibrio_metadata.locidex_count_loci_found == 6
+            assert vibrio_metadata.locidex_count_loci_missing == 1
 
         }
     }

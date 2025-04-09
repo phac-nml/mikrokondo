@@ -119,6 +119,12 @@ nextflow_pipeline {
                 skip_allele_calling = true
 
                 QCReport {
+                    escherichia{search = "Escherichia"}
+                    salmonella{search = "Salmonella"}
+                    listeria{search = "Listeria"}
+                    shigella{search = "Shigella"}
+                    staphylococcus{search = "Staphylococcus"}
+                    klebsiella{search = "Klebsiella"}
                     fallthrough {
                         search = "No organism specific QC data available."
                         raw_average_quality = 30
@@ -246,6 +252,12 @@ nextflow_pipeline {
                 skip_allele_calling = true
 
                 QCReport {
+                    escherichia{search = "Escherichia"}
+                    salmonella{search = "Salmonella"}
+                    listeria{search = "Listeria"}
+                    klebsiella{search = "Klebsiella"}
+                    shigella{search = "Shigella"}
+                    staphylococcus{search = "Staphylococcus"}
                     fallthrough {
                         search = "No organism specific QC data available."
                         raw_average_quality = 30
@@ -395,6 +407,12 @@ nextflow_pipeline {
                 skip_allele_calling = true
 
                 QCReport {
+                    escherichia{search = "Escherichia"}
+                    salmonella{search = "Salmonella"}
+                    listeria{search = "Listeria"}
+                    shigella{search = "Shigella"}
+                    klebsiella{search = "Klebsiella"}
+                    staphylococcus{search = "Staphylococcus"}
                     fallthrough {
                         search = "No organism specific QC data available."
                         raw_average_quality = 30
