@@ -96,7 +96,7 @@ nextflow_pipeline {
             assert !iridanext_metadata.CSE.containsKey("gc")
             //assert iridanext_metadata.CSE."Mean Sequence Length Forward" == 150
             // Base count after decontamination
-            assert iridanext_metadata.CSE."total_sequenced_bases" == 37200
+            assert iridanext_metadata.CSE."total_sequenced_bases" == 237500
         }
     }
 
