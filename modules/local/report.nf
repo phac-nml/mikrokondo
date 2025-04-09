@@ -704,11 +704,14 @@ def generate_qc_data(data, search_phrases, qc_species_tag){
             generate_coverage_data(data[k.key], params.coverage_calc_fields.bp_field, species)
             data[k.key][quality_analysis] = get_qc_data_species(k.value[k.key], species)
 
-            // More advanced logic to add in smarter typing information from select
-            // tools that provide it.
-            def (predicted_id, predicted_method) = check_predicted_id(k.value[k.key], species)
-            k.value[k.key][params.predicted_id_fields.predicted_id] = predicted_id
-            k.value[k.key][params.predicted_id_fields.predicted_id_method] = predicted_method
+            // Only add the ID fields if an organism was identified
+            if(species[0] != params.QCReport.fallthrough.search){
+                // More advanced logic to add in smarter typing information from select
+                // tools that provide it.
+                def (predicted_id, predicted_method) = check_predicted_id(k.value[k.key], species)
+                k.value[k.key][params.predicted_id_fields.predicted_id] = predicted_id
+                k.value[k.key][params.predicted_id_fields.predicted_id_method] = predicted_method
+            }
 
             data[k.key][qc_species_tag] = species[species_tag_location]
         }else{

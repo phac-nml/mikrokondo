@@ -508,7 +508,7 @@ nextflow_pipeline {
             assert iridanext_metadata.short."assembly_length" == 4949
             assert iridanext_metadata.short."qc_status_assembly_num_contigs" == "WARNING"
             assert iridanext_metadata.short."assembly_num_contigs" == 1
-            assert iridanext_metadata.short."QC Summary" == "FAILED Species ID: No Species Identified; Passed Tests: 5/6; Organism QC Criteria: No organism specific QC data available."
+            assert iridanext_metadata.short.qc_summary == "FAILED Species ID: No Species Identified; Passed Tests: 5/6; Organism QC Criteria: No organism specific QC data available."
 
             assert iridanext_metadata.short."Downsampled" == false
             assert iridanext_metadata.short."predicted_identification_name" == "No Species Identified"
@@ -564,7 +564,7 @@ nextflow_pipeline {
             // parse output json file
             def iridanext_json = path("$launchDir/results/iridanext.output.json").json
             assert iridanext_json.metadata.samples.short."qc_status_overall" == "NA"
-            assert iridanext_json.metadata.samples.short."QC Summary" ==  "No quality control criteria is applied for metagenomic samples."
+            assert iridanext_json.metadata.samples.short.qc_summary ==  "No quality control criteria is applied for metagenomic samples."
 
         }
     }
@@ -605,7 +605,7 @@ nextflow_pipeline {
             // parse output json file
             def iridanext_json = path("$launchDir/results/iridanext.output.json").json
             assert iridanext_json.metadata.samples."meta-small"."qc_status_overall" == "FAILED"
-            assert iridanext_json.metadata.samples."meta-small"."QC Summary" ==  "[FAILED] Sample was determined to be metagenomic and this was not specified as a metagenomic run indicating contamination."
+            assert iridanext_json.metadata.samples."meta-small".qc_summary ==  "[FAILED] Sample was determined to be metagenomic and this was not specified as a metagenomic run indicating contamination."
 
         }
     }
