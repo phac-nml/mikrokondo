@@ -3,13 +3,17 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased 
+## Unreleased
 
-### `Updated` 
-  
-- Updated StarAMR to latest release v0.11.0 and modified tests to reflect new outputs. [PR 153](https://github.com/phac-nml/mikrokondo/pull/153) 
+### `Updated`
 
-## [0.5.1] - 2025-02-25 
+- Updated StarAMR to latest release v0.11.0 and modified tests to reflect new outputs. [PR 153](https://github.com/phac-nml/mikrokondo/pull/153)
+
+### `Added`
+
+- Added new control flow parameter `fail_on_metagenomic` which prevents samples from undergoing additional downstream processing. [PR 158](https://github.com/phac-nml/mikrokondo/pull/158)
+
+## [0.5.1] - 2025-02-25
 
 ### `Added`
 

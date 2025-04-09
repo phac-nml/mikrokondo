@@ -117,6 +117,7 @@ Numerous steps within mikrokondo can be turned off without compromising the stab
 - `--skip_mlst`: Skip seven gene MLST.
 - `--skip_length_filtering_contigs`: Skip length filtering of contigs based on the `--qt_min_contig_length` parameter.
 - `--skip_allele_calling`: Skip allele calling with Locidex.
+- `--fail_on_metagenomic`: Samples that are found to be contaminated or metagenomic are not processed past auto detection saving users computational resources.
 
 #### Datasets
 Different databases/pre-computed files are required for usage within mikrokondo. These can be downloaded or created by the user, and if not configured within the `nextflow.config` file they can be passed in as files with the following command-line arguments.

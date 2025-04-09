@@ -15,7 +15,6 @@ process REPORT{
     val test_in
 
     output:
-    // TODO update final_report.json to constants
     path output_file_path, emit: final_report
 
     exec:
@@ -244,6 +243,12 @@ def create_action_call(sample_data, species_tag){
                     final_message = "No QC Summary is provided for metagenomic samples."
                     qc_summary = "No quality control criteria is applied for metagenomic samples."
                     sample_status = "NA"
+                }else if(params.fail_on_metagenomic){
+                    qc_summary = "[FAILED] Sample was determined to be metagenomic and 'fail_on_metagenomic' was set to true."
+                    final_message = "[FAILED] Sample was determined to be metagenomic and this was not specified as" +
+                    " a metagenomic run indicating contamination REISOLATION AND RESEQUENCING RECOMMENDED." +
+                    "There is additionally a possibility that your sample could not be identified as it is novel and " +
+                    "not included in the program used to taxonomically classify your pipeline (however this is an unlikely culprit)."
                 }else{
                     qc_summary = "[FAILED] Sample was determined to be metagenomic and this was not specified as a metagenomic run indicating contamination."
                     final_message = "[FAILED] Sample was determined to be metagenomic and this was not specified as" +
