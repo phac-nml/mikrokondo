@@ -26,7 +26,7 @@ nextflow_pipeline {
                 skip_staramr = true
                 skip_mobrecon = true
                 skip_checkm = true
-                skip_raw_read_metrics = true
+                skip_raw_read_metrics = false
                 skip_polishing = true
                 skip_allele_calling = true
 
@@ -88,7 +88,7 @@ nextflow_pipeline {
             assert !iridanext_metadata.CSE.containsKey("assembly_length")
             assert !iridanext_metadata.CSE.containsKey("qc_status_assembly_num_contigs")
             assert !iridanext_metadata.CSE.containsKey("assembly_num_contigs")
-            assert iridanext_metadata.CSE."qc_summary" == "FAILED Species ID: No organism specific QC data available.; Passed Tests: 0/6; Organism QC Criteria: No organism specific QC data available."
+            assert iridanext_metadata.CSE."qc_summary" == "FAILED Species ID: No organism specific QC data available.; Passed Tests: 1/6; Organism QC Criteria: No organism specific QC data available."
 
             assert iridanext_metadata.CSE."Downsampled" == false
             assert !iridanext_metadata.CSE.containsKey("predicted_identification_name")
@@ -96,7 +96,7 @@ nextflow_pipeline {
             assert !iridanext_metadata.CSE.containsKey("gc")
             //assert iridanext_metadata.CSE."Mean Sequence Length Forward" == 150
             // Base count after decontamination
-            assert iridanext_metadata.CSE."total_sequenced_bases" == 237500
+            assert iridanext_metadata.CSE.total_sequenced_bases == 787500
         }
     }
 
@@ -838,8 +838,8 @@ nextflow_pipeline {
             assert path("$launchDir/results").exists()
             // parse output json file
             def iridanext_json = path("$launchDir/results/iridanext.output.json").json
-            assert iridanext_json.metadata.samples."meta-small"."QC Status" == "FAILED"
-            assert iridanext_json.metadata.samples."meta-small"."QC Summary" ==  "[FAILED] Sample was determined to be metagenomic and 'fail_on_metagenomic' was set to true."
+            assert iridanext_json.metadata.samples."meta-small".qc_status_overall == "FAILED"
+            assert iridanext_json.metadata.samples."meta-small".qc_summary ==  "[FAILED] Sample was determined to be metagenomic and 'fail_on_metagenomic' was set to true."
 
         }
     }
@@ -880,8 +880,8 @@ nextflow_pipeline {
             assert path("$launchDir/results").exists()
             // parse output json file
             def iridanext_json = path("$launchDir/results/iridanext.output.json").json
-            assert iridanext_json.metadata.samples."meta-small"."QC Status" == "FAILED"
-            assert iridanext_json.metadata.samples."meta-small"."QC Summary" ==  "[FAILED] Sample was determined to be metagenomic and 'fail_on_metagenomic' was set to true."
+            assert iridanext_json.metadata.samples."meta-small".qc_status == "FAILED"
+            assert iridanext_json.metadata.samples."meta-small".qc_summary ==  "[FAILED] Sample was determined to be metagenomic and 'fail_on_metagenomic' was set to true."
 
             def json = path("$launchDir/results/FinalReports/Aggregated/Json/final_report.json").json
 
@@ -948,7 +948,7 @@ nextflow_pipeline {
             assert iridanext_samples.short.findAll { it.path == "FinalReports/FlattenedReports/short.flat_sample.json.gz" }.size() == 1
 
             // output metadata
-            assert iridanext_metadata.short."QC Status" == "FAILED"
+            assert iridanext_metadata.short.qc_status == "FAILED"
         }
     }
 }
