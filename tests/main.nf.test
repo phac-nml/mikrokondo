@@ -83,7 +83,7 @@ nextflow_pipeline {
             assert !iridanext_metadata.CSE.containsKey("n50 Status")
             assert !iridanext_metadata.CSE.containsKey("n50 Value")
             assert !iridanext_metadata.CSE.containsKey("Raw Average Quality Status")
-            assert !iridanext_metadata.CSE.containsKey("Raw Average Quality Value")
+            assert !iridanext_metadata.CSE.containsKey("raw_average_quality_value")
             assert !iridanext_metadata.CSE.containsKey("qc_status_assembly_genome_size")
             assert !iridanext_metadata.CSE.containsKey("assembly_length")
             assert !iridanext_metadata.CSE.containsKey("qc_status_assembly_num_contigs")
@@ -361,17 +361,17 @@ nextflow_pipeline {
             assert iridanext_metadata.short."qc_status_overall" == "PASSED"
             assert iridanext_metadata.short."qc_status_contamination" == "PASSED"
             assert iridanext_metadata.short."checkm_value" == 0.0
-            assert iridanext_metadata.short."Average Coverage Status" == "PASSED"
-            assert iridanext_metadata.short."Average Coverage Value" == 237.5
+            assert iridanext_metadata.short."qc_status_read_depth_fixed" == "PASSED"
+            assert iridanext_metadata.short."mean_read_depth_fixed" == 237.5
             assert iridanext_metadata.short."n50 Status" == "WARNING"
             assert iridanext_metadata.short."n50 Value" == 4949
             assert iridanext_metadata.short."qc_status_read_qual" == "PASSED"
-            assert iridanext_metadata.short."Raw Average Quality Value" == 40.0
+            assert iridanext_metadata.short."raw_average_quality_value" == 40.0
             assert iridanext_metadata.short."qc_status_assembly_genome_size" == "WARNING"
             assert iridanext_metadata.short."assembly_length" == 4949
             assert iridanext_metadata.short."qc_status_assembly_num_contigs" == "WARNING"
             assert iridanext_metadata.short."assembly_num_contigs" == 1
-            assert iridanext_metadata.short."qc_status_overall" == "PASSED Species ID: No Species Identified; Passed Tests: 6/6; Organism QC Criteria: No organism specific QC data available."
+            assert iridanext_metadata.short."qc_summary" == "PASSED Species ID: No Species Identified; Passed Tests: 6/6; Organism QC Criteria: No organism specific QC data available."
 
             assert iridanext_metadata.short."Downsampled" == false
             assert iridanext_metadata.short."predicted_identification_name" == "No Species Identified"
@@ -521,7 +521,7 @@ nextflow_pipeline {
             assert iridanext_metadata.short."n50 Status" == "WARNING"
             assert iridanext_metadata.short."n50 Value" == 4949
             assert iridanext_metadata.short."qc_status_read_qual" == "PASSED"
-            assert iridanext_metadata.short."Raw Average Quality Value" == 40.0
+            assert iridanext_metadata.short."raw_average_quality_value" == 40.0
             assert iridanext_metadata.short."qc_status_assembly_genome_size" == "WARNING"
             assert iridanext_metadata.short."assembly_length" == 4949
             assert iridanext_metadata.short."qc_status_assembly_num_contigs" == "WARNING"
