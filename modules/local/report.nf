@@ -490,7 +490,6 @@ def traverse_values(value, path){
 
 
 def check_predicted_id(value_data, species_data){
-
     def predicted_id = value_data[params.top_hit_species.report_tag]
     def predicted_method = value_data[params.top_hit_method.report_tag]
 
@@ -711,9 +710,11 @@ def generate_qc_data(data, search_phrases, qc_species_tag){
 
             // More advanced logic to add in smarter typing information from select
             // tools that provide it.
-            def (predicted_id, predicted_method) = check_predicted_id(k.value[k.key], species)
-            k.value[k.key][params.predicted_id_fields.predicted_id] = predicted_id
-            k.value[k.key][params.predicted_id_fields.predicted_id_method] = predicted_method
+            if(k.value[k.key][params.top_hit_species.report_tag] != null){
+                def (predicted_id, predicted_method) = check_predicted_id(k.value[k.key], species)
+                k.value[k.key][params.predicted_id_fields.predicted_id] = predicted_id
+                k.value[k.key][params.predicted_id_fields.predicted_id_method] = predicted_method
+            }
 
             data[k.key][qc_species_tag] = species[species_tag_location]
         }else{

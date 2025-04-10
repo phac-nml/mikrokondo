@@ -83,7 +83,7 @@ nextflow_pipeline {
             assert !iridanext_metadata.CSE.containsKey("n50 Status")
             assert !iridanext_metadata.CSE.containsKey("n50 Value")
             assert !iridanext_metadata.CSE.containsKey("Raw Average Quality Status")
-            assert !iridanext_metadata.CSE.containsKey("raw_average_quality_value")
+            assert iridanext_metadata.CSE.containsKey("raw_average_quality_value")
             assert !iridanext_metadata.CSE.containsKey("qc_status_assembly_genome_size")
             assert !iridanext_metadata.CSE.containsKey("assembly_length")
             assert !iridanext_metadata.CSE.containsKey("qc_status_assembly_num_contigs")
