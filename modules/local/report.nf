@@ -489,7 +489,7 @@ def traverse_values(value, path){
 }
 
 
-def check_predicted_id(value_data, species_data){
+def get_predicted_id(value_data, species_data){
     def predicted_id = value_data[params.top_hit_species.report_tag]
     def predicted_method = value_data[params.top_hit_method.report_tag]
 
@@ -497,6 +497,7 @@ def check_predicted_id(value_data, species_data){
         return [predicted_id, predicted_method]
     }
 
+    // The comparison to null in brackets returns a boolean value that can be used for bitwise comparisons
     if((species_data[1].IDField != null) ^ (species_data[1].IDTool != null)){
         log.warn "Both IDfield and IDTool must be set for ${species_data[0]}. IDField: ${species_data[1].IDField} IDTool: ${species_data[1].IDTool}"
         return [predicted_id, predicted_method]
@@ -711,7 +712,7 @@ def generate_qc_data(data, search_phrases, qc_species_tag){
             // More advanced logic to add in smarter typing information from select
             // tools that provide it.
             if(k.value[k.key][params.top_hit_species.report_tag] != null){
-                def (predicted_id, predicted_method) = check_predicted_id(k.value[k.key], species)
+                def (predicted_id, predicted_method) = get_predicted_id(k.value[k.key], species)
                 k.value[k.key][params.predicted_id_fields.predicted_id] = predicted_id
                 k.value[k.key][params.predicted_id_fields.predicted_id_method] = predicted_method
             }
