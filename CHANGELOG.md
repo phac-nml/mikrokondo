@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Added`
 
+- Added mikrokondo version to the output reports. [PR 160](https://github.com/phac-nml/mikrokondo/pull/160)
+
 - Added new control flow parameter `fail_on_metagenomic` which prevents samples from undergoing additional downstream processing. [PR 158](https://github.com/phac-nml/mikrokondo/pull/158)
 
 - Added additional logic for setting the `predicted_id` and `predicted_id_method` fields. [PR 159](https://github.com/phac-nml/mikrokondo/pull/159)

@@ -377,6 +377,9 @@ nextflow_pipeline {
             assert iridanext_metadata.short."predicted_identification_name" == "No Species Identified"
             assert iridanext_metadata.short."predicted_identification_method" == "Mash"
             assert iridanext_metadata.short."gc" == "52.96"
+            // the manifest information is not available in the test to verify the correct version is actually being retrieved
+            // So a key check will suffice
+            assert iridanext_metadata.short.containsKey("mikrokondo_version")
             assert iridanext_metadata.short."Mean Sequence Length Forward" == 250
             assert iridanext_metadata.short."total_sequenced_bases" == 237500
 
