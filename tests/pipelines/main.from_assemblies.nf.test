@@ -52,7 +52,7 @@ nextflow_pipeline {
             assert ecoli_json.ECTyperSubtyping."0"."O-type".equals("O104")
             assert ecoli_json.ECTyperSubtyping."0"."H-type".equals("H4")
             assert ecoli_json.ECTyperSubtyping."0".Serotype.equals("O104:H4")
-            assert ecoli_json.ECTyperSubtyping."0".Database.equals("v1.0 (11-03-2020)")
+            assert ecoli_json.ECTyperSubtyping."0".DatabaseVer.equals("v1.0 (11-03-2020)")
             assert ecoli_json.ECTyperSubtyping."0".QC.equals("PASS (REPORTABLE)")
 
             assert final_report.ecoli_GCA_000947975.QualityAnalysis.n50_value.value == 122025
@@ -84,7 +84,7 @@ nextflow_pipeline {
             assert final_report_tmap."ECTyperSubtyping.0.O-type" == "O104"
             assert final_report_tmap."ECTyperSubtyping.0.H-type" == "H4"
             assert final_report_tmap."ECTyperSubtyping.0.Serotype" == "O104:H4"
-            assert final_report_tmap."ECTyperSubtyping.0.Database" == "v1.0 (11-03-2020)"
+            assert final_report_tmap."ECTyperSubtyping.0.DatabaseVer" == "v1.0 (11-03-2020)"
             assert final_report_tmap."ECTyperSubtyping.0.QC" == "PASS (REPORTABLE)"
 
 
@@ -100,7 +100,7 @@ nextflow_pipeline {
             assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/Quality/QUAST/ecoli_GCA_000947975/ecoli_GCA_000947975.transposed_ecoli_GCA_000947975.quast.quality.tsv" }.size() == 1
             assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/Quality/SeqKitStats/ecoli_GCA_000947975.seqkit.stats.summary.tsv" }.size() == 1
             assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/PostProcessing/Speciation/MashScreen/ecoli_GCA_000947975.mash.screen.taxa.screen.screen" }.size() == 1
-            assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/Subtyping/ECTyper/ecoli_GCA_000947975/ecoli_GCA_000947975.blast_output_alleles.ectyper.subtyping.txt" }.size() == 1
+            assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/Subtyping/ECTyper/ecoli_GCA_000947975/ecoli_GCA_000947975.blastn_output_alleles.ectyper.subtyping.txt" }.size() == 1
             assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/Subtyping/ECTyper/ecoli_GCA_000947975/ecoli_GCA_000947975.ectyper.ectyper.subtyping.log" }.size() == 1
             assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/Subtyping/ECTyper/ecoli_GCA_000947975/ecoli_GCA_000947975.output.ectyper.subtyping.tsv" }.size() == 1
             assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "FinalReports/FlattenedReports/ecoli_GCA_000947975.flat_sample.json.gz" }.size() == 1
@@ -485,7 +485,7 @@ nextflow_pipeline {
             assert iridanext_metadata.salmonella_GCA_000008105."gc" == "52.13"
             assert !iridanext_metadata.salmonella_GCA_000008105.containsKey("Mean Sequence Length Forward")
             assert !iridanext_metadata.salmonella_GCA_000008105.containsKey("BaseCount")
-            assert iridanext_metadata.salmonella_GCA_000008105."SISTR cgMLST ST" == "2572600197"
+            assert iridanext_metadata.salmonella_GCA_000008105."SISTR cgMLST ST" == "1494970110"
             assert iridanext_metadata.salmonella_GCA_000008105."SISTR cgMLST Found Loci" == "330"
             assert iridanext_metadata.salmonella_GCA_000008105."SISTR cgMLST Genome Match" == "ERR351246"
             assert iridanext_metadata.salmonella_GCA_000008105."SISTR cgMLST Matching Alleles" == "320"
