@@ -5,13 +5,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
-### `Updated`
+### `Changed`
 
 - Updated StarAMR to latest release v0.11.0 and modified tests to reflect new outputs. [PR 153](https://github.com/phac-nml/mikrokondo/pull/153)
+
+- Changed the name of multiple metadata fields mentioned in [issue 148](https://github.com/phac-nml/mikrokondo/issues/148). [PR 159](https://github.com/phac-nml/mikrokondo/pull/159).
 
 ### `Added`
 
 - Added new control flow parameter `fail_on_metagenomic` which prevents samples from undergoing additional downstream processing. [PR 158](https://github.com/phac-nml/mikrokondo/pull/158)
+
+- Added additional logic for setting the `predicted_id` and `predicted_id_method` fields. [PR 159](https://github.com/phac-nml/mikrokondo/pull/159)
 
 ## [0.5.1] - 2025-02-25
 
