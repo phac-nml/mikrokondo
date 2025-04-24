@@ -33,6 +33,8 @@ process REPORT{
     def headers_list = 'headers' // ! TODO this string exists twice, need to fix that
     def arr_size = test_in.size()
     def qc_species_tag = "QCParameterSelection"
+    def mikrokondo_version = workflow.manifest.version
+    def mk_version_fields = "MikrokondoVersion"
     for(long i = 0; i < arr_size; i=i+data_stride){
         def meta_data = test_in[i]
         def report_tag = test_in[i+1]
@@ -68,6 +70,8 @@ process REPORT{
             }
         }
         sample_data[meta_data.sample][meta_data.id][report_tag.report_tag] = report_value
+        // Add in mikrokondo version field for each sample so that it can be stored externally with the sample
+        sample_data[meta_data.sample][meta_data.id][mk_version_fields] = mikrokondo_version
     }
 
 
