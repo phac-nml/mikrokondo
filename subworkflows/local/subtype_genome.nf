@@ -36,13 +36,14 @@ workflow SUBTYPE_GENOME{
         ecoli: it[1].contains(params.QCReport.escherichia.search)
         salmonella: it[1].contains(params.QCReport.salmonella.search)
         listeria: it[1].contains(params.QCReport.listeria.search)
-        shigella: it[1].contains(params.QCReport.shigella.search)
         klebsiella: it[1].contains(params.QCReport.klebsiella.search)
         staphylococcus: it[1].contains(params.QCReport.staphylococcus.search)
+        shigella: it[1].contains(params.QCReport.shigella.search)
         fallthrough: true
     }
 
-    ec_typer_results = ECTYPER(isolates.ecoli.map{
+    ec_typer_input = isolates.ecoli.mix(isolates.shigella)
+    ec_typer_results = ECTYPER(ec_typer_input.map{
         meta, result, contigs -> tuple(meta, contigs)
     })
 
@@ -56,15 +57,6 @@ workflow SUBTYPE_GENOME{
     })
 
 
-    shigeifinder_results = SHIGEIFINDER(isolates.shigella.map{
-        meta, result, contigs -> tuple(meta, contigs)
-    })
-
-    //shigatyper requries reads onl
-    //fastq_reads = SEQTK_FASTA_FASTQ(isolates.shigella.map{
-    //    meta, result, contigs -> tuple(meta, contigs)
-    //})
-    //shigatyper_results = SHIGATYPER(fastq_reads.fastq_reads)
 
     kleborate_results = KLEBORATE(isolates.klebsiella.map{
         meta, result, contigs -> tuple(meta, contigs)
@@ -83,8 +75,7 @@ workflow SUBTYPE_GENOME{
                 KLEBORATE.out.versions,
                 ECTYPER.out.versions,
                 SISTR.out.versions,
-                LISSERO.out.versions,
-                SHIGEIFINDER.out.versions)
+                LISSERO.out.versions)
 
     isolates.fallthrough.subscribe{
         log.info "Sample ${it[0].id} could not be serotyped, sample identified as: ${it[1]}"
@@ -95,8 +86,7 @@ workflow SUBTYPE_GENOME{
         add_report_tag(kleborate_results.txt, params.kleborate),
         add_report_tag(ec_typer_results.tsv, params.ectyper),
         add_report_tag(sistr_results.tsv, params.sistr),
-        add_report_tag(lissero_results.tsv, params.lissero),
-        add_report_tag(shigeifinder_results.tsv, params.shigeifinder))
+        add_report_tag(lissero_results.tsv, params.lissero))
 
     emit:
     reports = reports

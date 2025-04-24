@@ -796,6 +796,14 @@
     "properties": {
         "fail_on_metagenomic": {
             "type": "boolean"
+        },
+        "ec_pathpid": {
+            "type": "integer",
+            "default": 90
+        },
+        "ec_pathcov": {
+            "type": "integer",
+            "default": 50
         }
     }
 }

@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Changed the name of multiple metadata fields mentioned in [issue 148](https://github.com/phac-nml/mikrokondo/issues/148). [PR 159](https://github.com/phac-nml/mikrokondo/pull/159).
 
+- Updated ECTyper to version 2.0.0 and SISTR to version 1.1.3 [PR 161](https://github.com/phac-nml/mikrokondo/pull/161).
+
+- Shigella samples are now fed into ECTyper version 2.0.0 [PR 161](https://github.com/phac-nml/mikrokondo/pull/161).
+
 ### `Added`
 
 - Added new control flow parameter `fail_on_metagenomic` which prevents samples from undergoing additional downstream processing. [PR 158](https://github.com/phac-nml/mikrokondo/pull/158)
