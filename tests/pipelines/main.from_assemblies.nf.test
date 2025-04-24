@@ -87,7 +87,6 @@ nextflow_pipeline {
             assert final_report_tmap."ECTyperSubtyping.0.DatabaseVer" == "v1.0 (11-03-2020)"
             assert final_report_tmap."ECTyperSubtyping.0.QC" == "PASS (REPORTABLE)"
 
-
             // compare IRIDA Next JSON output
             def iridanext_json = path("$launchDir/results/iridanext.output.json").json
             def iridanext_global = iridanext_json.files.global
@@ -141,6 +140,28 @@ nextflow_pipeline {
             assert ecoli_metadata."ECTyper Serotype" == "O104:H4"
             assert ecoli_metadata."ECTyper Subtyping" == "Escherichia coli"
             assert ecoli_metadata."ECTyper Warnings" == "-"
+
+            assert ecoli_metadata."ECTyper Pathotype" == "EAEC/STEC"
+            assert ecoli_metadata."ECTyper Pathotype Counts" == "2"
+            assert ecoli_metadata."ECTyper Pathotype Genes" == "aaiC,aap,aatA,aggA,aggR,hlyE,stx2"
+            assert ecoli_metadata."ECTyper Pathotype Gene Names" == "aaiC: type VI secretion system protein AaiC/Hcp2,aap: dispersin,aatA: dispersin export ABC transporter outer membrane protein AatA,aggA: aggregative adherence fimbria I major subunit AggA,aggR: aggregative adherence transcriptional regulator AggR,hlyE: hemolysin E chromosomal,stx2: Shiga toxin 2 subtype a complete sequence (subunits A and B)"
+            assert ecoli_metadata."ECTyper Pathotype Accessions" == "QCJ14421.1;KJ028043.1;AFRH01000026;EHF16298.1;CU928159;AVXX01000010.1;AB030484"
+            assert ecoli_metadata."ECTyper Pathotype Allele IDs" == "2;4;8;15;21;95;183"
+            assert ecoli_metadata."ECTyper Pathotype Identities (%)" == "99.803;100.0;100.0;100.0;99.875;98.904;100.0"
+            assert ecoli_metadata."ECTyper Pathotype Coverages (%)" == "100;100;100;100;100;100;100"
+            assert ecoli_metadata."ECTyper Pathotype Gene Length Ratios" == "507/507;351/351;1239/1239;504/504;798/798;912/912;1241/1241"
+            assert ecoli_metadata."ECTyper Pathotype Rule IDs" == "5:EAEC:aatA;6:EAEC:aaiC;7:EAEC:aggR;8:EAEC:aggA;27:STEC:stx2"
+            assert ecoli_metadata."ECTyper Pathotype Gene Counts" == "EAEC:4 (aaiC,aatA,aggA,aggR);STEC:1 (stx2)"
+            assert ecoli_metadata."ECTyper PathoDBVer" == "v2024-10-03"
+            assert ecoli_metadata."ECTyper Stx Subtypes" == "stx2a"
+            assert ecoli_metadata."ECTyper Stx Accessions" == "AB030484"
+            assert ecoli_metadata."ECTyper Stx Allele IDs" == "183"
+            assert ecoli_metadata."ECTyper Stx Allele Names" == "Shiga toxin 2 subtype a complete sequence (subunits A and B)"
+            assert ecoli_metadata."ECTyper Stx Identities (%)" == "100.0"
+            assert ecoli_metadata."ECTyper Stx Coverages (%)" == "100"
+            assert ecoli_metadata."ECTyper Stx Lengths" == "1241"
+            assert ecoli_metadata."ECTyper Stx Contig Names" == "JRKE01000049.1"
+            assert ecoli_metadata."ECTyper Stx Coordinates" == "18489-19729"
 
             assert ecoli_metadata."gc" == "50.58"
             assert !ecoli_metadata.containsKey("Mean Sequence Length Forward")
