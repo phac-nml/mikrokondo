@@ -185,12 +185,18 @@ workflow QC_READS {
     if(params.platform != params.opt_platforms.hybrid){
         // If metagenomic, no need to trying to classify the samples
         if(params.metagenomic_run){
+            if (params.fail_on_metagenomic){
+                logger.info "'fail_on_metagenomic' and 'metagenomic_run' are both true, ignoring 'fail_on_metagenomic'"
+            }
 
             ch_cleaned_reads = ch_prepped_reads.map {
                 meta, fastq -> tuple(add_meta_tag(meta, "true"), fastq)
             }
 
         }else if(params.skip_metagenomic_detection){
+            if (params.fail_on_metagenomic){
+                logger.info "'fail_on_metagenomic' and 'skip_metagenomic_detection' are true. Contamination may be missed."
+            }
             ch_cleaned_reads = ch_prepped_reads.map {
                 meta, fastq -> tuple(add_meta_tag(meta, "false"), fastq)
             }
@@ -204,6 +210,8 @@ workflow QC_READS {
                 meta, fastq, m_gen -> tuple(add_meta_tag(meta, m_gen), m_gen, fastq)
             }
 
+
+
             reports = reports.mix(ch_cleaned_temp.map{
                 meta, result, reads-> tuple(meta, params.mash_meta, result)
             })
@@ -211,6 +219,23 @@ workflow QC_READS {
             ch_cleaned_reads = ch_cleaned_temp.map{
                 meta, result, reads -> tuple(meta, reads)
             }
+
+            // Check if samples are contaminated/metagenomic and save the user computational time
+            if (params.fail_on_metagenomic){
+                temp_channel = ch_cleaned_reads.branch{ meta, fastq ->
+                    metagenomic: meta.metagenomic
+                    non_metagenomic: true
+                }
+
+                // Keep non-metagenomic samples
+                ch_cleaned_reads = temp_channel.non_metagenomic
+
+                temp_channel.metagenomic.subscribe{
+                    meta, reads ->
+                        println "${meta.id} is not being assembled as sample was determined to be metagenomic and 'fail_on_metagenomic' is set to true."
+                } // Sorry, you do not become MAGs
+            }
+
         }
 
     }else{
