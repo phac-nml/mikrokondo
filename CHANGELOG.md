@@ -225,6 +225,9 @@ Initial release of phac-nml/mikrokondo. Mikrokondo currently supports: read trim
 
 - Added integration testing using [nf-test](https://www.nf-test.com/).
 
+
+[0.6.0]: https://github.com/phac-nml/mikrokondo/releases/tag/0.6.0
+[0.5.1]: https://github.com/phac-nml/mikrokondo/releases/tag/0.5.1
 [0.5.0]: https://github.com/phac-nml/mikrokondo/releases/tag/0.5.0
 [0.4.2]: https://github.com/phac-nml/mikrokondo/releases/tag/0.4.2
 [0.4.1]: https://github.com/phac-nml/mikrokondo/releases/tag/0.4.1

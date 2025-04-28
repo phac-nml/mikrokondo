@@ -2,7 +2,7 @@
     "$schema": "https://json-schema.org/draft-07/schema",
     "$id": "https://raw.githubusercontent.com/phac-nml/mikrokondo/main/nextflow_schema.json",
     "title": "phac-nml/mikrokondo pipeline parameters",
-    "description": "Mikrokondo beta",
+    "description": "Mikrokondo",
     "type": "object",
     "definitions": {
         "input_output_options": {
@@ -766,43 +766,43 @@
     },
     "allOf": [
         {
-            "$ref": "#/$defs/input_output_options"
+            "$ref": "#/definitions/input_output_options"
         },
         {
-            "$ref": "#/$defs/databases_and_pre_computed_files"
+            "$ref": "#/definitions/databases_and_pre_computed_files"
         },
         {
-            "$ref": "#/$defs/allele_schema_options"
+            "$ref": "#/definitions/allele_schema_options"
         },
         {
-            "$ref": "#/$defs/institutional_config_options"
+            "$ref": "#/definitions/institutional_config_options"
         },
         {
-            "$ref": "#/$defs/max_job_request_options"
+            "$ref": "#/definitions/max_job_request_options"
         },
         {
-            "$ref": "#/$defs/generic_options"
+            "$ref": "#/definitions/generic_options"
         },
         {
-            "$ref": "#/$defs/control_flow_options"
+            "$ref": "#/definitions/control_flow_options"
         },
         {
-            "$ref": "#/$defs/ectyper"
+            "$ref": "#/definitions/ectyper"
         },
         {
-            "$ref": "#/$defs/sistr"
+            "$ref": "#/definitions/sistr"
         },
         {
-            "$ref": "#/$defs/fastp_options"
+            "$ref": "#/definitions/fastp_options"
         },
         {
-            "$ref": "#/$defs/locidex"
+            "$ref": "#/definitions/locidex"
         },
         {
-            "$ref": "#/$defs/data_processing_thresholds"
+            "$ref": "#/definitions/data_processing_thresholds"
         },
         {
-            "$ref": "#/$defs/other"
+            "$ref": "#/definitions/other"
         }
     ]
 }
