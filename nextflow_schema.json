@@ -137,9 +137,7 @@
                     "description": "Specify the path to an allele calling schema to be used. This schema will be used for allele calling of all samples.",
                     "exists": true,
                     "pattern": "^\\S*$",
-                    "format": "directory-path",
-                    "default": "",
-                    "help_text": ""
+                    "format": "directory-path"
                 }
             }
         },
@@ -440,6 +438,10 @@
                 "skip_length_filtering_contigs": {
                     "type": "boolean",
                     "description": "Skip filtering contigs by length."
+                },
+                "fail_on_metagenomic": {
+                    "type": "boolean",
+                    "description": "Samples which are determined to be metagenomic will not be assembled."
                 }
             }
         },
@@ -481,6 +483,16 @@
                     "type": "boolean",
                     "default": true,
                     "description": "Enable species verification in ECTyper"
+                },
+                "ec_pathpid": {
+                    "type": "integer",
+                    "default": 90,
+                    "description": "Minimum percent identity threshold for pathotype and shiga toxin subtyping results filtering."
+                },
+                "ec_pathcov": {
+                    "type": "integer",
+                    "default": 50,
+                    "description": "Minimum percent coverage threshold for pathotype and shiga toxin subtyping results filtering."
                 }
             }
         },
@@ -618,28 +630,28 @@
                 },
                 "lx_min_dna_ident": {
                     "type": "number",
-                    "default": 80.0,
+                    "default": 80,
                     "description": "Global minimum DNA percent identity required for match. (float).",
                     "minimum": 0,
                     "maximum": 100
                 },
                 "lx_min_aa_ident": {
                     "type": "number",
-                    "default": 80.0,
+                    "default": 80,
                     "description": "Global minimum Amino Acid percent identiy required for match. (float)",
                     "minimum": 0,
                     "maximum": 100
                 },
                 "lx_min_dna_match_cov": {
                     "type": "number",
-                    "default": 80.0,
+                    "default": 80,
                     "description": "Global minimum DNA percent hit coverage identity required for match. (float)",
                     "minimum": 0.001,
                     "maximum": 100
                 },
                 "lx_min_aa_match_cov": {
                     "type": "number",
-                    "default": 80.0,
+                    "default": 80,
                     "description": "Global minimum Amino Acid hit coverage identity required for match. (float)",
                     "minimum": 0,
                     "maximum": 100
@@ -754,56 +766,43 @@
     },
     "allOf": [
         {
-            "$ref": "#/definitions/input_output_options"
+            "$ref": "#/$defs/input_output_options"
         },
         {
-            "$ref": "#/definitions/databases_and_pre_computed_files"
+            "$ref": "#/$defs/databases_and_pre_computed_files"
         },
         {
-            "$ref": "#/definitions/allele_schema_options"
+            "$ref": "#/$defs/allele_schema_options"
         },
         {
-            "$ref": "#/definitions/institutional_config_options"
+            "$ref": "#/$defs/institutional_config_options"
         },
         {
-            "$ref": "#/definitions/max_job_request_options"
+            "$ref": "#/$defs/max_job_request_options"
         },
         {
-            "$ref": "#/definitions/generic_options"
+            "$ref": "#/$defs/generic_options"
         },
         {
-            "$ref": "#/definitions/control_flow_options"
+            "$ref": "#/$defs/control_flow_options"
         },
         {
-            "$ref": "#/definitions/ectyper"
+            "$ref": "#/$defs/ectyper"
         },
         {
-            "$ref": "#/definitions/sistr"
+            "$ref": "#/$defs/sistr"
         },
         {
-            "$ref": "#/definitions/fastp_options"
+            "$ref": "#/$defs/fastp_options"
         },
         {
-            "$ref": "#/definitions/locidex"
+            "$ref": "#/$defs/locidex"
         },
         {
-            "$ref": "#/definitions/data_processing_thresholds"
+            "$ref": "#/$defs/data_processing_thresholds"
         },
         {
-            "$ref": "#/definitions/other"
+            "$ref": "#/$defs/other"
         }
-    ],
-    "properties": {
-        "fail_on_metagenomic": {
-            "type": "boolean"
-        },
-        "ec_pathpid": {
-            "type": "integer",
-            "default": 90
-        },
-        "ec_pathcov": {
-            "type": "integer",
-            "default": 50
-        }
-    }
+    ]
 }
