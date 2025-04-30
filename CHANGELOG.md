@@ -3,6 +3,14 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+### `Changed`
+
+- Renamed `n50 Status` and `n50 Value` to `qc_status_assembly_n50` and `n50_value` respectively.
+
+- Added the ECTyper speciation results to shigella outputs.
+
 ## [0.6.1] - 2025-04-28
 
 ### `Fixed`
