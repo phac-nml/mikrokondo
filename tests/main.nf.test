@@ -80,8 +80,8 @@ nextflow_pipeline {
             assert !iridanext_metadata.CSE.containsKey("checkm_value")
             assert !iridanext_metadata.CSE.containsKey("qc_status_read_depth_fixed")
             assert !iridanext_metadata.CSE.containsKey("mean_read_depth_fixed")
-            assert !iridanext_metadata.CSE.containsKey("n50 Status")
-            assert !iridanext_metadata.CSE.containsKey("n50 Value")
+            assert !iridanext_metadata.CSE.containsKey("qc_status_assembly_n50")
+            assert !iridanext_metadata.CSE.containsKey("n50_value")
             assert !iridanext_metadata.CSE.containsKey("Raw Average Quality Status")
             assert iridanext_metadata.CSE.containsKey("raw_average_quality_value")
             assert !iridanext_metadata.CSE.containsKey("qc_status_assembly_genome_size")
@@ -363,8 +363,8 @@ nextflow_pipeline {
             assert iridanext_metadata.short."checkm_value" == 0.0
             assert iridanext_metadata.short."qc_status_read_depth_fixed" == "PASSED"
             assert iridanext_metadata.short."mean_read_depth_fixed" == 237.5
-            assert iridanext_metadata.short."n50 Status" == "WARNING"
-            assert iridanext_metadata.short."n50 Value" == 4949
+            assert iridanext_metadata.short."qc_status_assembly_n50" == "WARNING"
+            assert iridanext_metadata.short."n50_value" == 4949
             assert iridanext_metadata.short."qc_status_read_qual" == "PASSED"
             assert iridanext_metadata.short."raw_average_quality_value" == 40.0
             assert iridanext_metadata.short."qc_status_assembly_genome_size" == "WARNING"
@@ -521,8 +521,8 @@ nextflow_pipeline {
             assert iridanext_metadata.short."checkm_value" == 0.0
             assert iridanext_metadata.short."qc_status_read_depth_fixed" == "FAILED"
             assert iridanext_metadata.short."mean_read_depth_fixed" == 0.24
-            assert iridanext_metadata.short."n50 Status" == "WARNING"
-            assert iridanext_metadata.short."n50 Value" == 4949
+            assert iridanext_metadata.short."qc_status_assembly_n50" == "WARNING"
+            assert iridanext_metadata.short."n50_value" == 4949
             assert iridanext_metadata.short."qc_status_read_qual" == "PASSED"
             assert iridanext_metadata.short."raw_average_quality_value" == 40.0
             assert iridanext_metadata.short."qc_status_assembly_genome_size" == "WARNING"
