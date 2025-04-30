@@ -7,9 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Changed`
 
-- Renamed `n50 Status` and `n50 Value` to `qc_status_assembly_n50` and `n50_value` respectively.
+- Renamed `n50 Status` and `n50 Value` to `qc_status_assembly_n50` and `n50_value` respectively. [PR 166](https://github.com/phac-nml/mikrokondo/pull/166)
 
-- Added the ECTyper speciation results to shigella outputs.
+- Added the ECTyper speciation results to shigella outputs. [PR 166](https://github.com/phac-nml/mikrokondo/pull/166)
 
 ## [0.6.1] - 2025-04-28
 
