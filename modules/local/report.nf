@@ -482,7 +482,10 @@ def traverse_values(value, path){
         if(key_val.isNumber()){
             key_val = key_val.toInteger()
         }
-        if(temp.containsKey(key_val)){
+
+        if(temp.getClass() in ArrayList){
+            temp = temp[key_val]
+        }else if(temp.containsKey(key_val)){
             temp = temp[key_val]
         }else{
             temp = null
@@ -508,6 +511,21 @@ def get_predicted_id(value_data, species_data){
     }
 
     def species_value = traverse_values(value_data, species_data[1].IDField)
+    if(species_value == null){
+        return [predicted_id, predicted_method]
+    }
+    predicted_id = species_value
+    predicted_method = species_data[1].IDTool
+
+    return [predicted_id, predicted_method]
+}
+
+def get_typing_id(value_data, species_data, subtyping_data, suptyping_method){
+
+    if(subtyping_data == null && subtyping_method == null){
+        return [subtyping_data, subtyping_method]
+    }
+
     if(species_value == null){
         return [predicted_id, predicted_method]
     }
@@ -719,6 +737,25 @@ def generate_qc_data(data, search_phrases, qc_species_tag){
                 def (predicted_id, predicted_method) = get_predicted_id(k.value[k.key], species)
                 k.value[k.key][params.predicted_id_fields.predicted_id] = predicted_id
                 k.value[k.key][params.predicted_id_fields.predicted_id_method] = predicted_method
+            }
+
+            // TODO below duplication is temporary while i think of a function for setting these values
+            def species_info = species[1]
+            def species_type_id_p = (species_info.PrimaryTypeID != null && species_info.PrimaryTypeIDMethod != null)
+            def species_type_prepped = (species_info.PrimaryTypeID != null) ^ (species_info.PrimaryTypeIDMethod != null)
+            if(species_type_id_p && !species_type_prepped){
+                def primary_type_id = traverse_values(k.value[k.key], species_info.PrimaryTypeID)
+                k.value[k.key][params.typing_id_fields.PrimaryTypeID] = primary_type_id
+                k.value[k.key][params.typing_id_fields.PrimaryTypeIDMethod] = species_info.PrimaryTypeIDMethod
+            }
+
+
+            def aux_type_id_p = (species_info.AuxillaryTypeID != null && species_info.AuxillaryTypeIDMethod != null)
+            def aux_type_prepped = (species_info.AuxillaryTypeID != null) ^ (species_info.AuxillaryTypeIDMethod != null)
+            if(aux_type_id_p && !aux_type_prepped){
+                def aux_type_id = traverse_values(k.value[k.key], species_info.AuxillaryTypeID)
+                k.value[k.key][params.typing_id_fields.AuxillaryTypeID] = aux_type_id
+                k.value[k.key][params.typing_id_fields.AuxillaryTypeIDMethod] = species_info.AuxillaryTypeIDMethod
             }
 
             data[k.key][qc_species_tag] = species[species_tag_location]
