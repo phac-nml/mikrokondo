@@ -483,7 +483,8 @@ def traverse_values(value, path){
             key_val = key_val.toInteger()
         }
 
-        if(temp.getClass() in ArrayList){
+        // Need to verify this works on empty values
+        if(temp.getClass() in ArrayList && key_val.getClass() in Number){
             temp = temp[key_val]
         }else if(temp.containsKey(key_val)){
             temp = temp[key_val]
@@ -520,20 +521,6 @@ def get_predicted_id(value_data, species_data){
     return [predicted_id, predicted_method]
 }
 
-def get_typing_id(value_data, species_data, subtyping_data, suptyping_method){
-
-    if(subtyping_data == null && subtyping_method == null){
-        return [subtyping_data, subtyping_method]
-    }
-
-    if(species_value == null){
-        return [predicted_id, predicted_method]
-    }
-    predicted_id = species_value
-    predicted_method = species_data[1].IDTool
-
-    return [predicted_id, predicted_method]
-}
 
 def range_comp(fields, qc_data, comp_val, qc_obj){
     if(qc_data == null){
@@ -713,6 +700,7 @@ def get_qc_data_species(value_data, qc_data){
     return quality_messages;
 }
 
+
 def generate_qc_data(data, search_phrases, qc_species_tag){
     /*
     data: sample data in a LazyMap
@@ -739,24 +727,18 @@ def generate_qc_data(data, search_phrases, qc_species_tag){
                 k.value[k.key][params.predicted_id_fields.predicted_id_method] = predicted_method
             }
 
-            // TODO below duplication is temporary while i think of a function for setting these values
             def species_info = species[1]
-            def species_type_id_p = (species_info.PrimaryTypeID != null && species_info.PrimaryTypeIDMethod != null)
-            def species_type_prepped = (species_info.PrimaryTypeID != null) ^ (species_info.PrimaryTypeIDMethod != null)
-            if(species_type_id_p && !species_type_prepped){
-                def primary_type_id = traverse_values(k.value[k.key], species_info.PrimaryTypeID)
-                k.value[k.key][params.typing_id_fields.PrimaryTypeID] = primary_type_id
-                k.value[k.key][params.typing_id_fields.PrimaryTypeIDMethod] = species_info.PrimaryTypeIDMethod
-            }
+
+            def (primary_type_id, primary_type_id_method) = get_typing_id(k.value[k.key], species_info, species_info.PrimaryTypeID, species_info.PrimaryTypeIDMethod)
+            k.value[k.key][params.typing_id_fields.PrimaryTypeID] = primary_type_id
+            k.value[k.key][params.typing_id_fields.PrimaryTypeIDMethod] = primary_type_id_method
+
+            def (secondary_type_id, secondary_type_id_method) = get_typing_id(k.value[k.key], species_info, species_info.AuxillaryTypeID, species_info.AuxillaryTypeIDMethod)
+
+            k.value[k.key][params.typing_id_fields.AuxillaryTypeID] = secondary_type_id
+            k.value[k.key][params.typing_id_fields.AuxillaryTypeIDMethod] = secondary_type_id_method
 
 
-            def aux_type_id_p = (species_info.AuxillaryTypeID != null && species_info.AuxillaryTypeIDMethod != null)
-            def aux_type_prepped = (species_info.AuxillaryTypeID != null) ^ (species_info.AuxillaryTypeIDMethod != null)
-            if(aux_type_id_p && !aux_type_prepped){
-                def aux_type_id = traverse_values(k.value[k.key], species_info.AuxillaryTypeID)
-                k.value[k.key][params.typing_id_fields.AuxillaryTypeID] = aux_type_id
-                k.value[k.key][params.typing_id_fields.AuxillaryTypeIDMethod] = species_info.AuxillaryTypeIDMethod
-            }
 
             data[k.key][qc_species_tag] = species[species_tag_location]
         }else{
@@ -766,6 +748,36 @@ def generate_qc_data(data, search_phrases, qc_species_tag){
                     " you re-isolate and re-sequence this sample"
         }
     }
+
+}
+
+
+
+def get_typing_id(sample_data, species_info, species_info_type_id, species_info_type_id_method){
+    /*
+        sample_data: The aggregated user data
+        species_info: QCParameters from the nextflow.config for the selectd species
+        species_info_type_id: The Path to the requred information in the data. Taken from the QC Parameters
+        species_info_type_id_method: The method name for the type id
+    */
+
+    def species_type_id_p = (species_info_type_id != null && species_info_type_id_method != null)
+    def species_type_prepped = (species_info_type_id != null) ^ (species_info_type_id_method != null)
+    if(!species_type_id_p){
+       return [" ", " "]
+    }
+
+    if(species_type_prepped){
+        log.warn "Both ${species_info_type_id} and ${species_info_type_id_method} must be set for a type ID to be set."
+        return [" ", " "]
+    }
+
+    // Need to verify empty return if from traverse values
+    def selected_id = traverse_values(sample_data, species_info_type_id)
+    if(selected_id){
+        return [selected_id, species_info_type_id_method]
+    }
+    return [" ", species_info_type_id_method]
 
 }
 
