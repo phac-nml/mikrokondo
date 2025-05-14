@@ -61,7 +61,12 @@ QCReport {
         // If you wish to make use of IDField and IDTool you will need to set both values,
         IDField = null // null|Json path to relevant file results if null the mash or kraken2 results will be used
         IDTool = null // null|tool name used to create file result if null mash or kraken2 will be written
-
+        // If PrimaryTypeID is set PrimaryTypeIDMethod must be as well
+        PrimaryTypeID: null|Json Path, Optional primary type to have displayed e.g. serotype
+        PrimaryTypeIDMethod: null|Json Path, Method used for Primary type e.g. ECTyper
+        // If AuxillaryyTypeID is set AuxillaryTypeIDMethod must be as well
+        AuxillaryTypeID: null|Json Path, Secondary type information e.g. Clonal Complex
+        AuxillaryTypeIDMethod: null|Json path, method used for secondary type information e.g. 7 Gene
     }
     // DO NOT REMOVE THE FALLTRHOUGH FIELD AS IT IS NEEDED TO CAPTURE OTHER ORGANISMS
     fallthrough // The fallthrough field exist as a default value to capture organisms where no quality control data has been specified
@@ -78,6 +83,10 @@ QCReport {
         min_average_coverage = 30
         IDField = null
         IDTool = null
+        PrimaryTypeID = null
+        PrimaryTypeIDMethod = null
+        AuxillaryTypeID = null
+        AuxillaryTypeIDMethod = null
     }
 }
 ```
