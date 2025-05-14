@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added the ECTyper speciation results to shigella outputs. [PR 166](https://github.com/phac-nml/mikrokondo/pull/166)
 
+- Added `predicted_id_type` and `secondary_id_type` fields. [PR 168](https://github.com/phac-nml/mikrokondo/pull/168)
+
 ## [0.6.1] - 2025-04-28
 
 ### `Fixed`
