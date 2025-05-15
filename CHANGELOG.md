@@ -13,7 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Update`
 
-- Update SISTR docker/singularity build. [PR 170](https://github.com/phac-nml/mikrokondo/pull/170)
+- Update SISTR docker/singularity build (1->2). [PR 170](https://github.com/phac-nml/mikrokondo/pull/170)
+- Update ECTyper docker/singularity build (3->4). [PR 170](https://github.com/phac-nml/mikrokondo/pull/170)
 
 ## [0.6.1] - 2025-04-28
 
