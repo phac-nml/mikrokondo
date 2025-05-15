@@ -483,7 +483,6 @@ def traverse_values(value, path){
             key_val = key_val.toInteger()
         }
 
-        // Need to verify this works on empty values
         if(temp.getClass() in ArrayList && key_val.getClass() in Number){
             temp = temp[key_val]
         }else if(temp.containsKey(key_val)){
@@ -712,6 +711,7 @@ def generate_qc_data(data, search_phrases, qc_species_tag){
     def quality_analysis = "QualityAnalysis"
     def shortest_token = get_shortest_token(search_phrases)
     def species_tag_location = 0
+    def species_qc_params_location = 1
     for(k in data){
         if(!k.value.meta.metagenomic){
             def species = get_species(k.value[k.key][top_hit_tag], search_phrases, shortest_token)
@@ -727,7 +727,7 @@ def generate_qc_data(data, search_phrases, qc_species_tag){
                 k.value[k.key][params.predicted_id_fields.predicted_id_method] = predicted_method
             }
 
-            def species_info = species[1]
+            def species_info = species[species_qc_params_location]
 
             def (primary_type_id, primary_type_id_method) = get_typing_id(k.value[k.key], species_info, species_info.PrimaryTypeID, species_info.PrimaryTypeIDMethod)
             k.value[k.key][params.typing_id_fields.PrimaryTypeID] = primary_type_id
@@ -737,8 +737,6 @@ def generate_qc_data(data, search_phrases, qc_species_tag){
 
             k.value[k.key][params.typing_id_fields.AuxillaryTypeID] = secondary_type_id
             k.value[k.key][params.typing_id_fields.AuxillaryTypeIDMethod] = secondary_type_id_method
-
-
 
             data[k.key][qc_species_tag] = species[species_tag_location]
         }else{
@@ -772,7 +770,6 @@ def get_typing_id(sample_data, species_info, species_info_type_id, species_info_
         return [" ", " "]
     }
 
-    // Need to verify empty return if from traverse values
     def selected_id = traverse_values(sample_data, species_info_type_id)
     if(selected_id){
         return [selected_id, species_info_type_id_method]
