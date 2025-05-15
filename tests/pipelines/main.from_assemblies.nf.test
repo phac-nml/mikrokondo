@@ -492,6 +492,7 @@ nextflow_pipeline {
             assert final_report_tmap."StarAMR.0.Sequence Type" == "66"
 
             assert salmonella_json.SISTRSubtyping."0".serovar == "Choleraesuis"
+            assert salmonella_json.PrimaryTypeID == "Choleraesuis"
             assert iridanext_metadata.salmonella_GCA_000008105."SISTR Serovar" == "Choleraesuis"
             assert final_report_tmap."SISTRSubtyping.0.serovar" == "Choleraesuis"
 
@@ -500,6 +501,7 @@ nextflow_pipeline {
             assert final_report_tmap."SISTRSubtyping.0.serogroup" == "C1"
 
             assert salmonella_json.SISTRSubtyping."0".serovar_antigen == "Hissar|Choleraesuis|Paratyphi C|Typhisuis|Chiredzi"
+            assert salmonella_json.AuxillaryTypeID == "Hissar|Choleraesuis|Paratyphi C|Typhisuis|Chiredzi"
             assert iridanext_metadata.salmonella_GCA_000008105."SISTR Serovar Antigen" == "Hissar|Choleraesuis|Paratyphi C|Typhisuis|Chiredzi"
             assert final_report_tmap."SISTRSubtyping.0.serovar_antigen" == "Hissar|Choleraesuis|Paratyphi C|Typhisuis|Chiredzi"
 
