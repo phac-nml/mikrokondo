@@ -3,6 +3,19 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.0] - 2025-05-21
+
+### `Changed`
+
+- Renamed `n50 Status` and `n50 Value` to `qc_status_assembly_n50` and `n50_value` respectively. [PR 166](https://github.com/phac-nml/mikrokondo/pull/166)
+
+- Added the ECTyper speciation results to shigella outputs. [PR 166](https://github.com/phac-nml/mikrokondo/pull/166)
+
+### `Update`
+
+- Update SISTR docker/singularity build (1->2). [PR 170](https://github.com/phac-nml/mikrokondo/pull/170)
+- Update ECTyper docker/singularity build (3->4). [PR 170](https://github.com/phac-nml/mikrokondo/pull/170)
+
 ## [0.6.1] - 2025-04-28
 
 ### `Fixed`
@@ -226,6 +239,8 @@ Initial release of phac-nml/mikrokondo. Mikrokondo currently supports: read trim
 - Added integration testing using [nf-test](https://www.nf-test.com/).
 
 
+[0.7.0]: https://github.com/phac-nml/mikrokondo/releases/tag/0.7.0
+[0.6.1]: https://github.com/phac-nml/mikrokondo/releases/tag/0.6.1
 [0.6.0]: https://github.com/phac-nml/mikrokondo/releases/tag/0.6.0
 [0.5.1]: https://github.com/phac-nml/mikrokondo/releases/tag/0.5.1
 [0.5.0]: https://github.com/phac-nml/mikrokondo/releases/tag/0.5.0

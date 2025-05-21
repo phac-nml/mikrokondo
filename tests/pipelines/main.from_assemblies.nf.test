@@ -112,8 +112,8 @@ nextflow_pipeline {
             assert !ecoli_metadata.containsKey("Checkm Value")
             assert !ecoli_metadata.containsKey("qc_status_read_depth_fixed")
             assert !ecoli_metadata.containsKey("Average Coverage Value")
-            assert ecoli_metadata."n50 Status" == "PASSED"
-            assert ecoli_metadata."n50 Value" == 122025
+            assert ecoli_metadata."qc_status_assembly_n50" == "PASSED"
+            assert ecoli_metadata."n50_value" == 122025
             assert !ecoli_metadata.containsKey("Raw Average Quality Status")
             assert !ecoli_metadata.containsKey("Raw Average Quality Value")
             assert ecoli_metadata.qc_status_assembly_genome_size == "PASSED"
@@ -245,7 +245,7 @@ nextflow_pipeline {
             // output metadata
             def ecoli_metadata = iridanext_metadata.ecoli_GCA_000947975
             assert ecoli_metadata.qc_status_overall == "FAILED"
-            assert ecoli_metadata."n50 Value" == 122025
+            assert ecoli_metadata."n50_value" == 122025
             assert ecoli_metadata.assembly_length == 5299656
             assert ecoli_metadata.assembly_num_contigs == 123
             assert ecoli_metadata."StarAMR Genotype" == "aph(3'')-Ib, aph(6)-Id, blaCTX-M-15, blaTEM-1B, dfrA7, sul1, sul2, tet(A)"
@@ -321,8 +321,8 @@ nextflow_pipeline {
             assert !ecoli_metadata.containsKey("Checkm Value")
             assert !ecoli_metadata.containsKey("qc_status_read_depth_fixed")
             assert !ecoli_metadata.containsKey("Average Coverage Value")
-            assert ecoli_metadata."n50 Status" == "PASSED"
-            assert ecoli_metadata."n50 Value" == 122025
+            assert ecoli_metadata."qc_status_assembly_n50" == "PASSED"
+            assert ecoli_metadata."n50_value" == 122025
             assert !ecoli_metadata.containsKey("Raw Average Quality Status")
             assert !ecoli_metadata.containsKey("Raw Average Quality Value")
             assert ecoli_metadata.qc_status_assembly_genome_size == "PASSED"
@@ -405,8 +405,8 @@ nextflow_pipeline {
             assert !salmonella_metadata.containsKey("Checkm Value")
             assert !salmonella_metadata.containsKey("qc_status_read_depth_fixed")
             assert !salmonella_metadata.containsKey("Average Coverage Value")
-            assert salmonella_metadata."n50 Status" == "PASSED"
-            assert salmonella_metadata."n50 Value" == 4755700
+            assert salmonella_metadata."qc_status_assembly_n50" == "PASSED"
+            assert salmonella_metadata."n50_value" == 4755700
             assert !salmonella_metadata.containsKey("Raw Average Quality Status")
             assert !salmonella_metadata.containsKey("Raw Average Quality Value")
             assert salmonella_metadata.qc_status_assembly_genome_size == "PASSED"
@@ -573,8 +573,8 @@ nextflow_pipeline {
             assert !listeria_metadata.containsKey("checkm_value")
             assert !listeria_metadata.containsKey("qc_status_read_depth_fixed")
             assert !listeria_metadata.containsKey("mean_read_depth_fixed")
-            assert listeria_metadata."n50 Status" == "PASSED"
-            assert listeria_metadata."n50 Value" == 2944528
+            assert listeria_metadata."qc_status_assembly_n50" == "PASSED"
+            assert listeria_metadata."n50_value" == 2944528
             assert !listeria_metadata.containsKey("qc_status_read_qual")
             assert !listeria_metadata.containsKey("Raw Average Quality Value")
             assert listeria_metadata."qc_status_assembly_genome_size" == "PASSED"
