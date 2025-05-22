@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Changed`
 
-- Fixed container string for `ectyper` docker and singularity containers. [PR 169](https://github.com/phac-nml/mikrokondo/pull/169)
+- Fixed container string for `ectyper` docker and singularity containers. [PR 173](https://github.com/phac-nml/mikrokondo/pull/173)
 
 ## [0.7.0] - 2025-05-21
 
