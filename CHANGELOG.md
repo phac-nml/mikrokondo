@@ -3,6 +3,12 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.1] - 2025-05-22
+
+### `Changed`
+
+- Fixed container string for `ectyper` docker and singularity containers. [PR 169](https://github.com/phac-nml/mikrokondo/pull/169)
+
 ## [0.7.0] - 2025-05-21
 
 ### `Changed`
@@ -239,6 +245,7 @@ Initial release of phac-nml/mikrokondo. Mikrokondo currently supports: read trim
 - Added integration testing using [nf-test](https://www.nf-test.com/).
 
 
+[0.7.1]: https://github.com/phac-nml/mikrokondo/releases/tag/0.7.1
 [0.7.0]: https://github.com/phac-nml/mikrokondo/releases/tag/0.7.0
 [0.6.1]: https://github.com/phac-nml/mikrokondo/releases/tag/0.6.1
 [0.6.0]: https://github.com/phac-nml/mikrokondo/releases/tag/0.6.0
