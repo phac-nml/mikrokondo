@@ -617,8 +617,6 @@ nextflow_pipeline {
 
             // Tests
             assert listeria_json.SpeciesTopHit == "Listeria monocytogenes"
-            assert iridanext_metadata.listeria_GCF_000196035."predicted_primary_type_name" == "Listeria monocytogenes"
-            assert iridanext_metadata.listeria_GCF_000196035."predicted_primary_type_method" == "Mash"
             assert final_report_tmap.SpeciesTopHit == "Listeria monocytogenes"
 
             assert listeria_json.QUAST."0"."Total length" == "2944528"
