@@ -679,9 +679,9 @@ nextflow_pipeline {
 
 
             assert iridanext_metadata.listeria_GCF_000196035."predicted_primary_type_name" == "35"
-            assert iridanext_metadata.listeria_GCF_000196035."predicted_primary_type_method" == "SevenGeneMLSTReport"
+            assert iridanext_metadata.listeria_GCF_000196035."predicted_primary_type_method" == "mlst 2.23.0"
             assert iridanext_metadata.listeria_GCF_000196035."predicted_secondary_type_name" == "1/2c, 3c"
-            assert iridanext_metadata.listeria_GCF_000196035."predicted_secondary_type_method" == "LISSERO"
+            assert iridanext_metadata.listeria_GCF_000196035."predicted_secondary_type_method" == "LISSERO 0.4.9"
         }
     }
 
@@ -834,9 +834,9 @@ nextflow_pipeline {
 
 
             assert iridanext_metadata.listeria_GCF_000196035."predicted_primary_type_name" == "35"
-            assert iridanext_metadata.listeria_GCF_000196035."predicted_primary_type_method" == "SevenGeneMLSTReport"
+            assert iridanext_metadata.listeria_GCF_000196035."predicted_primary_type_method" == "mlst 2.23.0"
             assert iridanext_metadata.listeria_GCF_000196035."predicted_secondary_type_name" == ' '
-            assert iridanext_metadata.listeria_GCF_000196035."predicted_secondary_type_method" == "LISSERO"
+            assert iridanext_metadata.listeria_GCF_000196035."predicted_secondary_type_method" == "LISSERO 0.4.9"
         }
     }
     test("Test starting from concatemers Vibrio cholerae") {
