@@ -762,19 +762,19 @@ def get_typing_id(sample_data, species_info, species_info_type_id, species_info_
     def species_type_id_p = (species_info_type_id != null && species_info_type_id_method != null)
     def species_type_prepped = (species_info_type_id != null) ^ (species_info_type_id_method != null)
     if(!species_type_id_p){
-       return [" ", " "]
+       return ["", ""]
     }
 
     if(species_type_prepped){
         log.warn "Both ${species_info_type_id} and ${species_info_type_id_method} must be set for a type ID to be set."
-        return [" ", " "]
+        return ["", ""]
     }
 
     def selected_id = traverse_values(sample_data, species_info_type_id)
     if(selected_id){
         return [selected_id, species_info_type_id_method]
     }
-    return [" ", species_info_type_id_method]
+    return ["", species_info_type_id_method]
 
 }
 
