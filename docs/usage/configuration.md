@@ -78,9 +78,9 @@ QCReport {
         // If PrimaryTypeID is set PrimaryTypeIDMethod must be as well
         PrimaryTypeID: null|JSON Path, Optional primary type to have displayed e.g. serotype
         PrimaryTypeIDMethod: null|String, Method used for Primary type e.g. ECTyper
-        // If AuxillaryyTypeID is set AuxillaryTypeIDMethod must be as well
-        AuxillaryTypeID: null|JSON Path, Secondary type information e.g. Clonal Complex
-        AuxillaryTypeIDMethod: null|String, method used for secondary type information e.g. 7 Gene
+        // If SecondaryTypeID is set SecondaryTypeIDMethod must be as well
+        SecondaryTypeID: null|JSON Path, Secondary type information e.g. Clonal Complex
+        SecondaryTypeIDMethod: null|String, method used for secondary type information e.g. 7 Gene
     }
     // DO NOT REMOVE THE FALLTRHOUGH FIELD AS IT IS NEEDED TO CAPTURE OTHER ORGANISMS
     fallthrough // The fallthrough field exist as a default value to capture organisms where no quality control data has been specified
@@ -99,8 +99,8 @@ QCReport {
         IDTool = null
         PrimaryTypeID = null
         PrimaryTypeIDMethod = null
-        AuxillaryTypeID = null
-        AuxillaryTypeIDMethod = null
+        SecondaryTypeID = null
+        SecondaryTypeIDMethod = null
     }
 }
 ```

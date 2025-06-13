@@ -733,10 +733,10 @@ def generate_qc_data(data, search_phrases, qc_species_tag){
             k.value[k.key][params.typing_id_fields.PrimaryTypeID] = primary_type_id
             k.value[k.key][params.typing_id_fields.PrimaryTypeIDMethod] = primary_type_id_method
 
-            def (secondary_type_id, secondary_type_id_method) = get_typing_id(k.value[k.key], species_info, species_info.AuxillaryTypeID, species_info.AuxillaryTypeIDMethod)
+            def (secondary_type_id, secondary_type_id_method) = get_typing_id(k.value[k.key], species_info, species_info.SecondaryTypeID, species_info.SecondaryTypeIDMethod)
 
-            k.value[k.key][params.typing_id_fields.AuxillaryTypeID] = secondary_type_id
-            k.value[k.key][params.typing_id_fields.AuxillaryTypeIDMethod] = secondary_type_id_method
+            k.value[k.key][params.typing_id_fields.SecondaryTypeID] = secondary_type_id
+            k.value[k.key][params.typing_id_fields.SecondaryTypeIDMethod] = secondary_type_id_method
 
             data[k.key][qc_species_tag] = species[species_tag_location]
         }else{
