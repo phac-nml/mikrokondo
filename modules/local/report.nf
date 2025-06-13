@@ -482,7 +482,10 @@ def traverse_values(value, path){
         if(key_val.isNumber()){
             key_val = key_val.toInteger()
         }
-        if(temp.containsKey(key_val)){
+
+        if(temp.getClass() in ArrayList && key_val.getClass() in Number){
+            temp = temp[key_val]
+        }else if(temp.containsKey(key_val)){
             temp = temp[key_val]
         }else{
             temp = null
@@ -516,6 +519,7 @@ def get_predicted_id(value_data, species_data){
 
     return [predicted_id, predicted_method]
 }
+
 
 def range_comp(fields, qc_data, comp_val, qc_obj){
     if(qc_data == null){
@@ -695,6 +699,7 @@ def get_qc_data_species(value_data, qc_data){
     return quality_messages;
 }
 
+
 def generate_qc_data(data, search_phrases, qc_species_tag){
     /*
     data: sample data in a LazyMap
@@ -706,6 +711,7 @@ def generate_qc_data(data, search_phrases, qc_species_tag){
     def quality_analysis = "QualityAnalysis"
     def shortest_token = get_shortest_token(search_phrases)
     def species_tag_location = 0
+    def species_qc_params_location = 1
     for(k in data){
         if(!k.value.meta.metagenomic){
             def species = get_species(k.value[k.key][top_hit_tag], search_phrases, shortest_token)
@@ -721,6 +727,17 @@ def generate_qc_data(data, search_phrases, qc_species_tag){
                 k.value[k.key][params.predicted_id_fields.predicted_id_method] = predicted_method
             }
 
+            def species_info = species[species_qc_params_location]
+
+            def (primary_type_id, primary_type_id_method) = get_typing_id(k.value[k.key], species_info, species_info.PrimaryTypeID, species_info.PrimaryTypeIDMethod)
+            k.value[k.key][params.typing_id_fields.PrimaryTypeID] = primary_type_id
+            k.value[k.key][params.typing_id_fields.PrimaryTypeIDMethod] = primary_type_id_method
+
+            def (secondary_type_id, secondary_type_id_method) = get_typing_id(k.value[k.key], species_info, species_info.SecondaryTypeID, species_info.SecondaryTypeIDMethod)
+
+            k.value[k.key][params.typing_id_fields.SecondaryTypeID] = secondary_type_id
+            k.value[k.key][params.typing_id_fields.SecondaryTypeIDMethod] = secondary_type_id_method
+
             data[k.key][qc_species_tag] = species[species_tag_location]
         }else{
             data[k.key][quality_analysis] = ["Metagenomic": ["message": null, "status": false]]
@@ -729,6 +746,35 @@ def generate_qc_data(data, search_phrases, qc_species_tag){
                     " you re-isolate and re-sequence this sample"
         }
     }
+
+}
+
+
+
+def get_typing_id(sample_data, species_info, species_info_type_id, species_info_type_id_method){
+    /*
+        sample_data: The aggregated user data
+        species_info: QCParameters from the nextflow.config for the selectd species
+        species_info_type_id: The Path to the requred information in the data. Taken from the QC Parameters
+        species_info_type_id_method: The method name for the type id
+    */
+
+    def species_type_id_p = (species_info_type_id != null && species_info_type_id_method != null)
+    def species_type_prepped = (species_info_type_id != null) ^ (species_info_type_id_method != null)
+    if(!species_type_id_p){
+       return ["", ""]
+    }
+
+    if(species_type_prepped){
+        log.warn "Both ${species_info_type_id} and ${species_info_type_id_method} must be set for a type ID to be set."
+        return ["", ""]
+    }
+
+    def selected_id = traverse_values(sample_data, species_info_type_id)
+    if(selected_id){
+        return [selected_id, species_info_type_id_method]
+    }
+    return ["", species_info_type_id_method]
 
 }
 
