@@ -124,8 +124,13 @@ nextflow_pipeline {
             assert ecoli_metadata.qc_summary == "FAILED Species ID: Escherichia coli; Passed Tests: 3/4; Organism QC Criteria: Escherichia coli"
 
             assert ecoli_metadata."Downsampled" == false
+
             assert ecoli_metadata."predicted_identification_name" == "Escherichia coli"
             assert ecoli_metadata."predicted_identification_method" == "ECTyper"
+            assert ecoli_metadata."predicted_primary_type_name" == "O104:H4"
+            assert ecoli_metadata."predicted_primary_type_method" == "ectyper 2.0.0"
+            assert ecoli_metadata."predicted_secondary_type_name" == "678"
+            assert ecoli_metadata."predicted_secondary_type_method" == "mlst 2.23.0"
 
             assert ecoli_metadata.SpeciesTopHit == "Escherichia coli"
             assert ecoli_metadata.IdentificationMethod == "Mash"
@@ -453,8 +458,13 @@ nextflow_pipeline {
             // Tests
             assert iridanext_metadata.salmonella_GCA_000008105.SpeciesTopHit == "Salmonella enterica"
             assert iridanext_metadata.salmonella_GCA_000008105.IdentificationMethod == "Mash"
+
             assert iridanext_metadata.salmonella_GCA_000008105."predicted_identification_method" == "Mash"
             assert iridanext_metadata.salmonella_GCA_000008105."predicted_identification_name" == "Salmonella enterica"
+            assert iridanext_metadata.salmonella_GCA_000008105."predicted_primary_type_name" == "Choleraesuis"
+            assert iridanext_metadata.salmonella_GCA_000008105."predicted_primary_type_method" == "sistr 1.1.3"
+            assert iridanext_metadata.salmonella_GCA_000008105."predicted_secondary_type_name" == "66"
+            assert iridanext_metadata.salmonella_GCA_000008105."predicted_secondary_type_method" == "mlst 2.23.0"
 
             assert salmonella_json.QUAST."0"."Total length" == "4944000"
             assert final_report_tmap."QUAST.0.Total length" == "4944000"
