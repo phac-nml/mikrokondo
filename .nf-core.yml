@@ -20,6 +20,7 @@ lint:
     - .github/PULL_REQUEST_TEMPLATE.md
     - .github/workflows/branch.yml
     - .github/workflows/linting.yml
+    - .github/workflows/linting_comment.yml
     - assets/email_template.html
     - assets/email_template.txt
     - assets/sendmail_template.txt
