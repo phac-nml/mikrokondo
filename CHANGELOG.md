@@ -3,6 +3,12 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.0] - 2025-06-19
+
+### `Changed`
+
+- Added `predicted_primary_type_name`, `predicted_primary_type_method`, `predicted_secondary_type_name`, and `predicted_secondary_type_method` fields, which are output to Irida Next as `PrimaryTypeID`, `PrimaryTypeIDMethod`, `SecondaryTypeID`, and `SecondaryTypeIDMethod`, respectively. [PR 168](https://github.com/phac-nml/mikrokondo/pull/168)
+
 ## [0.7.1] - 2025-05-22
 
 ### `Changed`
@@ -20,7 +26,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### `Update`
 
 - Update SISTR docker/singularity build (1->2). [PR 170](https://github.com/phac-nml/mikrokondo/pull/170)
+
 - Update ECTyper docker/singularity build (3->4). [PR 170](https://github.com/phac-nml/mikrokondo/pull/170)
+
 
 ## [0.6.1] - 2025-04-28
 
@@ -245,6 +253,7 @@ Initial release of phac-nml/mikrokondo. Mikrokondo currently supports: read trim
 - Added integration testing using [nf-test](https://www.nf-test.com/).
 
 
+[0.8.0]: https://github.com/phac-nml/mikrokondo/releases/tag/0.8.0
 [0.7.1]: https://github.com/phac-nml/mikrokondo/releases/tag/0.7.1
 [0.7.0]: https://github.com/phac-nml/mikrokondo/releases/tag/0.7.0
 [0.6.1]: https://github.com/phac-nml/mikrokondo/releases/tag/0.6.1
