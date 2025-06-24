@@ -61,6 +61,22 @@ import org.slf4j.LoggerFactory;
 //
 // WORKFLOW: Run main mk-kondo/mikrokondo analysis pipeline
 //
+process UNIQUE_SOFTWARE_VERSIONS {
+    tag "SoftwareVersions per Sample"
+    label 'process_single'
+
+    input:
+    tuple val(meta), path(software_versions)
+
+    output:
+    tuple val(meta), path("*versions.yml"), emit: versions
+
+    script:
+    """
+    cp ${software_versions} ${meta.id}_versions.yml
+    """
+
+}
 workflow MIKROKONDO {
 
     if(params.validate_params){
@@ -126,10 +142,19 @@ workflow MIKROKONDO {
     }
 
     if(!params.skip_version_gathering){
-        CUSTOM_DUMPSOFTWAREVERSIONS (
-            ch_versions.unique().collectFile(name: 'collated_versions.yml')
-        )
+        software_versions = CUSTOM_DUMPSOFTWAREVERSIONS (
+        ch_versions.unique().collectFile(name: 'collated_versions.yml')
+    ).yml
+
+    software_report = prepped_data.reads.map{meta, reads -> meta
+    }.combine(software_versions)
+
+    UNIQUE_SOFTWARE_VERSIONS (
+        software_report
+    )
     }
+
+
 }
 
 /*
