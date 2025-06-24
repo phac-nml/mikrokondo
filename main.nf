@@ -73,7 +73,7 @@ process UNIQUE_SOFTWARE_VERSIONS {
 
     script:
     """
-    cp ${software_versions} ${meta.id}_versions.yml
+    cp ${software_versions} ${meta.id}.mikrokondo.yml
     """
 
 }
