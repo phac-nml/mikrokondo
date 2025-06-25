@@ -55,28 +55,14 @@ include { REPORT } from './modules/local/report.nf'
 include { REPORT_AGGREGATE } from './modules/local/report_aggregate.nf'
 include { GZIP_FILES } from './modules/local/gzip_files.nf'
 include { CUSTOM_DUMPSOFTWAREVERSIONS } from './modules/nf-core/custom/dumpsoftwareversions/main'
+include { UNIQUE_SOFTWARE_VERSIONS } from './modules/local/unique_software_versions'
 
 import org.slf4j.LoggerFactory;
 
 //
 // WORKFLOW: Run main mk-kondo/mikrokondo analysis pipeline
 //
-process UNIQUE_SOFTWARE_VERSIONS {
-    tag "SoftwareVersions per Sample"
-    label 'process_single'
 
-    input:
-    tuple val(meta), path(software_versions)
-
-    output:
-    tuple val(meta), path("*versions.yml"), emit: versions
-
-    script:
-    """
-    cp ${software_versions} ${meta.id}.mikrokondo.yml
-    """
-
-}
 workflow MIKROKONDO {
 
     if(params.validate_params){
