@@ -41,6 +41,22 @@ if (params.help) {
 // Check mandatory parameters
 if (params.input) { ch_input = file(params.input) } else { exit 1, 'Input samplesheet not specified!' }
 
+import groovy.json.JsonBuilder
+import groovy.yaml.YamlBuilder
+
+// Function to save parameters as JSON
+def saveParamsAsJson(outputDir) {
+    def paramMap = [:]
+    params.each { key, value ->
+        paramMap[key] = value
+    }
+
+    def json = new JsonBuilder(paramMap)
+    def jsonFile = file("${outputDir}/pipeline_parameters.json")
+    jsonFile.text = json.toPrettyString()
+
+    return paramMap
+}
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -55,7 +71,7 @@ include { REPORT } from './modules/local/report.nf'
 include { REPORT_AGGREGATE } from './modules/local/report_aggregate.nf'
 include { GZIP_FILES } from './modules/local/gzip_files.nf'
 include { CUSTOM_DUMPSOFTWAREVERSIONS } from './modules/nf-core/custom/dumpsoftwareversions/main'
-include { UNIQUE_SOFTWARE_VERSIONS } from './modules/local/unique_software_versions'
+include { REPORT_PIPELINE_PARAMETERS } from './modules/local/report_pipeline_parameters'
 
 import org.slf4j.LoggerFactory;
 
@@ -127,17 +143,24 @@ workflow MIKROKONDO {
         ch_versions = ch_versions.mix(GZIP_FILES.out.versions)
     }
 
+    // Save all parameters to the software report
+    def allParams = saveParamsAsJson("${params.outdir}")
+    paramsSummaryChannel = Channel.fromPath(
+        file("${params.outdir}/pipeline_parameters.json")
+    )
+
+    software_report_channel = prepped_data.reads.map{meta, reads -> meta
+    }.combine(paramsSummaryChannel)
+
+    REPORT_PIPELINE_PARAMETERS(
+        software_report_channel
+    )
+
     if(!params.skip_version_gathering){
-        software_versions = CUSTOM_DUMPSOFTWAREVERSIONS (
+        CUSTOM_DUMPSOFTWAREVERSIONS (
         ch_versions.unique().collectFile(name: 'collated_versions.yml')
     ).yml
 
-    software_report = prepped_data.reads.map{meta, reads -> meta
-    }.combine(software_versions)
-
-    UNIQUE_SOFTWARE_VERSIONS (
-        software_report
-    )
     }
 
 
@@ -162,4 +185,3 @@ workflow {
     THE END
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
-

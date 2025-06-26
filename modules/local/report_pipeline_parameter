@@ -1,5 +1,5 @@
-process UNIQUE_SOFTWARE_VERSIONS {
-    tag "SoftwareVersions per Sample"
+process REPORT_PIPELINE_PARAMETERS {
+    tag "Reporting pipeline parameters"
     label 'process_single'
 
     input:
