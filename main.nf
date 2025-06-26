@@ -71,7 +71,7 @@ include { REPORT } from './modules/local/report.nf'
 include { REPORT_AGGREGATE } from './modules/local/report_aggregate.nf'
 include { GZIP_FILES } from './modules/local/gzip_files.nf'
 include { CUSTOM_DUMPSOFTWAREVERSIONS } from './modules/nf-core/custom/dumpsoftwareversions/main'
-include { REPORT_PIPELINE_PARAMETERS } from './modules/local/report_pipeline_parameters'
+include { REPORT_PIPELINE_PARAMETERS } from './modules/local/report_pipeline_parameter'
 
 import org.slf4j.LoggerFactory;
 
