@@ -6,11 +6,11 @@ process REPORT_PIPELINE_PARAMETERS {
     tuple val(meta), path(software_versions)
 
     output:
-    tuple val(meta), path("*.mikrokondo.yml"), emit: versions
+    tuple val(meta), path("*.mikrokondo.json"), emit: versions
 
     script:
     """
-    cp ${software_versions} ${meta.id}.mikrokondo.yml
+    cp ${software_versions} ${meta.id}.mikrokondo.json
     """
 
 }

@@ -42,7 +42,6 @@ if (params.help) {
 if (params.input) { ch_input = file(params.input) } else { exit 1, 'Input samplesheet not specified!' }
 
 import groovy.json.JsonBuilder
-import groovy.yaml.YamlBuilder
 
 // Function to save parameters as JSON
 def saveParamsAsJson(outputDir) {
