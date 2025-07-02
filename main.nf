@@ -142,24 +142,23 @@ workflow MIKROKONDO {
         ch_versions = ch_versions.mix(GZIP_FILES.out.versions)
     }
 
-    // Save all parameters to the software report
-    def allParams = saveParamsAsJson("${params.outdir}")
-    paramsSummaryChannel = Channel.fromPath(
-        file("${params.outdir}/pipeline_parameters.json")
-    )
-
-    software_report_channel = prepped_data.reads.map{meta, reads -> meta
-    }.combine(paramsSummaryChannel)
-
-    REPORT_PIPELINE_PARAMETERS(
-        software_report_channel
-    )
 
     if(!params.skip_version_gathering){
-        CUSTOM_DUMPSOFTWAREVERSIONS (
+        // Save all parameters to the software report JSON file
+        def allParams = saveParamsAsJson("${params.outdir}")
+        paramsSummaryChannel = Channel.fromPath(
+            file("${params.outdir}/pipeline_parameters.json")
+        )
+        // Save all the software versions to a YAML file
+        software_versions_channel = CUSTOM_DUMPSOFTWAREVERSIONS (
         ch_versions.unique().collectFile(name: 'collated_versions.yml')
-    ).yml
+        ).yml
 
+        software_report_channel = prepped_data.reads.map{meta, reads -> meta
+        }.combine(paramsSummaryChannel).combine(software_versions_channel)
+
+        REPORT_PIPELINE_PARAMETERS(
+        software_report_channel)
     }
 
 
