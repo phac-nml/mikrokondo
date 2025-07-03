@@ -1,6 +1,7 @@
 process REPORT_PIPELINE_PARAMETERS {
     tag "Reporting pipeline parameters"
     label 'process_single'
+    container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.parameters.get('singularity') : task.ext.parameters.get('docker')}"
 
     input:
     tuple val(meta), path(parameter_settings), path(software_versions)
