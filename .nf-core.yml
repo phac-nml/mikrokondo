@@ -12,6 +12,8 @@ lint:
     - docs/output.md
     - docs/README.md
     - docs/usage.md
+    - conf/igenomes_ignored.config
+    - ro-crate-metadata.json
   files_unchanged:
     - LICENSE
     - .github/CONTRIBUTING.md
