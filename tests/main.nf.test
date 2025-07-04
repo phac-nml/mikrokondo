@@ -356,6 +356,8 @@ nextflow_pipeline {
             assert iridanext_samples.short.findAll { it.path == "Reads/Quality/Trimmed/FastP/short.fastp.summary.json" }.size() == 1
             assert iridanext_samples.short.findAll { it.path == "Reads/Quality/RawReadQuality/short.read.scan.summary.json" }.size() == 1
             assert iridanext_samples.short.findAll { it.path == "FinalReports/FlattenedReports/short.flat_sample.json.gz" }.size() == 1
+            assert iridanext_samples.short.findAll { it.path == "pipeline_info/short.mikrokondo.software.version.yml" }.size() == 1
+            assert iridanext_samples.short.findAll { it.path == "pipeline_info/short.mikrokondo.parameters.json" }.size() == 1
 
             // output metadata
             assert iridanext_metadata.short."qc_status_overall" == "PASSED"
@@ -385,6 +387,17 @@ nextflow_pipeline {
 
             assert iridanext_metadata.short."StarAMR Genotype" == "None"
             assert iridanext_metadata.short."StarAMR Predicted Phenotype" == "Susceptible"
+
+            // Check that the pipline_info parameters file contains the expected parameters
+            def parameters_json = path("$launchDir/results/pipeline_info/short.mikrokondo.parameters.json").json
+            assert parameters_json.input == "https://raw.githubusercontent.com/phac-nml/mikrokondo/dev/tests/data/samplesheets/samplesheet-small-assembly.csv"
+            assert parameters_json.outdir == "results"
+            assert parameters_json.platform == "illumina"
+            assert parameters_json.mh_min_kmer == 1
+            assert parameters_json.mash_sketch == "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
+            assert parameters_json.locidex.min_evalue == 0.0001
+
+
         }
 
     }
@@ -514,6 +527,8 @@ nextflow_pipeline {
             assert iridanext_samples.short.findAll { it.path == "Reads/Quality/Trimmed/FastP/short.fastp.summary.json" }.size() == 1
             assert iridanext_samples.short.findAll { it.path == "Reads/Quality/RawReadQuality/short.read.scan.summary.json" }.size() == 1
             assert iridanext_samples.short.findAll { it.path == "FinalReports/FlattenedReports/short.flat_sample.json.gz" }.size() == 1
+            assert iridanext_samples.short.findAll { it.path == "pipeline_info/short.mikrokondo.software.version.yml" }.size() == 1
+            assert iridanext_samples.short.findAll { it.path == "pipeline_info/short.mikrokondo.parameters.json" }.size() == 1
 
             // output metadata
             assert iridanext_metadata.short."qc_status_overall" == "FAILED"
@@ -967,6 +982,8 @@ nextflow_pipeline {
             assert iridanext_samples.short.findAll { it.path == "Reads/Quality/Trimmed/FastP/short.fastp.summary.json" }.size() == 1
             assert iridanext_samples.short.findAll { it.path == "Reads/Quality/RawReadQuality/short.read.scan.summary.json" }.size() == 1
             assert iridanext_samples.short.findAll { it.path == "FinalReports/FlattenedReports/short.flat_sample.json.gz" }.size() == 1
+            assert iridanext_samples.short.findAll { it.path == "pipeline_info/short.mikrokondo.software.version.yml" }.size() == 1
+            assert iridanext_samples.short.findAll { it.path == "pipeline_info/short.mikrokondo.parameters.json" }.size() == 1
 
             // output metadata
             assert iridanext_metadata.short.qc_status_overall == "FAILED"

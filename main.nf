@@ -41,6 +41,21 @@ if (params.help) {
 // Check mandatory parameters
 if (params.input) { ch_input = file(params.input) } else { exit 1, 'Input samplesheet not specified!' }
 
+import groovy.json.JsonBuilder
+
+// Function to save parameters as JSON
+def saveParamsAsJson(outputDir) {
+    def paramMap = [:]
+    params.each { key, value ->
+        paramMap[key] = value
+    }
+
+    def json = new JsonBuilder(paramMap)
+    def jsonFile = file("${outputDir}/pipeline_parameters.json")
+    jsonFile.text = json.toPrettyString()
+
+    return paramMap
+}
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -55,12 +70,14 @@ include { REPORT } from './modules/local/report.nf'
 include { REPORT_AGGREGATE } from './modules/local/report_aggregate.nf'
 include { GZIP_FILES } from './modules/local/gzip_files.nf'
 include { CUSTOM_DUMPSOFTWAREVERSIONS } from './modules/nf-core/custom/dumpsoftwareversions/main'
+include { REPORT_PIPELINE_PARAMETERS } from './modules/local/report_pipeline_parameter'
 
 import org.slf4j.LoggerFactory;
 
 //
 // WORKFLOW: Run main mk-kondo/mikrokondo analysis pipeline
 //
+
 workflow MIKROKONDO {
 
     if(params.validate_params){
@@ -125,11 +142,26 @@ workflow MIKROKONDO {
         ch_versions = ch_versions.mix(GZIP_FILES.out.versions)
     }
 
+
     if(!params.skip_version_gathering){
-        CUSTOM_DUMPSOFTWAREVERSIONS (
-            ch_versions.unique().collectFile(name: 'collated_versions.yml')
+        // Save all parameters to the software report JSON file
+        def allParams = saveParamsAsJson("${params.outdir}")
+        paramsSummaryChannel = Channel.fromPath(
+            file("${params.outdir}/pipeline_parameters.json")
         )
+        // Save all the software versions to a YAML file
+        software_versions_channel = CUSTOM_DUMPSOFTWAREVERSIONS (
+        ch_versions.unique().collectFile(name: 'collated_versions.yml')
+        ).yml
+
+        software_report_channel = prepped_data.reads.map{meta, reads -> meta
+        }.combine(paramsSummaryChannel).combine(software_versions_channel)
+
+        REPORT_PIPELINE_PARAMETERS(
+        software_report_channel)
     }
+
+
 }
 
 /*
@@ -151,4 +183,3 @@ workflow {
     THE END
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
-
