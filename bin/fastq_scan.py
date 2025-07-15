@@ -26,6 +26,8 @@ FQ_EXTENSIONSj = frozenset([".FASTQ", ".FQ"])
 GZIP_READER = partial(gzip.open, mode="rt")
 STD_READER = partial(open, mode="r")
 
+EXPECTED_LINES_IN_FASTQ = 4
+
 
 def get_file_reader(file: p.Path) -> io.StringIO:
     """
@@ -82,15 +84,14 @@ class FastQData:
 
     def __add__(self, obj: "FastQData") -> "FastQData":
         """
-        I dont know if it is wise to overload the __add__ method
-        for combining the objects. But it seems logical to place
-        the logic for object combining here.
+        Combine two objects creating a combined one containing the
+        required totals to create summary metrics
         """
         new_data = FastQData("combined", self.numeric_conversion)
 
-        new_quality: list[int] = [0] * self.__phred_values
-        for idx in range(self.__phred_values):
-            new_quality[idx] = self.quality[idx] + obj.quality[idx]
+        new_quality: list[int] = [
+            self.quality[idx] + obj.quality[idx] for idx in range(self.__phred_values)
+        ]
 
         sequence_lengths = self._combine_dictionaries(
             self.sequence_lengths, obj.sequence_lengths
@@ -110,8 +111,8 @@ class FastQData:
     @staticmethod
     def _combine_dictionaries(d1, d2):
         """
-        combine two dictionaries summing the values of keys instead
-        over overwriting them
+        Combine two dictionaries summing the values of keys instead
+        overwriting them.
         """
 
         new_dict = {**d1}
@@ -154,18 +155,20 @@ class FastQData:
 
     def __set_quality_metrics(self):
         """
-        set the quality metrics required for the sample
+        Set the quality metrics required for the sample.
         """
 
-        self.qual_min, self.qual_max = self.__set_quality_min_max()
-        self.qual_mean = self.__set_qual_mean()
-        self.qual_std = self.__set_qual_std()
+        self.__set_quality_min_max()
+        self.__set_qual_mean()
+        self.__set_qual_std()
 
     def __set_read_length_metrics(self):
         """
-        Set the metrics required for reporting of read length
+        Set the metrics required for reporting of read length.
         """
-        mean, min_, max_ = self._dict_mean(self.sequence_lengths, self.total_reads)
+        mean, min_, max_ = self._calculate_mean_min_max(
+            self.sequence_lengths, self.total_reads
+        )
         std = self._dict_std(self.sequence_lengths, mean, self.total_reads)
         self.mean_sequence_length = mean
         self.min_sequence_length = min_
@@ -174,17 +177,18 @@ class FastQData:
 
     def __set_per_read_quality_metrics(self):
         """
-        Set the metrics require for quality per a read
+        Set the metrics required for quality per a read.
         """
-        mean, min_, max_ = self._dict_mean(self.avg_qual_read, self.total_reads)
+        mean, min_, max_ = self._calculate_mean_min_max(
+            self.avg_qual_read, self.total_reads
+        )
         std = self._dict_std(self.avg_qual_read, mean, self.total_reads)
         self.read_qual_mean = mean
         self.read_qual_std = std
 
     def __set_quality_min_max(self):
         """
-        calculates Phread quality min and max.
-
+        Calculates Phred quality min and max.
         """
         min_idx = None
         max_idx = 0
@@ -193,13 +197,14 @@ class FastQData:
                 min_idx = k
             if v != 0:
                 max_idx = k  # increment until the maximum quality value is found
-        return min_idx, max_idx
+        self.qual_min = min_idx
+        self.qual_max = max_idx
 
-    def _dict_mean(
+    def _calculate_mean_min_max(
         self, vector: defaultdict[int, int], total: int
     ) -> float | decimal.Decimal:
         """
-        Calculate the mean of a dictionary containing sequence information
+        Calculate the mean of a dictionary containing sequence information.
         """
         sum_ = 0
         min_length = float("inf")
@@ -220,7 +225,7 @@ class FastQData:
         self, vector: defaultdict[int, int], mean: float | decimal.Decimal, total: int
     ):
         """
-        calculate mean of a dictionary containing sequence information
+        Calculate mean of a dictionary containing sequence information.
         """
         sum_of_squares = 0
         for key, value in vector.items():
@@ -235,11 +240,8 @@ class FastQData:
 
     def __set_qual_std(self):
         """
-        Calculate the standard deviation for the quality data
-
-        This function could probably be merged with '_dict_std' but it is
-        likely clearer having the to functions seperate as there is no need
-        to pass in an iterator
+        Calculate the standard deviation of the vector containing
+        quality data.
         """
         qual_mean = self.qual_mean
         sum_of_squares = 0
@@ -252,25 +254,26 @@ class FastQData:
             sum_of_squares
         ) / self.numeric_conversion(self.total_bp)
         standard_deviation = math.sqrt(normalized_squares)
-        return standard_deviation
+        self.qual_std = standard_deviation
 
     def __set_qual_mean(self):
         """
         From a tuple of values calculate the mean, where the key is value and
         the second value is the frequency of it
         """
-        return self.numeric_conversion(self.qual_sum) / self.numeric_conversion(
-            self.total_bp
-        )
+        self.qual_mean = self.numeric_conversion(
+            self.qual_sum
+        ) / self.numeric_conversion(self.total_bp)
 
     def _update_quality_vector(self, quality: str):
         """
-        Update the classes quality array
+        Updates the frequency of quality values in the classes
+        quality array (self.quality) with the current reads information.
         """
         qual_sum = 0
         for x in quality:
             """
-            Converts the quality charactar into is ascii phred value
+            Converts the quality character into is ascii phred value
             which is then used as an index in the quality vector.
             """
 
@@ -316,6 +319,20 @@ def verify_fastq(file, header, sequence, plus, quality):
     if not plus:
         sys.stderr.write(f"Mangled fastq entry, missing '+' in {file}\n")
         sys.exit(1)
+
+
+def decimal_serializer(obj):
+    """
+    High precision decimal numbers cannot be
+    serialized as json. This function serves as a
+    wrapper so that the the correct representation of
+    the value is shown.
+    """
+    if isinstance(obj, decimal.Decimal):
+        return float(
+            obj
+        )  # Value is already round so we should not see a large loss in precision
+    return obj
 
 
 def args_in():
@@ -367,18 +384,26 @@ if __name__ == "__main__":
         numeric_conversion = decimal.Decimal
 
     fq_data: dict[str, float | decimal.Decimal] = {}
-    combined_data = FastQData("combined", float)
+    combined_data = FastQData("combined", numeric_conversion)
     for file, name in zip(args.files, names):
         file_p = p.Path(file)
-        data = FastQData(name, float)
+        data = FastQData(name, numeric_conversion)
         with get_file_reader(file_p) as fastq:
             for line in fastq:
+                lines_read = 0
                 try:
                     header = line.strip()
+                    lines_read += 1
                     sequence = next(fastq).strip()
+                    lines_read += 1
                     plus = next(fastq).strip()
+                    lines_read += 1
                     quality = next(fastq).strip()
+                    lines_read += 1
                 except StopIteration:
+                    if lines_read != EXPECTED_LINES_IN_FASTQ:
+                        sys.stderr.write(f"Missing fastq entry in: {file}\n")
+                        sys.exit(1)
                     pass
                 else:
                     verify_fastq(file, header, sequence, plus, quality)
@@ -388,4 +413,4 @@ if __name__ == "__main__":
         sys.stderr.write(f"Finished reading file: {name}\n")
 
     fq_data[combined_data.name] = combined_data.to_dict()
-    print(json.dumps(fq_data, indent=2))
+    print(json.dumps(fq_data, indent=2, default=decimal_serializer))
