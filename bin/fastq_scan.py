@@ -169,7 +169,7 @@ class FastQData:
         mean, min_, max_ = self._calculate_mean_min_max(
             self.sequence_lengths, self.total_reads
         )
-        std = self._dict_std(self.sequence_lengths, mean, self.total_reads)
+        std = self._calculate_dict_std(self.sequence_lengths, mean, self.total_reads)
         self.mean_sequence_length = mean
         self.min_sequence_length = min_
         self.max_sequence_length = max_
@@ -182,7 +182,7 @@ class FastQData:
         mean, min_, max_ = self._calculate_mean_min_max(
             self.avg_qual_read, self.total_reads
         )
-        std = self._dict_std(self.avg_qual_read, mean, self.total_reads)
+        std = self._calculate_dict_std(self.avg_qual_read, mean, self.total_reads)
         self.read_qual_mean = mean
         self.read_qual_std = std
 
@@ -221,7 +221,7 @@ class FastQData:
             max_length,
         )
 
-    def _dict_std(
+    def _calculate_dict_std(
         self, vector: defaultdict[int, int], mean: float | decimal.Decimal, total: int
     ):
         """
