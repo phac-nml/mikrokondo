@@ -1,0 +1,85 @@
+nextflow_process {
+    name "Test Process READ_SCAN"
+    script "modules/local/read_summary.nf"
+    process "READ_SCAN"
+    tag "modules"
+    tag "read_scan"
+
+
+    test("Test read_scan works on gzipped and non-gzipped reads"){
+
+        tag "test_read_scan"
+
+        when{
+            process{
+                """
+                    input[0] = Channel.of(
+                        [["id": "ECSH", single_end: false, hybrid: false], [file("$baseDir/tests/data/reads/1_R1.fq.gz"), file("$baseDir/tests/data/reads/1_R2.fq")], []]
+                    )
+
+                """
+            }
+
+            params {
+                outdir = "read_scan_test"
+            }
+
+            then {
+                assert process.success
+                assert path(process.out.json.get(0).get(1)).md5 == '70f4050d665156ed99a9e2ad7a175ead'
+            }
+        }
+    }
+
+    test("Test read_scan works on single end reads"){
+
+        tag "test_readscan_se"
+
+        when{
+            process{
+                """
+                    input[0] = Channel.of(
+                        [["id": "ECSH", single_end: true, hybrid: false], [file("$baseDir/tests/data/reads/1_R1.fq.gz")], []]
+                    )
+
+                """
+            }
+
+            params {
+                outdir = "read_scan_test_se"
+            }
+
+            then {
+                assert process.success
+                assert path(process.out.json.get(0).get(1)).md5 == '48ab1fe0d5585dad6eabc3df7748b10e'
+            }
+        }
+    }
+
+    test("Test read_scan works on hybrid read sets"){
+
+        tag "test_read_scan_hybrid"
+
+        when{
+            process{
+                """
+                    input[0] = Channel.of(
+                        [["id": "ECSH", single_end: true, hybrid: true], [file("$baseDir/tests/data/reads/1_R1.fq.gz"), file("$baseDir/tests/data/reads/1_R2.fq")], file("$baseDir/tests/data/reads/1_R1.fq")]
+                    )
+
+                """
+            }
+
+            params {
+                outdir = "read_scan_test_hybrid"
+            }
+
+            then {
+                assert process.success
+                assert path(process.out.json.get(0).get(1)).md5 == 'c1b5bf174b7af7beebba7c4e42ccc48e'
+            }
+        }
+    }
+
+}
+

@@ -3,7 +3,7 @@
 
 
 process READ_SCAN{
-    label 'process_medium'
+    label 'process_small'
     tag "${meta.id}"
     container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.parameters.get('singularity') : task.ext.parameters.get('docker')}"
 
