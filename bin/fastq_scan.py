@@ -361,6 +361,13 @@ def args_in():
         default=False,
         type=str2bool,
     )
+    parser.add_argument(
+        "-o",
+        "--output",
+        help="Output json file",
+        type=p.Path,
+        required=True
+    )
     args_out = parser.parse_args()
     return args_out
 
@@ -413,4 +420,5 @@ if __name__ == "__main__":
         sys.stderr.write(f"Finished reading file: {name}\n")
     
     fq_data[combined_data.name] = combined_data.to_dict()
-    print(json.dumps(fq_data, indent=2, default=decimal_serializer))
+    with args.output.open('w') as output:
+        output.write(json.dumps(fq_data, indent=2, default=decimal_serializer))

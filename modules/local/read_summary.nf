@@ -30,7 +30,7 @@ process READ_SCAN{
     }
 
     """
-    fastq_scan.py ${script_run} -p ${params.raw_reads.high_precision} > ${prefix}.json
+    fastq_scan.py ${script_run} -p ${params.raw_reads.high_precision} -o ${prefix}.json
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         python: \$(python --version | sed 's/Python //g')
