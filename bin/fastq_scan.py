@@ -421,4 +421,5 @@ if __name__ == "__main__":
     
     fq_data[combined_data.name] = combined_data.to_dict()
     with args.output.open('w') as output:
-        output.write(json.dumps(fq_data, indent=2, default=decimal_serializer))
+        json.dump(fq_data, output, indent=2, default=decimal_serializer)
+        output.write('\n')
