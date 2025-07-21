@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## `Changed`
 
-- Removed individual seven gene mlst results from irida_next.conf. [PR 180](https://github.com/phac-nml/mikrokondo/pull/180)
+- Removed individual seven gene mlst results from IRIDANext config. [PR 180](https://github.com/phac-nml/mikrokondo/pull/180)
 
 ## [0.8.1] - 2025-07-04
 
