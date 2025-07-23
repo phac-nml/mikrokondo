@@ -3,9 +3,11 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased 
+## Unreleased
 
 ### `Changed`
+
+- Removed individual seven gene mlst results from IRIDANext config. [PR 180](https://github.com/phac-nml/mikrokondo/pull/180)
 
 - `fastq_scan.py` script was refactored to reduce resource usage. [PR 179](https://github.com/phac-nml/mikrokondo/pull/179)
 
