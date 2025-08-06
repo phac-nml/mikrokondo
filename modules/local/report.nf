@@ -6,7 +6,6 @@ import groovy.json.JsonSlurper
 import groovy.json.JsonBuilder
 import java.nio.file.Paths
 
-
 process REPORT{
     tag "Report Generation"
     label "process_single"
@@ -152,7 +151,7 @@ def n50_nrcontigs_decision(qual_data, nr_cont_p, n50_p, qual_message, reisolate,
     */
 
     if(nr_cont_p && n50_p){
-        // both fialed :(
+        // both failed :(
         if(qual_data && qual_data.containsKey("nr_contigs") && qual_data.nr_contigs.low){
             if(qual_data.n50_value.low){
 
@@ -267,7 +266,7 @@ def create_action_call(sample_data, species_tag){
             }
 
             def qual_message = []
-            def failed_p = false
+            //def failed_p = false
             def checks_failed = 0
             def checks = 0
             def checks_ignored = 0
@@ -275,86 +274,23 @@ def create_action_call(sample_data, species_tag){
             def nr_contigs_failed = false
 
 
+            for(qc_report_field in params.QCReportFields){
 
-            // ! TODO Summing of ignored checks is messy and the logic can likely be cleaned up
-            if(qual_data && qual_data.containsKey("checkm_contamination") && !qual_data.checkm_contamination.status){
-                reisolate = reisolate + contamination_fail
-                resequence += 1
-                failed_p = true
-                checks_failed += 1
-            }else if (qual_data && (!qual_data.containsKey("checkm_contamination") || !qual_data.checkm_contamination.status)){
-                checks_ignored += 1
-            }else if(qual_data == null){
-                checks_ignored += 1
-            }
-            checks += 1
-
-            if(!meta_data.assembly){
-                // We should have reads as we assembled it
-                if(qual_data && qual_data.containsKey("raw_average_quality") && !qual_data.raw_average_quality.status){
-                    resequence += 1
-                    checks_failed += 1
-                }else if (qual_data && (!qual_data.containsKey("raw_average_quality") || !qual_data.raw_average_quality.status)){
-                    checks_ignored += 1
-                }else if(qual_data == null){
-                    checks_ignored += 1
+                if(qc_report_field.value.on){
+                    // Need to figure out how to handle the requirement of a category requiring reads...
+                    // number is too hight as not excluding read checks
+                    def (checked, rei, res, fail_p, chck_f, chck_i) = Utils.select_qc_func(qual_data, qc_report_field.key, qual_message, meta_data, qc_report_field.value.qc_func)
+                    reisolate = rei + contamination_fail
+                    checks_failed += chck_f
+                    resequence += res
+                    // failed_p = fail_p
+                    checks_ignored += chck_i
+                    checks += checked
                 }
-                checks += 1
-
-                if(qual_data && qual_data.containsKey("average_coverage") && !qual_data.average_coverage.status){
-
-                    if(meta_data.downsampled){
-                        qual_message.add("The sample may have been downsampled too aggressively, if this is the cause please re-run sample with a different target depth.")
-                    }
-                    checks_failed += 1
-                    resequence += 1
-                }else if(qual_data && (!qual_data.containsKey("average_coverage") || !qual_data.average_coverage.status)){
-                    checks_ignored += 1
-                }else if(qual_data == null){
-                    checks_ignored += 1
-                }
-                checks += 1
             }
 
-            if(qual_data && qual_data.containsKey("length") && !qual_data.length.status){
-                if(qual_data.length.low){
-                    resequence += 1
-                    checks_failed += 1
-                }else{
-                    resequence += 1
-                    reisolate = reisolate + contamination_fail
-                    checks_failed += 1
-                }
-            }else if (qual_data && (!qual_data.containsKey("length") || !qual_data.length.status)){
-                checks_ignored += 1
-            }else if(qual_data == null){
-                checks_ignored += 1
-            }
-            checks += 1
-
-            if(qual_data && qual_data.containsKey("nr_contigs") && !qual_data.nr_contigs.status){
-                checks_failed += 1
-                nr_contigs_failed = true
-            }else if (qual_data && (!qual_data.containsKey("nr_contigs") || !qual_data.nr_contigs.status)){
-                checks_ignored += 1
-            }else if(qual_data == null){
-                checks_ignored += 1
-            }
-            checks += 1
-
-            if(qual_data && qual_data.containsKey("n50_value") && !qual_data.n50_value.status){
-                checks_failed += 1
-                n50_failed = true
-            }else if (qual_data && (!qual_data.containsKey("n50_value") || !qual_data.n50_value.status)){
-                checks_ignored += 1
-            }else if(qual_data == null){
-                checks_ignored += 1
-            }
-            checks += 1
-
-
+            // Temporary for testing
             (reisolate, resequence) = n50_nrcontigs_decision(qual_data, nr_contigs_failed, n50_failed, qual_message, reisolate, resequence)
-            //qual_message.add("Quality Conclusion")
 
             add_secondary_message(params.assembly_status.report_tag,
                                 "Assembly failed, this may be an issue with your data or the pipeline. Please check the log or the outputs in the samples work directory.",
