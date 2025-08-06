@@ -280,16 +280,18 @@ def create_action_call(sample_data, species_tag){
                     // Need to figure out how to handle the requirement of a category requiring reads...
                     // number is too hight as not excluding read checks
                     def (checked, rei, res, fail_p, chck_f, chck_i) = Utils.select_qc_func(qual_data, qc_report_field.key, qual_message, meta_data, qc_report_field.value.qc_func)
-                    reisolate = rei + contamination_fail
+                    //reisolate = rei + contamination_fail
                     checks_failed += chck_f
                     resequence += res
-                    // failed_p = fail_p
+                    failed_p = fail_p
+                    if(failed_p && qc_report_field.value.qc_func as Utils.FuncType == Utils.FuncType.AUTOFAIL){
+                        reisolate = rei + contamination_fail
+                    }
                     checks_ignored += chck_i
                     checks += checked
                 }
             }
 
-            // Temporary for testing
             (reisolate, resequence) = n50_nrcontigs_decision(qual_data, nr_contigs_failed, n50_failed, qual_message, reisolate, resequence)
 
             add_secondary_message(params.assembly_status.report_tag,
