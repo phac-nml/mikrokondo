@@ -88,3 +88,6 @@ Sometimes the resume features of Nextflow don't work completely. The above error
 - ECTyper makes uses of pythons temporary files which can result in issues on shared file systems e.g. `ntfs`. If you encounter issues try running the pipeline in a place where read and write permissions are more relaxed.
 
 
+### Medaka cannot find models
+
+- It seems certain versions of nextflow affect the usage of medaka in container preventing medaka from downloading and finding the required model passed to mikrokondo. Future iterations of mikrokondo will be updated to deal with this issue, and likely integrate dorado. If you have issues it is recommeneded to add `--skip_polishing true` to your command line, which will bypass medaka.

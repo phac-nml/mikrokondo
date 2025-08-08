@@ -29,7 +29,7 @@ For actual resource amounts allotted to each process definition, see the `conf/b
 
 All Command line arguments and defaults can be set and/or altered in the `nextflow.config` file, _params_ section. For a full list of parameters to be altered please refer to the `nextflow.config` file in the repo. Some common arguments have been listed in the [Common command line arguments](/usage/useage/#common-command-line-arguments) section of the docs and further description of tool parameters can also be found in [tool specific parameters](/usage/tool_params/).
 
-> **Example:** if your laboratory typically sequences using Nanopore chemistry "r1041*e82_400bps_hac_v4.2.0", the following code would be substituted in the \_params* section of the `nextflow.config` file:
+> **Example:** if your laboratory typically sequences using Nanopore chemistry "r1041_e82_400bps_hac_v4.2.0", the following code would be substituted in the _params_ section of the `nextflow.config` file:
 >
 > ```
 > nanopore_chemistry = "r1041_e82_400bps_hac_v4.2.0" // Note the quotes around the value
