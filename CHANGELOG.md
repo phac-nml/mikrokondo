@@ -7,10 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Changed`
 
+- Changed default search parameter for **Escherichia coli** to **Escherichia**. [PR 181](https://github.com/phac-nml/mikrokondo/pull/181/files)
+
 - Removed individual seven gene mlst results from IRIDANext config. [PR 180](https://github.com/phac-nml/mikrokondo/pull/180)
 
 - `fastq_scan.py` script was refactored to reduce resource usage. [PR 179](https://github.com/phac-nml/mikrokondo/pull/179)
 
+### `Fixed`
+
+- Added missing `report_tag` value to `rasusa` in the `nextflow.config` file which was causing [Issue #182](https://github.com/phac-nml/mikrokondo/issues/182). [PR 181](https://github.com/phac-nml/mikrokondo/pull/181/files)
 
 ## [0.8.1] - 2025-07-04
 

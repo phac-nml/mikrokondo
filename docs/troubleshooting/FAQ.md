@@ -90,4 +90,8 @@ Sometimes the resume features of Nextflow don't work completely. The above error
 
 ### Medaka cannot find models
 
-- It seems certain versions of nextflow affect the usage of medaka in container preventing medaka from downloading and finding the required model passed to mikrokondo. Future iterations of mikrokondo will be updated to deal with this issue, and likely integrate dorado. If you have issues it is recommeneded to add `--skip_polishing true` to your command line, which will bypass medaka.
+- It seems certain versions of nextflow affect the ability of medaka to find the required model passed to mikrokondo. Future iterations of mikrokondo will be updated to deal with this issue, and likely integrate dorado. If you have issues it is recommeneded to add `--skip_polishing true` to your command line, which will bypass medaka.
+
+### Issues with groovy script modules and resume
+
+- We have observed issues with resume processes when running a large number of samples at a time (>1000) on HPC environments resulting in the pipeline getting stuck. If this happens to you regularly it is best to skip those processes. This affects allelel calling with locidex and StarAMR primarily.
