@@ -94,4 +94,4 @@ Sometimes the resume features of Nextflow don't work completely. The above error
 
 ### Issues with groovy script modules and resume
 
-- We have observed issues with resume processes when running a large number of samples at a time (>1000) on HPC environments resulting in the pipeline getting stuck. If this happens to you regularly it is best to skip those processes. This affects allelel calling with locidex and StarAMR primarily.
+- We have observed issues when resuming the pipeline when running a large number of samples (>500) in HPC environments resulting in the pipeline getting stuck. If this happens to you regularly it is best to skip those processes. This primarily affects allele calling with locidex and StarAMR.
