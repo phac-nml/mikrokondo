@@ -88,3 +88,10 @@ Sometimes the resume features of Nextflow don't work completely. The above error
 - ECTyper makes uses of pythons temporary files which can result in issues on shared file systems e.g. `ntfs`. If you encounter issues try running the pipeline in a place where read and write permissions are more relaxed.
 
 
+### Medaka cannot find models
+
+- It seems certain versions of nextflow affect the ability of medaka to find the required model passed to mikrokondo. Future iterations of mikrokondo will be updated to deal with this issue, and likely integrate dorado. If you have issues it is recommeneded to add `--skip_polishing true` to your command line, which will bypass medaka.
+
+### Issues with groovy script modules and resume
+
+- We have observed issues when resuming the pipeline when running a large number of samples (>500) in HPC environments resulting in the pipeline getting stuck. If this happens to you regularly it is best to skip those processes. This primarily affects allele calling with locidex and StarAMR.
