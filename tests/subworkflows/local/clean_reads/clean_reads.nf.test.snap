@@ -237,10 +237,10 @@
             }
         ],
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
+            "nf-test": "0.9.2",
+            "nextflow": "25.04.6"
         },
-        "timestamp": "2024-10-02T15:22:59.669978749"
+        "timestamp": "2025-08-11T10:10:23.708126435"
     },
     "Test clean reads run without failure fake nanopore (downsampling)": {
         "content": [
@@ -305,6 +305,7 @@
                             "docker": "biocontainers/rasusa:2.1.0--h715e4b3_0",
                             "singularity": "https://depot.galaxyproject.org/singularity/rasusa:2.1.0--h715e4b3_0",
                             "reads_ext": ".sampled.fastq.gz",
+                            "report_tag": "rasusa",
                             "seed": 42
                         },
                         0.339
@@ -422,6 +423,7 @@
                             "docker": "biocontainers/rasusa:2.1.0--h715e4b3_0",
                             "singularity": "https://depot.galaxyproject.org/singularity/rasusa:2.1.0--h715e4b3_0",
                             "reads_ext": ".sampled.fastq.gz",
+                            "report_tag": "rasusa",
                             "seed": 42
                         },
                         0.339
@@ -512,10 +514,10 @@
             }
         ],
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
+            "nf-test": "0.9.2",
+            "nextflow": "25.04.6"
         },
-        "timestamp": "2024-10-02T15:23:48.645310821"
+        "timestamp": "2025-08-11T10:11:03.647044361"
     },
     "Test clean reads run without failure illumina (downsampling)": {
         "content": [
@@ -797,10 +799,10 @@
             }
         ],
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
+            "nf-test": "0.9.2",
+            "nextflow": "25.04.6"
         },
-        "timestamp": "2024-10-02T15:24:12.552717116"
+        "timestamp": "2025-08-11T10:11:17.25922836"
     },
     "Test clean reads run without failure fake nanopore": {
         "content": [
@@ -1034,10 +1036,10 @@
             }
         ],
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
+            "nf-test": "0.9.2",
+            "nextflow": "25.04.6"
         },
-        "timestamp": "2024-10-02T15:23:24.663457495"
+        "timestamp": "2025-08-11T10:10:48.143324033"
     },
     "Test clean reads run without failure illumina unzipped": {
         "content": [
@@ -1277,9 +1279,9 @@
             }
         ],
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
+            "nf-test": "0.9.2",
+            "nextflow": "25.04.6"
         },
-        "timestamp": "2024-10-22T15:37:55.171306844"
+        "timestamp": "2025-08-11T10:10:36.755635058"
     }
 }
