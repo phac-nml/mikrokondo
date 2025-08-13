@@ -1,2 +1,2 @@
 sample,fastq_1,fastq_2,long_reads,assembly
-Senterica_simulated,,,/home/mwells/src/mikrokondo/tests/data/reads/s_enterica_ont.fq.gz,
+Senterica_simulated,,,https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/reads/s_enterica_ont.fq.gz,
