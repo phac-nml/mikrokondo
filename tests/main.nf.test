@@ -1002,7 +1002,7 @@ nextflow_pipeline {
 
                 mash_sketch = "$baseDir/tests/data/databases/virus.msh"
                 mh_min_kmer = 1
-                nanopore_chemistry = "r941_min_hac_g507'"
+                nanopore_chemistry = "r941_min_hac_g507"
 
                 dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
                 kraken2_db = "$baseDir/tests/data/kraken2/test"
@@ -1028,4 +1028,41 @@ nextflow_pipeline {
         }
     }
 
+    test("Hybrid Assembly Full Test") {
+    tag "hybrid_test"
+
+        when {
+            params {
+                input = "$baseDir/tests/data/samplesheets/samplesheet-hybrid.csv"
+                outdir = "results"
+
+                platform = "hybrid"
+
+                mash_sketch = "$baseDir/tests/data/databases/virus.msh"
+                mh_min_kmer = 1
+                nanopore_chemistry = "r941_min_hac_g507"
+
+                dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+                kraken2_db = "$baseDir/tests/data/kraken2/test"
+                min_reads = 2
+                skip_allele_calling = true
+                skip_bakta = true
+                skip_staramr = false
+                skip_mobrecon = false
+                skip_checkm = false
+                skip_raw_read_metrics = false
+                skip_polishing = false
+                fail_on_metagenomic = true
+
+                max_memory = "2.GB"
+                max_cpus = 1
+            }
+        }
+
+        then {
+
+            assert workflow.success
+            assert path("$launchDir/results").exists()
+        }
+    }
 }
