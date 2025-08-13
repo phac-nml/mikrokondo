@@ -989,4 +989,43 @@ nextflow_pipeline {
             assert iridanext_metadata.short.qc_status_overall == "FAILED"
         }
     }
+
+    test("Nanopore Full Test") {
+    tag "nanopore_test"
+
+        when {
+            params {
+                input = "$baseDir/tests/data/samplesheets/samplesheet-nanopore.csv"
+                outdir = "results"
+
+                platform = "nanopore"
+
+                mash_sketch = "$baseDir/tests/data/databases/virus.msh"
+                mh_min_kmer = 1
+                nanopore_chemistry = "r941_min_hac_g507'"
+
+                dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+                kraken2_db = "$baseDir/tests/data/kraken2/test"
+                min_reads = 2
+                skip_allele_calling = true
+                skip_bakta = true
+                skip_staramr = false
+                skip_mobrecon = false
+                skip_checkm = false
+                skip_raw_read_metrics = false
+                skip_polishing = false
+                fail_on_metagenomic = true
+
+                max_memory = "2.GB"
+                max_cpus = 1
+            }
+        }
+
+        then {
+
+            assert workflow.success
+            assert path("$launchDir/results").exists()
+        }
+    }
+
 }
