@@ -1013,7 +1013,7 @@ nextflow_pipeline {
                 skip_mobrecon = false
                 skip_checkm = false
                 skip_raw_read_metrics = false
-                skip_polishing = false
+                skip_polishing = true
                 fail_on_metagenomic = true
 
                 max_memory = "2.GB"
