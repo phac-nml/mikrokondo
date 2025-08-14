@@ -1025,6 +1025,13 @@ nextflow_pipeline {
 
             assert workflow.success
             assert path("$launchDir/results").exists()
+            def iridanext_json = path("$launchDir/results/iridanext.output.json").json
+            def iridanext_global = iridanext_json.files.global
+            def iridanext_samples = iridanext_json.files.samples
+            def iridanext_metadata = iridanext_json.metadata.samples
+            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Json/final_report.json" }.size() == 1
+            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Tables/final_report.tsv" }.size() == 1
+            assert iridanext_samples.short.findAll { it.path == "Assembly/FinalAssembly/Senterica_simulated/Senterica_simulated.final.filtered.assembly.fasta.gz" }.size() == 1
         }
     }
 
@@ -1063,6 +1070,13 @@ nextflow_pipeline {
 
             assert workflow.success
             assert path("$launchDir/results").exists()
+            def iridanext_json = path("$launchDir/results/iridanext.output.json").json
+            def iridanext_global = iridanext_json.files.global
+            def iridanext_samples = iridanext_json.files.samples
+            def iridanext_metadata = iridanext_json.metadata.samples
+            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Json/final_report.json" }.size() == 1
+            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Tables/final_report.tsv" }.size() == 1
+            assert iridanext_samples.short.findAll { it.path == "Assembly/FinalAssembly/Senterica_hybrid/Senterica_hybrid.final.filtered.assembly.fasta.gz" }.size() == 1
         }
     }
 }
