@@ -1031,7 +1031,14 @@ nextflow_pipeline {
             def iridanext_metadata = iridanext_json.metadata.samples
             assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Json/final_report.json" }.size() == 1
             assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Tables/final_report.tsv" }.size() == 1
-            assert iridanext_samples.short.findAll { it.path == "Assembly/FinalAssembly/Senterica_simulated/Senterica_simulated.final.filtered.assembly.fasta.gz" }.size() == 1
+            assert iridanext_samples.Senterica_simulated.findAll { it.path == "Assembly/FinalAssembly/Senterica_simulated/Senterica_simulated.final.filtered.assembly.fasta.gz" }.size() == 1
+            def sample = iridanext_metadata.Senterica_simulated
+            assert sample.gc == "51.51"
+            assert sample.raw_average_quality_value == 13.4
+            assert sample.n50_value == 214772
+            assert sample.assembly_num_contigs == 1
+            assert sample.assembly_length == 214772
+            assert sample.checkm_value == 0.0
         }
     }
 
@@ -1076,7 +1083,17 @@ nextflow_pipeline {
             def iridanext_metadata = iridanext_json.metadata.samples
             assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Json/final_report.json" }.size() == 1
             assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Tables/final_report.tsv" }.size() == 1
-            assert iridanext_samples.short.findAll { it.path == "Assembly/FinalAssembly/Senterica_hybrid/Senterica_hybrid.final.filtered.assembly.fasta.gz" }.size() == 1
+            assert iridanext_samples.Senterica_hybrid.findAll { it.path == "Assembly/FinalAssembly/Senterica_hybrid/Senterica_hybrid.final.filtered.assembly.fasta.gz" }.size() == 1
+            def sample = iridanext_metadata.Senterica_hybrid
+            assert sample.gc == "51.49"
+            assert sample.raw_average_quality_value == 22.83
+            assert sample.n50_value == 214466
+            assert sample.assembly_num_contigs == 1
+            assert sample.assembly_length == 214466
+            assert sample.checkm_value == 0.0
+
+
+            
         }
     }
 }
