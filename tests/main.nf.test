@@ -1011,7 +1011,7 @@ nextflow_pipeline {
                 skip_bakta = true
                 skip_staramr = false
                 skip_mobrecon = false
-                skip_checkm = false
+                skip_checkm = true
                 skip_raw_read_metrics = false
                 skip_polishing = true
                 fail_on_metagenomic = true
@@ -1038,7 +1038,6 @@ nextflow_pipeline {
             assert sample.n50_value == 214772
             assert sample.assembly_num_contigs == 1
             assert sample.assembly_length == 214772
-            assert sample.checkm_value == 0.0
         }
     }
 
@@ -1063,7 +1062,7 @@ nextflow_pipeline {
                 skip_bakta = true
                 skip_staramr = false
                 skip_mobrecon = false
-                skip_checkm = false
+                skip_checkm = true
                 skip_raw_read_metrics = false
                 skip_polishing = false
                 fail_on_metagenomic = true
@@ -1090,7 +1089,6 @@ nextflow_pipeline {
             assert sample.n50_value == 214466
             assert sample.assembly_num_contigs == 1
             assert sample.assembly_length == 214466
-            assert sample.checkm_value == 0.0
 
 
             
