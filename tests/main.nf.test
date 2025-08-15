@@ -989,4 +989,109 @@ nextflow_pipeline {
             assert iridanext_metadata.short.qc_status_overall == "FAILED"
         }
     }
+
+    test("Nanopore Full Test") {
+    tag "nanopore_test"
+
+        when {
+            params {
+                input = "$baseDir/tests/data/samplesheets/samplesheet-nanopore.csv"
+                outdir = "results"
+
+                platform = "nanopore"
+
+                mash_sketch = "$baseDir/tests/data/databases/virus.msh"
+                mh_min_kmer = 1
+                nanopore_chemistry = "r941_min_hac_g507"
+
+                dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+                kraken2_db = "$baseDir/tests/data/kraken2/test"
+                min_reads = 2
+                skip_allele_calling = true
+                skip_bakta = true
+                skip_staramr = false
+                skip_mobrecon = false
+                skip_checkm = true
+                skip_raw_read_metrics = false
+                skip_polishing = true
+                fail_on_metagenomic = true
+
+                max_memory = "2.GB"
+                max_cpus = 1
+            }
+        }
+
+        then {
+
+            assert workflow.success
+            assert path("$launchDir/results").exists()
+            def iridanext_json = path("$launchDir/results/iridanext.output.json").json
+            def iridanext_global = iridanext_json.files.global
+            def iridanext_samples = iridanext_json.files.samples
+            def iridanext_metadata = iridanext_json.metadata.samples
+            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Json/final_report.json" }.size() == 1
+            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Tables/final_report.tsv" }.size() == 1
+            assert iridanext_samples.Senterica_simulated.findAll { it.path == "Assembly/FinalAssembly/Senterica_simulated/Senterica_simulated.final.filtered.assembly.fasta.gz" }.size() == 1
+            def sample = iridanext_metadata.Senterica_simulated
+            assert sample.gc == "51.51"
+            assert sample.raw_average_quality_value == 13.4
+            assert sample.n50_value == 214772
+            assert sample.assembly_num_contigs == 1
+            assert sample.assembly_length == 214772
+        }
+    }
+
+    test("Hybrid Assembly Full Test") {
+    tag "hybrid_test"
+
+        when {
+            params {
+                input = "$baseDir/tests/data/samplesheets/samplesheet-hybrid.csv"
+                outdir = "results"
+
+                platform = "hybrid"
+
+                mash_sketch = "$baseDir/tests/data/databases/virus.msh"
+                mh_min_kmer = 1
+                nanopore_chemistry = "r941_min_hac_g507"
+
+                dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+                kraken2_db = "$baseDir/tests/data/kraken2/test"
+                min_reads = 2
+                skip_allele_calling = true
+                skip_bakta = true
+                skip_staramr = false
+                skip_mobrecon = false
+                skip_checkm = true
+                skip_raw_read_metrics = false
+                skip_polishing = false
+                fail_on_metagenomic = true
+
+                max_memory = "2.GB"
+                max_cpus = 1
+            }
+        }
+
+        then {
+
+            assert workflow.success
+            assert path("$launchDir/results").exists()
+            def iridanext_json = path("$launchDir/results/iridanext.output.json").json
+            def iridanext_global = iridanext_json.files.global
+            def iridanext_samples = iridanext_json.files.samples
+            def iridanext_metadata = iridanext_json.metadata.samples
+            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Json/final_report.json" }.size() == 1
+            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Tables/final_report.tsv" }.size() == 1
+            assert iridanext_samples.Senterica_hybrid.findAll { it.path == "Assembly/FinalAssembly/Senterica_hybrid/Senterica_hybrid.final.filtered.assembly.fasta.gz" }.size() == 1
+            def sample = iridanext_metadata.Senterica_hybrid
+            assert sample.gc == "51.49"
+            assert sample.raw_average_quality_value == 22.83
+            assert sample.n50_value == 214466
+            assert sample.assembly_num_contigs == 1
+            assert sample.assembly_length == 214466
+
+
+            
+        }
+    }
 }
