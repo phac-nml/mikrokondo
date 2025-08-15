@@ -3,6 +3,14 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+
+## [0.9.1] - 2025-08-15
+
+### `Fixed`
+
+- Fixed issue with incorrect cardinality of elements passed to channel in hybrid assemblies. [PR 184](https://github.com/phac-nml/mikrokondo/pull/184)
+
+
 ## [0.9.0] - 2025-08-11
 
 ### `Changed`
@@ -273,6 +281,7 @@ Initial release of phac-nml/mikrokondo. Mikrokondo currently supports: read trim
 - Added integration testing using [nf-test](https://www.nf-test.com/).
 
 
+[0.9.1]: https://github.com/phac-nml/mikrokondo/releases/tag/0.9.1
 [0.9.0]: https://github.com/phac-nml/mikrokondo/releases/tag/0.9.0
 [0.8.1]: https://github.com/phac-nml/mikrokondo/releases/tag/0.8.1
 [0.8.0]: https://github.com/phac-nml/mikrokondo/releases/tag/0.8.0

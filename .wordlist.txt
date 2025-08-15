@@ -176,3 +176,4 @@ Marinier
 Petkau
 gzipped
 monocytogenes
+cardinality
