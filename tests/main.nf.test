@@ -1038,6 +1038,7 @@ nextflow_pipeline {
             assert sample.n50_value == 214772
             assert sample.assembly_num_contigs == 1
             assert sample.assembly_length == 214772
+            assert sample.qc_summary == "FAILED Species ID: No Species Identified; Passed Tests: 3/6; Organism QC Criteria: No organism specific QC data available."
         }
     }
 
@@ -1089,6 +1090,7 @@ nextflow_pipeline {
             assert sample.n50_value == 214466
             assert sample.assembly_num_contigs == 1
             assert sample.assembly_length == 214466
+            assert sample.qc_summary == "FAILED Species ID: No Species Identified; Passed Tests: 3/6; Organism QC Criteria: No organism specific QC data available."
 
 
             

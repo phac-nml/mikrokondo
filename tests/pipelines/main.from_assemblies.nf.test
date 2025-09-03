@@ -913,6 +913,7 @@ nextflow_pipeline {
             assert vibrio_metadata."predicted_primary_type_method" == ""
             assert vibrio_metadata."predicted_secondary_type_name" == ""
             assert vibrio_metadata."predicted_secondary_type_method" == ""
+            assert vibrio_metadata.qc_summary == "FAILED Species ID: Vibrio cholerae; Passed Tests: 1/4; Organism QC Criteria: Vibrio cholerae"
         }
     }
 
