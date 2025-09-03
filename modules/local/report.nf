@@ -279,12 +279,12 @@ def create_action_call(sample_data, species_tag){
                 if(qc_report_field.value.on){
                     // Need to figure out how to handle the requirement of a category requiring reads...
                     // number is too hight as not excluding read checks
-                    def (checked, rei, res, fail_p, chck_f, chck_i) = Utils.select_qc_func(qual_data, qc_report_field.key, qual_message, meta_data, qc_report_field.value.qc_func)
+                    def (checked, rei, res, fail_p, chck_f, chck_i) = ReportFunctions.select_qc_func(qual_data, qc_report_field.key, qual_message, meta_data, qc_report_field.value.qc_func)
                     //reisolate = rei + contamination_fail
                     checks_failed += chck_f
                     resequence += res
                     failed_p = fail_p
-                    if(failed_p && qc_report_field.value.qc_func as Utils.FuncType == Utils.FuncType.AUTOFAIL){
+                    if(failed_p && qc_report_field.value.qc_func as ReportFunctions.FuncType == ReportFunctions.FuncType.AUTOFAIL){
                         reisolate = rei + contamination_fail
                     }
                     checks_ignored += chck_i
