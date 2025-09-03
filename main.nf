@@ -154,7 +154,8 @@ workflow MIKROKONDO {
         ch_versions.unique().collectFile(name: 'collated_versions.yml')
         ).yml
 
-        software_report_channel = prepped_data.reads.map{meta, reads -> meta
+        
+        software_report_channel = prepped_data.reads.map{it -> it[0]
         }.combine(paramsSummaryChannel).combine(software_versions_channel)
 
         REPORT_PIPELINE_PARAMETERS(

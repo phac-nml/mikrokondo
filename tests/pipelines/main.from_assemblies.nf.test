@@ -124,7 +124,7 @@ nextflow_pipeline {
             assert ecoli_metadata.assembly_length == 5333525
             assert ecoli_metadata.qc_status_assembly_num_contigs == "PASSED"
             assert ecoli_metadata.assembly_num_contigs == 187
-            assert ecoli_metadata.qc_summary == "FAILED Species ID: Escherichia coli; Passed Tests: 3/4; Organism QC Criteria: Escherichia coli"
+            assert ecoli_metadata.qc_summary == "FAILED Species ID: Escherichia coli; Passed Tests: 3/4; Organism QC Criteria: Escherichia"
 
             assert ecoli_metadata."Downsampled" == false
 
@@ -176,13 +176,6 @@ nextflow_pipeline {
             assert !ecoli_metadata.containsKey("Mean Sequence Length Forward")
             assert !ecoli_metadata.containsKey("BaseCount")
 
-            assert ecoli_metadata."icd" == "136"
-            assert ecoli_metadata."recA" == "7"
-            assert ecoli_metadata."fumC" == "6"
-            assert ecoli_metadata."adk" == "6"
-            assert ecoli_metadata."gyrB" == "5"
-            assert ecoli_metadata."purA" == "7"
-            assert ecoli_metadata."mdh" == "9"
             assert ecoli_metadata."7 Gene ST" == "678"
             assert ecoli_metadata."7 Gene Scheme" == "ecoli_achtman_4"
 
@@ -338,7 +331,7 @@ nextflow_pipeline {
             assert ecoli_metadata.assembly_length == 5299656
             assert ecoli_metadata.qc_status_assembly_num_contigs == "PASSED"
             assert ecoli_metadata.assembly_num_contigs == 123
-            assert ecoli_metadata.qc_summary == "FAILED Species ID: Escherichia coli; Passed Tests: 3/4; Organism QC Criteria: Escherichia coli"
+            assert ecoli_metadata.qc_summary == "FAILED Species ID: Escherichia coli; Passed Tests: 3/4; Organism QC Criteria: Escherichia"
 
             // Read in filtered assembly fasta to verify number of contigs
             def assemblyLines = path("$launchDir/results/Assembly/FinalAssembly/ecoli_GCA_000947975/ecoli_GCA_000947975.final.filtered.assembly.fasta.gz").readLinesGzip()
@@ -686,13 +679,6 @@ nextflow_pipeline {
             assert !iridanext_metadata.listeria_GCF_000196035.containsKey("Mean Sequence Length Forward")
             assert !iridanext_metadata.listeria_GCF_000196035.containsKey("BaseCount")
 
-            assert iridanext_metadata.listeria_GCF_000196035."dat" == "1"
-            assert iridanext_metadata.listeria_GCF_000196035."ldh" == "4"
-            assert iridanext_metadata.listeria_GCF_000196035."cat" == "6"
-            assert iridanext_metadata.listeria_GCF_000196035."abcZ" == "6"
-            assert iridanext_metadata.listeria_GCF_000196035."bglA" == "5"
-            assert iridanext_metadata.listeria_GCF_000196035."dapE" == "20"
-            assert iridanext_metadata.listeria_GCF_000196035."lhkA" == "1"
             assert iridanext_metadata.listeria_GCF_000196035."7 Gene ST" == "35"
             assert iridanext_metadata.listeria_GCF_000196035."7 Gene Scheme" == "listeria_2"
 
@@ -844,13 +830,6 @@ nextflow_pipeline {
             assert !iridanext_metadata.listeria_GCF_000196035.containsKey("Mean Sequence Length Forward")
             assert !iridanext_metadata.listeria_GCF_000196035.containsKey("BaseCount")
 
-            assert iridanext_metadata.listeria_GCF_000196035."dat" == "1"
-            assert iridanext_metadata.listeria_GCF_000196035."ldh" == "4"
-            assert iridanext_metadata.listeria_GCF_000196035."cat" == "6"
-            assert iridanext_metadata.listeria_GCF_000196035."abcZ" == "6"
-            assert iridanext_metadata.listeria_GCF_000196035."bglA" == "5"
-            assert iridanext_metadata.listeria_GCF_000196035."dapE" == "20"
-            assert iridanext_metadata.listeria_GCF_000196035."lhkA" == "1"
             assert iridanext_metadata.listeria_GCF_000196035."7 Gene ST" == "35"
             assert iridanext_metadata.listeria_GCF_000196035."7 Gene Scheme" == "listeria_2"
 

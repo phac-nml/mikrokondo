@@ -23,11 +23,6 @@ include { HYBRID_ASSEMBLY } from '../subworkflows/local/hybrid_assembly'
 include { ANNOTATE_GENOMES } from '../subworkflows/local/annotate_genomes.nf'
 include { SUBTYPE_GENOME } from '../subworkflows/local/subtype_genome.nf'
 
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    IMPORT NF-CORE MODULES/SUBWORKFLOWS
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
 
 //
 // MODULE: Installed directly from nf-core/modules
@@ -143,22 +138,6 @@ workflow CLEAN_ASSEMBLE_READS {
         versions = ch_versions
         reports = ch_reports
 }
-
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    COMPLETION EMAIL AND SUMMARY
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
-
-//workflow.onComplete {
-//    if (params.email || params.email_on_fail) {
-//        NfcoreTemplate.email(workflow, params, summary_params, projectDir, log, multiqc_report)
-//    }
-//    NfcoreTemplate.summary(workflow, params, log)
-//    if (params.hook_url) {
-//        NfcoreTemplate.IM_notification(workflow, params, summary_params, projectDir, log)
-//    }
-//}
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -749,7 +749,7 @@
                 "nanopore_chemistry": {
                     "type": "string",
                     "description": "The guppy base calling model. See the docs for a link of valid options",
-                    "pattern": "^[A-Za-z0-9_-]*$"
+                    "pattern": "^[.A-Za-z0-9_-]*$"
                 },
                 "flye_read_type": {
                     "type": "string",
