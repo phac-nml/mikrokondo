@@ -2,7 +2,7 @@
 
 
 
-class Utils{
+class ReportFunctions{
    
 /*
     enum FuncType{
