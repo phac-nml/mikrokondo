@@ -870,6 +870,7 @@ nextflow_pipeline {
                 skip_subtyping = false
                 skip_allele_calling = false
                 lx_report_max_stop = 100
+                lx_report_mode = "normal"
                 max_memory = "2.GB"
                 max_cpus = 1
             }
@@ -946,6 +947,7 @@ nextflow_pipeline {
                 skip_subtyping = false
                 skip_allele_calling = false
                 lx_report_max_stop = 100
+                lx_report_mode = "normal"
                 max_memory = "2.GB"
                 max_cpus = 1
             }
@@ -1017,6 +1019,7 @@ nextflow_pipeline {
                 skip_subtyping = false
                 skip_allele_calling = false
                 lx_report_max_stop = 100
+                lx_report_mode = "normal"
                 max_memory = "2.GB"
                 max_cpus = 1
             }
@@ -1044,6 +1047,11 @@ nextflow_pipeline {
             assert vibrio_metadata.locidex_db_total_loci_count == 7
             assert vibrio_metadata.locidex_count_loci_found == 7
             assert vibrio_metadata.locidex_count_loci_missing == 0
+            assert vibrio_metadata.locidex_loci_no_blast_hit == 0
+            assert vibrio_metadata.locidex_loci_single_blast_hit == 7
+            assert vibrio_metadata.locidex_loci_with_multiple_values == 0
+            assert vibrio_metadata.locidex_loci_no_nucleotide_hits == 0
+            assert vibrio_metadata.locidex_loci_no_protein_hits == 7
 
         }
     }
