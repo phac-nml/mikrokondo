@@ -73,7 +73,6 @@ nextflow_workflow
                 assert path(select_string).exists()
                 assert path(search_string).exists()
                 assert path(summary_string).exists()
-                assert path(summary_string).json."ReportableAlleles".findAll{['mdh', 'gyrB', 'pntA', 'purM'].contains(it.key)}.size() == 4
             }
 
         }
@@ -104,7 +103,6 @@ nextflow_workflow
                 max_cpus = 1
                 lx_allele_database = "${projectDir}/tests/data/databases/locidex_dbs"
                 lx_report_max_stop = 100
-                locidex_summary { reportable_alleles = ["mdh", "gryB", "pntA", "purM"] }
             }
         }
         then {

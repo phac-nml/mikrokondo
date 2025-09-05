@@ -4,6 +4,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## Unreleased
+
+### `Updated`
+
+- Updated locidex to version 0.4.0. [PR 189](https://github.com/phac-nml/mikrokondo/pull/189)
+
+### `Changed`
+
+- Renamed metadata field `TotalLoci` to `TotalLociInSchme`. [PR 189](https://github.com/phac-nml/mikrokondo/pull/189)
+
+- Renamed metadata field `AllelesPresent` to `LociPresent`. [PR 189](https://github.com/phac-nml/mikrokondo/pull/189)
+
+- Locidex default report mode is now `conservative` mode instead of normal. [PR 189](https://github.com/phac-nml/mikrokondo/pull/189)
+
+### `Added`
+
+- Metadata fields, `locidex_loci_no_blast_hit`, `locidex_loci_single_blast_hit`, `locidex_loci_with_mulitple_values`, `locidex_loci_no_nucleotide_hits` and `locidex_loci_no_protein_hits`. [PR 189](https://github.com/phac-nml/mikrokondo/pull/189)
+
+
 ## [0.9.1] - 2025-08-15
 
 ### `Fixed`

@@ -42,34 +42,56 @@ process LOCIDEX_SUMMARIZE {
     check_key(data, params.locidex_summary.data_sample_key, meta)
     check_key(data, params.locidex_summary.data_profile_key, meta)
 
+    check_key(data, params.locidex_summary.data_metrics_key, meta)
+    def profile_metrics = data[params.locidex_summary.data_metrics_key]
+
+    check_key(profile_metrics, params.locidex_summary.metrics_loci_key, meta)
+    def loci_data = profile_metrics[params.locidex_summary.metrics_loci_key]
+
+    check_key(loci_data, params.locidex_summary.metrics_loci_missing_key, meta)
+    def no_blast_hit = loci_data[params.locidex_summary.metrics_loci_missing_key]
+
+    check_key(loci_data, params.locidex_summary.metrics_loci_single_hit_key, meta)
+    def single_blast_hit = loci_data[params.locidex_summary.metrics_loci_single_hit_key]
+
+    check_key(loci_data, params.locidex_summary.metrics_loci_multiple_blast_hits_key, meta)
+    def loci_multiple_hits = loci_data[params.locidex_summary.metrics_loci_multiple_blast_hits_key]
+
+    check_key(loci_data, params.locidex_summary.metrics_loci_no_nuc_blast_hits_key, meta)
+    def loci_no_nuc_hits = loci_data[params.locidex_summary.metrics_loci_no_nuc_blast_hits_key]
+
+
+    check_key(loci_data, params.locidex_summary.metrics_loci_no_prot_blast_hits_key, meta)
+    def loci_no_prot_hits = loci_data[params.locidex_summary.metrics_loci_no_prot_blast_hits_key]
+
+
     def sample_name = data[params.locidex_summary.data_sample_key]
     def profile_data = data[params.locidex_summary.data_profile_key]
-    check_key(profile_data, sample_name, meta)
+    check_key(profile_data, sample_name, meta) 
     def allele_data = profile_data[sample_name]
 
+    
     // Length of allele data
     def total_loci = allele_data.size()
+    
     def missing_alleles = allele_data.findAll { key, value -> value == params.locidex_summary.missing_allele_value}
     def alleles_contained = allele_data.count {key, value -> value != params.locidex_summary.missing_allele_value}
     def check_size = missing_alleles.size() + alleles_contained
     if(check_size != total_loci){
         error("Failed allelic tally check sum, please submit an issue and your locidex report. (Alleles Missing: ${missing_alleles.size()} + Alleles Present ${alleles_contained} != Total Alleles ${total_loci})")
     }
+    
 
-    def reportable_alleles = [:]
-    if(!params.locidex_summary.reportable_alleles.isEmpty()){
-        for(key in params.locidex_summary.reportable_alleles){
-            if(allele_data.containsKey(key) && allele_data[key] != params.locidex_summary.missing_allele_value){
-                reportable_alleles[key] = allele_data[key]
-            }
-        }
-    }
 
-    def output_data = ["TotalLoci": total_loci,
-                    "AllelesPresent": alleles_contained,
-                    "MissingAllelesCount": missing_alleles.size(),
-                    "ReportableAlleles": reportable_alleles,
-                    "MissingAlleles": missing_alleles.keySet() ]
+    def output_data = ["TotalLociInScheme": total_loci,
+                    "LociPresent": alleles_contained,
+                    "MissingAllelesCount": missing_alleles.size(), 
+                    "LociNoBlastHit": no_blast_hit,
+                    "LociSingleBlastHit": single_blast_hit,
+                    "LociWithMultipleValues": loci_multiple_hits,
+                    "LociNoNucleotideHits": loci_no_nuc_hits,
+                    "LociNoProteinHits": loci_no_prot_hits]
+
     def json_out = new JsonBuilder(output_data).toPrettyString()
 
     def output_name = "${meta.id}.json"
