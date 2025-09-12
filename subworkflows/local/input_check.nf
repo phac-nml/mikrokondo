@@ -20,7 +20,17 @@ workflow INPUT_CHECK {
     reads_in = Channel.fromSamplesheet(
         "input", // apparentely input maps to params.input...
         parameters_schema: 'nextflow_schema.json',
-        skip_duplicate_check: true).map {
+        skip_duplicate_check: true)
+    // Check that samplesheet does not contain more samples than sample limit
+    reads_in.collect()
+    .map { items ->
+            if (items.size() > params.sample_limit) {
+                error "Pipeline is being run with ${items.size()} items, which exceeds the limit of ${params.sample_limit}"
+            }
+            return items
+        }
+    .flatten()
+    reads_in = reads_in.map {
             // Create grouping value
             meta ->
 

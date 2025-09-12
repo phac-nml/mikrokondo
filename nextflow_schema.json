@@ -35,6 +35,12 @@
                     "hidden": true,
                     "pattern": "^\\S+$"
                 },
+                "sample_limit": {
+                    "type": "integer",
+                    "default": 500,
+                    "description": "Limit the number of samples run by pipeline",
+                    "minimum": 0
+                },
                 "platform": {
                     "type": "string",
                     "default": "illumina",
