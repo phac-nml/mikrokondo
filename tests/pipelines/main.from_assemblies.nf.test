@@ -870,6 +870,7 @@ nextflow_pipeline {
                 skip_subtyping = false
                 skip_allele_calling = false
                 lx_report_max_stop = 100
+                lx_report_mode = "normal"
                 max_memory = "2.GB"
                 max_cpus = 1
             }
@@ -898,8 +899,8 @@ nextflow_pipeline {
             assert vibrio_metadata.locidex_db_date == "2024-07-30"
             assert vibrio_metadata.locidex_db_version == "1.0.0"
             assert vibrio_metadata.locidex_db_total_loci_count == 7
-            assert vibrio_metadata.locidex_count_loci_found == 6
-            assert vibrio_metadata.locidex_count_loci_missing == 1
+            assert vibrio_metadata.locidex_count_loci_found == 7
+            assert vibrio_metadata.locidex_count_loci_missing == 0
 
 
             // Output files check
@@ -946,6 +947,7 @@ nextflow_pipeline {
                 skip_subtyping = false
                 skip_allele_calling = false
                 lx_report_max_stop = 100
+                lx_report_mode = "normal"
                 max_memory = "2.GB"
                 max_cpus = 1
             }
@@ -974,8 +976,8 @@ nextflow_pipeline {
             assert vibrio_metadata.locidex_db_date == "2024-08-01"
             assert vibrio_metadata.locidex_db_version == "1.0.0"
             assert vibrio_metadata.locidex_db_total_loci_count == 7
-            assert vibrio_metadata.locidex_count_loci_found == 6
-            assert vibrio_metadata.locidex_count_loci_missing == 1
+            assert vibrio_metadata.locidex_count_loci_found == 7
+            assert vibrio_metadata.locidex_count_loci_missing == 0
 
 
             // Output files check
@@ -1017,6 +1019,7 @@ nextflow_pipeline {
                 skip_subtyping = false
                 skip_allele_calling = false
                 lx_report_max_stop = 100
+                lx_report_mode = "normal"
                 max_memory = "2.GB"
                 max_cpus = 1
             }
@@ -1042,8 +1045,13 @@ nextflow_pipeline {
             assert vibrio_metadata.locidex_db_date == "2024-07-30"
             assert vibrio_metadata.locidex_db_version == "1.0.0"
             assert vibrio_metadata.locidex_db_total_loci_count == 7
-            assert vibrio_metadata.locidex_count_loci_found == 6
-            assert vibrio_metadata.locidex_count_loci_missing == 1
+            assert vibrio_metadata.locidex_count_loci_found == 7
+            assert vibrio_metadata.locidex_count_loci_missing == 0
+            assert vibrio_metadata.locidex_loci_no_blast_hit == 0
+            assert vibrio_metadata.locidex_loci_single_blast_hit == 7
+            assert vibrio_metadata.locidex_loci_with_multiple_values == 0
+            assert vibrio_metadata.locidex_loci_no_nucleotide_hits == 0
+            assert vibrio_metadata.locidex_loci_no_protein_hits == 7
 
         }
     }
