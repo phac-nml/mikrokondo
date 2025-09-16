@@ -22,14 +22,13 @@ workflow INPUT_CHECK {
         parameters_schema: 'nextflow_schema.json',
         skip_duplicate_check: true)
     // Check that samplesheet does not contain more samples than sample limit
-    reads_in.collect()
+    reads_in.count()
     .map { items ->
-            if ((items.size() > params.max_samples) && !(params.max_samples == 0)) { // Default max_samples is 0, which is equivalent to "no-limit"
-                error "Pipeline is being run with ${items.size()} items, which exceeds the limit of ${params.max_samples}"
+            if ((items > params.max_samples) && !(params.max_samples == 0)) { // Default max_samples is 0, which is equivalent to "no-limit"
+                error "Pipeline is being run with ${items} items, which exceeds the limit of ${params.max_samples}"
             }
             return items
         }
-    .flatten()
     reads_in = reads_in.map {
             // Create grouping value
             meta ->
