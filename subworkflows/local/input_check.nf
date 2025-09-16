@@ -24,8 +24,8 @@ workflow INPUT_CHECK {
     // Check that samplesheet does not contain more samples than sample limit
     reads_in.collect()
     .map { items ->
-            if (items.size() > params.sample_limit) {
-                error "Pipeline is being run with ${items.size()} items, which exceeds the limit of ${params.sample_limit}"
+            if ((items.size() > params.max_samples) && !(params.max_samples == 0)) { // Default max_samples is 0, which is equivalent to "no-limit"
+                error "Pipeline is being run with ${items.size()} items, which exceeds the limit of ${params.max_samples}"
             }
             return items
         }
