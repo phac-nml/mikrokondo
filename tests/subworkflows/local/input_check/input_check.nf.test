@@ -187,6 +187,10 @@ nextflow_workflow {
             assert workflow.failed
             assert workflow.exitStatus == 1
             assert workflow.errorReport.contains("Pipeline is being run with 4 items, which exceeds the limit of 2")
+            // Check the error-log file
+            def max_sample_log = "${params.outdir}/max_samples_exceeded.error.txt"
+            assert file(max_sample_log).exists()
+            assert path(max_sample_log).readLines().contains("Pipeline is being run with 4 items, which exceeds the limit of 2. If running from command-line make sure that --max_samples 0, otherwise reduce number of samples selected.")
         }
 
     }

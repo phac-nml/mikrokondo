@@ -25,9 +25,14 @@ workflow INPUT_CHECK {
     reads_in.count()
     .map { items ->
             if ((items > params.max_samples) && !(params.max_samples == 0)) { // Default max_samples is 0, which is equivalent to "no-limit"
-                error "Pipeline is being run with ${items} items, which exceeds the limit of ${params.max_samples}"
+                def errorMsg = "Pipeline is being run with ${items} items, which exceeds the limit of ${params.max_samples}. If running from command-line make sure that --max_samples 0, otherwise reduce number of samples selected."
+
+                def errorFile = new File("${params.outdir}/max_samples_exceeded.error.txt")
+                errorFile.parentFile.mkdirs()
+                errorFile.append("${errorMsg}\n")
+
+                error errorMsg
             }
-            return items
         }
     reads_in = reads_in.map {
             // Create grouping value
