@@ -184,13 +184,18 @@ nextflow_workflow {
 
         then {
 
-            assert workflow.failed
-            assert workflow.exitStatus == 1
-            assert workflow.errorReport.contains("Pipeline is being run with 4 items, which exceeds the limit of 2")
             // Check the error-log file
-            def max_sample_log = "${params.outdir}/max_samples_exceeded.error.txt"
+            def max_sample_log = "${params.outdir}/max/max_samples_exceeded.error.txt"
             assert file(max_sample_log).exists()
             assert path(max_sample_log).readLines().contains("Pipeline is being run with 4 items, which exceeds the limit of 2. If running from command-line make sure that --max_samples 0, otherwise reduce number of samples selected.")
+
+            // Check IRIDA Next JSON output
+            assert path("$launchDir/results/iridanext.output.json").exists()
+
+            def iridanext_json = path("$launchDir/results/iridanext.output.json").json
+            def iridanext_global = iridanext_json.files.global.path
+
+            assert iridanext_global == ['max/max_samples_exceeded.error.txt']
         }
 
     }

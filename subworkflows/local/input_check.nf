@@ -3,6 +3,7 @@
 //
 
 include { COMBINE_DATA } from '../../modules/local/combine_data.nf'
+include { MAX_SAMPLES_CHECK } from '../../modules/local/max_sample_check.nf'
 include { fromSamplesheet } from 'plugin/nf-validation'
 
 
@@ -21,19 +22,24 @@ workflow INPUT_CHECK {
         "input", // apparentely input maps to params.input...
         parameters_schema: 'nextflow_schema.json',
         skip_duplicate_check: true)
-    // Check that samplesheet does not contain more samples than sample limit
-    reads_in.count()
+    
+    // Check that samplesheet does not contain more samples than sample limit (Note: the default, --max_samples = 0, means there is no limit to number of samples)
+
+    // Step 1: Create an error report if sample # exceeds --max_samples
+    MAX_SAMPLES_CHECK(reads_in.count())
+    // Step 2: Creates an empty samplesheet if it exceeds the limit, otherwise proceed with the samplesheet as is.
+    reads_in = reads_in.count()
     .map { items ->
             if ((items > params.max_samples) && !(params.max_samples == 0)) { // Default max_samples is 0, which is equivalent to "no-limit"
-                def errorMsg = "Pipeline is being run with ${items} items, which exceeds the limit of ${params.max_samples}. If running from command-line make sure that --max_samples 0, otherwise reduce number of samples selected."
-
-                def errorFile = new File("${params.outdir}/max_samples_exceeded.error.txt")
-                errorFile.parentFile.mkdirs()
-                errorFile.append("${errorMsg}\n")
-
-                error errorMsg
+                return tuple("exceeds")
+            }
+            else{
+                return tuple("within-limit")
             }
         }
+    .combine(reads_in).filter{sample_limit, meta -> sample_limit == "within-limit"}
+    .map{sample_limit, meta -> [meta]} // Creates an empty samplesheet to cause a pipeline error halting all downstream proccesses
+
     reads_in = reads_in.map {
             // Create grouping value
             meta ->
