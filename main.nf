@@ -71,6 +71,7 @@ include { REPORT_AGGREGATE } from './modules/local/report_aggregate.nf'
 include { GZIP_FILES } from './modules/local/gzip_files.nf'
 include { CUSTOM_DUMPSOFTWAREVERSIONS } from './modules/nf-core/custom/dumpsoftwareversions/main'
 include { REPORT_PIPELINE_PARAMETERS } from './modules/local/report_pipeline_parameter'
+include { MAX_SAMPLES_CHECK } from './modules/local/max_sample_check.nf'
 
 import org.slf4j.LoggerFactory;
 
@@ -95,74 +96,79 @@ workflow MIKROKONDO {
     ch_reports = Channel.empty()
     prepped_data = INPUT_CHECK()
 
-    split_data = prepped_data.reads.branch{
-        post_assembly: it[0].assembly // [0] dentoes the meta tag
-        read_data: true
+    sample_count = prepped_data.reads.view().count().flatten()
+    
+    if (( sample_count > params.max_samples) && !(params.max_samples == 0)){
+        split_data = prepped_data.reads.branch{
+            post_assembly: it[0].assembly // [0] dentoes the meta tag
+            read_data: true
+        }
+
+        mk_out = CLEAN_ASSEMBLE_READS(split_data.read_data)
+
+        assembly_data =  mk_out.final_assembly.mix(split_data.post_assembly.map{
+            meta, contigs -> tuple(meta, contigs, []) // appending empty brackets to match cardinality of the first processes output
+        })
+
+        ps_out = POST_ASSEMBLY(assembly_data, mk_out.cleaned_reads, mk_out.versions)
+
+
+        // Assemblies will be discared
+        base_count_data = ps_out.quast_table.map{
+            meta, reports, contigs -> tuple(meta, reports)
+        }.join(mk_out.base_counts)
+
+        ch_versions = ps_out.versions
+
+        ch_reports = ch_reports.mix(mk_out.reports)
+        ch_reports = ch_reports.mix(ps_out.reports)
+        ch_reports_all = ch_reports.collect()
+
+        if(!params.skip_report){
+            REPORT(ch_reports_all)
+            REPORT_AGGREGATE(REPORT.out.final_report)
+            ch_versions = ch_versions.mix(REPORT_AGGREGATE.out.versions)
+
+            updated_samples = REPORT_AGGREGATE.out.flat_samples.flatten().map{
+                        sample ->
+                            def name_trim = sample.getName()
+                            def trimmed_name = name_trim.substring(0, name_trim.length() - params.report_aggregate.sample_flat_suffix.length())
+                            def external_id_name = sample.getParent().getBaseName()
+                            def output_map = [
+                                "id": trimmed_name,
+                                "sample": trimmed_name,
+                                "external_id": external_id_name]
+
+                            tuple(output_map, sample)
+                        }
+
+            GZIP_FILES(updated_samples)
+            ch_versions = ch_versions.mix(GZIP_FILES.out.versions)
+        }
+
+
+        if(!params.skip_version_gathering){
+            // Save all parameters to the software report JSON file
+            def allParams = saveParamsAsJson("${params.outdir}")
+            paramsSummaryChannel = Channel.fromPath(
+                file("${params.outdir}/pipeline_parameters.json")
+            )
+            // Save all the software versions to a YAML file
+            software_versions_channel = CUSTOM_DUMPSOFTWAREVERSIONS (
+            ch_versions.unique().collectFile(name: 'collated_versions.yml')
+            ).yml
+
+            
+            software_report_channel = prepped_data.reads.map{it -> it[0]
+            }.combine(paramsSummaryChannel).combine(software_versions_channel)
+
+            REPORT_PIPELINE_PARAMETERS(
+            software_report_channel)
+        }
+
+    } else {
+        MAX_SAMPLES_CHECK(prepped_data.reads.count())
     }
-
-    mk_out = CLEAN_ASSEMBLE_READS(split_data.read_data)
-
-    assembly_data =  mk_out.final_assembly.mix(split_data.post_assembly.map{
-        meta, contigs -> tuple(meta, contigs, []) // appending empty brackets to match cardinality of the first processes output
-    })
-
-    ps_out = POST_ASSEMBLY(assembly_data, mk_out.cleaned_reads, mk_out.versions)
-
-
-    // Assemblies will be discared
-    base_count_data = ps_out.quast_table.map{
-        meta, reports, contigs -> tuple(meta, reports)
-    }.join(mk_out.base_counts)
-
-    ch_versions = ps_out.versions
-
-    ch_reports = ch_reports.mix(mk_out.reports)
-    ch_reports = ch_reports.mix(ps_out.reports)
-    ch_reports_all = ch_reports.collect()
-
-    if(!params.skip_report){
-        REPORT(ch_reports_all)
-        REPORT_AGGREGATE(REPORT.out.final_report)
-        ch_versions = ch_versions.mix(REPORT_AGGREGATE.out.versions)
-
-        updated_samples = REPORT_AGGREGATE.out.flat_samples.flatten().map{
-                    sample ->
-                        def name_trim = sample.getName()
-                        def trimmed_name = name_trim.substring(0, name_trim.length() - params.report_aggregate.sample_flat_suffix.length())
-                        def external_id_name = sample.getParent().getBaseName()
-                        def output_map = [
-                            "id": trimmed_name,
-                            "sample": trimmed_name,
-                            "external_id": external_id_name]
-
-                        tuple(output_map, sample)
-                    }
-
-        GZIP_FILES(updated_samples)
-        ch_versions = ch_versions.mix(GZIP_FILES.out.versions)
-    }
-
-
-    if(!params.skip_version_gathering){
-        // Save all parameters to the software report JSON file
-        def allParams = saveParamsAsJson("${params.outdir}")
-        paramsSummaryChannel = Channel.fromPath(
-            file("${params.outdir}/pipeline_parameters.json")
-        )
-        // Save all the software versions to a YAML file
-        software_versions_channel = CUSTOM_DUMPSOFTWAREVERSIONS (
-        ch_versions.unique().collectFile(name: 'collated_versions.yml')
-        ).yml
-
-        
-        software_report_channel = prepped_data.reads.map{it -> it[0]
-        }.combine(paramsSummaryChannel).combine(software_versions_channel)
-
-        REPORT_PIPELINE_PARAMETERS(
-        software_report_channel)
-    }
-
-
 }
 
 /*
