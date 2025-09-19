@@ -121,7 +121,7 @@ workflow MIKROKONDO {
     */
     if(file(params.input).exists() && params.max_samples != 0){
         def lines = file(params.input).readLines()
-        number_of_lines = lines.size()
+        number_of_lines = (lines.size() -1) // Remove 1 for header
     }
 
     if(params.validate_params){
@@ -135,7 +135,7 @@ workflow MIKROKONDO {
     }
 
 
-    if(number_of_lines < params.max_samples){
+    if(number_of_lines = params.max_samples){
         log.info paramsSummaryLog(workflow)
 
         ch_reports = Channel.empty()
