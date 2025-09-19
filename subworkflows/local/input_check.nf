@@ -3,7 +3,6 @@
 //
 
 include { COMBINE_DATA } from '../../modules/local/combine_data.nf'
-include { MAX_SAMPLES_CHECK } from '../../modules/local/max_sample_check.nf'
 include { fromSamplesheet } from 'plugin/nf-validation'
 
 
@@ -22,7 +21,7 @@ workflow INPUT_CHECK {
         "input", // apparentely input maps to params.input...
         parameters_schema: 'nextflow_schema.json',
         skip_duplicate_check: true)
-    
+
     .map {
             // Create grouping value
             meta ->

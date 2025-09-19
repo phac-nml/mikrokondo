@@ -19,6 +19,34 @@ nextflow.enable.dsl = 2
 */
 
 
+
+process MAX_SAMPLES_CHECK {
+    tag "max_samples_error"
+
+    input:
+    val sample_count // number of samples provided to mikrokondo
+
+    output:
+    path output_file_path, emit: failure_report
+
+    exec:
+    def output_file =  "max_samples_exceeded.error.${params.max_samples}.txt"
+    def output_file_path = task.workDir.resolve(output_file)
+    file_out = file(output_file_path)
+    file_out.text = """Pipeline is being run with with a maximum sample count threshold,
+    this error should only occur when running in IRIDANext, please submit an issue if you
+    encounter it elsewhere. ${sample_count} items have been used as input, which exceeds
+    the limit of ${params.max_samples} by ${params.max_samples - sample_count} please specify
+    less samples to run at one time.
+    If running from command-line make sure that --max_samples 0,
+    otherwise reduce number of samples selected.""".stripIndent()
+
+
+
+}
+
+
+
 println '\033[0;32m ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\033[0m'
 println '\033[0;32m 888b     d888 d8b 888                      888    d8P                         888\033[0m'
 println '\033[0;32m 8888b   d8888 Y8P 888                      888   d8P                          888\033[0m'
@@ -71,7 +99,8 @@ include { REPORT_AGGREGATE } from './modules/local/report_aggregate.nf'
 include { GZIP_FILES } from './modules/local/gzip_files.nf'
 include { CUSTOM_DUMPSOFTWAREVERSIONS } from './modules/nf-core/custom/dumpsoftwareversions/main'
 include { REPORT_PIPELINE_PARAMETERS } from './modules/local/report_pipeline_parameter'
-include { MAX_SAMPLES_CHECK } from './modules/local/max_sample_check.nf'
+
+
 
 import org.slf4j.LoggerFactory;
 
@@ -79,7 +108,16 @@ import org.slf4j.LoggerFactory;
 // WORKFLOW: Run main mk-kondo/mikrokondo analysis pipeline
 //
 
+
 workflow MIKROKONDO {
+
+    def number_of_lines = 0
+    if(file(params.input).exists() && params.max_samples != 0){
+        def lines = file(params.input).readLines()
+        println lines
+        number_of_lines = lines.size()
+    }
+    log.info "number of lines $number_of_lines"
 
     if(params.validate_params){
         //====Temporarily turn of logging for ScriptBinding process that throws warns
@@ -91,14 +129,14 @@ workflow MIKROKONDO {
         logger2.setLevel(ch.qos.logback.classic.Level.DEBUG)
     }
 
-    log.info paramsSummaryLog(workflow)
 
-    ch_reports = Channel.empty()
-    prepped_data = INPUT_CHECK()
+    if(number_of_lines <= params.max_samples){
+        log.info paramsSummaryLog(workflow)
 
-    sample_count = prepped_data.reads.view().count().flatten()
-    
-    if (( sample_count > params.max_samples) && !(params.max_samples == 0)){
+        ch_reports = Channel.empty()
+        prepped_data = INPUT_CHECK()
+
+
         split_data = prepped_data.reads.branch{
             post_assembly: it[0].assembly // [0] dentoes the meta tag
             read_data: true
@@ -158,17 +196,17 @@ workflow MIKROKONDO {
             ch_versions.unique().collectFile(name: 'collated_versions.yml')
             ).yml
 
-            
+
             software_report_channel = prepped_data.reads.map{it -> it[0]
             }.combine(paramsSummaryChannel).combine(software_versions_channel)
 
             REPORT_PIPELINE_PARAMETERS(
             software_report_channel)
         }
-
-    } else {
-        MAX_SAMPLES_CHECK(prepped_data.reads.count())
+    }else{
+        MAX_SAMPLES_CHECK(channel.value(number_of_lines))
     }
+
 }
 
 /*
