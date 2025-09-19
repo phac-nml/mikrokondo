@@ -22,7 +22,7 @@ nextflow.enable.dsl = 2
 
 process MAX_SAMPLES_CHECK {
     tag "max_samples_error"
-    publishDir params.outdir
+    publishDir "${params.outdir}/error"
 
     input:
     val sample_count // number of samples provided to mikrokondo
@@ -31,17 +31,18 @@ process MAX_SAMPLES_CHECK {
     path output_file_path, emit: failure_report
 
     exec:
-    def output_file =  "max_samples_exceeded.error.${params.max_samples}.txt"
+    def output_file =  "max_samples_exceeded.error.txt"
     output_file_path = task.workDir.resolve(output_file)
     file_out = file(output_file_path)
-    file_out.text = """
-    Pipeline is being run with with a maximum sample count threshold,
-    this error should only occur when running in IRIDANext, please submit an issue if you
-    encounter it elsewhere. ${sample_count} items have been used as input, which exceeds
-    the limit of ${params.max_samples} by ${sample_count - params.max_samples} please specify
-    less samples to run at one time.
-    If running from command-line make sure that --max_samples 0,
-    otherwise reduce number of samples selected.""".stripIndent().trim()
+    file_out.text = """   
+    ${sample_count} samples were selected, which exceeds the maximum number of samples: ${params.max_samples}
+    Please reduce samples to ${params.max_samples}.
+
+    Pipeline maximum sample count threshold should only occur when running in IRIDANext,
+    please submit an issue if you encounter it elsewhere. 
+    
+    If running from command-line make sure that --max_samples 0
+    """.stripIndent().trim()
 
 
 
