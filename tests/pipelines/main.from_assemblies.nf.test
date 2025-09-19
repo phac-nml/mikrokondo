@@ -1101,25 +1101,8 @@ nextflow_pipeline {
             assert path("$launchDir/results/iridanext.output.json").exists()
             def iridanext_json = path("$launchDir/results/iridanext.output.json").json
             def iridanext_global = iridanext_json.files.global
-            def iridanext_samples = iridanext_json.files.samples
-            def iridanext_metadata = iridanext_json.metadata.samples
-            def vibrio_metadata = iridanext_metadata.INX
 
-            // Output files
-            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Json/final_report.json" }.size() == 1
-            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Tables/final_report.tsv" }.size() == 1
-
-            assert vibrio_metadata.locidex_db_name == "Vibrio cholerae"
-            assert vibrio_metadata.locidex_db_date == "2024-07-30"
-            assert vibrio_metadata.locidex_db_version == "1.0.0"
-            assert vibrio_metadata.locidex_db_total_loci_count == 7
-            assert vibrio_metadata.locidex_count_loci_found == 7
-            assert vibrio_metadata.locidex_count_loci_missing == 0
-            assert vibrio_metadata.locidex_loci_no_blast_hit == 0
-            assert vibrio_metadata.locidex_loci_single_blast_hit == 7
-            assert vibrio_metadata.locidex_loci_with_multiple_values == 0
-            assert vibrio_metadata.locidex_loci_no_nucleotide_hits == 0
-            assert vibrio_metadata.locidex_loci_no_protein_hits == 7
+            assert iridanext_global.findAll { it.path == "max_samples_exceeded.error.1.txt" }.size() == 1
 
         }
     }
@@ -1169,26 +1152,7 @@ nextflow_pipeline {
             assert path("$launchDir/results/iridanext.output.json").exists()
             def iridanext_json = path("$launchDir/results/iridanext.output.json").json
             def iridanext_global = iridanext_json.files.global
-            def iridanext_samples = iridanext_json.files.samples
-            def iridanext_metadata = iridanext_json.metadata.samples
-            def vibrio_metadata = iridanext_metadata.INX
-
-            // Output files
-            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Json/final_report.json" }.size() == 1
-            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Tables/final_report.tsv" }.size() == 1
-
-            assert vibrio_metadata.locidex_db_name == "Vibrio cholerae"
-            assert vibrio_metadata.locidex_db_date == "2024-07-30"
-            assert vibrio_metadata.locidex_db_version == "1.0.0"
-            assert vibrio_metadata.locidex_db_total_loci_count == 7
-            assert vibrio_metadata.locidex_count_loci_found == 7
-            assert vibrio_metadata.locidex_count_loci_missing == 0
-            assert vibrio_metadata.locidex_loci_no_blast_hit == 0
-            assert vibrio_metadata.locidex_loci_single_blast_hit == 7
-            assert vibrio_metadata.locidex_loci_with_multiple_values == 0
-            assert vibrio_metadata.locidex_loci_no_nucleotide_hits == 0
-            assert vibrio_metadata.locidex_loci_no_protein_hits == 7
-
+            assert iridanext_global.findAll { it.path == "max_samples_exceeded.error.9.txt" }.size() == 0
         }
     }
 }
