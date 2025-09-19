@@ -135,7 +135,7 @@ workflow MIKROKONDO {
     }
 
 
-    if(number_of_lines = params.max_samples){
+    if(number_of_lines < params.max_samples){
         log.info paramsSummaryLog(workflow)
 
         ch_reports = Channel.empty()
