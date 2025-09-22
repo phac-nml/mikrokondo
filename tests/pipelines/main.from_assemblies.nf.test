@@ -1102,7 +1102,7 @@ nextflow_pipeline {
             def iridanext_json = path("$launchDir/results/iridanext.output.json").json
             def iridanext_global = iridanext_json.files.global
 
-            assert iridanext_global.findAll { it.path == "max_samples_exceeded.error.txt" }.size() == 1
+            assert iridanext_global.findAll { it.path == "error/max_samples_exceeded.error.txt" }.size() == 1
 
         }
     }
