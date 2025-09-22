@@ -1123,7 +1123,7 @@ nextflow_pipeline {
         then {
 
             // Check the error-log file
-            def max_sample_log = "${params.outdir}/error/max_samples_exceeded.error.txt"
+            def max_sample_log = "$launchDir/results/error/max_samples_exceeded.error.txt"
             assert file(max_sample_log).exists()
             assert path(max_sample_log).readLines().contains("4 samples were selected, which exceeds the maximum number of samples: 2")
 
