@@ -38,7 +38,7 @@ process MAX_SAMPLES_CHECK {
     ${sample_count} samples were selected, which exceeds the maximum number of samples: ${params.max_samples}
     Please reduce samples to ${params.max_samples}.
 
-    Pipeline maximum sample count threshold should only occur when running in IRIDANext,
+    Pipeline maximum sample count threshold should only occur when running in IRIDA Next,
     please submit an issue if you encounter it elsewhere. 
     
     If running from command-line make sure that --max_samples 0
