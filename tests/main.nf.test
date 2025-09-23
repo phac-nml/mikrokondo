@@ -1167,6 +1167,9 @@ nextflow_pipeline {
 
             assert workflow.success
             assert workflow.exitStatus == 0
+            // Check the error-log file not produced
+            def max_sample_log = "$launchDir/results/error/max_samples_exceeded.error.txt"
+            assert !(file(max_sample_log).exists())
         }
 
     }
@@ -1200,6 +1203,10 @@ nextflow_pipeline {
 
             assert workflow.success
             assert workflow.exitStatus == 0
+
+            // Check the error-log file not produced
+            def max_sample_log = "$launchDir/results/error/max_samples_exceeded.error.txt"
+            assert !(file(max_sample_log).exists())
         }
 
     }
