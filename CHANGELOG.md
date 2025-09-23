@@ -4,7 +4,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## Unreleased
+## [0.9.3] - 2025-09-12
+
+### `Fixed`
+
+- Locidex failures in due to incorrect container logic in IRIDANext. [PR 192](https://github.com/phac-nml/mikrokondo/pull/192)
+
+## [0.9.2] - 2025-09-12
 
 ### `Updated`
 
@@ -300,6 +306,8 @@ Initial release of phac-nml/mikrokondo. Mikrokondo currently supports: read trim
 - Added integration testing using [nf-test](https://www.nf-test.com/).
 
 
+[0.9.3]: https://github.com/phac-nml/mikrokondo/releases/tag/0.9.3
+[0.9.2]: https://github.com/phac-nml/mikrokondo/releases/tag/0.9.2
 [0.9.1]: https://github.com/phac-nml/mikrokondo/releases/tag/0.9.1
 [0.9.0]: https://github.com/phac-nml/mikrokondo/releases/tag/0.9.0
 [0.8.1]: https://github.com/phac-nml/mikrokondo/releases/tag/0.8.1
