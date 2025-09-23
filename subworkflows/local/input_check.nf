@@ -20,9 +20,7 @@ workflow INPUT_CHECK {
     reads_in = Channel.fromSamplesheet(
         "input", // apparentely input maps to params.input...
         parameters_schema: 'nextflow_schema.json',
-        skip_duplicate_check: true)
-
-    .map {
+        skip_duplicate_check: true).map {
             // Create grouping value
             meta ->
 
