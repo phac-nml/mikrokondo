@@ -33,13 +33,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Metadata fields, `locidex_loci_no_blast_hit`, `locidex_loci_single_blast_hit`, `locidex_loci_with_mulitple_values`, `locidex_loci_no_nucleotide_hits` and `locidex_loci_no_protein_hits`. [PR 189](https://github.com/phac-nml/mikrokondo/pull/189)
 
-
 ## [0.9.1] - 2025-08-15
 
 ### `Fixed`
 
 - Fixed issue with incorrect cardinality of elements passed to channel in hybrid assemblies. [PR 184](https://github.com/phac-nml/mikrokondo/pull/184)
-
 
 ## [0.9.0] - 2025-08-11
 
@@ -87,13 +85,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Update ECTyper docker/singularity build (3->4). [PR 170](https://github.com/phac-nml/mikrokondo/pull/170)
 
-
 ## [0.6.1] - 2025-04-28
 
 ### `Fixed`
 
 - Updated new parameter positions in `nextflow_schema.json`
-
 
 ## [0.6.0] - 2025-04-25
 
@@ -119,7 +115,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Added`
 
-- Added a configuration file  `conf/equivalent_taxa.json` for denoting equivalent taxa to prevent falsely flagging samples as metagenomic when multiple genera are present. [PR 150](https://github.com/phac-nml/mikrokondo/pull/150)
+- Added a configuration file `conf/equivalent_taxa.json` for denoting equivalent taxa to prevent falsely flagging samples as metagenomic when multiple genera are present. [PR 150](https://github.com/phac-nml/mikrokondo/pull/150)
 
 ## [0.5.0] - 2024-11-27
 
@@ -137,7 +133,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - RASUSA now used for down sampling of Nanopore or PacBio data. [PR 125](https://github.com/phac-nml/mikrokondo/pull/125)
 
-- Default *Listeria* quality control parameters apply only to *monocytogenes* now. [PR 142](https://github.com/phac-nml/mikrokondo/pull/142)
+- Default _Listeria_ quality control parameters apply only to _monocytogenes_ now. [PR 142](https://github.com/phac-nml/mikrokondo/pull/142)
 
 ### `Updated`
 
@@ -169,7 +165,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Changed default option for `override_allele_scheme` from `null` to "" (evaluates to false). [PR 109](https://github.com/phac-nml/mikrokondo/pull/109)
 
-
 ## [0.4.0] - 2024-09-04
 
 ### `Changed`
@@ -183,7 +178,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated TSeemann's MLST default container to use version 2.23.0 of `mlst`. See [PR 97](https://github.com/phac-nml/mikrokondo/pull/97)
 
 - Moved allele schema parameters under one option in the nextflow_schema.json. See [PR 104](https://github.com/phac-nml/mikrokondo/pull/104)
-
 
 ### `Fixed`
 
@@ -224,7 +218,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### `Added`
 
 - Altered name of stored `SpeciesTopHit` field in the irida-next.config, and added a field displaying the field name used addressing [PR 90](https://github.com/phac-nml/mikrokondo/pull/90)
-
 
 ## [0.2.1] - 2024-06-03
 
@@ -309,7 +302,6 @@ Initial release of phac-nml/mikrokondo. Mikrokondo currently supports: read trim
 - Changed salmonella default default coverage to 40
 
 - Added integration testing using [nf-test](https://www.nf-test.com/).
-
 
 [0.9.4]: https://github.com/phac-nml/mikrokondo/releases/tag/0.9.4
 [0.9.3]: https://github.com/phac-nml/mikrokondo/releases/tag/0.9.3
