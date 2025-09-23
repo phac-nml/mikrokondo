@@ -3,6 +3,11 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.4] - 2025-09-dd
+
+### `Added`
+
+- Added a IRIDA Next specific parameter: `max_samples`. `max_samples` is used to limit the number of samples the pipeline will run with. When the number of samples is >= `max_samples` all processes are skipped an an error file is produced `max_samples_exceeded.error.txt`. [PR 191](https://github.com/phac-nml/mikrokondo/pull/191)
 
 ## [0.9.3] - 2025-09-12
 
