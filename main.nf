@@ -115,12 +115,13 @@ import org.slf4j.LoggerFactory;
 workflow MIKROKONDO {
 
     def number_of_lines = -1
+    def unlimited_samples = 0
     /*
         Dont bother checking the number of lines in the samples if max_samples == 0
         as we will not do anything with the limit. The number of lines can remain as -1
         that way it will always be below the threshold of 0.
     */
-    if(file(params.input).exists() && params.max_samples != 0){
+    if(file(params.input).exists() && params.max_samples != unlimited_samples){
         def lines = file(params.input).readLines()
         number_of_lines = (lines.size() -1) // Remove 1 for header
     }
