@@ -114,18 +114,6 @@ import org.slf4j.LoggerFactory;
 
 workflow MIKROKONDO {
 
-    def number_of_lines = -1
-    def unlimited_samples = 0
-    /*
-        Dont bother checking the number of lines in the samples if max_samples == 0
-        as we will not do anything with the limit. The number of lines can remain as -1
-        that way it will always be below the threshold of 0.
-    */
-    if(file(params.input).exists() && params.max_samples != unlimited_samples){
-        def lines = file(params.input).readLines()
-        number_of_lines = (lines.size() -1) // Remove 1 for header
-    }
-
     if(params.validate_params){
         //====Temporarily turn of logging for ScriptBinding process that throws warns
         // Probably better to disable the console appender briefly https://github.com/nextflow-io/nextflow/blob/6a0626f72455dfdef4135a119f48c3950bc6d9c6/modules/nextflow/src/main/groovy/nextflow/util/LoggerHelper.groovy#L110
@@ -136,8 +124,15 @@ workflow MIKROKONDO {
         logger2.setLevel(ch.qos.logback.classic.Level.DEBUG)
     }
 
+    /*
+        Dont bother checking the number of lines in the samples if max_samples == 0
+        as we will not do anything with the limit. 
+    */
 
-    if(number_of_lines < params.max_samples){
+    def number_of_samples = file(params.input).readLines().size() - 1 // Remove 1 for header
+    def unlimited_samples = (params.max_samples == 0) ? true : false
+
+    if( unlimited_samples || number_of_samples <= params.max_samples){
         log.info paramsSummaryLog(workflow)
 
         ch_reports = Channel.empty()
@@ -211,7 +206,7 @@ workflow MIKROKONDO {
             software_report_channel)
         }
     }else{
-        MAX_SAMPLES_CHECK(channel.value(number_of_lines))
+        MAX_SAMPLES_CHECK(channel.value(number_of_samples))
     }
 
 }
