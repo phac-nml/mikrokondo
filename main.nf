@@ -207,6 +207,7 @@ workflow MIKROKONDO {
         }
     }else{
         MAX_SAMPLES_CHECK(channel.value(number_of_samples))
+        log.info "Parameter --max_samples was set: See outdir/error/max_samples_exceeded.error.txt for more information."
     }
 
 }
