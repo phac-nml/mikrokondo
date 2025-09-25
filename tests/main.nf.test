@@ -1094,4 +1094,122 @@ nextflow_pipeline {
             
         }
     }
+
+
+    test("Test max_samples: fails due to limit") {
+    tag "fail_max_samples"
+
+        when {
+
+            params {
+                input = "$baseDir/tests/data/samplesheets/samplesheet-make-names-unique.csv"
+                outdir = "results"
+                min_reads = 1
+                max_samples = 2
+                mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
+                mh_min_kmer = 1
+                skip_read_merging = true
+                dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+
+                kraken2_db = "$baseDir/tests/data/kraken2/test"
+
+
+                max_memory = "2.GB"
+                max_cpus = 1
+            }
+
+        }
+
+        then {
+
+            // Check the error-log file
+            def max_sample_log = "$launchDir/results/error/max_samples_exceeded.error.txt"
+            assert file(max_sample_log).exists()
+            assert path(max_sample_log).readLines().contains("4 samples were selected, which exceeds the maximum number of samples: 2")
+
+            // Check IRIDA Next JSON output
+            assert path("$launchDir/results/iridanext.output.json").exists()
+
+            def iridanext_json = path("$launchDir/results/iridanext.output.json").json
+            def iridanext_global = iridanext_json.files.global.path
+
+            assert iridanext_global == ['error/max_samples_exceeded.error.txt']
+        }
+
+    }
+
+    test("Test max_samples: succeeds within limit") {
+    tag "pass_within_max_samples"
+
+        when {
+
+            params {
+                input = "$baseDir/tests/data/samplesheets/samplesheet-make-names-unique.csv"
+                outdir = "results"
+                min_reads = 1
+                max_samples = 10
+                mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
+                mh_min_kmer = 1
+                skip_read_merging = true
+                dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+                skip_allele_calling = true
+
+                kraken2_db = "$baseDir/tests/data/kraken2/test"
+
+
+                max_memory = "2.GB"
+                max_cpus = 1
+            }
+
+        }
+
+        then {
+
+            assert workflow.success
+            assert workflow.exitStatus == 0
+            // Check the error-log file not produced
+            def max_sample_log = "$launchDir/results/error/max_samples_exceeded.error.txt"
+            assert !(file(max_sample_log).exists())
+        }
+
+    }
+
+    test("Test max_samples: succeeds with no-limit") {
+    tag "pass_unlimited_max_samples"
+
+        when {
+
+            params {
+                input = "$baseDir/tests/data/samplesheets/samplesheet-make-names-unique.csv"
+                outdir = "results"
+                min_reads = 1
+                max_samples = 0 // Confirms that 0, or the default, acts as "unlimited samples"
+                mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
+                mh_min_kmer = 1
+                skip_read_merging = true
+                dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+                skip_allele_calling = true
+
+                kraken2_db = "$baseDir/tests/data/kraken2/test"
+
+
+                max_memory = "2.GB"
+                max_cpus = 1
+            }
+
+        }
+
+        then {
+
+            assert workflow.success
+            assert workflow.exitStatus == 0
+
+            // Check the error-log file not produced
+            def max_sample_log = "$launchDir/results/error/max_samples_exceeded.error.txt"
+            assert !(file(max_sample_log).exists())
+        }
+
+    }
+
+
 }
