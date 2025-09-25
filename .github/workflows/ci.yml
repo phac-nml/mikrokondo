@@ -62,4 +62,3 @@ jobs:
         continue-on-error: ${{ matrix.NXF_VER == 'latest-everything' }}
         run: |
           nextflow run ${GITHUB_WORKSPACE} -profile test,docker --outdir ./results
-
