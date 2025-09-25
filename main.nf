@@ -34,13 +34,16 @@ process MAX_SAMPLES_CHECK {
     def output_file =  "max_samples_exceeded.error.txt"
     output_file_path = task.workDir.resolve(output_file)
     file_out = file(output_file_path)
-    file_out.text = """   
+    file_out.text = """
     ${sample_count} samples were selected, which exceeds the maximum number of samples: ${params.max_samples}
     Please reduce samples to ${params.max_samples}.
 
+    Mikrokondo requires a large-amount of compute resources, please consider limiting any unecessary runs.
+    Reducing compute reduces carbon footprint for computational-research: DOI 10.1038/s43586-023-00202-5
+
     Pipeline maximum sample count threshold should only occur when running in IRIDA Next,
-    please submit an issue if you encounter it elsewhere. 
-    
+    please submit an issue if you encounter it elsewhere.
+
     If running from command-line make sure that --max_samples 0
     """.stripIndent().trim()
 
@@ -126,7 +129,7 @@ workflow MIKROKONDO {
 
     /*
         Dont bother checking the number of lines in the samples if max_samples == 0
-        as we will not do anything with the limit. 
+        as we will not do anything with the limit.
     */
 
     def number_of_samples = file(params.input).readLines().size() - 1 // Remove 1 for header
