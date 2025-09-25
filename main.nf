@@ -38,11 +38,10 @@ process MAX_SAMPLES_CHECK {
     ${sample_count} samples were selected, which exceeds the maximum number of samples: ${params.max_samples}
     Please reduce samples to ${params.max_samples}.
 
-    Mikrokondo requires a large-amount of compute resources, please consider limiting any unecessary runs.
-    Reducing compute reduces carbon footprint for computational-research: DOI 10.1038/s43586-023-00202-5
-
     Pipeline maximum sample count threshold should only occur when running in IRIDA Next,
-    please submit an issue if you encounter it elsewhere.
+    please submit an issue if you encounter it elsewhere. 
+    
+    This limit has been added for execution in IRIDA Next to prevent accidental generation of large compute bills.
 
     If running from command-line make sure that --max_samples 0
     """.stripIndent().trim()
