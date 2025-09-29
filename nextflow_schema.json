@@ -39,8 +39,7 @@
                     "type": "integer",
                     "default": 0,
                     "description": "Limit the number of samples run by pipeline",
-                    "minimum": 0,
-                    "hidden": true
+                    "minimum": 0
                 },
                 "platform": {
                     "type": "string",
