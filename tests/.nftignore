@@ -1,1 +1,15 @@
 pipeline_info/*.{html,json,txt,yml}
+**/*.{xlsx,pdf,svg,bam,html}
+**/*.settings.staramr*.txt
+**/*.pilon.vcf.vcf
+**/*spades.log
+**/*quast.quality.err
+**/*quast.quality.log
+**/*sam.quality.header
+**/*.7.mlst.subtyping.json
+**/final_report.json
+**/*flat_sample.json.gz
+**/final_report_flattened.json
+bco.json
+iridanext.output.json
+manifest.json
