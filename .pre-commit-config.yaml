@@ -19,6 +19,7 @@ repos:
               subworkflows/local/.*|
               docs/.*|
               tests/data/.*|
+              utils/.*|
               .*\.snap$
           )$
       - id: end-of-file-fixer
@@ -31,5 +32,6 @@ repos:
               subworkflows/local/.*|
               docs/.*|
               tests/data/.*|
+              utils/.*|
               .*\.snap$
           )$
