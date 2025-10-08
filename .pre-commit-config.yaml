@@ -14,7 +14,11 @@ repos:
           (?x)^(
               .*ro-crate-metadata.json$|
               modules/nf-core/.*|
+              modules/local/.*|
               subworkflows/nf-core/.*|
+              subworkflows/local/.*|
+              docs/.*|
+              tests/data/.*|
               .*\.snap$
           )$
       - id: end-of-file-fixer
@@ -22,6 +26,10 @@ repos:
           (?x)^(
               .*ro-crate-metadata.json$|
               modules/nf-core/.*|
+              modules/local/.*|
               subworkflows/nf-core/.*|
+              subworkflows/local/.*|
+              docs/.*|
+              tests/data/.*|
               .*\.snap$
           )$
