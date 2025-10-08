@@ -1,0 +1,57 @@
+nextflow_pipeline {
+
+    name "Test pipeline"
+    script "../main.nf"
+    tag "pipeline"
+
+    test("Default test") {
+
+        when {
+            params {
+                input = "https://raw.githubusercontent.com/phac-nml/mikrokondo/dev/assets/samplesheet.csv"
+                outdir = "$outputDir"
+
+                platform = "illumina"
+
+                mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
+                mash.mash_sketch = mash_sketch
+                mash.min_kmer = 1
+
+                dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+                r_contaminants.mega_mm2_idx = dehosting_idx
+                kraken2_db = "${projectDir}/tests/data/kraken2/test"
+                kraken.db = kraken2_db
+                locidex.allele_database = "${projectDir}/tests/data/databases/locidex_dbs"
+                fastp.args.illumina = "-Q"
+                min_reads = 100
+
+                skip_bakta = true
+                skip_staramr = false
+                skip_mobrecon = false
+                skip_checkm = true
+                skip_raw_read_metrics = false
+                skip_polishing = false
+            }
+        }
+
+        then {
+            // stable_name: All files + folders in ${params.outdir}/ with a stable name
+            def stable_name = getAllFilesFromDir(params.outdir, relative: true, includeDir: true, ignore: ['pipeline_info/*.{html,json,txt}'])
+            // stable_path: All files in ${params.outdir}/ with stable content
+            def stable_path = getAllFilesFromDir(params.outdir, ignoreFile: 'tests/.nftignore')
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(
+                    // Number of successful tasks
+                    workflow.trace.succeeded().size(),
+                    // pipeline software_versions.yml file from which Nextflow version is removed because we test pipelines on multiple Nextflow versions
+                    removeNextflowVersion("$outputDir/pipeline_info/software_versions.yml"),
+                    // All stable path name, with a relative path
+                    stable_name,
+                    // All files with stable contents
+                    stable_path
+                ).match() }
+            )
+        }
+    }
+}
