@@ -333,7 +333,7 @@ nextflow_function {
         }
         then{
             assert function.success
-            // When headers are supposed to exist in the file, but only a single line of values 
+            // When headers are supposed to exist in the file, but only a single line of values
             // will assume first line is headers
             assert function.result == ['0':['stuff1':'NoData', 'stuff2':'NoData', 'stuff3':'NoData']]
         }

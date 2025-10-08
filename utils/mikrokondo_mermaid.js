@@ -35,7 +35,7 @@ flowchart LR
     HAU --> HAU1(Unicycler assemble):::orange;
     HAU1 --> HAU2(Bandage image):::orange;
     QC7 --> PA(Polish assemblies):::lightGreen;
-    HAD6 --> PA; 
+    HAD6 --> PA;
     HAU2 --> PA;
     PA --> PAI((Illumina));
     PAI --> PAI1(Pilon iterate):::orange;
@@ -47,7 +47,7 @@ flowchart LR
     PASS --> I1((Isolate));
     PASS --> M1((Metagenomic));
     I1 --> QCA(QC assemblies):::lightGreen;
-    
+
 
     subgraph legend [Legend]
     direction LR;

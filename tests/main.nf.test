@@ -1091,7 +1091,7 @@ nextflow_pipeline {
             assert sample.assembly_length == 214466
 
 
-            
+
         }
     }
 
