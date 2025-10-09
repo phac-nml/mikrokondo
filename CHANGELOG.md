@@ -7,9 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Updated`
 
-- Adding GitHub CI tests against Nextflow `24.10.3`. [PR #195](https://github.com/phac-nml/mikrokondo/pull/195)
+- Updated minimum version of Nextflow used by mikrokondo to `24.10.3` and updated GitHub CI to test against this version (removed tests against Nextflow `latest-everything`). [PR #195](https://github.com/phac-nml/mikrokondo/pull/195) and [PR #196](https://github.com/phac-nml/mikrokondo/pull/196).
 - Updating GitHub CI tests and nf-tests to fix nf-core linting issues and improve performance of CI testing. [PR #196](https://github.com/phac-nml/mikrokondo/pull/196)
-  - Removed testing against Nextflow `latest-everything` to reduce time of tests.
 
 ## [0.9.4] - 2025-09-25
 
