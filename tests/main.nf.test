@@ -9,7 +9,7 @@ nextflow_pipeline {
         when {
             params {
                 input = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/samplesheets/samplesheet-campy-staph.csv"
-                outdir = "results"
+                outdir = "$outputDir"
 
                 platform = "illumina"
 
@@ -37,10 +37,10 @@ nextflow_pipeline {
 
         then {
             assert workflow.success
-            assert path("$launchDir/results").exists()
+            assert path("$outputDir").exists()
 
             // parse output json file
-            def json = path("$launchDir/results/FinalReports/Aggregated/Json/final_report.json").json
+            def json = path("$outputDir/FinalReports/Aggregated/Json/final_report.json").json
 
             assert json.CSE.CSE.FastP.summary.sequencing.equals("paired end (150 cycles + 150 cycles)")
             assert json.CSE.CSE.FastP.summary.before_filtering.total_reads.equals(248)
@@ -55,14 +55,14 @@ nextflow_pipeline {
             assert json.CSE.meta.merge.equals(false)
             assert json.CSE.meta.downsampled.equals(false)
 
-            def assembly_path = "$launchDir/results/Assembly/FinalAssembly/CSE/CSE.final.filtered.assembly.fasta.gz"
+            def assembly_path = "$outputDir/Assembly/FinalAssembly/CSE/CSE.final.filtered.assembly.fasta.gz"
             assert path(assembly_path).exists().equals(false)
 
-            def contigs_path = "$launchDir/results/Assembly/FinalAssembly"
+            def contigs_path = "$outputDir/Assembly/FinalAssembly"
             assert path(contigs_path).exists().equals(false)
 
             // compare IRIDA Next JSON output
-            def iridanext_json = path("$launchDir/results/iridanext.output.json").json
+            def iridanext_json = path("$outputDir/iridanext.output.json").json
             def iridanext_global = iridanext_json.files.global
             def iridanext_samples = iridanext_json.files.samples
             def iridanext_metadata = iridanext_json.metadata.samples
