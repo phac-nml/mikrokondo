@@ -13,3 +13,4 @@ pipeline_info/*.{html,json,txt,yml}
 bco.json
 iridanext.output.json
 manifest.json
+pipeline_paramers.json
