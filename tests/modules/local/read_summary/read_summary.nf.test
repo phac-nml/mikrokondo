@@ -21,7 +21,7 @@ nextflow_process {
             }
 
             params {
-                outdir = "read_scan_test"
+                outdir = "$outputDir"
             }
 
             then {
@@ -46,7 +46,7 @@ nextflow_process {
             }
 
             params {
-                outdir = "read_scan_test_se"
+                outdir = "$outputDir"
             }
 
             then {
@@ -71,7 +71,7 @@ nextflow_process {
             }
 
             params {
-                outdir = "read_scan_test_hybrid"
+                outdir = "$outputDir"
             }
 
             then {

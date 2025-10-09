@@ -19,13 +19,13 @@ nextflow_process {
             }
 
             params {
-                outdir = "results"
+                outdir = "$outputDir"
             }
         }
 
         then {
             assert process.success
-            def data = path("$launchDir/results/Reads/FinalReads/BaseCounts/SAMPLE1.SAMPLE1_basecounts.seqtk.size.txt").text
+            def data = path("$outputDir/Reads/FinalReads/BaseCounts/SAMPLE1.SAMPLE1_basecounts.seqtk.size.txt").text
             assert data == "475\t118750\n"
         }
     }
@@ -45,13 +45,13 @@ nextflow_process {
             }
 
             params {
-                outdir = "results"
+                outdir = "$outputDir"
             }
         }
 
         then {
             assert process.success
-            def data = path("$launchDir/results/Reads/FinalReads/BaseCounts/SAMPLE1.SAMPLE1_basecounts.seqtk.size.txt").text
+            def data = path("$outputDir/Reads/FinalReads/BaseCounts/SAMPLE1.SAMPLE1_basecounts.seqtk.size.txt").text
             assert data == "950\t237500\n"
         }
     }

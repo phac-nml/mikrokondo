@@ -21,7 +21,7 @@ nextflow_process {
             }
 
             params {
-                outdir = "mash_parse_classify"
+                outdir = "$outputDir"
             }
 
             then {
@@ -47,7 +47,7 @@ nextflow_process {
             }
 
             params {
-                outdir = "mash_parse_classify"
+                outdir = "$outputDir"
             }
 
             then {
@@ -72,7 +72,7 @@ nextflow_process {
             }
 
             params {
-                outdir = "mash_parse_classify"
+                outdir = "$outputDir"
             }
 
             then {
@@ -97,7 +97,7 @@ nextflow_process {
             }
 
             params {
-                outdir = "mash_parse_classify"
+                outdir = "$outputDir"
             }
 
             then {
