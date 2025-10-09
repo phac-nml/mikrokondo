@@ -270,14 +270,13 @@
                 "short.deconned.R2.deconned.reads.fastq.gz:md5,ac3372e43364f374bd7569ed09e4f5a9",
                 "short.read.scan.summary.json:md5,70f4050d665156ed99a9e2ad7a175ead",
                 "short.fastp.summary.json:md5,c77104a5e9c6713ff1abb0c3e20a5d6c",
-                "short.mash.screen.reads.screen.screen:md5,3cac1ed0f33870c4e04e4907cb192c28",
-                "pipeline_parameters.json:md5,c35488713054803986a53ebf3181ee28"
+                "short.mash.screen.reads.screen.screen:md5,3cac1ed0f33870c4e04e4907cb192c28"
             ]
         ],
         "meta": {
             "nf-test": "0.9.2",
             "nextflow": "25.04.8"
         },
-        "timestamp": "2025-10-09T14:32:35.454335123"
+        "timestamp": "2025-10-09T14:59:30.073372287"
     }
 }
