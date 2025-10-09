@@ -10,7 +10,7 @@ nextflow_pipeline {
         when {
             params {
                 input = "$baseDir/tests/data/samplesheets/samplesheet-test-from-assemblies.csv"
-                outdir = "results"
+                outdir = "$outputDir"
 
                 platform = "illumina"
 
@@ -37,10 +37,10 @@ nextflow_pipeline {
 
         then {
             assert workflow.success
-            assert path("$launchDir/results").exists()
+            assert path("$outputDir").exists()
 
             // parse final report json file
-            def final_report = path("$launchDir/results/FinalReports/Aggregated/Json/final_report.json").json
+            def final_report = path("$outputDir/FinalReports/Aggregated/Json/final_report.json").json
             def ecoli_json = final_report.ecoli_GCA_000947975.ecoli_GCA_000947975
             assert ecoli_json.StarAMR."0".Genotype.equals("aph(3'')-Ib, aph(6)-Id, blaCTX-M-15, blaTEM-1B, dfrA7, gyrA (S83A), sul1, sul2, tet(A)")
             assert ecoli_json.StarAMR."0"."Predicted Phenotype".equals("streptomycin, kanamycin, ampicillin, ceftriaxone, trimethoprim, ciprofloxacin I/R, nalidixic acid, sulfisoxazole, tetracycline")
@@ -65,7 +65,7 @@ nextflow_pipeline {
 
             // parse final report tsv file
             def final_report_tmap = [:]
-            def final_report_tsv = path("$launchDir/results/FinalReports/Aggregated/Tables/final_report.tsv").readLines()
+            def final_report_tsv = path("$outputDir/FinalReports/Aggregated/Tables/final_report.tsv").readLines()
             final_report_tsv.each {
                 def tokens = it.split("\t")
                 if(tokens.size() >=2)
@@ -92,7 +92,7 @@ nextflow_pipeline {
             assert final_report_tmap."ECTyperSubtyping.0.QC" == "PASS (REPORTABLE)"
 
             // compare IRIDA Next JSON output
-            def iridanext_json = path("$launchDir/results/iridanext.output.json").json
+            def iridanext_json = path("$outputDir/iridanext.output.json").json
             def iridanext_global = iridanext_json.files.global
             def iridanext_samples = iridanext_json.files.samples
             def iridanext_metadata = iridanext_json.metadata.samples
@@ -185,7 +185,7 @@ nextflow_pipeline {
             assert ecoli_metadata."StarAMR Plasmid" == "IncQ1"
 
             // Read in filtered assembly fasta to verify number of contigs
-            def assemblyLines = path("$launchDir/results/Assembly/FinalAssembly/ecoli_GCA_000947975/ecoli_GCA_000947975.final.filtered.assembly.fasta.gz").readLinesGzip()
+            def assemblyLines = path("$outputDir/Assembly/FinalAssembly/ecoli_GCA_000947975/ecoli_GCA_000947975.final.filtered.assembly.fasta.gz").readLinesGzip()
             def actualNumberContigs = assemblyLines.findAll { it.startsWith(">") }.size()
             def actualLength = assemblyLines.findAll { !it.startsWith(">") }.collect { it.strip().size() }.sum()
             assert actualNumberContigs == 187
@@ -199,7 +199,7 @@ nextflow_pipeline {
         when {
             params {
                 input = "$baseDir/tests/data/samplesheets/samplesheet-test-from-assemblies.csv"
-                outdir = "results"
+                outdir = "$outputDir"
 
                 platform = "illumina"
 
@@ -229,10 +229,10 @@ nextflow_pipeline {
 
         then {
             assert workflow.success
-            assert path("$launchDir/results").exists()
+            assert path("$outputDir").exists()
 
             // compare IRIDA Next JSON output
-            def iridanext_json = path("$launchDir/results/iridanext.output.json").json
+            def iridanext_json = path("$outputDir/iridanext.output.json").json
             def iridanext_global = iridanext_json.files.global
             def iridanext_samples = iridanext_json.files.samples
             def iridanext_metadata = iridanext_json.metadata.samples
@@ -253,7 +253,7 @@ nextflow_pipeline {
             assert ecoli_metadata."StarAMR Genotype" == "aph(3'')-Ib, aph(6)-Id, blaCTX-M-15, blaTEM-1B, dfrA7, sul1, sul2, tet(A)"
 
             // Read in filtered assembly fasta to verify number of contigs
-            def assemblyLines = path("$launchDir/results/Assembly/FinalAssembly/ecoli_GCA_000947975/ecoli_GCA_000947975.final.filtered.assembly.fasta.gz").readLinesGzip()
+            def assemblyLines = path("$outputDir/Assembly/FinalAssembly/ecoli_GCA_000947975/ecoli_GCA_000947975.final.filtered.assembly.fasta.gz").readLinesGzip()
             def actualNumberContigs = assemblyLines.findAll { it.startsWith(">") }.size()
             def actualLength = assemblyLines.findAll { !it.startsWith(">") }.collect { it.strip().size() }.sum()
             assert actualNumberContigs == 123
@@ -267,7 +267,7 @@ nextflow_pipeline {
         when {
             params {
                 input = "$baseDir/tests/data/samplesheets/samplesheet-test-from-assemblies.csv"
-                outdir = "results"
+                outdir = "$outputDir"
 
                 platform = "illumina"
 
@@ -296,10 +296,10 @@ nextflow_pipeline {
 
         then {
             assert workflow.success
-            assert path("$launchDir/results").exists()
+            assert path("$outputDir").exists()
 
             // compare IRIDA Next JSON output
-            def iridanext_json = path("$launchDir/results/iridanext.output.json").json
+            def iridanext_json = path("$outputDir/iridanext.output.json").json
             def iridanext_global = iridanext_json.files.global
             def iridanext_samples = iridanext_json.files.samples
             def iridanext_metadata = iridanext_json.metadata.samples
@@ -334,7 +334,7 @@ nextflow_pipeline {
             assert ecoli_metadata.qc_summary == "FAILED Species ID: Escherichia coli; Passed Tests: 3/4; Organism QC Criteria: Escherichia"
 
             // Read in filtered assembly fasta to verify number of contigs
-            def assemblyLines = path("$launchDir/results/Assembly/FinalAssembly/ecoli_GCA_000947975/ecoli_GCA_000947975.final.filtered.assembly.fasta.gz").readLinesGzip()
+            def assemblyLines = path("$outputDir/Assembly/FinalAssembly/ecoli_GCA_000947975/ecoli_GCA_000947975.final.filtered.assembly.fasta.gz").readLinesGzip()
             def actualNumberContigs = assemblyLines.findAll { it.startsWith(">") }.size()
             def actualLength = assemblyLines.findAll { !it.startsWith(">") }.collect { it.strip().size() }.sum()
             assert actualNumberContigs == 123
@@ -348,7 +348,7 @@ nextflow_pipeline {
         when {
             params {
                 input = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/samplesheets/samplesheet-test-from-assemblies-salmonella.csv"
-                outdir = "results"
+                outdir = "$outputDir"
 
                 platform = "illumina"
 
@@ -376,27 +376,27 @@ nextflow_pipeline {
 
         then {
             assert workflow.success
-            assert path("$launchDir/results").exists()
+            assert path("$outputDir").exists()
 
-            assert path("$launchDir/results/Assembly/Subtyping/SISTR/salmonella_GCA_000008105.sistr.allele.subtyping.fasta").exists()
-            assert path("$launchDir/results/Assembly/Subtyping/SISTR/salmonella_GCA_000008105.sistr.allele.subtyping.json").exists()
-            assert path("$launchDir/results/Assembly/Subtyping/SISTR/salmonella_GCA_000008105.sistr.cgmlst.subtyping.csv").exists()
-            assert path("$launchDir/results/Assembly/Subtyping/SISTR/salmonella_GCA_000008105.sistr.subtyping.tab").exists()
+            assert path("$outputDir/Assembly/Subtyping/SISTR/salmonella_GCA_000008105.sistr.allele.subtyping.fasta").exists()
+            assert path("$outputDir/Assembly/Subtyping/SISTR/salmonella_GCA_000008105.sistr.allele.subtyping.json").exists()
+            assert path("$outputDir/Assembly/Subtyping/SISTR/salmonella_GCA_000008105.sistr.cgmlst.subtyping.csv").exists()
+            assert path("$outputDir/Assembly/Subtyping/SISTR/salmonella_GCA_000008105.sistr.subtyping.tab").exists()
 
-            assert path("$launchDir/results/Assembly/Annotation/StarAMR/salmonella_GCA_000008105/salmonella_GCA_000008105.plasmidfinder.staramr.annotation.tsv").exists()
-            assert path("$launchDir/results/Assembly/Annotation/StarAMR/salmonella_GCA_000008105/salmonella_GCA_000008105.pointfinder.staramr.annotation.tsv").exists()
-            assert path("$launchDir/results/Assembly/Annotation/StarAMR/salmonella_GCA_000008105/salmonella_GCA_000008105.resfinder.staramr.annotation.tsv").exists()
-            assert path("$launchDir/results/Assembly/Annotation/StarAMR/salmonella_GCA_000008105/salmonella_GCA_000008105.detailed_summary.staramr.annotation.tsv").exists()
+            assert path("$outputDir/Assembly/Annotation/StarAMR/salmonella_GCA_000008105/salmonella_GCA_000008105.plasmidfinder.staramr.annotation.tsv").exists()
+            assert path("$outputDir/Assembly/Annotation/StarAMR/salmonella_GCA_000008105/salmonella_GCA_000008105.pointfinder.staramr.annotation.tsv").exists()
+            assert path("$outputDir/Assembly/Annotation/StarAMR/salmonella_GCA_000008105/salmonella_GCA_000008105.resfinder.staramr.annotation.tsv").exists()
+            assert path("$outputDir/Assembly/Annotation/StarAMR/salmonella_GCA_000008105/salmonella_GCA_000008105.detailed_summary.staramr.annotation.tsv").exists()
 
             // Check Locidex outputs
-            def acutal_mlst_profile = path("$launchDir/results/Assembly/Subtyping/Locidex/Report/salmonella_GCA_000008105.locidex.report.profile.mlst.subtyping.json.gz")
+            def acutal_mlst_profile = path("$outputDir/Assembly/Subtyping/Locidex/Report/salmonella_GCA_000008105.locidex.report.profile.mlst.subtyping.json.gz")
             assert acutal_mlst_profile.exists()
-            assert path("$launchDir/results/Assembly/Subtyping/Locidex/Extract/salmonella_GCA_000008105/salmonella_GCA_000008105.raw.locidex.extract.extracted.seqs.subtyping.fasta.gz").exists()
-            assert path("$launchDir/results/Assembly/Subtyping/Locidex/Search/salmonella_GCA_000008105.locidex.seq_store.json.gz").exists()
+            assert path("$outputDir/Assembly/Subtyping/Locidex/Extract/salmonella_GCA_000008105/salmonella_GCA_000008105.raw.locidex.extract.extracted.seqs.subtyping.fasta.gz").exists()
+            assert path("$outputDir/Assembly/Subtyping/Locidex/Search/salmonella_GCA_000008105.locidex.seq_store.json.gz").exists()
 
             // compare IRIDA Next JSON output
-            assert path("$launchDir/results/iridanext.output.json").exists()
-            def iridanext_json = path("$launchDir/results/iridanext.output.json").json
+            assert path("$outputDir/iridanext.output.json").exists()
+            def iridanext_json = path("$outputDir/iridanext.output.json").json
             def iridanext_global = iridanext_json.files.global
             def iridanext_samples = iridanext_json.files.samples
             def iridanext_metadata = iridanext_json.metadata.samples
@@ -421,7 +421,7 @@ nextflow_pipeline {
 
             // parse final report tsv file
             def final_report_tmap = [:]
-            def final_report_tsv = path("$launchDir/results/FinalReports/Aggregated/Tables/final_report.tsv").readLines()
+            def final_report_tsv = path("$outputDir/FinalReports/Aggregated/Tables/final_report.tsv").readLines()
             final_report_tsv.each {
                 def tokens = it.split("\t")
                 if(tokens.size() >=2)
@@ -444,7 +444,7 @@ nextflow_pipeline {
             assert iridanext_samples.salmonella_GCA_000008105.findAll { it.path == "FinalReports/FlattenedReports/salmonella_GCA_000008105.flat_sample.json.gz" }.size() == 1
 
             // parse final report json file
-            def final_report = path("$launchDir/results/FinalReports/Aggregated/Json/final_report.json").json
+            def final_report = path("$outputDir/FinalReports/Aggregated/Json/final_report.json").json
             def salmonella_json = final_report.salmonella_GCA_000008105.salmonella_GCA_000008105
 
             assert final_report.salmonella_GCA_000008105.QualityAnalysis.n50_value.value == 4755700
@@ -537,7 +537,7 @@ nextflow_pipeline {
         when {
             params {
                 input = "https://raw.githubusercontent.com/phac-nml/mikrokondo/dev/tests/data/samplesheets/samplesheet-test-from-assemblies-listeria.csv"
-                outdir = "results"
+                outdir = "$outputDir"
 
                 platform = "illumina"
 
@@ -563,17 +563,17 @@ nextflow_pipeline {
 
         then {
             assert workflow.success
-            assert path("$launchDir/results").exists()
+            assert path("$outputDir").exists()
 
-            assert path("$launchDir/results/Assembly/Subtyping/Lissero/listeria_GCF_000196035.lissero.subtyping.tsv").exists()
+            assert path("$outputDir/Assembly/Subtyping/Lissero/listeria_GCF_000196035.lissero.subtyping.tsv").exists()
 
-            assert path("$launchDir/results/Assembly/Annotation/StarAMR/listeria_GCF_000196035/listeria_GCF_000196035.plasmidfinder.staramr.annotation.tsv").exists()
-            assert path("$launchDir/results/Assembly/Annotation/StarAMR/listeria_GCF_000196035/listeria_GCF_000196035.resfinder.staramr.annotation.tsv").exists()
-            assert path("$launchDir/results/Assembly/Annotation/StarAMR/listeria_GCF_000196035/listeria_GCF_000196035.detailed_summary.staramr.annotation.tsv").exists()
+            assert path("$outputDir/Assembly/Annotation/StarAMR/listeria_GCF_000196035/listeria_GCF_000196035.plasmidfinder.staramr.annotation.tsv").exists()
+            assert path("$outputDir/Assembly/Annotation/StarAMR/listeria_GCF_000196035/listeria_GCF_000196035.resfinder.staramr.annotation.tsv").exists()
+            assert path("$outputDir/Assembly/Annotation/StarAMR/listeria_GCF_000196035/listeria_GCF_000196035.detailed_summary.staramr.annotation.tsv").exists()
 
             // compare IRIDA Next JSON output
-            assert path("$launchDir/results/iridanext.output.json").exists()
-            def iridanext_json = path("$launchDir/results/iridanext.output.json").json
+            assert path("$outputDir/iridanext.output.json").exists()
+            def iridanext_json = path("$outputDir/iridanext.output.json").json
             def iridanext_global = iridanext_json.files.global
             def iridanext_samples = iridanext_json.files.samples
             def iridanext_metadata = iridanext_json.metadata.samples
@@ -598,7 +598,7 @@ nextflow_pipeline {
 
             // parse final report tsv file
             def final_report_tmap = [:]
-            def final_report_tsv = path("$launchDir/results/FinalReports/Aggregated/Tables/final_report.tsv").readLines()
+            def final_report_tsv = path("$outputDir/FinalReports/Aggregated/Tables/final_report.tsv").readLines()
             final_report_tsv.each {
                 def tokens = it.split("\t")
                 if(tokens.size() >=2)
@@ -617,7 +617,7 @@ nextflow_pipeline {
             assert iridanext_samples.listeria_GCF_000196035.findAll { it.path == "FinalReports/FlattenedReports/listeria_GCF_000196035.flat_sample.json.gz" }.size() == 1
 
             // parse final report json file
-            def final_report = path("$launchDir/results/FinalReports/Aggregated/Json/final_report.json").json
+            def final_report = path("$outputDir/FinalReports/Aggregated/Json/final_report.json").json
             def listeria_json = final_report.listeria_GCF_000196035.listeria_GCF_000196035
 
             assert final_report.listeria_GCF_000196035.QualityAnalysis.n50_value.value == 2944528
@@ -696,7 +696,7 @@ nextflow_pipeline {
         when {
             params {
                 input = "https://raw.githubusercontent.com/phac-nml/mikrokondo/dev/tests/data/samplesheets/samplesheet-test-from-assemblies-listeria.csv"
-                outdir = "results"
+                outdir = "$outputDir"
 
                 platform = "illumina"
 
@@ -722,17 +722,17 @@ nextflow_pipeline {
 
         then {
             assert workflow.success
-            assert path("$launchDir/results").exists()
+            assert path("$outputDir").exists()
 
-            assert !path("$launchDir/results/Assembly/Subtyping/Lissero/listeria_GCF_000196035.lissero.subtyping.tsv").exists()
+            assert !path("$outputDir/Assembly/Subtyping/Lissero/listeria_GCF_000196035.lissero.subtyping.tsv").exists()
 
-            assert path("$launchDir/results/Assembly/Annotation/StarAMR/listeria_GCF_000196035/listeria_GCF_000196035.plasmidfinder.staramr.annotation.tsv").exists()
-            assert path("$launchDir/results/Assembly/Annotation/StarAMR/listeria_GCF_000196035/listeria_GCF_000196035.resfinder.staramr.annotation.tsv").exists()
-            assert path("$launchDir/results/Assembly/Annotation/StarAMR/listeria_GCF_000196035/listeria_GCF_000196035.detailed_summary.staramr.annotation.tsv").exists()
+            assert path("$outputDir/Assembly/Annotation/StarAMR/listeria_GCF_000196035/listeria_GCF_000196035.plasmidfinder.staramr.annotation.tsv").exists()
+            assert path("$outputDir/Assembly/Annotation/StarAMR/listeria_GCF_000196035/listeria_GCF_000196035.resfinder.staramr.annotation.tsv").exists()
+            assert path("$outputDir/Assembly/Annotation/StarAMR/listeria_GCF_000196035/listeria_GCF_000196035.detailed_summary.staramr.annotation.tsv").exists()
 
             // compare IRIDA Next JSON output
-            assert path("$launchDir/results/iridanext.output.json").exists()
-            def iridanext_json = path("$launchDir/results/iridanext.output.json").json
+            assert path("$outputDir/iridanext.output.json").exists()
+            def iridanext_json = path("$outputDir/iridanext.output.json").json
             def iridanext_global = iridanext_json.files.global
             def iridanext_samples = iridanext_json.files.samples
             def iridanext_metadata = iridanext_json.metadata.samples
@@ -757,7 +757,7 @@ nextflow_pipeline {
 
             // parse final report tsv file
             def final_report_tmap = [:]
-            def final_report_tsv = path("$launchDir/results/FinalReports/Aggregated/Tables/final_report.tsv").readLines()
+            def final_report_tsv = path("$outputDir/FinalReports/Aggregated/Tables/final_report.tsv").readLines()
             final_report_tsv.each {
                 def tokens = it.split("\t")
                 if(tokens.size() >=2)
@@ -775,7 +775,7 @@ nextflow_pipeline {
             assert iridanext_samples.listeria_GCF_000196035.findAll { it.path == "FinalReports/FlattenedReports/listeria_GCF_000196035.flat_sample.json.gz" }.size() == 1
 
             // parse final report json file
-            def final_report = path("$launchDir/results/FinalReports/Aggregated/Json/final_report.json").json
+            def final_report = path("$outputDir/FinalReports/Aggregated/Json/final_report.json").json
             def listeria_json = final_report.listeria_GCF_000196035.listeria_GCF_000196035
 
             assert final_report.listeria_GCF_000196035.QualityAnalysis.n50_value.value == 2944528
@@ -847,7 +847,7 @@ nextflow_pipeline {
             params {
                 // Need to update with 7 gene when complete
                 input = "https://raw.githubusercontent.com/phac-nml/mikrokondo/dev/tests/data/samplesheets/samplesheet-test-from-assemblies-vibrio.csv"
-                outdir = "results"
+                outdir = "$outputDir"
 
                 platform = "illumina"
 
@@ -878,11 +878,11 @@ nextflow_pipeline {
 
         then {
             assert workflow.success
-            assert path("$launchDir/results").exists()
+            assert path("$outputDir").exists()
 
             // Compare IRIDANext json
-            assert path("$launchDir/results/iridanext.output.json").exists()
-            def iridanext_json = path("$launchDir/results/iridanext.output.json").json
+            assert path("$outputDir/iridanext.output.json").exists()
+            def iridanext_json = path("$outputDir/iridanext.output.json").json
             def iridanext_global = iridanext_json.files.global
             def iridanext_samples = iridanext_json.files.samples
             def iridanext_metadata = iridanext_json.metadata.samples
@@ -904,11 +904,11 @@ nextflow_pipeline {
 
 
             // Output files check
-            assert path("$launchDir/results/Assembly/Subtyping/Locidex/Select/st_120.st_120_SelectedLocidexConfig.locidex.db.json")
-            assert path("$launchDir/results/Assembly/Subtyping/Locidex/Extract/st_120/st_120.raw.locidex.extract.extracted.seqs.subtyping.fasta.gz")
-            assert path("$launchDir/results/Assembly/Subtyping/Locidex/Search/st_120.locidex.seq_store.json.gz")
-            assert path("$launchDir/results/Assembly/Subtyping/Locidex/Report/st_120.locidex.report.profile.mlst.subtyping.json.gz")
-            assert path("$launchDir/results/Assembly/Subtyping/Locidex/Summary/st_120.locidex.summary.json")
+            assert path("$outputDir/Assembly/Subtyping/Locidex/Select/st_120.st_120_SelectedLocidexConfig.locidex.db.json")
+            assert path("$outputDir/Assembly/Subtyping/Locidex/Extract/st_120/st_120.raw.locidex.extract.extracted.seqs.subtyping.fasta.gz")
+            assert path("$outputDir/Assembly/Subtyping/Locidex/Search/st_120.locidex.seq_store.json.gz")
+            assert path("$outputDir/Assembly/Subtyping/Locidex/Report/st_120.locidex.report.profile.mlst.subtyping.json.gz")
+            assert path("$outputDir/Assembly/Subtyping/Locidex/Summary/st_120.locidex.summary.json")
 
             assert vibrio_metadata."predicted_primary_type_name" == ""
             assert vibrio_metadata."predicted_primary_type_method" == ""
@@ -924,7 +924,7 @@ nextflow_pipeline {
             params {
                 // Need to update with 7 gene when complete
                 input = "https://raw.githubusercontent.com/phac-nml/mikrokondo/dev/tests/data/samplesheets/samplesheet-test-from-assemblies-vibrio.csv"
-                outdir = "results"
+                outdir = "$outputDir"
 
                 platform = "illumina"
 
@@ -955,11 +955,11 @@ nextflow_pipeline {
 
         then {
             assert workflow.success
-            assert path("$launchDir/results").exists()
+            assert path("$outputDir").exists()
 
             // Compare IRIDANext json
-            assert path("$launchDir/results/iridanext.output.json").exists()
-            def iridanext_json = path("$launchDir/results/iridanext.output.json").json
+            assert path("$outputDir/iridanext.output.json").exists()
+            def iridanext_json = path("$outputDir/iridanext.output.json").json
             def iridanext_global = iridanext_json.files.global
             def iridanext_samples = iridanext_json.files.samples
             def iridanext_metadata = iridanext_json.metadata.samples
@@ -981,10 +981,10 @@ nextflow_pipeline {
 
 
             // Output files check
-            assert path("$launchDir/results/Assembly/Subtyping/Locidex/Extract/st_120/st_120.raw.locidex.extract.extracted.seqs.subtyping.fasta.gz")
-            assert path("$launchDir/results/Assembly/Subtyping/Locidex/Search/st_120.locidex.seq_store.json.gz")
-            assert path("$launchDir/results/Assembly/Subtyping/Locidex/Report/st_120.locidex.report.profile.mlst.subtyping.json.gz")
-            assert path("$launchDir/results/Assembly/Subtyping/Locidex/Summary/st_120.locidex.summary.json")
+            assert path("$outputDir/Assembly/Subtyping/Locidex/Extract/st_120/st_120.raw.locidex.extract.extracted.seqs.subtyping.fasta.gz")
+            assert path("$outputDir/Assembly/Subtyping/Locidex/Search/st_120.locidex.seq_store.json.gz")
+            assert path("$outputDir/Assembly/Subtyping/Locidex/Report/st_120.locidex.report.profile.mlst.subtyping.json.gz")
+            assert path("$outputDir/Assembly/Subtyping/Locidex/Summary/st_120.locidex.summary.json")
 
         }
     }
@@ -996,7 +996,7 @@ nextflow_pipeline {
             params {
                 // Need to update with 7 gene when complete
                 input = "$baseDir/tests/data/samplesheets/samplesheet-test-from-assemblies-vibrio-stupid-names.csv"
-                outdir = "results"
+                outdir = "$outputDir"
 
                 platform = "illumina"
 
@@ -1027,11 +1027,11 @@ nextflow_pipeline {
 
         then {
             assert workflow.success
-            assert path("$launchDir/results").exists()
+            assert path("$outputDir").exists()
 
             // Compare IRIDANext json
-            assert path("$launchDir/results/iridanext.output.json").exists()
-            def iridanext_json = path("$launchDir/results/iridanext.output.json").json
+            assert path("$outputDir/iridanext.output.json").exists()
+            def iridanext_json = path("$outputDir/iridanext.output.json").json
             def iridanext_global = iridanext_json.files.global
             def iridanext_samples = iridanext_json.files.samples
             def iridanext_metadata = iridanext_json.metadata.samples
@@ -1063,7 +1063,7 @@ nextflow_pipeline {
             params {
                 // Need to update with 7 gene when complete
                 input = "$baseDir/tests/data/samplesheets/samplesheet-make-names-unique.csv"
-                outdir = "results"
+                outdir = "$outputDir"
 
                 platform = "illumina"
 
@@ -1095,11 +1095,11 @@ nextflow_pipeline {
 
         then {
             assert workflow.success
-            assert path("$launchDir/results").exists()
+            assert path("$outputDir").exists()
 
             // Compare IRIDANext json
-            assert path("$launchDir/results/iridanext.output.json").exists()
-            def iridanext_json = path("$launchDir/results/iridanext.output.json").json
+            assert path("$outputDir/iridanext.output.json").exists()
+            def iridanext_json = path("$outputDir/iridanext.output.json").json
             def iridanext_global = iridanext_json.files.global
 
             assert iridanext_global.findAll { it.path == "error/max_samples_exceeded.error.txt" }.size() == 1
@@ -1114,7 +1114,7 @@ nextflow_pipeline {
             params {
                 // Need to update with 7 gene when complete
                 input = "$baseDir/tests/data/samplesheets/samplesheet-make-names-unique.csv"
-                outdir = "results"
+                outdir = "$outputDir"
 
                 platform = "illumina"
 
@@ -1146,11 +1146,11 @@ nextflow_pipeline {
 
         then {
             assert workflow.success
-            assert path("$launchDir/results").exists()
+            assert path("$outputDir").exists()
 
             // Compare IRIDANext json
-            assert path("$launchDir/results/iridanext.output.json").exists()
-            def iridanext_json = path("$launchDir/results/iridanext.output.json").json
+            assert path("$outputDir/iridanext.output.json").exists()
+            def iridanext_json = path("$outputDir/iridanext.output.json").json
             def iridanext_global = iridanext_json.files.global
             assert iridanext_global.findAll { it.path == "error/max_samples_exceeded.error.txt" }.size() == 0
         }
