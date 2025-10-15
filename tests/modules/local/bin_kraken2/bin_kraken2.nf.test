@@ -20,19 +20,19 @@ nextflow_process {
             }
 
             params{
-                outdir = "kraken2_bin"
+                outdir = "$outputDir"
             }
         }
         then {
             assert process.success
 
-            assert path("$launchDir/kraken2_bin/Assembly/PostProcessing/Metagenomic/BinnedContigs/Kraken2/SAMPLE1.SAMPLE1_Escherichia_virus_Lambda.kraken2.binned.assembly.fasta.gz").exists()
-            assert path("$launchDir/kraken2_bin/Assembly/PostProcessing/Metagenomic/BinnedContigs/Kraken2/SAMPLE1.SAMPLE1_Human_immunodeficiency_virus_1.kraken2.binned.assembly.fasta.gz").exists()
-            assert path("$launchDir/kraken2_bin/Assembly/PostProcessing/Metagenomic/BinnedContigs/Kraken2/SAMPLE1.SAMPLE1_Human_immunodeficiency_virus_2.kraken2.binned.assembly.fasta.gz").exists()
-            assert path("$launchDir/kraken2_bin/Assembly/PostProcessing/Metagenomic/BinnedContigs/Kraken2/SAMPLE1.SAMPLE1_Influenza_A_virus.kraken2.binned.assembly.fasta.gz").exists()
-            assert path("$launchDir/kraken2_bin/Assembly/PostProcessing/Metagenomic/BinnedContigs/Kraken2/SAMPLE1.SAMPLE1_Influenza_B_virus.kraken2.binned.assembly.fasta.gz").exists()
-            assert path("$launchDir/kraken2_bin/Assembly/PostProcessing/Metagenomic/BinnedContigs/Kraken2/SAMPLE1.SAMPLE1_Middle_East_respiratory_syndrome-related_coronavirus.kraken2.binned.assembly.fasta.gz").exists()
-            assert path("$launchDir/kraken2_bin/Assembly/PostProcessing/Metagenomic/BinnedContigs/Kraken2/SAMPLE1.SAMPLE1_Severe_acute_respiratory_syndrome-related_coronavirus.kraken2.binned.assembly.fasta.gz").exists()
+            assert path("$outputDir/Assembly/PostProcessing/Metagenomic/BinnedContigs/Kraken2/SAMPLE1.SAMPLE1_Escherichia_virus_Lambda.kraken2.binned.assembly.fasta.gz").exists()
+            assert path("$outputDir/Assembly/PostProcessing/Metagenomic/BinnedContigs/Kraken2/SAMPLE1.SAMPLE1_Human_immunodeficiency_virus_1.kraken2.binned.assembly.fasta.gz").exists()
+            assert path("$outputDir/Assembly/PostProcessing/Metagenomic/BinnedContigs/Kraken2/SAMPLE1.SAMPLE1_Human_immunodeficiency_virus_2.kraken2.binned.assembly.fasta.gz").exists()
+            assert path("$outputDir/Assembly/PostProcessing/Metagenomic/BinnedContigs/Kraken2/SAMPLE1.SAMPLE1_Influenza_A_virus.kraken2.binned.assembly.fasta.gz").exists()
+            assert path("$outputDir/Assembly/PostProcessing/Metagenomic/BinnedContigs/Kraken2/SAMPLE1.SAMPLE1_Influenza_B_virus.kraken2.binned.assembly.fasta.gz").exists()
+            assert path("$outputDir/Assembly/PostProcessing/Metagenomic/BinnedContigs/Kraken2/SAMPLE1.SAMPLE1_Middle_East_respiratory_syndrome-related_coronavirus.kraken2.binned.assembly.fasta.gz").exists()
+            assert path("$outputDir/Assembly/PostProcessing/Metagenomic/BinnedContigs/Kraken2/SAMPLE1.SAMPLE1_Severe_acute_respiratory_syndrome-related_coronavirus.kraken2.binned.assembly.fasta.gz").exists()
 
         }
     }

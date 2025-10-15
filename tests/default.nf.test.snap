@@ -1,0 +1,282 @@
+{
+    "Default test": {
+        "content": [
+            {
+                "ABRICATE": {
+                    "abricate": "1.0.1"
+                },
+                "BANDAGE_IMAGE": {
+                    "bandage": "0.8.1"
+                },
+                "CUSTOM_DUMPSOFTWAREVERSIONS": {
+                    "python": "3.10.6",
+                    "yaml": "6.0"
+                },
+                "FASTP_TRIM": {
+                    "fastp": "0.23.2"
+                },
+                "GZIP_FILES": {
+                    "gzip": "BusyBox v1.22.1"
+                },
+                "MASH_SCREEN": {
+                    "mash": "2.3"
+                },
+                "MINIMAP2_INDEX": {
+                    "minimap2": "2.28-r1209"
+                },
+                "MINIMAP2_MAP": {
+                    "minimap2": "2.28-r1209"
+                },
+                "MLST": {
+                    "mlst": "2.23.0"
+                },
+                "MOBSUITE_RECON": {
+                    "mobsuite": "3.0.3"
+                },
+                "PARSE_MASH": {
+                    "python": "3.12.2"
+                },
+                "PILON_ITER": {
+                    "pilonpolisher": "No version statement listed"
+                },
+                "PUBLISH_FINAL_ASSEMBLIES": {
+                    "mkdir": "8.31",
+                    "mv": "8.31"
+                },
+                "PUBLISH_FINAL_READS": {
+                    "mkdir": "8.31",
+                    "mv": "8.31"
+                },
+                "QUAST": {
+                    "quast": "5.2.0"
+                },
+                "RACON_POLISH": {
+                    "racon": "1.4.20"
+                },
+                "READ_SCAN": {
+                    "python": "3.12.2"
+                },
+                "REMOVE_CONTAMINANTS": {
+                    "minimap2": "2.28-r1209",
+                    "samtools": "1.20"
+                },
+                "REPORT_AGGREGATE": {
+                    "python": "3.12.2"
+                },
+                "SEQKIT_FILTER": {
+                    "seqkit": "2.2.0"
+                },
+                "SEQKIT_STATS": {
+                    "seqkit": "2.2.0"
+                },
+                "SEQTK_SIZE": {
+                    "seqtk": "1.4-r122"
+                },
+                "SPADES_ASSEMBLE": {
+                    "spades": "3.15.5"
+                },
+                "STARAMR": {
+                    "staramr": "0.11.0"
+                },
+                "Workflow": {
+                    "phac-nml/mikrokondo": "0.9.4"
+                }
+            },
+            [
+                "Assembly",
+                "Assembly/Annotation",
+                "Assembly/Annotation/Abricate",
+                "Assembly/Annotation/Abricate/short.abricate.annotation.txt",
+                "Assembly/Annotation/Mobsuite",
+                "Assembly/Annotation/Mobsuite/Recon",
+                "Assembly/Annotation/Mobsuite/Recon/short",
+                "Assembly/Annotation/Mobsuite/Recon/short/short.chromosome.mob.recon.annotation.fasta",
+                "Assembly/Annotation/Mobsuite/Recon/short/short.contig_report.mob.recon.annotation.txt",
+                "Assembly/Annotation/StarAMR",
+                "Assembly/Annotation/StarAMR/short",
+                "Assembly/Annotation/StarAMR/short/short.detailed_summary.staramr.annotation.tsv",
+                "Assembly/Annotation/StarAMR/short/short.mlst.staramr.annotation.tsv",
+                "Assembly/Annotation/StarAMR/short/short.plasmidfinder.staramr.annotation.tsv",
+                "Assembly/Annotation/StarAMR/short/short.resfinder.staramr.annotation.tsv",
+                "Assembly/Annotation/StarAMR/short/short.results.staramr.annotation.xlsx",
+                "Assembly/Annotation/StarAMR/short/short.settings.staramr.annotation.txt",
+                "Assembly/Annotation/StarAMR/short/short.summary.staramr.annotation.tsv",
+                "Assembly/Assembling",
+                "Assembly/Assembling/Bandage",
+                "Assembly/Assembling/Bandage/short.bandage.quality.svg",
+                "Assembly/Assembling/ConsensusGeneration",
+                "Assembly/Assembling/ConsensusGeneration/Polishing",
+                "Assembly/Assembling/ConsensusGeneration/Polishing/Pilon",
+                "Assembly/Assembling/ConsensusGeneration/Polishing/Pilon/BAMs",
+                "Assembly/Assembling/ConsensusGeneration/Polishing/Pilon/BAMs/short.short_2.pilon.bam.bam",
+                "Assembly/Assembling/ConsensusGeneration/Polishing/Pilon/Changes",
+                "Assembly/Assembling/ConsensusGeneration/Polishing/Pilon/Changes/short.short_2.pilon.changes",
+                "Assembly/Assembling/ConsensusGeneration/Polishing/Pilon/Fasta",
+                "Assembly/Assembling/ConsensusGeneration/Polishing/Pilon/Fasta/short.short_polished.pilon.assembly.fasta.gz",
+                "Assembly/Assembling/ConsensusGeneration/Polishing/Pilon/VCF",
+                "Assembly/Assembling/ConsensusGeneration/Polishing/Pilon/VCF/short.short_2.pilon.vcf.vcf",
+                "Assembly/Assembling/ConsensusGeneration/Racon",
+                "Assembly/Assembling/ConsensusGeneration/Racon/Consensus",
+                "Assembly/Assembling/ConsensusGeneration/Racon/Consensus/short.short_assembly_consensus.racon.assembly.fasta.gz",
+                "Assembly/Assembling/Spades",
+                "Assembly/Assembling/Spades/Contigs",
+                "Assembly/Assembling/Spades/Contigs/short.spades.contigs.assembly.fasta.gz",
+                "Assembly/Assembling/Spades/GeneClusters",
+                "Assembly/Assembling/Spades/Graphs",
+                "Assembly/Assembling/Spades/Graphs/short.spades.assembly.graph.gfa.gz",
+                "Assembly/Assembling/Spades/Logs",
+                "Assembly/Assembling/Spades/Logs/short.spades.spades.log",
+                "Assembly/Assembling/Spades/Scaffolds",
+                "Assembly/Assembling/Spades/Scaffolds/short.spades.scaffolds.fasta.gz",
+                "Assembly/Assembling/Spades/Transcripts",
+                "Assembly/FinalAssembly",
+                "Assembly/FinalAssembly/short",
+                "Assembly/FinalAssembly/short/short.final.filtered.assembly.fasta.gz",
+                "Assembly/PostProcessing",
+                "Assembly/PostProcessing/LengthFilteredContigs",
+                "Assembly/PostProcessing/LengthFilteredContigs/SeqKitFilter",
+                "Assembly/PostProcessing/LengthFilteredContigs/SeqKitFilter/short.seqkit.filter.filtered.assembly.fasta.gz",
+                "Assembly/PostProcessing/Speciation",
+                "Assembly/PostProcessing/Speciation/MashScreen",
+                "Assembly/PostProcessing/Speciation/MashScreen/short.mash.screen.taxa.screen.screen",
+                "Assembly/Quality",
+                "Assembly/Quality/QUAST",
+                "Assembly/Quality/QUAST/short",
+                "Assembly/Quality/QUAST/short/basic_stats",
+                "Assembly/Quality/QUAST/short/basic_stats/short.GC_content_plot.quast.quality.pdf",
+                "Assembly/Quality/QUAST/short/basic_stats/short.Nx_plot.quast.quality.pdf",
+                "Assembly/Quality/QUAST/short/basic_stats/short.coverage_histogram.quast.quality.pdf",
+                "Assembly/Quality/QUAST/short/basic_stats/short.cumulative_plot.quast.quality.pdf",
+                "Assembly/Quality/QUAST/short/basic_stats/short.short_polished_GC_content_plot.quast.quality.pdf",
+                "Assembly/Quality/QUAST/short/basic_stats/short.short_polished_coverage_histogram.quast.quality.pdf",
+                "Assembly/Quality/QUAST/short/icarus_viewers",
+                "Assembly/Quality/QUAST/short/icarus_viewers/short.contig_size_viewer.quast.quality.html",
+                "Assembly/Quality/QUAST/short/quast_table",
+                "Assembly/Quality/QUAST/short/quast_table/short.transposed_short.quast.quality.tsv",
+                "Assembly/Quality/QUAST/short/reads_stats",
+                "Assembly/Quality/QUAST/short/reads_stats/short.reads_report.quast.quality.tex",
+                "Assembly/Quality/QUAST/short/reads_stats/short.reads_report.quast.quality.tsv",
+                "Assembly/Quality/QUAST/short/reads_stats/short.reads_report.quast.quality.txt",
+                "Assembly/Quality/QUAST/short/reads_stats/short.reads_stats.quast.quality.err",
+                "Assembly/Quality/QUAST/short/reads_stats/short.reads_stats.quast.quality.log",
+                "Assembly/Quality/QUAST/short/reads_stats/short.short_polished.quast.is.quality.txt",
+                "Assembly/Quality/QUAST/short/reads_stats/short.short_polished.quast.quality.stat",
+                "Assembly/Quality/QUAST/short/reads_stats/short.short_polished.quast.sam.quality.header",
+                "Assembly/Quality/QUAST/short/short.icarus.quast.quality.html",
+                "Assembly/Quality/QUAST/short/short.quast.quality.html",
+                "Assembly/Quality/QUAST/short/short.quast.quality.pdf",
+                "Assembly/Quality/QUAST/short/short.quast.quality.tex",
+                "Assembly/Quality/QUAST/short/short.quast.quality.tsv",
+                "Assembly/Quality/QUAST/short/short.quast.quality.txt",
+                "Assembly/Quality/QUAST/short/short.quast.quast.quality.log",
+                "Assembly/Quality/QUAST/short/short.transposed_short.quast.quality.tex",
+                "Assembly/Quality/QUAST/short/short.transposed_short.quast.quality.tsv",
+                "Assembly/Quality/QUAST/short/short.transposed_short.quast.quality.txt",
+                "Assembly/Quality/SeqKitStats",
+                "Assembly/Quality/SeqKitStats/short.seqkit.stats.summary.tsv",
+                "Assembly/Subtyping",
+                "Assembly/Subtyping/Locidex",
+                "Assembly/Subtyping/Locidex/Select",
+                "Assembly/Subtyping/Locidex/Select/short.short_SelectedLocidexConfig.locidex.db.json",
+                "Assembly/Subtyping/SevenGeneMLST",
+                "Assembly/Subtyping/SevenGeneMLST/short.7.mlst.subtyping.json",
+                "FinalReports",
+                "FinalReports/Aggregated",
+                "FinalReports/Aggregated/Json",
+                "FinalReports/Aggregated/Json/final_report.json",
+                "FinalReports/Aggregated/Tables",
+                "FinalReports/Aggregated/Tables/final_report.tsv",
+                "FinalReports/Aggregated/Tables/final_report_transposed.tsv",
+                "FinalReports/FlattenedReports",
+                "FinalReports/FlattenedReports/short.flat_sample.json.gz",
+                "FinalReports/Sample",
+                "FinalReports/Sample/Json",
+                "FinalReports/Sample/Json/final_report_flattened.json",
+                "Reads",
+                "Reads/FinalReads",
+                "Reads/FinalReads/BaseCounts",
+                "Reads/FinalReads/BaseCounts/short.short_basecounts.seqtk.size.txt",
+                "Reads/FinalReads/short",
+                "Reads/FinalReads/short/short.final.R1.trimmed.reads.fastq.gz",
+                "Reads/FinalReads/short/short.final.R2.trimmed.reads.fastq.gz",
+                "Reads/Processing",
+                "Reads/Processing/Dehosting",
+                "Reads/Processing/Dehosting/Trimmed",
+                "Reads/Processing/Dehosting/Trimmed/FastP",
+                "Reads/Processing/Dehosting/Trimmed/FastP/short.fastp.R1.trimmed.reads.fastq.gz",
+                "Reads/Processing/Dehosting/Trimmed/FastP/short.fastp.R2.trimmed.reads.fastq.gz",
+                "Reads/Processing/Dehosting/Trimmed/MashSketches",
+                "Reads/Processing/Dehosting/Trimmed/MashSketches/short.mash.estimate.msh",
+                "Reads/Processing/Dehosting/short.deconned.R1.deconned.reads.fastq.gz",
+                "Reads/Processing/Dehosting/short.deconned.R2.deconned.reads.fastq.gz",
+                "Reads/Quality",
+                "Reads/Quality/RawReadQuality",
+                "Reads/Quality/RawReadQuality/short.read.scan.summary.json",
+                "Reads/Quality/Trimmed",
+                "Reads/Quality/Trimmed/FastP",
+                "Reads/Quality/Trimmed/FastP/short.fastp.summary.html",
+                "Reads/Quality/Trimmed/FastP/short.fastp.summary.json",
+                "Reads/Quality/Trimmed/MashScreen",
+                "Reads/Quality/Trimmed/MashScreen/short.mash.screen.reads.screen.screen",
+                "bco.json",
+                "iridanext.output.json",
+                "manifest.json",
+                "pipeline_info",
+                "pipeline_info/short.mikrokondo.software.version.yml",
+                "pipeline_info/software_versions.yml",
+                "pipeline_parameters.json"
+            ],
+            [
+                "short.abricate.annotation.txt:md5,69af3321b0bc808b7ef85f102395736f",
+                "short.chromosome.mob.recon.annotation.fasta:md5,79c8d4b96fccf463fcd63643272fc338",
+                "short.contig_report.mob.recon.annotation.txt:md5,d0a686f48befe600e4f4fdea5ad35e89",
+                "short.detailed_summary.staramr.annotation.tsv:md5,58ab4ab0430515aef00291655526ba6f",
+                "short.mlst.staramr.annotation.tsv:md5,69f7018c94f1674a023ca5ccf65de14f",
+                "short.plasmidfinder.staramr.annotation.tsv:md5,06f38f23d6be0fb32bf66d31a517d78c",
+                "short.resfinder.staramr.annotation.tsv:md5,4620ef26ac38f3d8feddabd08e7a1579",
+                "short.summary.staramr.annotation.tsv:md5,e667bde5ec921b4c1e8445fa2b003e06",
+                "short.short_2.pilon.changes:md5,d41d8cd98f00b204e9800998ecf8427e",
+                "short.short_polished.pilon.assembly.fasta.gz:md5,fbc0a79211a992fb01565d3db0605cb0",
+                "short.short_assembly_consensus.racon.assembly.fasta.gz:md5,c61ac498cdc1b855de5cd111b97191fa",
+                "short.spades.contigs.assembly.fasta.gz:md5,510de7197372e9c53d96e54092681abd",
+                "short.spades.assembly.graph.gfa.gz:md5,16e8cc11140c33fe62895c7ea138bbaf",
+                "short.spades.scaffolds.fasta.gz:md5,510de7197372e9c53d96e54092681abd",
+                "short.final.filtered.assembly.fasta.gz:md5,d883c8846fe5452b5a7ff3038ddf7d5f",
+                "short.seqkit.filter.filtered.assembly.fasta.gz:md5,d883c8846fe5452b5a7ff3038ddf7d5f",
+                "short.mash.screen.taxa.screen.screen:md5,4057d29ff77efe2fbfe2c434d19832a9",
+                "short.transposed_short.quast.quality.tsv:md5,28a80b661002181ae543ce43147ee27b",
+                "short.reads_report.quast.quality.tex:md5,a90f27f9565295312a5b4582381371fb",
+                "short.reads_report.quast.quality.tsv:md5,1774171c2d6f19963b49e70333aac25e",
+                "short.reads_report.quast.quality.txt:md5,c95d693094b22b38121ab86b534795a1",
+                "short.short_polished.quast.is.quality.txt:md5,0bb4aec1710521c12ee76289d9440817",
+                "short.short_polished.quast.quality.stat:md5,ba9cf8fe36bbdaa63d5982b3226c9542",
+                "short.quast.quality.tex:md5,400947bc18e3712be12b4b83d191c0f0",
+                "short.quast.quality.tsv:md5,334dbb789171462eb57c1295bae25f58",
+                "short.quast.quality.txt:md5,3491ecee4d67a1232c9fd85a1797bdb3",
+                "short.transposed_short.quast.quality.tex:md5,e5e62d3bebca6a5f5460fd31db9fd2d9",
+                "short.transposed_short.quast.quality.tsv:md5,28a80b661002181ae543ce43147ee27b",
+                "short.transposed_short.quast.quality.txt:md5,34c958540b3ff8291faac5d567010492",
+                "short.seqkit.stats.summary.tsv:md5,8d43322f1f175f140901bd011153d5c9",
+                "short.short_SelectedLocidexConfig.locidex.db.json:md5,f0088d692615b1281724062a7c3f008b",
+                "final_report.tsv:md5,2fae540c380c400291cc1098af78f73f",
+                "final_report_transposed.tsv:md5,7f4c742d546f42ebf72f2a56a5986a6e",
+                "short.short_basecounts.seqtk.size.txt:md5,04b33e373a310541151b29277f90c896",
+                "short.final.R1.trimmed.reads.fastq.gz:md5,588aaec8788a7c42e94e780c633a876c",
+                "short.final.R2.trimmed.reads.fastq.gz:md5,ac3372e43364f374bd7569ed09e4f5a9",
+                "short.fastp.R1.trimmed.reads.fastq.gz:md5,588aaec8788a7c42e94e780c633a876c",
+                "short.fastp.R2.trimmed.reads.fastq.gz:md5,ac3372e43364f374bd7569ed09e4f5a9",
+                "short.mash.estimate.msh:md5,5f8d9008a172826f83df20cad0adf1a7",
+                "short.deconned.R1.deconned.reads.fastq.gz:md5,588aaec8788a7c42e94e780c633a876c",
+                "short.deconned.R2.deconned.reads.fastq.gz:md5,ac3372e43364f374bd7569ed09e4f5a9",
+                "short.read.scan.summary.json:md5,70f4050d665156ed99a9e2ad7a175ead",
+                "short.fastp.summary.json:md5,c77104a5e9c6713ff1abb0c3e20a5d6c",
+                "short.mash.screen.reads.screen.screen:md5,3cac1ed0f33870c4e04e4907cb192c28"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "25.04.8"
+        },
+        "timestamp": "2025-10-09T14:59:30.073372287"
+    }
+}
