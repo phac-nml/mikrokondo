@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### `Updated`
 
 - Adding GitHub CI tests against Nextflow `24.10.3`. [PR #195](https://github.com/phac-nml/mikrokondo/pull/195)
+- Updated the starAMR version to [0.11.1](https://github.com/phac-nml/staramr/releases/tag/0.11.1) [PR #196](https://github.com/phac-nml/mikrokondo/pull/196):
+  - Removed `parse_seqids` from `makeblastdb` command. Fixes issue with contig headers greater than 50 characters.[PR #225](https://github.com/phac-nml/staramr/pull/225) NCBI assembled genomes with accessions in the header will have slightly different contig names.
 
 ## [0.9.4] - 2025-09-25
 
