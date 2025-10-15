@@ -59,8 +59,6 @@ runs:
       env:
         NFT_WORKDIR: ${{ env.NFT_WORKDIR }}
       run: |
-        echo "Before nf-test: Measure resources"; hostname; df -h; echo "Before nf-test: End measure disk usage"
-
         nf-test test \
           --profile=+${{ inputs.profile }} \
           $(if [ -n "${{ inputs.tags }}" ]; then echo "--tag ${{ inputs.tags }}"; fi) \
@@ -68,9 +66,7 @@ runs:
           --changed-since HEAD^ \
           --verbose \
           --tap=test.tap \
-          --shard ${{ inputs.shard }}/${{ inputs.total_shards }} || \
-
-          (echo "After nf-test: Measure disk usage"; hostname; df -h; free -m; echo "After nf-test: End measure disk usage"; exit 1)
+          --shard ${{ inputs.shard }}/${{ inputs.total_shards }}
 
           # Save the absolute path of the test.tap file to the output
           echo "tap_file_path=$(realpath test.tap)" >> $GITHUB_OUTPUT
