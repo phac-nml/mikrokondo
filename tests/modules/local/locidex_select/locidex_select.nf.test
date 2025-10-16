@@ -28,7 +28,7 @@ nextflow_process {
             }
 
             params {
-                outdir = "locidex_select"
+                outdir = "$outputDir"
                 lx_allele_database = "${projectDir}/tests/data/databases/locidex_dbs"
             }
         }
@@ -57,7 +57,7 @@ nextflow_process {
             }
 
             params {
-                outdir = "locidex_select"
+                outdir = "$outputDir"
                 lx_allele_database = "${projectDir}/tests/data/databases/locidex_dbs"
             }
         }
@@ -87,7 +87,7 @@ nextflow_process {
 
 
             params {
-                outdir = "locidex_select"
+                outdir = "$outputDir"
                 lx_allele_database = "${projectDir}/tests/data/databases/locidex_dbs"
             }
 
@@ -117,7 +117,7 @@ nextflow_process {
 
 
             params {
-                outdir = "locidex_select"
+                outdir = "$outputDir"
                 lx_allele_database = "${projectDir}/tests/data/databases/locidex_dbs"
             }
 
@@ -149,7 +149,7 @@ nextflow_process {
 
 
             params {
-                outdir = "locidex_select"
+                outdir = "$outputDir"
                 lx_allele_database = "${projectDir}/tests/data/databases/locidex_dbs"
             }
 
@@ -179,7 +179,7 @@ nextflow_process {
 
 
             params {
-                outdir = "locidex_select"
+                outdir = "$outputDir"
                 lx_allele_database = "${projectDir}/tests/data/databases/locidex_dbs"
             }
 
@@ -209,7 +209,7 @@ nextflow_process {
 
 
             params {
-                outdir = "locidex_select"
+                outdir = "$outputDir"
                 lx_allele_database = "${projectDir}/tests/data/databases/locidex_dbs"
             }
 
@@ -239,7 +239,7 @@ nextflow_process {
 
 
             params {
-                outdir = "locidex_select"
+                outdir = "$outputDir"
                 lx_allele_database = null
                 override_allele_scheme = null
             }
@@ -272,7 +272,7 @@ nextflow_process {
 
 
             params {
-                outdir = "locidex_select"
+                outdir = "$outputDir"
                 lx_allele_database = "${projectDir}/tests/data/databases/locidex_dbs"
             }
 
@@ -311,7 +311,7 @@ nextflow_process {
 
 
             params {
-                outdir = "locidex_select"
+                outdir = "$outputDir"
                 lx_allele_database = "${projectDir}/tests/data/databases/locidex_dbs"
             }
 
@@ -350,7 +350,7 @@ nextflow_process {
 
 
             params {
-                outdir = "locidex_select"
+                outdir = "$outputDir"
                 override_allele_scheme = "${projectDir}/tests/data/databases/locidex_dbs/locidex_vc"
                 lx_allele_database = "${projectDir}/tests/data/databases/locidex_dbs"
             }

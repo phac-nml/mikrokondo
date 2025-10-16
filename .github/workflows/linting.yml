@@ -3,9 +3,6 @@ name: nf-core linting
 # It runs the `nf-core pipelines lint` and markdown lint tests to ensure
 # that the code meets the nf-core guidelines.
 on:
-  push:
-    branches:
-      - dev
   pull_request:
   release:
     types: [published]
@@ -16,17 +13,16 @@ jobs:
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
-      - name: Set up Python 3.12
-        uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5
+      - name: Set up Python 3.13
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
         with:
-          python-version: "3.12"
+          python-version: "3.13"
 
       - name: Install pre-commit
         run: pip install pre-commit
 
       - name: Run pre-commit
-        #run: pre-commit run --all-files
-        run: pre-commit run --files nf-test.config
+        run: pre-commit run --all-files
 
   nf-core:
     runs-on: ubuntu-latest
@@ -37,13 +33,13 @@ jobs:
       - name: Install Nextflow
         uses: nf-core/setup-nextflow@v2
 
-      - uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
         with:
-          python-version: "3.12"
+          python-version: "3.13"
           architecture: "x64"
 
       - name: read .nf-core.yml
-        uses: pietrobolcato/action-read-yaml@1.1.0
+        uses: pietrobolcato/action-read-yaml@9f13718d61111b69f30ab4ac683e67a56d254e1d # 1.1.0
         id: read_yml
         with:
           config: ${{ github.workspace }}/.nf-core.yml
@@ -54,7 +50,7 @@ jobs:
           pip install nf-core==${{ steps.read_yml.outputs['nf_core_version'] }}
 
       - name: Run nf-core pipelines lint
-        if: ${{ github.base_ref != 'master' }}
+        if: ${{ github.base_ref != 'master' && github.base_ref != 'main' }}
         env:
           GITHUB_COMMENTS_URL: ${{ github.event.pull_request.comments_url }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -62,7 +58,7 @@ jobs:
         run: nf-core -l lint_log.txt pipelines lint --dir ${GITHUB_WORKSPACE} --markdown lint_results.md
 
       - name: Run nf-core pipelines lint --release
-        if: ${{ github.base_ref == 'master' }}
+        if: ${{ github.base_ref == 'master' || github.base_ref == 'main' }}
         env:
           GITHUB_COMMENTS_URL: ${{ github.event.pull_request.comments_url }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -75,7 +71,7 @@ jobs:
 
       - name: Upload linting log file artifact
         if: ${{ always() }}
-        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: linting-logs
           path: |
