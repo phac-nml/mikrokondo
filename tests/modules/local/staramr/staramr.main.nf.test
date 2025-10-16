@@ -1,0 +1,33 @@
+nextflow_process {
+    name "Test Process STARAMR_SEARCH"
+    script "modules/local/staramr.nf"
+    process "STARAMR"
+
+    test("Test when STARAMR_SEARCH runs on fasta files with long headers (50+ characters)") {
+        tag "STARAMR_SEARCH_long_header"
+        when {
+            process {
+                """
+                input[0] = Channel.of(
+                    [[id:"test_id", sample:"Salmonella", external_id:"Salmonella", hybrid:false, assembly:true, downsampled:false, single_end:false, merge:false],
+                    "$baseDir/tests/data/genomes/misc/long-header.fasta",
+                    []])
+                input[1] = Channel.empty()
+                """
+            }
+
+            params {
+                outdir = "results"
+            }
+        }
+
+        then {
+            assert process.success
+            // Check the output
+            //assert path("$launchDir/results/staramr/test_id_results/test_id_summary.staramr.tsv").exists()
+            //def test_id_summary = new File("$launchDir/results/staramr/test_id_results/test_id_summary.staramr.tsv")
+            //def test_id_summary_text = test_id_summary.readLines().get(1)
+            //assert test_id_summary_text == 'irida_id\ttest_id\tFailed\tNone\tSusceptible\t-\tNone\t-\t-\t720\t720\t1\tGenome length is not within the acceptable length range [4000000,6000000] ; N50 value is not greater than the specified minimum value [10000]'
+        }
+    }
+}
