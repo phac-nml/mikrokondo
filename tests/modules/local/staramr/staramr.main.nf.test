@@ -8,26 +8,27 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = Channel.of(
-                    [[id:"test_id", sample:"Salmonella", external_id:"Salmonella", hybrid:false, assembly:true, downsampled:false, single_end:false, merge:false],
-                    "$baseDir/tests/data/genomes/misc/long-header.fasta",
-                    []])
-                input[1] = Channel.empty()
+                input[0] = [[id:"test_id"],
+                    file("${projectDir}/tests/data/genomes/misc/long-header.fasta"),
+                    []]
+                input[1] = []
                 """
             }
 
             params {
-                outdir = "results"
+                outdir = "$outputDir"
+                max_cpus = 4
+                max_memory = '6.GB'
             }
         }
 
         then {
             assert process.success
             // Check the output
-            //assert path("$launchDir/results/staramr/test_id_results/test_id_summary.staramr.tsv").exists()
-            //def test_id_summary = new File("$launchDir/results/staramr/test_id_results/test_id_summary.staramr.tsv")
-            //def test_id_summary_text = test_id_summary.readLines().get(1)
-            //assert test_id_summary_text == 'irida_id\ttest_id\tFailed\tNone\tSusceptible\t-\tNone\t-\t-\t720\t720\t1\tGenome length is not within the acceptable length range [4000000,6000000] ; N50 value is not greater than the specified minimum value [10000]'
+            assert path("${outputDir}/Assembly/Annotation/StarAMR/test_id/test_id.summary.staramr.annotation.tsv").exists()
+            def test_id_summary = new File("${outputDir}/Assembly/Annotation/StarAMR/test_id/test_id.summary.staramr.annotation.tsv")
+            def test_id_summary_text = test_id_summary.readLines().get(1)
+            assert test_id_summary_text == 'long-header\tFailed\tNone\tSusceptible\t-\tNone\t-\t-\t720\t720\t1\tGenome length is not within the acceptable length range [4000000,6000000] ; N50 value is not greater than the specified minimum value [10000]'
         }
     }
 }
