@@ -47,9 +47,6 @@ workflow ANNOTATE_GENOMES {
         abricated = ABRICATE(contig_data, params.abricate.db_runs)
         abricate_report = abricated.report
         versions = versions.mix(abricated.versions)
-        reports = reports.mix(abricated.report.map{
-            meta, report -> tuple(meta, params.abricate, report);
-        })
     }
 
     if(!params.skip_mobrecon){
