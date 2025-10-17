@@ -9,7 +9,7 @@ nextflow_pipeline {
         when {
             params {
                 input = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/samplesheets/samplesheet-campy-staph.csv"
-                outdir = "results"
+                outdir = "$outputDir"
 
                 platform = "illumina"
 
@@ -26,7 +26,7 @@ nextflow_pipeline {
                 skip_staramr = true
                 skip_mobrecon = true
                 skip_checkm = true
-                skip_raw_read_metrics = true
+                skip_raw_read_metrics = false
                 skip_polishing = true
                 skip_allele_calling = true
 
@@ -37,10 +37,10 @@ nextflow_pipeline {
 
         then {
             assert workflow.success
-            assert path("$launchDir/results").exists()
+            assert path("$outputDir").exists()
 
             // parse output json file
-            def json = path("$launchDir/results/FinalReports/Aggregated/Json/final_report.json").json
+            def json = path("$outputDir/FinalReports/Aggregated/Json/final_report.json").json
 
             assert json.CSE.CSE.FastP.summary.sequencing.equals("paired end (150 cycles + 150 cycles)")
             assert json.CSE.CSE.FastP.summary.before_filtering.total_reads.equals(248)
@@ -55,14 +55,14 @@ nextflow_pipeline {
             assert json.CSE.meta.merge.equals(false)
             assert json.CSE.meta.downsampled.equals(false)
 
-            def assembly_path = "$launchDir/results/Assembly/FinalAssembly/CSE/CSE.final.filtered.assembly.fasta.gz"
+            def assembly_path = "$outputDir/Assembly/FinalAssembly/CSE/CSE.final.filtered.assembly.fasta.gz"
             assert path(assembly_path).exists().equals(false)
 
-            def contigs_path = "$launchDir/results/Assembly/FinalAssembly"
+            def contigs_path = "$outputDir/Assembly/FinalAssembly"
             assert path(contigs_path).exists().equals(false)
 
             // compare IRIDA Next JSON output
-            def iridanext_json = path("$launchDir/results/iridanext.output.json").json
+            def iridanext_json = path("$outputDir/iridanext.output.json").json
             def iridanext_global = iridanext_json.files.global
             def iridanext_samples = iridanext_json.files.samples
             def iridanext_metadata = iridanext_json.metadata.samples
@@ -74,29 +74,29 @@ nextflow_pipeline {
             assert iridanext_samples.CSE.findAll { it.path.contains("Assembly/FinalReports/FlattenedReports/CSE.flat_sample.json.gz") }.size() == 0
 
             // metadata
-            assert iridanext_metadata.CSE.containsKey("QC Status")
-            assert iridanext_metadata.CSE."QC Status" == "FAILED"
-            assert !iridanext_metadata.CSE.containsKey("Checkm Status")
-            assert !iridanext_metadata.CSE.containsKey("Checkm Value")
-            assert !iridanext_metadata.CSE.containsKey("Average Coverage Status")
-            assert !iridanext_metadata.CSE.containsKey("Average Coverage Value")
-            assert !iridanext_metadata.CSE.containsKey("n50 Status")
-            assert !iridanext_metadata.CSE.containsKey("n50 Value")
+            assert iridanext_metadata.CSE.containsKey("qc_status_overall")
+            assert iridanext_metadata.CSE."qc_status_overall" == "FAILED"
+            assert !iridanext_metadata.CSE.containsKey("qc_status_contamination")
+            assert !iridanext_metadata.CSE.containsKey("checkm_value")
+            assert !iridanext_metadata.CSE.containsKey("qc_status_read_depth_fixed")
+            assert !iridanext_metadata.CSE.containsKey("mean_read_depth_fixed")
+            assert !iridanext_metadata.CSE.containsKey("qc_status_assembly_n50")
+            assert !iridanext_metadata.CSE.containsKey("n50_value")
             assert !iridanext_metadata.CSE.containsKey("Raw Average Quality Status")
-            assert !iridanext_metadata.CSE.containsKey("Raw Average Quality Value")
-            assert !iridanext_metadata.CSE.containsKey("Length Status")
-            assert !iridanext_metadata.CSE.containsKey("Length Value")
-            assert !iridanext_metadata.CSE.containsKey("nr contigs Status")
-            assert !iridanext_metadata.CSE.containsKey("nr contigs Value")
-            assert iridanext_metadata.CSE."QC Summary" == "FAILED Species ID: No organism specific QC data available.; Passed Tests: 0/6; Organism QC Criteria: No organism specific QC data available."
+            assert iridanext_metadata.CSE.containsKey("raw_average_quality_value")
+            assert !iridanext_metadata.CSE.containsKey("qc_status_assembly_genome_size")
+            assert !iridanext_metadata.CSE.containsKey("assembly_length")
+            assert !iridanext_metadata.CSE.containsKey("qc_status_assembly_num_contigs")
+            assert !iridanext_metadata.CSE.containsKey("assembly_num_contigs")
+            assert iridanext_metadata.CSE."qc_summary" == "FAILED Species ID: No organism specific QC data available.; Passed Tests: 1/6; Organism QC Criteria: No organism specific QC data available."
 
             assert iridanext_metadata.CSE."Downsampled" == false
             assert !iridanext_metadata.CSE.containsKey("predicted_identification_name")
             assert !iridanext_metadata.CSE.containsKey("predicted_identification_method")
-            assert !iridanext_metadata.CSE.containsKey("GC (%)")
+            assert !iridanext_metadata.CSE.containsKey("gc")
             //assert iridanext_metadata.CSE."Mean Sequence Length Forward" == 150
             // Base count after decontamination
-            assert iridanext_metadata.CSE."BaseCount" == 37200
+            assert iridanext_metadata.CSE.total_sequenced_bases == 787500
         }
     }
 
@@ -106,7 +106,7 @@ nextflow_pipeline {
         when {
             params {
                 input = "https://raw.githubusercontent.com/phac-nml/mikrokondo/refs/heads/dev/tests/data/samplesheets/samplesheet-small-assembly-inx.csv"
-                outdir = "results"
+                outdir = "$outputDir"
                 platform = "illumina"
 
                 mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
@@ -119,6 +119,12 @@ nextflow_pipeline {
                 skip_allele_calling = true
 
                 QCReport {
+                    escherichia{search = "Escherichia"}
+                    salmonella{search = "Salmonella"}
+                    listeria{search = "Listeria"}
+                    shigella{search = "Shigella"}
+                    staphylococcus{search = "Staphylococcus"}
+                    klebsiella{search = "Klebsiella"}
                     fallthrough {
                         search = "No organism specific QC data available."
                         raw_average_quality = 30
@@ -150,10 +156,10 @@ nextflow_pipeline {
         then {
 
             assert workflow.success
-            assert path("$launchDir/results").exists()
+            assert path("$outputDir").exists()
 
             // parse output json file
-            def json = path("$launchDir/results/FinalReports/Aggregated/Json/final_report.json").json
+            def json = path("$outputDir/FinalReports/Aggregated/Json/final_report.json").json
             assert json.short.short.RawReadSummary.R1."total_bp".equals(118750)
             assert json.short.short.RawReadSummary.R1."total_reads".equals(475)
             assert json.short.short.RawReadSummary.R1."read_qual_mean".equals(40.0)
@@ -192,7 +198,7 @@ nextflow_pipeline {
 
             assert json.short.short.Abricate."0".RESISTANCE.equals("NoData")  // All Abricate results for this are "NoData".
 
-            def assembly_path = "$launchDir/results/Assembly/FinalAssembly/short/short.final.filtered.assembly.fasta.gz"
+            def assembly_path = "$outputDir/Assembly/FinalAssembly/short/short.final.filtered.assembly.fasta.gz"
             assert path(assembly_path).exists()
 
             // parse assembly file
@@ -200,7 +206,7 @@ nextflow_pipeline {
             assert assembly_header.startsWith(">NODE_1_length_4949_cov_23.917254")  // _pilon_pilon_pilon gets appended
 
             // compare IRIDA Next JSON output
-            def iridanext_json = path("$launchDir/results/iridanext.output.json").json
+            def iridanext_json = path("$outputDir/iridanext.output.json").json
             def iridanext_global = iridanext_json.files.global
             def iridanext_samples = iridanext_json.files.samples
             def iridanext_metadata = iridanext_json.metadata.samples
@@ -218,7 +224,7 @@ nextflow_pipeline {
             assert iridanext_samples.INX.findAll { it.path == "FinalReports/FlattenedReports/short.flat_sample.json.gz" }.size() == 1
 
             // output metadata
-            assert iridanext_metadata.INX."QC Status" == "PASSED"
+            assert iridanext_metadata.INX."qc_status_overall" == "PASSED"
 
         }
 
@@ -231,7 +237,7 @@ nextflow_pipeline {
         when {
             params {
                 input = "https://raw.githubusercontent.com/phac-nml/mikrokondo/dev/tests/data/samplesheets/samplesheet-small-assembly.csv"
-                outdir = "results"
+                outdir = "$outputDir"
 
                 platform = "illumina"
 
@@ -246,6 +252,12 @@ nextflow_pipeline {
                 skip_allele_calling = true
 
                 QCReport {
+                    escherichia{search = "Escherichia"}
+                    salmonella{search = "Salmonella"}
+                    listeria{search = "Listeria"}
+                    klebsiella{search = "Klebsiella"}
+                    shigella{search = "Shigella"}
+                    staphylococcus{search = "Staphylococcus"}
                     fallthrough {
                         search = "No organism specific QC data available."
                         raw_average_quality = 30
@@ -277,10 +289,10 @@ nextflow_pipeline {
         then {
 
             assert workflow.success
-            assert path("$launchDir/results").exists()
+            assert path("$outputDir").exists()
 
             // parse output json file
-            def json = path("$launchDir/results/FinalReports/Aggregated/Json/final_report.json").json
+            def json = path("$outputDir/FinalReports/Aggregated/Json/final_report.json").json
 
             assert json.short.short.RawReadSummary.R1."total_bp".equals(118750)
             assert json.short.short.RawReadSummary.R1."total_reads".equals(475)
@@ -320,7 +332,7 @@ nextflow_pipeline {
 
             assert json.short.short.Abricate."0".RESISTANCE.equals("NoData")  // All Abricate results for this are "NoData".
 
-            def assembly_path = "$launchDir/results/Assembly/FinalAssembly/short/short.final.filtered.assembly.fasta.gz"
+            def assembly_path = "$outputDir/Assembly/FinalAssembly/short/short.final.filtered.assembly.fasta.gz"
             assert path(assembly_path).exists()
 
             // parse assembly file
@@ -328,7 +340,7 @@ nextflow_pipeline {
             assert assembly_header.startsWith(">NODE_1_length_4949_cov_23.917254")  // _pilon_pilon_pilon gets appended
 
             // compare IRIDA Next JSON output
-            def iridanext_json = path("$launchDir/results/iridanext.output.json").json
+            def iridanext_json = path("$outputDir/iridanext.output.json").json
             def iridanext_global = iridanext_json.files.global
             def iridanext_samples = iridanext_json.files.samples
             def iridanext_metadata = iridanext_json.metadata.samples
@@ -344,32 +356,48 @@ nextflow_pipeline {
             assert iridanext_samples.short.findAll { it.path == "Reads/Quality/Trimmed/FastP/short.fastp.summary.json" }.size() == 1
             assert iridanext_samples.short.findAll { it.path == "Reads/Quality/RawReadQuality/short.read.scan.summary.json" }.size() == 1
             assert iridanext_samples.short.findAll { it.path == "FinalReports/FlattenedReports/short.flat_sample.json.gz" }.size() == 1
+            assert iridanext_samples.short.findAll { it.path == "pipeline_info/short.mikrokondo.software.version.yml" }.size() == 1
+            assert iridanext_samples.short.findAll { it.path == "pipeline_info/short.mikrokondo.parameters.json" }.size() == 1
 
             // output metadata
-            assert iridanext_metadata.short."QC Status" == "PASSED"
-            assert iridanext_metadata.short."Checkm Status" == "PASSED"
-            assert iridanext_metadata.short."Checkm Value" == 0.0
-            assert iridanext_metadata.short."Average Coverage Status" == "PASSED"
-            assert iridanext_metadata.short."Average Coverage Value" == 237.5
-            assert iridanext_metadata.short."n50 Status" == "WARNING"
-            assert iridanext_metadata.short."n50 Value" == 4949
-            assert iridanext_metadata.short."Raw Average Quality Status" == "PASSED"
-            assert iridanext_metadata.short."Raw Average Quality Value" == 40.0
-            assert iridanext_metadata.short."Length Status" == "WARNING"
-            assert iridanext_metadata.short."Length Value" == 4949
-            assert iridanext_metadata.short."nr contigs Status" == "WARNING"
-            assert iridanext_metadata.short."nr contigs Value" == 1
-            assert iridanext_metadata.short."QC Summary" == "PASSED Species ID: No Species Identified; Passed Tests: 6/6; Organism QC Criteria: No organism specific QC data available."
+            assert iridanext_metadata.short."qc_status_overall" == "PASSED"
+            assert iridanext_metadata.short."qc_status_contamination" == "PASSED"
+            assert iridanext_metadata.short."checkm_value" == 0.0
+            assert iridanext_metadata.short."qc_status_read_depth_fixed" == "PASSED"
+            assert iridanext_metadata.short."mean_read_depth_fixed" == 237.5
+            assert iridanext_metadata.short."qc_status_assembly_n50" == "WARNING"
+            assert iridanext_metadata.short."n50_value" == 4949
+            assert iridanext_metadata.short."qc_status_read_qual" == "PASSED"
+            assert iridanext_metadata.short."raw_average_quality_value" == 40.0
+            assert iridanext_metadata.short."qc_status_assembly_genome_size" == "WARNING"
+            assert iridanext_metadata.short."assembly_length" == 4949
+            assert iridanext_metadata.short."qc_status_assembly_num_contigs" == "WARNING"
+            assert iridanext_metadata.short."assembly_num_contigs" == 1
+            assert iridanext_metadata.short."qc_summary" == "PASSED Species ID: No Species Identified; Passed Tests: 6/6; Organism QC Criteria: No organism specific QC data available."
 
             assert iridanext_metadata.short."Downsampled" == false
             assert iridanext_metadata.short."predicted_identification_name" == "No Species Identified"
             assert iridanext_metadata.short."predicted_identification_method" == "Mash"
-            assert iridanext_metadata.short."GC (%)" == "52.96"
+            assert iridanext_metadata.short."gc" == "52.96"
+            // the manifest information is not available in the test to verify the correct version is actually being retrieved
+            // So a key check will suffice
+            assert iridanext_metadata.short.containsKey("mikrokondo_version")
             assert iridanext_metadata.short."Mean Sequence Length Forward" == 250
-            assert iridanext_metadata.short."BaseCount" == 237500
+            assert iridanext_metadata.short."total_sequenced_bases" == 237500
 
             assert iridanext_metadata.short."StarAMR Genotype" == "None"
             assert iridanext_metadata.short."StarAMR Predicted Phenotype" == "Susceptible"
+
+            // Check that the pipline_info parameters file contains the expected parameters
+            def parameters_json = path("$outputDir/pipeline_info/short.mikrokondo.parameters.json").json
+            assert parameters_json.input == "https://raw.githubusercontent.com/phac-nml/mikrokondo/dev/tests/data/samplesheets/samplesheet-small-assembly.csv"
+            assert parameters_json.outdir.endsWith("/output")
+            assert parameters_json.platform == "illumina"
+            assert parameters_json.mh_min_kmer == 1
+            assert parameters_json.mash_sketch == "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
+            assert parameters_json.locidex.min_evalue == 0.0001
+
+
         }
 
     }
@@ -380,7 +408,7 @@ nextflow_pipeline {
         when {
             params {
                 input = "https://raw.githubusercontent.com/phac-nml/mikrokondo/dev/tests/data/samplesheets/samplesheet-small-assembly.csv"
-                outdir = "results"
+                outdir = "$outputDir"
 
                 platform = "illumina"
 
@@ -395,6 +423,12 @@ nextflow_pipeline {
                 skip_allele_calling = true
 
                 QCReport {
+                    escherichia{search = "Escherichia"}
+                    salmonella{search = "Salmonella"}
+                    listeria{search = "Listeria"}
+                    shigella{search = "Shigella"}
+                    klebsiella{search = "Klebsiella"}
+                    staphylococcus{search = "Staphylococcus"}
                     fallthrough {
                         search = "No organism specific QC data available."
                         raw_average_quality = 30
@@ -426,10 +460,10 @@ nextflow_pipeline {
         then {
 
             assert workflow.success
-            assert path("$launchDir/results").exists()
+            assert path("$outputDir").exists()
 
             // parse output json file
-            def json = path("$launchDir/results/FinalReports/Aggregated/Json/final_report.json").json
+            def json = path("$outputDir/FinalReports/Aggregated/Json/final_report.json").json
 
             assert json.short.short.RawReadSummary.R1."total_bp".equals(118750)
             assert json.short.short.RawReadSummary.R1."total_reads".equals(475)
@@ -469,7 +503,7 @@ nextflow_pipeline {
 
             assert json.short.short.Abricate."0".RESISTANCE.equals("NoData")  // All Abricate results for this are "NoData".
 
-            def assembly_path = "$launchDir/results/Assembly/FinalAssembly/short/short.final.filtered.assembly.fasta.gz"
+            def assembly_path = "$outputDir/Assembly/FinalAssembly/short/short.final.filtered.assembly.fasta.gz"
             assert path(assembly_path).exists()
 
             // parse assembly file
@@ -477,7 +511,7 @@ nextflow_pipeline {
             assert assembly_header.startsWith(">NODE_1_length_4949_cov_23.917254")  // _pilon_pilon_pilon gets appended
 
             // compare IRIDA Next JSON output
-            def iridanext_json = path("$launchDir/results/iridanext.output.json").json
+            def iridanext_json = path("$outputDir/iridanext.output.json").json
             def iridanext_global = iridanext_json.files.global
             def iridanext_samples = iridanext_json.files.samples
             def iridanext_metadata = iridanext_json.metadata.samples
@@ -493,29 +527,31 @@ nextflow_pipeline {
             assert iridanext_samples.short.findAll { it.path == "Reads/Quality/Trimmed/FastP/short.fastp.summary.json" }.size() == 1
             assert iridanext_samples.short.findAll { it.path == "Reads/Quality/RawReadQuality/short.read.scan.summary.json" }.size() == 1
             assert iridanext_samples.short.findAll { it.path == "FinalReports/FlattenedReports/short.flat_sample.json.gz" }.size() == 1
+            assert iridanext_samples.short.findAll { it.path == "pipeline_info/short.mikrokondo.software.version.yml" }.size() == 1
+            assert iridanext_samples.short.findAll { it.path == "pipeline_info/short.mikrokondo.parameters.json" }.size() == 1
 
             // output metadata
-            assert iridanext_metadata.short."QC Status" == "FAILED"
-            assert iridanext_metadata.short."Checkm Status" == "PASSED"
-            assert iridanext_metadata.short."Checkm Value" == 0.0
-            assert iridanext_metadata.short."Average Coverage Status" == "FAILED"
-            assert iridanext_metadata.short."Average Coverage Value" == 0.24
-            assert iridanext_metadata.short."n50 Status" == "WARNING"
-            assert iridanext_metadata.short."n50 Value" == 4949
-            assert iridanext_metadata.short."Raw Average Quality Status" == "PASSED"
-            assert iridanext_metadata.short."Raw Average Quality Value" == 40.0
-            assert iridanext_metadata.short."Length Status" == "WARNING"
-            assert iridanext_metadata.short."Length Value" == 4949
-            assert iridanext_metadata.short."nr contigs Status" == "WARNING"
-            assert iridanext_metadata.short."nr contigs Value" == 1
-            assert iridanext_metadata.short."QC Summary" == "FAILED Species ID: No Species Identified; Passed Tests: 5/6; Organism QC Criteria: No organism specific QC data available."
+            assert iridanext_metadata.short."qc_status_overall" == "FAILED"
+            assert iridanext_metadata.short."qc_status_contamination" == "PASSED"
+            assert iridanext_metadata.short."checkm_value" == 0.0
+            assert iridanext_metadata.short."qc_status_read_depth_fixed" == "FAILED"
+            assert iridanext_metadata.short."mean_read_depth_fixed" == 0.24
+            assert iridanext_metadata.short."qc_status_assembly_n50" == "WARNING"
+            assert iridanext_metadata.short."n50_value" == 4949
+            assert iridanext_metadata.short."qc_status_read_qual" == "PASSED"
+            assert iridanext_metadata.short."raw_average_quality_value" == 40.0
+            assert iridanext_metadata.short."qc_status_assembly_genome_size" == "WARNING"
+            assert iridanext_metadata.short."assembly_length" == 4949
+            assert iridanext_metadata.short."qc_status_assembly_num_contigs" == "WARNING"
+            assert iridanext_metadata.short."assembly_num_contigs" == 1
+            assert iridanext_metadata.short.qc_summary == "FAILED Species ID: No Species Identified; Passed Tests: 5/6; Organism QC Criteria: No organism specific QC data available."
 
             assert iridanext_metadata.short."Downsampled" == false
             assert iridanext_metadata.short."predicted_identification_name" == "No Species Identified"
             assert iridanext_metadata.short."predicted_identification_method" == "Mash"
-            assert iridanext_metadata.short."GC (%)" == "52.96"
+            assert iridanext_metadata.short."gc" == "52.96"
             assert iridanext_metadata.short."Mean Sequence Length Forward" == 250
-            assert iridanext_metadata.short."BaseCount" == 237500
+            assert iridanext_metadata.short."total_sequenced_bases" == 237500
 
             assert iridanext_metadata.short."StarAMR Genotype" == "None"
             assert iridanext_metadata.short."StarAMR Predicted Phenotype" == "Susceptible"
@@ -529,7 +565,7 @@ nextflow_pipeline {
         when {
             params {
                 input = "https://raw.githubusercontent.com/phac-nml/mikrokondo/dev/tests/data/samplesheets/samplesheet-small-assembly.csv"
-                outdir = "results"
+                outdir = "$outputDir"
 
                 platform = "illumina"
 
@@ -551,7 +587,7 @@ nextflow_pipeline {
                 skip_checkm = false
                 skip_raw_read_metrics = false
                 skip_polishing = false
-
+                fail_on_metagenomic = false
                 max_memory = "2.GB"
                 max_cpus = 1
             }
@@ -560,11 +596,11 @@ nextflow_pipeline {
         then {
 
             assert workflow.success
-            assert path("$launchDir/results").exists()
+            assert path("$outputDir").exists()
             // parse output json file
-            def iridanext_json = path("$launchDir/results/iridanext.output.json").json
-            assert iridanext_json.metadata.samples.short."QC Status" == "NA"
-            assert iridanext_json.metadata.samples.short."QC Summary" ==  "No quality control criteria is applied for metagenomic samples."
+            def iridanext_json = path("$outputDir/iridanext.output.json").json
+            assert iridanext_json.metadata.samples.short."qc_status_overall" == "NA"
+            assert iridanext_json.metadata.samples.short.qc_summary ==  "No quality control criteria is applied for metagenomic samples."
 
         }
     }
@@ -575,7 +611,7 @@ nextflow_pipeline {
         when {
             params {
                 input = "$baseDir/tests/data/samplesheets/samplesheet-small-metagenomic.csv"
-                outdir = "results"
+                outdir = "$outputDir"
 
                 platform = "illumina"
 
@@ -601,11 +637,11 @@ nextflow_pipeline {
         then {
 
             assert workflow.success
-            assert path("$launchDir/results").exists()
+            assert path("$outputDir").exists()
             // parse output json file
-            def iridanext_json = path("$launchDir/results/iridanext.output.json").json
-            assert iridanext_json.metadata.samples."meta-small"."QC Status" == "FAILED"
-            assert iridanext_json.metadata.samples."meta-small"."QC Summary" ==  "[FAILED] Sample was determined to be metagenomic and this was not specified as a metagenomic run indicating contamination."
+            def iridanext_json = path("$outputDir/iridanext.output.json").json
+            assert iridanext_json.metadata.samples."meta-small"."qc_status_overall" == "FAILED"
+            assert iridanext_json.metadata.samples."meta-small".qc_summary ==  "[FAILED] Sample was determined to be metagenomic and this was not specified as a metagenomic run indicating contamination."
 
         }
     }
@@ -616,7 +652,7 @@ nextflow_pipeline {
         when {
             params {
                 input = "https://raw.githubusercontent.com/phac-nml/mikrokondo/dev/tests/data/samplesheets/samplesheet-small-assembly.csv"
-                outdir = "results"
+                outdir = "$outputDir"
 
                 mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
                 mh_min_kmer = 1
@@ -653,7 +689,7 @@ nextflow_pipeline {
         when {
             params {
                 input = "https://raw.githubusercontent.com/phac-nml/mikrokondo/dev/tests/data/samplesheets/samplesheet-small-assembly.csv"
-                outdir = "results"
+                outdir = "$outputDir"
 
                 platform = "illumina"
 
@@ -693,7 +729,7 @@ nextflow_pipeline {
         when {
             params {
                 input = "https://raw.githubusercontent.com/phac-nml/mikrokondo/dev/tests/data/samplesheets/samplesheet-small-assembly.csv"
-                outdir = "results"
+                outdir = "$outputDir"
 
                 platform = "illumina"
 
@@ -732,7 +768,7 @@ nextflow_pipeline {
         when {
             params {
                 input = "https://raw.githubusercontent.com/phac-nml/mikrokondo/dev/tests/data/samplesheets/samplesheet-small-assembly.csv"
-                outdir = "results"
+                outdir = "$outputDir"
 
                 platform = "illumina"
 
@@ -771,7 +807,7 @@ nextflow_pipeline {
         when {
             params {
                 input = "https://raw.githubusercontent.com/phac-nml/mikrokondo/dev/tests/data/samplesheets/samplesheet-small-assembly.csv"
-                outdir = "results"
+                outdir = "$outputDir"
 
                 platform = "illumina"
 
@@ -801,4 +837,382 @@ nextflow_pipeline {
             assert workflow.stderr.contains("* Missing required parameter: --dehosting_idx")
         }
     }
+
+    test("Halt execution due to sample being metagenomic") {
+    tag "halt_metagenomic_progress"
+
+        when {
+            params {
+                input = "$baseDir/tests/data/samplesheets/samplesheet-small-metagenomic.csv"
+                outdir = "$outputDir"
+
+                platform = "illumina"
+
+                mash_sketch = "$baseDir/tests/data/databases/virus.msh"
+                mh_min_kmer = 1
+
+                dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+                kraken2_db = "$baseDir/tests/data/kraken2/test"
+                min_reads = 2
+                skip_allele_calling = true
+                skip_bakta = true
+                skip_staramr = false
+                skip_mobrecon = false
+                skip_checkm = false
+                skip_raw_read_metrics = false
+                skip_polishing = false
+                fail_on_metagenomic = true
+
+                max_memory = "2.GB"
+                max_cpus = 1
+            }
+        }
+
+        then {
+
+            assert workflow.success
+            assert path("$outputDir").exists()
+            // parse output json file
+            def iridanext_json = path("$outputDir/iridanext.output.json").json
+            assert iridanext_json.metadata.samples."meta-small".qc_status_overall == "FAILED"
+            assert iridanext_json.metadata.samples."meta-small".qc_summary ==  "[FAILED] Sample was determined to be metagenomic and 'fail_on_metagenomic' was set to true."
+
+        }
+    }
+
+    test("Halt execution due to sample being metagenomic isolate should continue progress") {
+    tag "halt_metagenomic_progress_isolate_continue"
+
+        when {
+            params {
+                input = "$baseDir/tests/data/samplesheets/samplesheet-metagenomic-isolate.csv"
+                outdir = "$outputDir"
+
+                platform = "illumina"
+
+                mash_sketch = "$baseDir/tests/data/databases/virus.msh"
+                mh_min_kmer = 1
+
+                dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+                kraken2_db = "$baseDir/tests/data/kraken2/test"
+                min_reads = 2
+                skip_allele_calling = true
+                skip_bakta = true
+                skip_staramr = false
+                skip_mobrecon = false
+                skip_checkm = false
+                skip_raw_read_metrics = false
+                skip_polishing = false
+                fail_on_metagenomic = true
+
+                max_memory = "2.GB"
+                max_cpus = 1
+            }
+        }
+
+        then {
+
+            assert workflow.success
+            assert path("$outputDir").exists()
+            // parse output json file
+            def iridanext_json = path("$outputDir/iridanext.output.json").json
+            assert iridanext_json.metadata.samples."meta-small".qc_status_overall == "FAILED"
+            assert iridanext_json.metadata.samples."meta-small".qc_summary ==  "[FAILED] Sample was determined to be metagenomic and 'fail_on_metagenomic' was set to true."
+
+            def json = path("$outputDir/FinalReports/Aggregated/Json/final_report.json").json
+
+            assert json.short.short.RawReadSummary.R1."total_bp".equals(118750)
+            assert json.short.short.RawReadSummary.R1."total_reads".equals(475)
+            assert json.short.short.RawReadSummary.R1."read_qual_mean".equals(40.0)
+            assert json.short.short.RawReadSummary.R1."mean_sequence_length".equals(250.0)
+
+            assert json.short.short.FastP.summary.sequencing.equals("paired end (250 cycles + 250 cycles)")
+            assert json.short.short.FastP.summary.before_filtering.total_reads.equals(950)
+            assert json.short.short.FastP.filtering_result.passed_filter_reads.equals(950)
+            assert json.short.short.FastP.filtering_result.low_quality_reads.equals(0)
+            assert json.short.short.FastP.insert_size.peak.equals(347)
+
+            //assert json.short.meta.metagenomic.equals(false)  // Currently, this is "null".
+            assert json.short.meta.assembly.equals(false)
+            assert json.short.meta.hybrid.equals(false)
+            assert json.short.meta.single_end.equals(false)
+            assert json.short.meta.merge.equals(false)
+            assert json.short.meta.downsampled.equals(false)
+
+            assert json.short.short.AssemblyCompleted.equals(true)
+            assert json.short.short.QUAST."0"."Total length (>= 0 bp)".equals("4949")
+            assert json.short.short.QUAST."0"."Largest contig".equals("4949")
+            assert json.short.short.QUAST."0"."GC (%)".equals("52.96")
+            assert json.short.short.QUAST."0"."Avg. coverage depth".equals("47")
+
+            // Below two values should be empty
+            assert json.short.short.StarAMR."0"."Genotype".equals("None")
+            assert json.short.short.StarAMR."0"."Predicted Phenotype".equals("Susceptible")
+            assert json.short.short.StarAMR."0"."Genome Length".equals("4949")
+
+            assert json.short.short.CheckM."0"."# genomes".equals("5656")
+            assert json.short.short.CheckM."0"."# markers".equals("56")
+            assert json.short.short.CheckM."0"."# marker sets".equals("24")
+            assert json.short.short.CheckM."0".Contamination.equals("0.00")
+
+            assert json.short.short.SevenGeneMLSTReport[0].filename.equals("short.filtered.fasta.gz")
+
+            assert json.short.short.Abricate."0".RESISTANCE.equals("NoData")  // All Abricate results for this are "NoData".
+
+            def assembly_path = "$outputDir/Assembly/FinalAssembly/short/short.final.filtered.assembly.fasta.gz"
+            assert path(assembly_path).exists()
+
+            // parse assembly file
+            def assembly_header = path(assembly_path).linesGzip[0]
+            assert assembly_header.startsWith(">NODE_1_length_4949_cov_23.917254")  // _pilon_pilon_pilon gets appended
+
+            // compare IRIDA Next JSON output
+            def iridanext_global = iridanext_json.files.global
+            def iridanext_samples = iridanext_json.files.samples
+            def iridanext_metadata = iridanext_json.metadata.samples
+
+            // output files
+            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Json/final_report.json" }.size() == 1
+            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Tables/final_report.tsv" }.size() == 1
+            assert iridanext_samples.short.findAll { it.path == "Assembly/FinalAssembly/short/short.final.filtered.assembly.fasta.gz" }.size() == 1
+            assert iridanext_samples.short.findAll { it.path == "Assembly/Quality/QUAST/short/short.transposed_short.quast.quality.tsv" }.size() == 1
+            assert iridanext_samples.short.findAll { it.path == "Assembly/Quality/SeqKitStats/short.seqkit.stats.summary.tsv" }.size() == 1
+            assert iridanext_samples.short.findAll { it.path == "Assembly/PostProcessing/Speciation/MashScreen/short.mash.screen.taxa.screen.screen" }.size() == 1
+            assert iridanext_samples.short.findAll { it.path == "Reads/Quality/Trimmed/MashScreen/short.mash.screen.reads.screen.screen" }.size() == 1
+            assert iridanext_samples.short.findAll { it.path == "Reads/Quality/Trimmed/FastP/short.fastp.summary.json" }.size() == 1
+            assert iridanext_samples.short.findAll { it.path == "Reads/Quality/RawReadQuality/short.read.scan.summary.json" }.size() == 1
+            assert iridanext_samples.short.findAll { it.path == "FinalReports/FlattenedReports/short.flat_sample.json.gz" }.size() == 1
+            assert iridanext_samples.short.findAll { it.path == "pipeline_info/short.mikrokondo.software.version.yml" }.size() == 1
+            assert iridanext_samples.short.findAll { it.path == "pipeline_info/short.mikrokondo.parameters.json" }.size() == 1
+
+            // output metadata
+            assert iridanext_metadata.short.qc_status_overall == "FAILED"
+        }
+    }
+
+    test("Nanopore Full Test") {
+    tag "nanopore_test"
+
+        when {
+            params {
+                input = "$baseDir/tests/data/samplesheets/samplesheet-nanopore.csv"
+                outdir = "$outputDir"
+
+                platform = "nanopore"
+
+                mash_sketch = "$baseDir/tests/data/databases/virus.msh"
+                mh_min_kmer = 1
+                nanopore_chemistry = "r941_min_hac_g507"
+
+                dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+                kraken2_db = "$baseDir/tests/data/kraken2/test"
+                min_reads = 2
+                skip_allele_calling = true
+                skip_bakta = true
+                skip_staramr = false
+                skip_mobrecon = false
+                skip_checkm = true
+                skip_raw_read_metrics = false
+                skip_polishing = true
+                fail_on_metagenomic = true
+
+                max_memory = "2.GB"
+                max_cpus = 1
+            }
+        }
+
+        then {
+
+            assert workflow.success
+            assert path("$outputDir").exists()
+            def iridanext_json = path("$outputDir/iridanext.output.json").json
+            def iridanext_global = iridanext_json.files.global
+            def iridanext_samples = iridanext_json.files.samples
+            def iridanext_metadata = iridanext_json.metadata.samples
+            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Json/final_report.json" }.size() == 1
+            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Tables/final_report.tsv" }.size() == 1
+            assert iridanext_samples.Senterica_simulated.findAll { it.path == "Assembly/FinalAssembly/Senterica_simulated/Senterica_simulated.final.filtered.assembly.fasta.gz" }.size() == 1
+            def sample = iridanext_metadata.Senterica_simulated
+            assert sample.gc == "51.51"
+            assert sample.raw_average_quality_value == 13.4
+            assert sample.n50_value == 214772
+            assert sample.assembly_num_contigs == 1
+            assert sample.assembly_length == 214772
+        }
+    }
+
+    test("Hybrid Assembly Full Test") {
+    tag "hybrid_test"
+
+        when {
+            params {
+                input = "$baseDir/tests/data/samplesheets/samplesheet-hybrid.csv"
+                outdir = "$outputDir"
+
+                platform = "hybrid"
+
+                mash_sketch = "$baseDir/tests/data/databases/virus.msh"
+                mh_min_kmer = 1
+                nanopore_chemistry = "r941_min_hac_g507"
+
+                dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+                kraken2_db = "$baseDir/tests/data/kraken2/test"
+                min_reads = 2
+                skip_allele_calling = true
+                skip_bakta = true
+                skip_staramr = false
+                skip_mobrecon = false
+                skip_checkm = true
+                skip_raw_read_metrics = false
+                skip_polishing = false
+                fail_on_metagenomic = true
+
+                max_memory = "2.GB"
+                max_cpus = 1
+            }
+        }
+
+        then {
+
+            assert workflow.success
+            assert path("$outputDir").exists()
+            def iridanext_json = path("$outputDir/iridanext.output.json").json
+            def iridanext_global = iridanext_json.files.global
+            def iridanext_samples = iridanext_json.files.samples
+            def iridanext_metadata = iridanext_json.metadata.samples
+            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Json/final_report.json" }.size() == 1
+            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Tables/final_report.tsv" }.size() == 1
+            assert iridanext_samples.Senterica_hybrid.findAll { it.path == "Assembly/FinalAssembly/Senterica_hybrid/Senterica_hybrid.final.filtered.assembly.fasta.gz" }.size() == 1
+            def sample = iridanext_metadata.Senterica_hybrid
+            assert sample.gc == "51.49"
+            assert sample.raw_average_quality_value == 22.83
+            assert sample.n50_value == 214466
+            assert sample.assembly_num_contigs == 1
+            assert sample.assembly_length == 214466
+
+
+
+        }
+    }
+
+
+    test("Test max_samples: fails due to limit") {
+    tag "fail_max_samples"
+
+        when {
+
+            params {
+                input = "$baseDir/tests/data/samplesheets/samplesheet-make-names-unique.csv"
+                outdir = "$outputDir"
+
+                min_reads = 1
+                max_samples = 2
+                mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
+                mh_min_kmer = 1
+                skip_read_merging = true
+                dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+
+                kraken2_db = "$baseDir/tests/data/kraken2/test"
+
+
+                max_memory = "2.GB"
+                max_cpus = 1
+            }
+
+        }
+
+        then {
+
+            // Check the error-log file
+            def max_sample_log = "$outputDir/error/max_samples_exceeded.error.txt"
+            assert file(max_sample_log).exists()
+            assert path(max_sample_log).readLines().contains("4 samples were selected, which exceeds the maximum number of samples: 2")
+
+            // Check IRIDA Next JSON output
+            assert path("$outputDir/iridanext.output.json").exists()
+
+            def iridanext_json = path("$outputDir/iridanext.output.json").json
+            def iridanext_global = iridanext_json.files.global.path
+
+            assert iridanext_global == ['error/max_samples_exceeded.error.txt']
+        }
+
+    }
+
+    test("Test max_samples: succeeds within limit") {
+    tag "pass_within_max_samples"
+
+        when {
+
+            params {
+                input = "$baseDir/tests/data/samplesheets/samplesheet-make-names-unique.csv"
+                outdir = "$outputDir"
+
+                min_reads = 1
+                max_samples = 10
+                mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
+                mh_min_kmer = 1
+                skip_read_merging = true
+                dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+                skip_allele_calling = true
+
+                kraken2_db = "$baseDir/tests/data/kraken2/test"
+
+
+                max_memory = "2.GB"
+                max_cpus = 1
+            }
+
+        }
+
+        then {
+
+            assert workflow.success
+            assert workflow.exitStatus == 0
+            // Check the error-log file not produced
+            def max_sample_log = "$outputDir/error/max_samples_exceeded.error.txt"
+            assert !(file(max_sample_log).exists())
+        }
+
+    }
+
+    test("Test max_samples: succeeds with no-limit") {
+    tag "pass_unlimited_max_samples"
+
+        when {
+
+            params {
+                input = "$baseDir/tests/data/samplesheets/samplesheet-make-names-unique.csv"
+                outdir = "$outputDir"
+
+                min_reads = 1
+                max_samples = 0 // Confirms that 0, or the default, acts as "unlimited samples"
+                mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
+                mh_min_kmer = 1
+                skip_read_merging = true
+                dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+                skip_allele_calling = true
+
+                kraken2_db = "$baseDir/tests/data/kraken2/test"
+
+
+                max_memory = "2.GB"
+                max_cpus = 1
+            }
+
+        }
+
+        then {
+
+            assert workflow.success
+            assert workflow.exitStatus == 0
+
+            // Check the error-log file not produced
+            def max_sample_log = "$outputDir/error/max_samples_exceeded.error.txt"
+            assert !(file(max_sample_log).exists())
+        }
+
+    }
+
+
 }

@@ -3,11 +3,128 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### `Updated`
+
+- Updated the starAMR version to [0.11.1](https://github.com/phac-nml/staramr/releases/tag/0.11.1) [PR #196](https://github.com/phac-nml/mikrokondo/pull/196):
+  - Removed `parse_seqids` from `makeblastdb` command. Fixes issue with contig headers greater than 50 characters.[PR #225](https://github.com/phac-nml/staramr/pull/225) NCBI assembled genomes with accessions in the header will have slightly different contig names.
+- Updated minimum version of Nextflow used by mikrokondo to `24.10.3` and updated GitHub CI to test against this version (removed tests against Nextflow `latest-everything`). [PR #195](https://github.com/phac-nml/mikrokondo/pull/195) and [PR #196](https://github.com/phac-nml/mikrokondo/pull/196).
+- Updating GitHub CI tests and nf-tests to fix nf-core linting issues and improve performance of CI testing. [PR #196](https://github.com/phac-nml/mikrokondo/pull/196)
+
+## [0.9.4] - 2025-09-25
+
+### `Added`
+
+- Added a IRIDA Next specific parameter: `max_samples`. `max_samples` is used to limit the number of samples the pipeline will run with. When the number of samples is >= `max_samples` all processes are skipped an an error file is produced `max_samples_exceeded.error.txt`. [PR 191](https://github.com/phac-nml/mikrokondo/pull/191)
+
+## [0.9.3] - 2025-09-12
+
+### `Fixed`
+
+- Locidex failures in due to incorrect container logic in IRIDANext. [PR 192](https://github.com/phac-nml/mikrokondo/pull/192)
+
+## [0.9.2] - 2025-09-12
+
+### `Updated`
+
+- Updated locidex to version 0.4.0. [PR 189](https://github.com/phac-nml/mikrokondo/pull/189)
+
+### `Changed`
+
+- Renamed metadata field `TotalLoci` to `TotalLociInSchme`. [PR 189](https://github.com/phac-nml/mikrokondo/pull/189)
+
+- Renamed metadata field `AllelesPresent` to `LociPresent`. [PR 189](https://github.com/phac-nml/mikrokondo/pull/189)
+
+- Locidex default report mode is now `conservative` mode instead of normal. [PR 189](https://github.com/phac-nml/mikrokondo/pull/189)
+
+### `Added`
+
+- Metadata fields, `locidex_loci_no_blast_hit`, `locidex_loci_single_blast_hit`, `locidex_loci_with_mulitple_values`, `locidex_loci_no_nucleotide_hits` and `locidex_loci_no_protein_hits`. [PR 189](https://github.com/phac-nml/mikrokondo/pull/189)
+
+## [0.9.1] - 2025-08-15
+
+### `Fixed`
+
+- Fixed issue with incorrect cardinality of elements passed to channel in hybrid assemblies. [PR 184](https://github.com/phac-nml/mikrokondo/pull/184)
+
+## [0.9.0] - 2025-08-11
+
+### `Changed`
+
+- Changed default search parameter for **Escherichia coli** to **Escherichia**. [PR 181](https://github.com/phac-nml/mikrokondo/pull/181/files)
+
+- Removed individual seven gene mlst results from IRIDANext config. [PR 180](https://github.com/phac-nml/mikrokondo/pull/180)
+
+- `fastq_scan.py` script was refactored to reduce resource usage. [PR 179](https://github.com/phac-nml/mikrokondo/pull/179)
+
+### `Fixed`
+
+- Added missing `report_tag` value to `rasusa` in the `nextflow.config` file which was causing [Issue #182](https://github.com/phac-nml/mikrokondo/issues/182). [PR 181](https://github.com/phac-nml/mikrokondo/pull/181/files)
+
+## [0.8.1] - 2025-07-04
+
+### `Added`
+
+- When `--skip_version_gathering` is `false`, a `{sample}.mikrokondo.parameters.json` and `{sample}.mikrokondo.software.version.yml` is generated. These files collect all the software versions used in the pipeline and the parameters selected. Note: Parameters are recorded at the pipeline level, individual sample parameters are not included.
+
+## [0.8.0] - 2025-06-19
+
+### `Changed`
+
+- Added `predicted_primary_type_name`, `predicted_primary_type_method`, `predicted_secondary_type_name`, and `predicted_secondary_type_method` fields, which are output to Irida Next as `PrimaryTypeID`, `PrimaryTypeIDMethod`, `SecondaryTypeID`, and `SecondaryTypeIDMethod`, respectively. [PR 168](https://github.com/phac-nml/mikrokondo/pull/168)
+
+## [0.7.1] - 2025-05-22
+
+### `Changed`
+
+- Fixed container string for `ectyper` docker and singularity containers. [PR 173](https://github.com/phac-nml/mikrokondo/pull/173)
+
+## [0.7.0] - 2025-05-21
+
+### `Changed`
+
+- Renamed `n50 Status` and `n50 Value` to `qc_status_assembly_n50` and `n50_value` respectively. [PR 166](https://github.com/phac-nml/mikrokondo/pull/166)
+
+- Added the ECTyper speciation results to shigella outputs. [PR 166](https://github.com/phac-nml/mikrokondo/pull/166)
+
+### `Update`
+
+- Update SISTR docker/singularity build (1->2). [PR 170](https://github.com/phac-nml/mikrokondo/pull/170)
+
+- Update ECTyper docker/singularity build (3->4). [PR 170](https://github.com/phac-nml/mikrokondo/pull/170)
+
+## [0.6.1] - 2025-04-28
+
+### `Fixed`
+
+- Updated new parameter positions in `nextflow_schema.json`
+
+## [0.6.0] - 2025-04-25
+
+### `Changed`
+
+- Updated StarAMR to latest release v0.11.0 and modified tests to reflect new outputs. [PR 153](https://github.com/phac-nml/mikrokondo/pull/153)
+
+- Changed the name of multiple metadata fields mentioned in [issue 148](https://github.com/phac-nml/mikrokondo/issues/148). [PR 159](https://github.com/phac-nml/mikrokondo/pull/159).
+
+- Updated ECTyper to version 2.0.0 and SISTR to version 1.1.3 [PR 161](https://github.com/phac-nml/mikrokondo/pull/161).
+
+- Shigella samples are now fed into ECTyper version 2.0.0 [PR 161](https://github.com/phac-nml/mikrokondo/pull/161).
+
+### `Added`
+
+- Added mikrokondo version to the output reports. [PR 160](https://github.com/phac-nml/mikrokondo/pull/160)
+
+- Added new control flow parameter `fail_on_metagenomic` which prevents samples from undergoing additional downstream processing. [PR 158](https://github.com/phac-nml/mikrokondo/pull/158)
+
+- Added additional logic for setting the `predicted_id` and `predicted_id_method` fields. [PR 159](https://github.com/phac-nml/mikrokondo/pull/159)
+
 ## [0.5.1] - 2025-02-25
 
 ### `Added`
 
-- Added a configuration file  `conf/equivalent_taxa.json` for denoting equivalent taxa to prevent falsely flagging samples as metagenomic when multiple genera are present. [PR 150](https://github.com/phac-nml/mikrokondo/pull/150)
+- Added a configuration file `conf/equivalent_taxa.json` for denoting equivalent taxa to prevent falsely flagging samples as metagenomic when multiple genera are present. [PR 150](https://github.com/phac-nml/mikrokondo/pull/150)
 
 ## [0.5.0] - 2024-11-27
 
@@ -25,7 +142,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - RASUSA now used for down sampling of Nanopore or PacBio data. [PR 125](https://github.com/phac-nml/mikrokondo/pull/125)
 
-- Default *Listeria* quality control parameters apply only to *monocytogenes* now. [PR 142](https://github.com/phac-nml/mikrokondo/pull/142)
+- Default _Listeria_ quality control parameters apply only to _monocytogenes_ now. [PR 142](https://github.com/phac-nml/mikrokondo/pull/142)
 
 ### `Updated`
 
@@ -57,7 +174,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Changed default option for `override_allele_scheme` from `null` to "" (evaluates to false). [PR 109](https://github.com/phac-nml/mikrokondo/pull/109)
 
-
 ## [0.4.0] - 2024-09-04
 
 ### `Changed`
@@ -71,7 +187,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated TSeemann's MLST default container to use version 2.23.0 of `mlst`. See [PR 97](https://github.com/phac-nml/mikrokondo/pull/97)
 
 - Moved allele schema parameters under one option in the nextflow_schema.json. See [PR 104](https://github.com/phac-nml/mikrokondo/pull/104)
-
 
 ### `Fixed`
 
@@ -112,7 +227,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### `Added`
 
 - Altered name of stored `SpeciesTopHit` field in the irida-next.config, and added a field displaying the field name used addressing [PR 90](https://github.com/phac-nml/mikrokondo/pull/90)
-
 
 ## [0.2.1] - 2024-06-03
 
@@ -198,6 +312,18 @@ Initial release of phac-nml/mikrokondo. Mikrokondo currently supports: read trim
 
 - Added integration testing using [nf-test](https://www.nf-test.com/).
 
+[0.9.4]: https://github.com/phac-nml/mikrokondo/releases/tag/0.9.4
+[0.9.3]: https://github.com/phac-nml/mikrokondo/releases/tag/0.9.3
+[0.9.2]: https://github.com/phac-nml/mikrokondo/releases/tag/0.9.2
+[0.9.1]: https://github.com/phac-nml/mikrokondo/releases/tag/0.9.1
+[0.9.0]: https://github.com/phac-nml/mikrokondo/releases/tag/0.9.0
+[0.8.1]: https://github.com/phac-nml/mikrokondo/releases/tag/0.8.1
+[0.8.0]: https://github.com/phac-nml/mikrokondo/releases/tag/0.8.0
+[0.7.1]: https://github.com/phac-nml/mikrokondo/releases/tag/0.7.1
+[0.7.0]: https://github.com/phac-nml/mikrokondo/releases/tag/0.7.0
+[0.6.1]: https://github.com/phac-nml/mikrokondo/releases/tag/0.6.1
+[0.6.0]: https://github.com/phac-nml/mikrokondo/releases/tag/0.6.0
+[0.5.1]: https://github.com/phac-nml/mikrokondo/releases/tag/0.5.1
 [0.5.0]: https://github.com/phac-nml/mikrokondo/releases/tag/0.5.0
 [0.4.2]: https://github.com/phac-nml/mikrokondo/releases/tag/0.4.2
 [0.4.1]: https://github.com/phac-nml/mikrokondo/releases/tag/0.4.1

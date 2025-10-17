@@ -1,5 +1,5 @@
 repository_type: pipeline
-nf_core_version: "3.1.1"
+nf_core_version: "3.3.2"
 lint:
   files_exist:
     - CODE_OF_CONDUCT.md
@@ -12,6 +12,8 @@ lint:
     - docs/output.md
     - docs/README.md
     - docs/usage.md
+    - conf/igenomes_ignored.config
+    - ro-crate-metadata.json
   files_unchanged:
     - LICENSE
     - .github/CONTRIBUTING.md
@@ -20,6 +22,7 @@ lint:
     - .github/PULL_REQUEST_TEMPLATE.md
     - .github/workflows/branch.yml
     - .github/workflows/linting.yml
+    - .github/workflows/linting_comment.yml
     - assets/email_template.html
     - assets/email_template.txt
     - assets/sendmail_template.txt
@@ -31,5 +34,12 @@ lint:
     - params.max_memory
     - params.max_time
   multiqc_config: False
+  nf_test_content:
+    - tests/main.nf.test
 template:
   prefix: phac-nml
+  name: mikrokondo
+  description: Mikrokondo Pipeline
+  version: 0.9.4
+  outdir: .
+  is_nfcore: false

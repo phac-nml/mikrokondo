@@ -2,7 +2,7 @@
 
 <!-- [![Cite with Zenodo](http://img.shields.io/badge/DOI-10.5281/zenodo.XXXXXXX-1073c8?labelColor=000000)](https://doi.org/10.5281/zenodo.XXXXXXX) -->
 
-[![Nextflow](https://img.shields.io/badge/nextflow%20DSL2-%E2%89%A523.04.0-23aa62.svg)](https://www.nextflow.io/)
+[![Nextflow](https://img.shields.io/badge/nextflow%20DSL2-%E2%89%A524.10.3-23aa62.svg)](https://www.nextflow.io/)
 <!-- [![run with conda](http://img.shields.io/badge/run%20with-conda-3EB049?labelColor=000000&logo=anaconda)](https://docs.conda.io/en/latest/) -->
 [![run with docker](https://img.shields.io/badge/run%20with-docker-0db7ed?labelColor=000000&logo=docker)](https://www.docker.com/)
 [![run with singularity](https://img.shields.io/badge/run%20with-singularity-1d355c.svg?labelColor=000000)](https://sylabs.io/docs/)
@@ -92,8 +92,8 @@ Besides the Nextflow run time (requires Java), and container engine the dependen
 ## Step 4: Further resources to download
 
 - [GTDB Mash Sketch](https://zenodo.org/record/8408361): required for speciation and determination if sample is metagenomic
-- [Decontamination Index](https://zenodo.org/record/8408557): Required for decontamination of reads (it is simply a minimap2 index)
-- [Kraken2 nt database](https://benlangmead.github.io/aws-indexes/k2): Required for binning of metagenomic data and is an alternative to using Mash for speciation
+- [Decontamination Index](https://zenodo.org/records/13969103): Required for decontamination of reads (it is simply a minimap2 index)
+- [Kraken2 database](https://benlangmead.github.io/aws-indexes/k2): Required for binning of metagenomic data and is an alternative to using Mash for speciation
 - [Bakta database](https://zenodo.org/record/7669534): Running Bakta is optional and there is a light database option, however the full one is recommended. You will have to unzip and un-tar the database for usage. You can skip running Bakta however making the requirement of downloading this database **optional**.
 - [StarAMR database](https://github.com/phac-nml/staramr#database-build): Running StarAMR is optional and requires downloading the StarAMR databases. Also if you wish to avoid downloading the database, the container for StarAMR has a database included which mikrokondo will default to using if one is not specified making this requirement **optional**.
 

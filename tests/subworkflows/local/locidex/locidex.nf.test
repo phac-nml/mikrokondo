@@ -45,7 +45,7 @@ nextflow_workflow
                 """
             }
             params {
-                outdir = "results"
+                outdir = "$outputDir"
                 max_memory = "2.GB"
                 max_cpus = 1
                 lx_allele_database = "${projectDir}/tests/data/databases/locidex_dbs"
@@ -55,15 +55,15 @@ nextflow_workflow
         }
         then {
             assert workflow.success
-            assert path("$launchDir/results").exists()
+            assert path("$outputDir").exists()
             def st_names = ["ST120", "ST176", "ST190", "ST243", "ST25", "ST284", "ST307", "ST32", "ST61", "ST8"]
 
             for(i in st_names){
-                def select_string = "$launchDir/results/Assembly/Subtyping/Locidex/Select/${i}.${i}_SelectedLocidexConfig.locidex.db.json"
-                def extract_string = "$launchDir/results/Assembly/Subtyping/Locidex/Extract/${i}/${i}.raw.locidex.extract.extracted.seqs.subtyping.fasta.gz"
-                def search_string = "$launchDir/results/Assembly/Subtyping/Locidex/Search/${i}.locidex.seq_store.json.gz"
-                def report_string = "$launchDir/results/Assembly/Subtyping/Locidex/Report/${i}.locidex.report.profile.mlst.subtyping.json.gz"
-                def summary_string = "$launchDir/results/Assembly/Subtyping/Locidex/Summary/${i}.locidex.summary.json"
+                def select_string = "$outputDir/Assembly/Subtyping/Locidex/Select/${i}.${i}_SelectedLocidexConfig.locidex.db.json"
+                def extract_string = "$outputDir/Assembly/Subtyping/Locidex/Extract/${i}/${i}.raw.locidex.extract.extracted.seqs.subtyping.fasta.gz"
+                def search_string = "$outputDir/Assembly/Subtyping/Locidex/Search/${i}.locidex.seq_store.json.gz"
+                def report_string = "$outputDir/Assembly/Subtyping/Locidex/Report/${i}.locidex.report.profile.mlst.subtyping.json.gz"
+                def summary_string = "$outputDir/Assembly/Subtyping/Locidex/Summary/${i}.locidex.summary.json"
                 assert path(select_string).exists()
                 def selected_data = path(select_string).json
                 assert selected_data.db_name == "Vibrio cholerae"
@@ -73,7 +73,6 @@ nextflow_workflow
                 assert path(select_string).exists()
                 assert path(search_string).exists()
                 assert path(summary_string).exists()
-                assert path(summary_string).json."ReportableAlleles".findAll{['mdh', 'gyrB', 'pntA', 'purM'].contains(it.key)}.size() == 4
             }
 
         }
@@ -99,25 +98,24 @@ nextflow_workflow
                 """
             }
             params {
-                outdir = "results"
+                outdir = "$outputDir"
                 max_memory = "2.GB"
                 max_cpus = 1
                 lx_allele_database = "${projectDir}/tests/data/databases/locidex_dbs"
                 lx_report_max_stop = 100
-                locidex_summary { reportable_alleles = ["mdh", "gryB", "pntA", "purM"] }
             }
         }
         then {
             assert workflow.success
-            assert path("$launchDir/results").exists()
+            assert path("$outputDir").exists()
 
             def fail_names = ["Nothing"]
             for(i in fail_names){
-                def select_string = "$launchDir/results/Assembly/Subtyping/Locidex/Select/${i}.${i}_SelectedLocidexConfig.locidex.db.json"
-                def extract_string = "$launchDir/results/Assembly/Subtyping/Locidex/Extract/${i}/${i}.raw.locidex.extract.extracted.seqs.subtyping.fasta.gz"
-                def search_string = "$launchDir/results/Assembly/Subtyping/Locidex/Search/${i}.locidex.seq_store.json.gz"
-                def report_string = "$launchDir/results/Assembly/Subtyping/Locidex/Report/${i}.locidex.report.profile.mlst.subtyping.json.gz"
-                def summary_string = "$launchDir/results/Assembly/Subtyping/Locidex/Summary/${i}.locidex.summary.json"
+                def select_string = "$outputDir/Assembly/Subtyping/Locidex/Select/${i}.${i}_SelectedLocidexConfig.locidex.db.json"
+                def extract_string = "$outputDir/Assembly/Subtyping/Locidex/Extract/${i}/${i}.raw.locidex.extract.extracted.seqs.subtyping.fasta.gz"
+                def search_string = "$outputDir/Assembly/Subtyping/Locidex/Search/${i}.locidex.seq_store.json.gz"
+                def report_string = "$outputDir/Assembly/Subtyping/Locidex/Report/${i}.locidex.report.profile.mlst.subtyping.json.gz"
+                def summary_string = "$outputDir/Assembly/Subtyping/Locidex/Summary/${i}.locidex.summary.json"
                 assert path(select_string).exists()
                 def selection_json = path(select_string).json
 

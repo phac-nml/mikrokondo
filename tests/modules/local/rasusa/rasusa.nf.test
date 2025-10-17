@@ -14,7 +14,7 @@ nextflow_process {
 
         when {
             params {
-                outdir = "rasusa_test1"
+                outdir = "$outputDir"
                 modules_testdata_base_path = 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
             }
 
@@ -36,4 +36,3 @@ nextflow_process {
     }
 
 }
-

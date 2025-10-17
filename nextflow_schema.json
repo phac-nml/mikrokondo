@@ -2,7 +2,7 @@
     "$schema": "https://json-schema.org/draft-07/schema",
     "$id": "https://raw.githubusercontent.com/phac-nml/mikrokondo/main/nextflow_schema.json",
     "title": "phac-nml/mikrokondo pipeline parameters",
-    "description": "Mikrokondo beta",
+    "description": "Mikrokondo",
     "type": "object",
     "definitions": {
         "input_output_options": {
@@ -34,6 +34,13 @@
                     "fa_icon": "fas fa-folder-open",
                     "hidden": true,
                     "pattern": "^\\S+$"
+                },
+                "max_samples": {
+                    "type": "integer",
+                    "default": 0,
+                    "description": "Limit the number of samples run by pipeline",
+                    "minimum": 0,
+                    "hidden": true
                 },
                 "platform": {
                     "type": "string",
@@ -137,9 +144,7 @@
                     "description": "Specify the path to an allele calling schema to be used. This schema will be used for allele calling of all samples.",
                     "exists": true,
                     "pattern": "^\\S*$",
-                    "format": "directory-path",
-                    "default": "",
-                    "help_text": ""
+                    "format": "directory-path"
                 }
             }
         },
@@ -440,6 +445,10 @@
                 "skip_length_filtering_contigs": {
                     "type": "boolean",
                     "description": "Skip filtering contigs by length."
+                },
+                "fail_on_metagenomic": {
+                    "type": "boolean",
+                    "description": "Samples which are determined to be metagenomic will not be assembled."
                 }
             }
         },
@@ -481,6 +490,16 @@
                     "type": "boolean",
                     "default": true,
                     "description": "Enable species verification in ECTyper"
+                },
+                "ec_pathpid": {
+                    "type": "integer",
+                    "default": 90,
+                    "description": "Minimum percent identity threshold for pathotype and shiga toxin subtyping results filtering."
+                },
+                "ec_pathcov": {
+                    "type": "integer",
+                    "default": 50,
+                    "description": "Minimum percent coverage threshold for pathotype and shiga toxin subtyping results filtering."
                 }
             }
         },
@@ -663,7 +682,7 @@
                 },
                 "lx_report_mode": {
                     "type": "string",
-                    "default": "normal",
+                    "default": "conservative",
                     "description": "Allele profile assignment.",
                     "enum": [
                         "normal",
@@ -737,7 +756,7 @@
                 "nanopore_chemistry": {
                     "type": "string",
                     "description": "The guppy base calling model. See the docs for a link of valid options",
-                    "pattern": "^[A-Za-z0-9_-]*$"
+                    "pattern": "^[.A-Za-z0-9_-]*$"
                 },
                 "flye_read_type": {
                     "type": "string",

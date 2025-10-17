@@ -1,7 +1,5 @@
 /*Generate mikrokondo report
 
-
-TODO test fallthrough QC params
 */
 
 import groovy.json.JsonSlurper
@@ -17,7 +15,6 @@ process REPORT{
     val test_in
 
     output:
-    // TODO update final_report.json to constants
     path output_file_path, emit: final_report
 
     exec:
@@ -31,11 +28,13 @@ process REPORT{
         return
     }
 
-    def sample_data = [:] // Where to aggergate and create json data
+    def sample_data = [:] // Where to aggregate and create json data
     def data_stride = 3 // report values added in groups of three, e.g sample meta info, parameters, output file of interest
     def headers_list = 'headers' // ! TODO this string exists twice, need to fix that
     def arr_size = test_in.size()
     def qc_species_tag = "QCParameterSelection"
+    def mikrokondo_version = workflow.manifest.version
+    def mk_version_fields = "MikrokondoVersion"
     for(long i = 0; i < arr_size; i=i+data_stride){
         def meta_data = test_in[i]
         def report_tag = test_in[i+1]
@@ -70,8 +69,9 @@ process REPORT{
                 report_value = output_data
             }
         }
-
         sample_data[meta_data.sample][meta_data.id][report_tag.report_tag] = report_value
+        // Add in mikrokondo version field for each sample so that it can be stored externally with the sample
+        sample_data[meta_data.sample][meta_data.id][mk_version_fields] = mikrokondo_version
     }
 
 
@@ -247,6 +247,12 @@ def create_action_call(sample_data, species_tag){
                     final_message = "No QC Summary is provided for metagenomic samples."
                     qc_summary = "No quality control criteria is applied for metagenomic samples."
                     sample_status = "NA"
+                }else if(params.fail_on_metagenomic){
+                    qc_summary = "[FAILED] Sample was determined to be metagenomic and 'fail_on_metagenomic' was set to true."
+                    final_message = "[FAILED] Sample was determined to be metagenomic and this was not specified as" +
+                    " a metagenomic run indicating contamination REISOLATION AND RESEQUENCING RECOMMENDED." +
+                    "There is additionally a possibility that your sample could not be identified as it is novel and " +
+                    "not included in the program used to taxonomically classify your pipeline (however this is an unlikely culprit)."
                 }else{
                     qc_summary = "[FAILED] Sample was determined to be metagenomic and this was not specified as a metagenomic run indicating contamination."
                     final_message = "[FAILED] Sample was determined to be metagenomic and this was not specified as" +
@@ -465,7 +471,6 @@ def recurse_keys(value, keys_rk){
 def traverse_values(value, path){
 
     def temp = value
-    def value_found = true
 
     if(path instanceof String){
         temp = temp[path]
@@ -473,12 +478,14 @@ def traverse_values(value, path){
     }
 
     for(key in path){
-        def key_val = key
+        def key_val = key.toString() // Calling `toString` to convert a gstring to a plain string type as the gstring method is not overloaded properly
         if(key_val.isNumber()){
             key_val = key_val.toInteger()
         }
 
-        if(temp.containsKey(key_val)){
+        if(temp.getClass() in ArrayList && key_val.getClass() in Number){
+            temp = temp[key_val]
+        }else if(temp.containsKey(key_val)){
             temp = temp[key_val]
         }else{
             temp = null
@@ -487,6 +494,32 @@ def traverse_values(value, path){
     }
     return temp
 }
+
+
+def get_predicted_id(value_data, species_data){
+    def predicted_id = value_data[params.top_hit_species.report_tag]
+    def predicted_method = value_data[params.top_hit_method.report_tag]
+
+    if(species_data[1].IDField == null && species_data[1].IDTool == null){
+        return [predicted_id, predicted_method]
+    }
+
+    // The comparison to null in brackets returns a boolean value that can be used for bitwise comparisons
+    if((species_data[1].IDField != null) ^ (species_data[1].IDTool != null)){
+        log.warn "Both IDfield and IDTool must be set for ${species_data[0]}. IDField: ${species_data[1].IDField} IDTool: ${species_data[1].IDTool}"
+        return [predicted_id, predicted_method]
+    }
+
+    def species_value = traverse_values(value_data, species_data[1].IDField)
+    if(species_value == null){
+        return [predicted_id, predicted_method]
+    }
+    predicted_id = species_value
+    predicted_method = species_data[1].IDTool
+
+    return [predicted_id, predicted_method]
+}
+
 
 def range_comp(fields, qc_data, comp_val, qc_obj){
     if(qc_data == null){
@@ -592,7 +625,7 @@ def prep_qc_vals(qc_vals, qc_data, comp_val, field_val){
             }
             break;
         default:
-            log.warn "Unknow comparison type: ${comp_fields}"
+            log.warn "Unknown comparison type: ${comp_fields}"
             break;
     }
     return status
@@ -666,6 +699,7 @@ def get_qc_data_species(value_data, qc_data){
     return quality_messages;
 }
 
+
 def generate_qc_data(data, search_phrases, qc_species_tag){
     /*
     data: sample data in a LazyMap
@@ -677,20 +711,70 @@ def generate_qc_data(data, search_phrases, qc_species_tag){
     def quality_analysis = "QualityAnalysis"
     def shortest_token = get_shortest_token(search_phrases)
     def species_tag_location = 0
+    def species_qc_params_location = 1
     for(k in data){
         if(!k.value.meta.metagenomic){
             def species = get_species(k.value[k.key][top_hit_tag], search_phrases, shortest_token)
             // update coverage first so its values can be used in generating qc messages
             generate_coverage_data(data[k.key], params.coverage_calc_fields.bp_field, species)
             data[k.key][quality_analysis] = get_qc_data_species(k.value[k.key], species)
+
+            // More advanced logic to add in smarter typing information from select
+            // tools that provide it.
+            if(k.value[k.key][params.top_hit_species.report_tag] != null){
+                def (predicted_id, predicted_method) = get_predicted_id(k.value[k.key], species)
+                k.value[k.key][params.predicted_id_fields.predicted_id] = predicted_id
+                k.value[k.key][params.predicted_id_fields.predicted_id_method] = predicted_method
+            }
+
+            def species_info = species[species_qc_params_location]
+
+            def (primary_type_id, primary_type_id_method) = get_typing_id(k.value[k.key], species_info, species_info.PrimaryTypeID, species_info.PrimaryTypeIDMethod)
+            k.value[k.key][params.typing_id_fields.PrimaryTypeID] = primary_type_id
+            k.value[k.key][params.typing_id_fields.PrimaryTypeIDMethod] = primary_type_id_method
+
+            def (secondary_type_id, secondary_type_id_method) = get_typing_id(k.value[k.key], species_info, species_info.SecondaryTypeID, species_info.SecondaryTypeIDMethod)
+
+            k.value[k.key][params.typing_id_fields.SecondaryTypeID] = secondary_type_id
+            k.value[k.key][params.typing_id_fields.SecondaryTypeIDMethod] = secondary_type_id_method
+
             data[k.key][qc_species_tag] = species[species_tag_location]
         }else{
             data[k.key][quality_analysis] = ["Metagenomic": ["message": null, "status": false]]
             data[k.key][quality_analysis]["Metagenomic"].message = "The sample was determined to be metagenomic, summary metrics will not be generated" +
-                    " e.g. multiple genus are present in the sample. If your sample is supposed to be an isolate it is recommended" +
+                    " e.g. multiple genera are present in the sample. If your sample is supposed to be an isolate it is recommended" +
                     " you re-isolate and re-sequence this sample"
         }
     }
+
+}
+
+
+
+def get_typing_id(sample_data, species_info, species_info_type_id, species_info_type_id_method){
+    /*
+        sample_data: The aggregated user data
+        species_info: QCParameters from the nextflow.config for the selectd species
+        species_info_type_id: The Path to the requred information in the data. Taken from the QC Parameters
+        species_info_type_id_method: The method name for the type id
+    */
+
+    def species_type_id_p = (species_info_type_id != null && species_info_type_id_method != null)
+    def species_type_prepped = (species_info_type_id != null) ^ (species_info_type_id_method != null)
+    if(!species_type_id_p){
+       return ["", ""]
+    }
+
+    if(species_type_prepped){
+        log.warn "Both ${species_info_type_id} and ${species_info_type_id_method} must be set for a type ID to be set."
+        return ["", ""]
+    }
+
+    def selected_id = traverse_values(sample_data, species_info_type_id)
+    if(selected_id){
+        return [selected_id, species_info_type_id_method]
+    }
+    return ["", species_info_type_id_method]
 
 }
 
