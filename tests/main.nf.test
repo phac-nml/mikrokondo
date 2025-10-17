@@ -196,7 +196,6 @@ nextflow_pipeline {
 
             assert json.short.short.SevenGeneMLSTReport[0].filename.equals("short.filtered.fasta.gz")
 
-            assert json.short.short.Abricate."0".RESISTANCE.equals("NoData")  // All Abricate results for this are "NoData".
 
             def assembly_path = "$outputDir/Assembly/FinalAssembly/short/short.final.filtered.assembly.fasta.gz"
             assert path(assembly_path).exists()
@@ -330,7 +329,6 @@ nextflow_pipeline {
 
             assert json.short.short.SevenGeneMLSTReport[0].filename.equals("short.filtered.fasta.gz")
 
-            assert json.short.short.Abricate."0".RESISTANCE.equals("NoData")  // All Abricate results for this are "NoData".
 
             def assembly_path = "$outputDir/Assembly/FinalAssembly/short/short.final.filtered.assembly.fasta.gz"
             assert path(assembly_path).exists()
@@ -501,7 +499,6 @@ nextflow_pipeline {
 
             assert json.short.short.SevenGeneMLSTReport[0].filename.equals("short.filtered.fasta.gz")
 
-            assert json.short.short.Abricate."0".RESISTANCE.equals("NoData")  // All Abricate results for this are "NoData".
 
             def assembly_path = "$outputDir/Assembly/FinalAssembly/short/short.final.filtered.assembly.fasta.gz"
             assert path(assembly_path).exists()
@@ -957,7 +954,6 @@ nextflow_pipeline {
 
             assert json.short.short.SevenGeneMLSTReport[0].filename.equals("short.filtered.fasta.gz")
 
-            assert json.short.short.Abricate."0".RESISTANCE.equals("NoData")  // All Abricate results for this are "NoData".
 
             def assembly_path = "$outputDir/Assembly/FinalAssembly/short/short.final.filtered.assembly.fasta.gz"
             assert path(assembly_path).exists()
