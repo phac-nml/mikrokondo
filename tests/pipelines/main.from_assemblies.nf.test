@@ -109,15 +109,15 @@ nextflow_pipeline {
             assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "FinalReports/FlattenedReports/ecoli_GCA_000947975.flat_sample.json.gz" }.size() == 1
             
             // Abricate annotations
-            assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/Annotation/Abricate/ecoli_GCA_000947975_argannot.abricate.txt" }.size() == 1
-            assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/Annotation/Abricate/ecoli_GCA_000947975_card.abricate.txt" }.size() == 1
-            assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/Annotation/Abricate/ecoli_GCA_000947975_ecoh.abricate.txt" }.size() == 1
-            assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/Annotation/Abricate/ecoli_GCA_000947975_ecoli_vf.abricate.txt" }.size() == 1
-            assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/Annotation/Abricate/ecoli_GCA_000947975_megares.abricate.txt" }.size() == 1
-            assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/Annotation/Abricate/ecoli_GCA_000947975_ncbi.abricate.txt" }.size() == 1
-            assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/Annotation/Abricate/ecoli_GCA_000947975_plasmidfinder.abricate.txt" }.size() == 1
-            assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/Annotation/Abricate/ecoli_GCA_000947975_resfinder.abricate.txt" }.size() == 1
-            assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/Annotation/Abricate/ecoli_GCA_000947975_vfdb.abricate.txt" }.size() == 1
+            assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/Annotation/Abricate/ecoli_GCA_000947975_argannot.abricate.annotation.txt" }.size() == 1
+            assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/Annotation/Abricate/ecoli_GCA_000947975_card.abricate.annotation.txt" }.size() == 1
+            assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/Annotation/Abricate/ecoli_GCA_000947975_ecoh.abricate.annotation.txt" }.size() == 1
+            assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/Annotation/Abricate/ecoli_GCA_000947975_ecoli_vf.abricate.annotation.txt" }.size() == 1
+            assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/Annotation/Abricate/ecoli_GCA_000947975_megares.abricate.annotation.txt" }.size() == 1
+            assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/Annotation/Abricate/ecoli_GCA_000947975_ncbi.abricate.annotation.txt" }.size() == 1
+            assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/Annotation/Abricate/ecoli_GCA_000947975_plasmidfinder.abricate.annotation.txt" }.size() == 1
+            assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/Annotation/Abricate/ecoli_GCA_000947975_resfinder.abricate.annotation.txt" }.size() == 1
+            assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/Annotation/Abricate/ecoli_GCA_000947975_vfdb.abricate.annotation.txt" }.size() == 1
 
 
             // output metadata
