@@ -107,7 +107,7 @@ nextflow_pipeline {
             assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/Subtyping/ECTyper/ecoli_GCA_000947975/ecoli_GCA_000947975.ectyper.ectyper.subtyping.log" }.size() == 1
             assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/Subtyping/ECTyper/ecoli_GCA_000947975/ecoli_GCA_000947975.output.ectyper.subtyping.tsv" }.size() == 1
             assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "FinalReports/FlattenedReports/ecoli_GCA_000947975.flat_sample.json.gz" }.size() == 1
-            
+
             // Abricate annotations
             assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/Annotation/Abricate/ecoli_GCA_000947975.ecoli_GCA_000947975_argannot.abricate.annotation.txt" }.size() == 1
             assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/Annotation/Abricate/ecoli_GCA_000947975.ecoli_GCA_000947975_card.abricate.annotation.txt" }.size() == 1
