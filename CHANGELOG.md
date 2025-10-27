@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Added`
 
+- Added additional database outputs to abricate and removed final reporting of abricate results. [155](https://github.com/phac-nml/mikrokondo/pull/155)
+
 - Added a IRIDA Next specific parameter: `max_samples`. `max_samples` is used to limit the number of samples the pipeline will run with. When the number of samples is >= `max_samples` all processes are skipped an an error file is produced `max_samples_exceeded.error.txt`. [PR 191](https://github.com/phac-nml/mikrokondo/pull/191)
 
 ## [0.9.3] - 2025-09-12
