@@ -11,7 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Removed `parse_seqids` from `makeblastdb` command. Fixes issue with contig headers greater than 50 characters.[PR #225](https://github.com/phac-nml/staramr/pull/225) NCBI assembled genomes with accessions in the header will have slightly different contig names.
 - Updated minimum version of Nextflow used by mikrokondo to `24.10.3` and updated GitHub CI to test against this version (removed tests against Nextflow `latest-everything`). [PR #195](https://github.com/phac-nml/mikrokondo/pull/195) and [PR #196](https://github.com/phac-nml/mikrokondo/pull/196).
 - Updating GitHub CI tests and nf-tests to fix nf-core linting issues and improve performance of CI testing. [PR #196](https://github.com/phac-nml/mikrokondo/pull/196)
-- Removed `quay.io` prefix from remaining containers so the processes can use containers from private registries. [PR #198](https://github.com/phac-nml/mikrokondo/pull/198)
+- Updated `nf-core/fastqc` and `nf-core/custom/dumpsoftwareversions` modules. [PR #198](https://github.com/phac-nml/mikrokondo/pull/198)
+- Removed `quay.io` prefix from `multiqc` container so the processes can use containers from private registries. [PR #198](https://github.com/phac-nml/mikrokondo/pull/198)
 
 ## [0.9.4] - 2025-09-25
 
