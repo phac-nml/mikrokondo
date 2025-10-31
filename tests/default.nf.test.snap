@@ -9,8 +9,8 @@
                     "bandage": "0.8.1"
                 },
                 "CUSTOM_DUMPSOFTWAREVERSIONS": {
-                    "python": "3.10.6",
-                    "yaml": "6.0"
+                    "python": "3.13.1",
+                    "yaml": "6.0.2"
                 },
                 "FASTP_TRIM": {
                     "fastp": "0.23.2"
