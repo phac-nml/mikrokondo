@@ -30,7 +30,7 @@ nextflow_workflow {
             }
 
             params {
-                outdir = "results"
+                outdir = "$outputDir"
                 min_reads = 1
                 mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
                 mh_min_kmer = 1
@@ -49,20 +49,20 @@ nextflow_workflow {
         then {
 
             assert workflow.success
-            assert path("${launchDir}/results/Reads/FinalReads/SAMPLE1/SAMPlE1.final.R1.trimmed.reads.fastq.gz").exists()
-            assert path("${launchDir}/results/Reads/FinalReads/SAMPLE1/SAMPlE1.final.R2.trimmed.reads.fastq.gz").exists()
-            assert path("${launchDir}/results/Reads/Processing/Dehosting/SAMPlE1.deconned.R1.deconned.reads.fastq.gz").exists()
-            assert path("${launchDir}/results/Reads/Processing/Dehosting/SAMPlE1.deconned.R2.deconned.reads.fastq.gz").exists()
-            assert path("${launchDir}/results/Reads/Processing/Dehosting/Trimmed/FastP/SAMPlE1.fastp.R1.trimmed.reads.fastq.gz").exists()
-            assert path("${launchDir}/results/Reads/Processing/Dehosting/Trimmed/FastP/SAMPlE1.fastp.R2.trimmed.reads.fastq.gz").exists()
-            assert path("${launchDir}/results/Reads/Processing/Dehosting/Trimmed/MashSketches/SAMPlE1.mash.estimate.msh").exists()
-            assert path("${launchDir}/results/Reads/Quality/Trimmed/FastP/SAMPlE1.fastp.summary.html").exists()
-            assert path("${launchDir}/results/Reads/Quality/Trimmed/FastP/SAMPlE1.fastp.summary.json").exists()
-            assert path("${launchDir}/results/Reads/Quality/Trimmed/MashScreen/SAMPlE1.mash.screen.reads.screen.screen").exists()
-            assert path("${launchDir}/results/Reads/Processing/Dehosting/SAMPlE1.deconned.R1.deconned.reads.fastq.gz").linesGzip.size() == 496
-            assert path("${launchDir}/results/Reads/Processing/Dehosting/SAMPlE1.deconned.R2.deconned.reads.fastq.gz").linesGzip.size() == 496
-            assert path("${launchDir}/results/Reads/Processing/Dehosting/Trimmed/FastP/SAMPlE1.fastp.R1.trimmed.reads.fastq.gz").linesGzip.size() == 496
-            assert path("${launchDir}/results/Reads/Processing/Dehosting/Trimmed/FastP/SAMPlE1.fastp.R2.trimmed.reads.fastq.gz").linesGzip.size() == 496
+            assert path("$outputDir/Reads/FinalReads/SAMPLE1/SAMPlE1.final.R1.trimmed.reads.fastq.gz").exists()
+            assert path("$outputDir/Reads/FinalReads/SAMPLE1/SAMPlE1.final.R2.trimmed.reads.fastq.gz").exists()
+            assert path("$outputDir/Reads/Processing/Dehosting/SAMPlE1.deconned.R1.deconned.reads.fastq.gz").exists()
+            assert path("$outputDir/Reads/Processing/Dehosting/SAMPlE1.deconned.R2.deconned.reads.fastq.gz").exists()
+            assert path("$outputDir/Reads/Processing/Dehosting/Trimmed/FastP/SAMPlE1.fastp.R1.trimmed.reads.fastq.gz").exists()
+            assert path("$outputDir/Reads/Processing/Dehosting/Trimmed/FastP/SAMPlE1.fastp.R2.trimmed.reads.fastq.gz").exists()
+            assert path("$outputDir/Reads/Processing/Dehosting/Trimmed/MashSketches/SAMPlE1.mash.estimate.msh").exists()
+            assert path("$outputDir/Reads/Quality/Trimmed/FastP/SAMPlE1.fastp.summary.html").exists()
+            assert path("$outputDir/Reads/Quality/Trimmed/FastP/SAMPlE1.fastp.summary.json").exists()
+            assert path("$outputDir/Reads/Quality/Trimmed/MashScreen/SAMPlE1.mash.screen.reads.screen.screen").exists()
+            assert path("$outputDir/Reads/Processing/Dehosting/SAMPlE1.deconned.R1.deconned.reads.fastq.gz").linesGzip.size() == 496
+            assert path("$outputDir/Reads/Processing/Dehosting/SAMPlE1.deconned.R2.deconned.reads.fastq.gz").linesGzip.size() == 496
+            assert path("$outputDir/Reads/Processing/Dehosting/Trimmed/FastP/SAMPlE1.fastp.R1.trimmed.reads.fastq.gz").linesGzip.size() == 496
+            assert path("$outputDir/Reads/Processing/Dehosting/Trimmed/FastP/SAMPlE1.fastp.R2.trimmed.reads.fastq.gz").linesGzip.size() == 496
             snapshot(workflow.out).match()
 
         }
@@ -94,7 +94,7 @@ nextflow_workflow {
             }
 
             params {
-                outdir = "results"
+                outdir = "$outputDir"
                 min_reads = 1
                 mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
                 mh_min_kmer = 1
@@ -113,20 +113,20 @@ nextflow_workflow {
         then {
 
             assert workflow.success
-            assert path("${launchDir}/results/Reads/FinalReads/SAMPLE1/SAMPlE1.final.R1.trimmed.reads.fastq.gz").exists()
-            assert path("${launchDir}/results/Reads/FinalReads/SAMPLE1/SAMPlE1.final.R2.trimmed.reads.fastq.gz").exists()
-            assert path("${launchDir}/results/Reads/Processing/Dehosting/SAMPlE1.deconned.R1.deconned.reads.fastq.gz").exists()
-            assert path("${launchDir}/results/Reads/Processing/Dehosting/SAMPlE1.deconned.R2.deconned.reads.fastq.gz").exists()
-            assert path("${launchDir}/results/Reads/Processing/Dehosting/Trimmed/FastP/SAMPlE1.fastp.R1.trimmed.reads.fastq.gz").exists()
-            assert path("${launchDir}/results/Reads/Processing/Dehosting/Trimmed/FastP/SAMPlE1.fastp.R2.trimmed.reads.fastq.gz").exists()
-            assert path("${launchDir}/results/Reads/Processing/Dehosting/Trimmed/MashSketches/SAMPlE1.mash.estimate.msh").exists()
-            assert path("${launchDir}/results/Reads/Quality/Trimmed/FastP/SAMPlE1.fastp.summary.html").exists()
-            assert path("${launchDir}/results/Reads/Quality/Trimmed/FastP/SAMPlE1.fastp.summary.json").exists()
-            assert path("${launchDir}/results/Reads/Quality/Trimmed/MashScreen/SAMPlE1.mash.screen.reads.screen.screen").exists()
-            assert path("${launchDir}/results/Reads/Processing/Dehosting/SAMPlE1.deconned.R1.deconned.reads.fastq.gz").linesGzip.size() == 496
-            assert path("${launchDir}/results/Reads/Processing/Dehosting/SAMPlE1.deconned.R2.deconned.reads.fastq.gz").linesGzip.size() == 496
-            assert path("${launchDir}/results/Reads/Processing/Dehosting/Trimmed/FastP/SAMPlE1.fastp.R1.trimmed.reads.fastq.gz").linesGzip.size() == 496
-            assert path("${launchDir}/results/Reads/Processing/Dehosting/Trimmed/FastP/SAMPlE1.fastp.R2.trimmed.reads.fastq.gz").linesGzip.size() == 496
+            assert path("$outputDir/Reads/FinalReads/SAMPLE1/SAMPlE1.final.R1.trimmed.reads.fastq.gz").exists()
+            assert path("$outputDir/Reads/FinalReads/SAMPLE1/SAMPlE1.final.R2.trimmed.reads.fastq.gz").exists()
+            assert path("$outputDir/Reads/Processing/Dehosting/SAMPlE1.deconned.R1.deconned.reads.fastq.gz").exists()
+            assert path("$outputDir/Reads/Processing/Dehosting/SAMPlE1.deconned.R2.deconned.reads.fastq.gz").exists()
+            assert path("$outputDir/Reads/Processing/Dehosting/Trimmed/FastP/SAMPlE1.fastp.R1.trimmed.reads.fastq.gz").exists()
+            assert path("$outputDir/Reads/Processing/Dehosting/Trimmed/FastP/SAMPlE1.fastp.R2.trimmed.reads.fastq.gz").exists()
+            assert path("$outputDir/Reads/Processing/Dehosting/Trimmed/MashSketches/SAMPlE1.mash.estimate.msh").exists()
+            assert path("$outputDir/Reads/Quality/Trimmed/FastP/SAMPlE1.fastp.summary.html").exists()
+            assert path("$outputDir/Reads/Quality/Trimmed/FastP/SAMPlE1.fastp.summary.json").exists()
+            assert path("$outputDir/Reads/Quality/Trimmed/MashScreen/SAMPlE1.mash.screen.reads.screen.screen").exists()
+            assert path("$outputDir/Reads/Processing/Dehosting/SAMPlE1.deconned.R1.deconned.reads.fastq.gz").linesGzip.size() == 496
+            assert path("$outputDir/Reads/Processing/Dehosting/SAMPlE1.deconned.R2.deconned.reads.fastq.gz").linesGzip.size() == 496
+            assert path("$outputDir/Reads/Processing/Dehosting/Trimmed/FastP/SAMPlE1.fastp.R1.trimmed.reads.fastq.gz").linesGzip.size() == 496
+            assert path("$outputDir/Reads/Processing/Dehosting/Trimmed/FastP/SAMPlE1.fastp.R2.trimmed.reads.fastq.gz").linesGzip.size() == 496
             snapshot(workflow.out).match()
 
         }
@@ -159,7 +159,7 @@ nextflow_workflow {
             }
 
             params {
-                outdir = "results"
+                outdir = "$outputDir"
                 min_reads = 1
                 mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
                 mh_min_kmer = 1
@@ -177,16 +177,16 @@ nextflow_workflow {
 
         then {
             assert workflow.success
-            assert path("${launchDir}/results/Reads/FinalReads/SAMPLE1/SAMPlE1.final.trimmed.reads.fastq.gz").exists()
-            assert path("${launchDir}/results/Reads/Processing/Dehosting/SAMPlE1.deconned.deconned.reads.fastq.gz").exists()
-            assert path("${launchDir}/results/Reads/Processing/Dehosting/Trimmed/FastP/SAMPlE1.fastp.trimmed.reads.fastq.gz").exists()
-            assert path("${launchDir}/results/Reads/Processing/Dehosting/Trimmed/MashSketches/SAMPlE1.mash.estimate.msh").exists()
-            assert path("${launchDir}/results/Reads/Quality/Trimmed/FastP/SAMPlE1.fastp.summary.html").exists()
-            assert path("${launchDir}/results/Reads/Quality/Trimmed/FastP/SAMPlE1.fastp.summary.json").exists()
-            assert path("${launchDir}/results/Reads/Quality/Trimmed/MashScreen/SAMPlE1.mash.screen.reads.screen.screen").exists()
-            assert path("${launchDir}/results/Reads/Processing/Dehosting/SAMPlE1.deconned.deconned.reads.fastq.gz").linesGzip.size() == 500
-            assert path("${launchDir}/results/Reads/Processing/Dehosting/Trimmed/FastP/SAMPlE1.fastp.trimmed.reads.fastq.gz").linesGzip.size() == 500
-            assert path("${launchDir}/results/Reads/FinalReads/SAMPLE1/SAMPlE1.final.trimmed.reads.fastq.gz").linesGzip.size() == 500
+            assert path("$outputDir/Reads/FinalReads/SAMPLE1/SAMPlE1.final.trimmed.reads.fastq.gz").exists()
+            assert path("$outputDir/Reads/Processing/Dehosting/SAMPlE1.deconned.deconned.reads.fastq.gz").exists()
+            assert path("$outputDir/Reads/Processing/Dehosting/Trimmed/FastP/SAMPlE1.fastp.trimmed.reads.fastq.gz").exists()
+            assert path("$outputDir/Reads/Processing/Dehosting/Trimmed/MashSketches/SAMPlE1.mash.estimate.msh").exists()
+            assert path("$outputDir/Reads/Quality/Trimmed/FastP/SAMPlE1.fastp.summary.html").exists()
+            assert path("$outputDir/Reads/Quality/Trimmed/FastP/SAMPlE1.fastp.summary.json").exists()
+            assert path("$outputDir/Reads/Quality/Trimmed/MashScreen/SAMPlE1.mash.screen.reads.screen.screen").exists()
+            assert path("$outputDir/Reads/Processing/Dehosting/SAMPlE1.deconned.deconned.reads.fastq.gz").linesGzip.size() == 500
+            assert path("$outputDir/Reads/Processing/Dehosting/Trimmed/FastP/SAMPlE1.fastp.trimmed.reads.fastq.gz").linesGzip.size() == 500
+            assert path("$outputDir/Reads/FinalReads/SAMPLE1/SAMPlE1.final.trimmed.reads.fastq.gz").linesGzip.size() == 500
             snapshot(workflow.out).match()
 
         }
@@ -218,7 +218,7 @@ nextflow_workflow {
             }
 
             params {
-                outdir = "results"
+                outdir = "$outputDir"
 
                 mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
                 mh_min_kmer = 1
@@ -236,16 +236,16 @@ nextflow_workflow {
 
         then {
                 assert workflow.success
-                assert path("${launchDir}/results/Reads/FinalReads/SAMPLE1/SAMPlE1.final.sampled.reads.fastq.gz").exists()
-                assert path("${launchDir}/results/Reads/Processing/Dehosting/SAMPlE1.deconned.deconned.reads.fastq.gz").exists()
-                assert path("${launchDir}/results/Reads/Processing/Dehosting/Trimmed/DownSampled/Rasusa/SAMPlE1.rasusa.sample.sampled.reads.fastq.gz").exists()
-                assert path("${launchDir}/results/Reads/Processing/Dehosting/Trimmed/FastP/SAMPlE1.fastp.trimmed.reads.fastq.gz").exists()
-                assert path("${launchDir}/results/Reads/Quality/Trimmed/FastP/SAMPlE1.fastp.summary.html").exists()
-                assert path("${launchDir}/results/Reads/Quality/Trimmed/FastP/SAMPlE1.fastp.summary.json").exists()
-                assert path("${launchDir}/results/Reads/FinalReads/SAMPLE1/SAMPlE1.final.sampled.reads.fastq.gz").linesGzip.size() == 5656
-                assert path("${launchDir}/results/Reads/Processing/Dehosting/SAMPlE1.deconned.deconned.reads.fastq.gz").linesGzip.size() == 16680
-                assert path("${launchDir}/results/Reads/Processing/Dehosting/Trimmed/DownSampled/Rasusa/SAMPlE1.rasusa.sample.sampled.reads.fastq.gz").linesGzip.size() == 5656
-                assert path("${launchDir}/results/Reads/Processing/Dehosting/Trimmed/FastP/SAMPlE1.fastp.trimmed.reads.fastq.gz").linesGzip.size() == 16680
+                assert path("$outputDir/Reads/FinalReads/SAMPLE1/SAMPlE1.final.sampled.reads.fastq.gz").exists()
+                assert path("$outputDir/Reads/Processing/Dehosting/SAMPlE1.deconned.deconned.reads.fastq.gz").exists()
+                assert path("$outputDir/Reads/Processing/Dehosting/Trimmed/DownSampled/Rasusa/SAMPlE1.rasusa.sample.sampled.reads.fastq.gz").exists()
+                assert path("$outputDir/Reads/Processing/Dehosting/Trimmed/FastP/SAMPlE1.fastp.trimmed.reads.fastq.gz").exists()
+                assert path("$outputDir/Reads/Quality/Trimmed/FastP/SAMPlE1.fastp.summary.html").exists()
+                assert path("$outputDir/Reads/Quality/Trimmed/FastP/SAMPlE1.fastp.summary.json").exists()
+                assert path("$outputDir/Reads/FinalReads/SAMPLE1/SAMPlE1.final.sampled.reads.fastq.gz").linesGzip.size() == 5656
+                assert path("$outputDir/Reads/Processing/Dehosting/SAMPlE1.deconned.deconned.reads.fastq.gz").linesGzip.size() == 16680
+                assert path("$outputDir/Reads/Processing/Dehosting/Trimmed/DownSampled/Rasusa/SAMPlE1.rasusa.sample.sampled.reads.fastq.gz").linesGzip.size() == 5656
+                assert path("$outputDir/Reads/Processing/Dehosting/Trimmed/FastP/SAMPlE1.fastp.trimmed.reads.fastq.gz").linesGzip.size() == 16680
                 snapshot(workflow.out).match()
 
         }
@@ -277,7 +277,7 @@ nextflow_workflow {
             }
 
             params {
-                outdir = "results"
+                outdir = "$outputDir"
 
                 mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
                 mh_min_kmer = 1
@@ -295,25 +295,25 @@ nextflow_workflow {
 
         then {
             assert workflow.success
-            assert path("${launchDir}/results/Reads/Processing/Dehosting/Trimmed/FastP/SAMPlE1.fastp.R1.trimmed.reads.fastq.gz").exists()
-            assert path("${launchDir}/results/Reads/Processing/Dehosting/Trimmed/FastP/SAMPlE1.fastp.R2.trimmed.reads.fastq.gz").exists()
-            assert path("${launchDir}/results/Reads/Quality/Trimmed/FastP/SAMPlE1.fastp.summary.html").exists()
-            assert path("${launchDir}/results/Reads/Quality/Trimmed/FastP/SAMPlE1.fastp.summary.json").exists()
-            assert path("${launchDir}/results/Reads/FinalReads/SAMPLE1/SAMPlE1.SAMPlE1_R2.final.sampled.reads.fastq.gz").exists()
-            assert path("${launchDir}/results/Reads/Processing/Dehosting/SAMPlE1.deconned.R1.deconned.reads.fastq.gz").exists()
-            assert path("${launchDir}/results/Reads/Processing/Dehosting/SAMPlE1.deconned.R2.deconned.reads.fastq.gz").exists()
-            assert path("${launchDir}/results/Reads/Processing/Dehosting/Trimmed/DownSampled/SeqTK/SAMPlE1.SAMPlE1_R1.seqtk.sample.sampled.reads.fastq.gz").exists()
-            assert path("${launchDir}/results/Reads/Processing/Dehosting/Trimmed/DownSampled/SeqTK/SAMPlE1.SAMPlE1_R2.seqtk.sample.sampled.reads.fastq.gz").exists()
-            assert path("${launchDir}/results/Reads/Processing/Dehosting/Trimmed/FastP/SAMPlE1.fastp.R1.trimmed.reads.fastq.gz").exists()
-            assert path("${launchDir}/results/Reads/Processing/Dehosting/Trimmed/FastP/SAMPlE1.fastp.R2.trimmed.reads.fastq.gz").exists()
-            assert path("${launchDir}/results/Reads/FinalReads/SAMPLE1/SAMPlE1.SAMPlE1_R1.final.sampled.reads.fastq.gz").linesGzip.size() == 4860
-            assert path("${launchDir}/results/Reads/FinalReads/SAMPLE1/SAMPlE1.SAMPlE1_R2.final.sampled.reads.fastq.gz").linesGzip.size() == 4860
-            assert path("${launchDir}/results/Reads/Processing/Dehosting/SAMPlE1.deconned.R1.deconned.reads.fastq.gz").linesGzip.size() == 16680
-            assert path("${launchDir}/results/Reads/Processing/Dehosting/SAMPlE1.deconned.R2.deconned.reads.fastq.gz").linesGzip.size() == 16680
-            assert path("${launchDir}/results/Reads/Processing/Dehosting/Trimmed/DownSampled/SeqTK/SAMPlE1.SAMPlE1_R1.seqtk.sample.sampled.reads.fastq.gz").linesGzip.size() == 4860
-            assert path("${launchDir}/results/Reads/Processing/Dehosting/Trimmed/DownSampled/SeqTK/SAMPlE1.SAMPlE1_R2.seqtk.sample.sampled.reads.fastq.gz").linesGzip.size() == 4860
-            assert path("${launchDir}/results/Reads/Processing/Dehosting/Trimmed/FastP/SAMPlE1.fastp.R1.trimmed.reads.fastq.gz").linesGzip.size() == 16680
-            assert path("${launchDir}/results/Reads/Processing/Dehosting/Trimmed/FastP/SAMPlE1.fastp.R2.trimmed.reads.fastq.gz").linesGzip.size() == 16680
+            assert path("$outputDir/Reads/Processing/Dehosting/Trimmed/FastP/SAMPlE1.fastp.R1.trimmed.reads.fastq.gz").exists()
+            assert path("$outputDir/Reads/Processing/Dehosting/Trimmed/FastP/SAMPlE1.fastp.R2.trimmed.reads.fastq.gz").exists()
+            assert path("$outputDir/Reads/Quality/Trimmed/FastP/SAMPlE1.fastp.summary.html").exists()
+            assert path("$outputDir/Reads/Quality/Trimmed/FastP/SAMPlE1.fastp.summary.json").exists()
+            assert path("$outputDir/Reads/FinalReads/SAMPLE1/SAMPlE1.SAMPlE1_R2.final.sampled.reads.fastq.gz").exists()
+            assert path("$outputDir/Reads/Processing/Dehosting/SAMPlE1.deconned.R1.deconned.reads.fastq.gz").exists()
+            assert path("$outputDir/Reads/Processing/Dehosting/SAMPlE1.deconned.R2.deconned.reads.fastq.gz").exists()
+            assert path("$outputDir/Reads/Processing/Dehosting/Trimmed/DownSampled/SeqTK/SAMPlE1.SAMPlE1_R1.seqtk.sample.sampled.reads.fastq.gz").exists()
+            assert path("$outputDir/Reads/Processing/Dehosting/Trimmed/DownSampled/SeqTK/SAMPlE1.SAMPlE1_R2.seqtk.sample.sampled.reads.fastq.gz").exists()
+            assert path("$outputDir/Reads/Processing/Dehosting/Trimmed/FastP/SAMPlE1.fastp.R1.trimmed.reads.fastq.gz").exists()
+            assert path("$outputDir/Reads/Processing/Dehosting/Trimmed/FastP/SAMPlE1.fastp.R2.trimmed.reads.fastq.gz").exists()
+            assert path("$outputDir/Reads/FinalReads/SAMPLE1/SAMPlE1.SAMPlE1_R1.final.sampled.reads.fastq.gz").linesGzip.size() == 4860
+            assert path("$outputDir/Reads/FinalReads/SAMPLE1/SAMPlE1.SAMPlE1_R2.final.sampled.reads.fastq.gz").linesGzip.size() == 4860
+            assert path("$outputDir/Reads/Processing/Dehosting/SAMPlE1.deconned.R1.deconned.reads.fastq.gz").linesGzip.size() == 16680
+            assert path("$outputDir/Reads/Processing/Dehosting/SAMPlE1.deconned.R2.deconned.reads.fastq.gz").linesGzip.size() == 16680
+            assert path("$outputDir/Reads/Processing/Dehosting/Trimmed/DownSampled/SeqTK/SAMPlE1.SAMPlE1_R1.seqtk.sample.sampled.reads.fastq.gz").linesGzip.size() == 4860
+            assert path("$outputDir/Reads/Processing/Dehosting/Trimmed/DownSampled/SeqTK/SAMPlE1.SAMPlE1_R2.seqtk.sample.sampled.reads.fastq.gz").linesGzip.size() == 4860
+            assert path("$outputDir/Reads/Processing/Dehosting/Trimmed/FastP/SAMPlE1.fastp.R1.trimmed.reads.fastq.gz").linesGzip.size() == 16680
+            assert path("$outputDir/Reads/Processing/Dehosting/Trimmed/FastP/SAMPlE1.fastp.R2.trimmed.reads.fastq.gz").linesGzip.size() == 16680
             snapshot(workflow.out).match()
         }
     }

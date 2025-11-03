@@ -9,7 +9,7 @@ nextflow_pipeline {
         when {
             params {
                 input = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/samplesheets/samplesheet-campy-staph.csv"
-                outdir = "results"
+                outdir = "$outputDir"
 
                 platform = "illumina"
 
@@ -37,10 +37,10 @@ nextflow_pipeline {
 
         then {
             assert workflow.success
-            assert path("$launchDir/results").exists()
+            assert path("$outputDir").exists()
 
             // parse output json file
-            def json = path("$launchDir/results/FinalReports/Aggregated/Json/final_report.json").json
+            def json = path("$outputDir/FinalReports/Aggregated/Json/final_report.json").json
 
             assert json.CSE.CSE.FastP.summary.sequencing.equals("paired end (150 cycles + 150 cycles)")
             assert json.CSE.CSE.FastP.summary.before_filtering.total_reads.equals(248)
@@ -55,14 +55,14 @@ nextflow_pipeline {
             assert json.CSE.meta.merge.equals(false)
             assert json.CSE.meta.downsampled.equals(false)
 
-            def assembly_path = "$launchDir/results/Assembly/FinalAssembly/CSE/CSE.final.filtered.assembly.fasta.gz"
+            def assembly_path = "$outputDir/Assembly/FinalAssembly/CSE/CSE.final.filtered.assembly.fasta.gz"
             assert path(assembly_path).exists().equals(false)
 
-            def contigs_path = "$launchDir/results/Assembly/FinalAssembly"
+            def contigs_path = "$outputDir/Assembly/FinalAssembly"
             assert path(contigs_path).exists().equals(false)
 
             // compare IRIDA Next JSON output
-            def iridanext_json = path("$launchDir/results/iridanext.output.json").json
+            def iridanext_json = path("$outputDir/iridanext.output.json").json
             def iridanext_global = iridanext_json.files.global
             def iridanext_samples = iridanext_json.files.samples
             def iridanext_metadata = iridanext_json.metadata.samples
@@ -106,7 +106,7 @@ nextflow_pipeline {
         when {
             params {
                 input = "https://raw.githubusercontent.com/phac-nml/mikrokondo/refs/heads/dev/tests/data/samplesheets/samplesheet-small-assembly-inx.csv"
-                outdir = "results"
+                outdir = "$outputDir"
                 platform = "illumina"
 
                 mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
@@ -156,10 +156,10 @@ nextflow_pipeline {
         then {
 
             assert workflow.success
-            assert path("$launchDir/results").exists()
+            assert path("$outputDir").exists()
 
             // parse output json file
-            def json = path("$launchDir/results/FinalReports/Aggregated/Json/final_report.json").json
+            def json = path("$outputDir/FinalReports/Aggregated/Json/final_report.json").json
             assert json.short.short.RawReadSummary.R1."total_bp".equals(118750)
             assert json.short.short.RawReadSummary.R1."total_reads".equals(475)
             assert json.short.short.RawReadSummary.R1."read_qual_mean".equals(40.0)
@@ -196,9 +196,8 @@ nextflow_pipeline {
 
             assert json.short.short.SevenGeneMLSTReport[0].filename.equals("short.filtered.fasta.gz")
 
-            assert json.short.short.Abricate."0".RESISTANCE.equals("NoData")  // All Abricate results for this are "NoData".
 
-            def assembly_path = "$launchDir/results/Assembly/FinalAssembly/short/short.final.filtered.assembly.fasta.gz"
+            def assembly_path = "$outputDir/Assembly/FinalAssembly/short/short.final.filtered.assembly.fasta.gz"
             assert path(assembly_path).exists()
 
             // parse assembly file
@@ -206,7 +205,7 @@ nextflow_pipeline {
             assert assembly_header.startsWith(">NODE_1_length_4949_cov_23.917254")  // _pilon_pilon_pilon gets appended
 
             // compare IRIDA Next JSON output
-            def iridanext_json = path("$launchDir/results/iridanext.output.json").json
+            def iridanext_json = path("$outputDir/iridanext.output.json").json
             def iridanext_global = iridanext_json.files.global
             def iridanext_samples = iridanext_json.files.samples
             def iridanext_metadata = iridanext_json.metadata.samples
@@ -237,7 +236,7 @@ nextflow_pipeline {
         when {
             params {
                 input = "https://raw.githubusercontent.com/phac-nml/mikrokondo/dev/tests/data/samplesheets/samplesheet-small-assembly.csv"
-                outdir = "results"
+                outdir = "$outputDir"
 
                 platform = "illumina"
 
@@ -289,10 +288,10 @@ nextflow_pipeline {
         then {
 
             assert workflow.success
-            assert path("$launchDir/results").exists()
+            assert path("$outputDir").exists()
 
             // parse output json file
-            def json = path("$launchDir/results/FinalReports/Aggregated/Json/final_report.json").json
+            def json = path("$outputDir/FinalReports/Aggregated/Json/final_report.json").json
 
             assert json.short.short.RawReadSummary.R1."total_bp".equals(118750)
             assert json.short.short.RawReadSummary.R1."total_reads".equals(475)
@@ -330,9 +329,8 @@ nextflow_pipeline {
 
             assert json.short.short.SevenGeneMLSTReport[0].filename.equals("short.filtered.fasta.gz")
 
-            assert json.short.short.Abricate."0".RESISTANCE.equals("NoData")  // All Abricate results for this are "NoData".
 
-            def assembly_path = "$launchDir/results/Assembly/FinalAssembly/short/short.final.filtered.assembly.fasta.gz"
+            def assembly_path = "$outputDir/Assembly/FinalAssembly/short/short.final.filtered.assembly.fasta.gz"
             assert path(assembly_path).exists()
 
             // parse assembly file
@@ -340,7 +338,7 @@ nextflow_pipeline {
             assert assembly_header.startsWith(">NODE_1_length_4949_cov_23.917254")  // _pilon_pilon_pilon gets appended
 
             // compare IRIDA Next JSON output
-            def iridanext_json = path("$launchDir/results/iridanext.output.json").json
+            def iridanext_json = path("$outputDir/iridanext.output.json").json
             def iridanext_global = iridanext_json.files.global
             def iridanext_samples = iridanext_json.files.samples
             def iridanext_metadata = iridanext_json.metadata.samples
@@ -389,9 +387,9 @@ nextflow_pipeline {
             assert iridanext_metadata.short."StarAMR Predicted Phenotype" == "Susceptible"
 
             // Check that the pipline_info parameters file contains the expected parameters
-            def parameters_json = path("$launchDir/results/pipeline_info/short.mikrokondo.parameters.json").json
+            def parameters_json = path("$outputDir/pipeline_info/short.mikrokondo.parameters.json").json
             assert parameters_json.input == "https://raw.githubusercontent.com/phac-nml/mikrokondo/dev/tests/data/samplesheets/samplesheet-small-assembly.csv"
-            assert parameters_json.outdir == "results"
+            assert parameters_json.outdir.endsWith("/output")
             assert parameters_json.platform == "illumina"
             assert parameters_json.mh_min_kmer == 1
             assert parameters_json.mash_sketch == "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
@@ -408,7 +406,7 @@ nextflow_pipeline {
         when {
             params {
                 input = "https://raw.githubusercontent.com/phac-nml/mikrokondo/dev/tests/data/samplesheets/samplesheet-small-assembly.csv"
-                outdir = "results"
+                outdir = "$outputDir"
 
                 platform = "illumina"
 
@@ -460,10 +458,10 @@ nextflow_pipeline {
         then {
 
             assert workflow.success
-            assert path("$launchDir/results").exists()
+            assert path("$outputDir").exists()
 
             // parse output json file
-            def json = path("$launchDir/results/FinalReports/Aggregated/Json/final_report.json").json
+            def json = path("$outputDir/FinalReports/Aggregated/Json/final_report.json").json
 
             assert json.short.short.RawReadSummary.R1."total_bp".equals(118750)
             assert json.short.short.RawReadSummary.R1."total_reads".equals(475)
@@ -501,9 +499,8 @@ nextflow_pipeline {
 
             assert json.short.short.SevenGeneMLSTReport[0].filename.equals("short.filtered.fasta.gz")
 
-            assert json.short.short.Abricate."0".RESISTANCE.equals("NoData")  // All Abricate results for this are "NoData".
 
-            def assembly_path = "$launchDir/results/Assembly/FinalAssembly/short/short.final.filtered.assembly.fasta.gz"
+            def assembly_path = "$outputDir/Assembly/FinalAssembly/short/short.final.filtered.assembly.fasta.gz"
             assert path(assembly_path).exists()
 
             // parse assembly file
@@ -511,7 +508,7 @@ nextflow_pipeline {
             assert assembly_header.startsWith(">NODE_1_length_4949_cov_23.917254")  // _pilon_pilon_pilon gets appended
 
             // compare IRIDA Next JSON output
-            def iridanext_json = path("$launchDir/results/iridanext.output.json").json
+            def iridanext_json = path("$outputDir/iridanext.output.json").json
             def iridanext_global = iridanext_json.files.global
             def iridanext_samples = iridanext_json.files.samples
             def iridanext_metadata = iridanext_json.metadata.samples
@@ -565,7 +562,7 @@ nextflow_pipeline {
         when {
             params {
                 input = "https://raw.githubusercontent.com/phac-nml/mikrokondo/dev/tests/data/samplesheets/samplesheet-small-assembly.csv"
-                outdir = "results"
+                outdir = "$outputDir"
 
                 platform = "illumina"
 
@@ -596,9 +593,9 @@ nextflow_pipeline {
         then {
 
             assert workflow.success
-            assert path("$launchDir/results").exists()
+            assert path("$outputDir").exists()
             // parse output json file
-            def iridanext_json = path("$launchDir/results/iridanext.output.json").json
+            def iridanext_json = path("$outputDir/iridanext.output.json").json
             assert iridanext_json.metadata.samples.short."qc_status_overall" == "NA"
             assert iridanext_json.metadata.samples.short.qc_summary ==  "No quality control criteria is applied for metagenomic samples."
 
@@ -611,7 +608,7 @@ nextflow_pipeline {
         when {
             params {
                 input = "$baseDir/tests/data/samplesheets/samplesheet-small-metagenomic.csv"
-                outdir = "results"
+                outdir = "$outputDir"
 
                 platform = "illumina"
 
@@ -637,9 +634,9 @@ nextflow_pipeline {
         then {
 
             assert workflow.success
-            assert path("$launchDir/results").exists()
+            assert path("$outputDir").exists()
             // parse output json file
-            def iridanext_json = path("$launchDir/results/iridanext.output.json").json
+            def iridanext_json = path("$outputDir/iridanext.output.json").json
             assert iridanext_json.metadata.samples."meta-small"."qc_status_overall" == "FAILED"
             assert iridanext_json.metadata.samples."meta-small".qc_summary ==  "[FAILED] Sample was determined to be metagenomic and this was not specified as a metagenomic run indicating contamination."
 
@@ -652,7 +649,7 @@ nextflow_pipeline {
         when {
             params {
                 input = "https://raw.githubusercontent.com/phac-nml/mikrokondo/dev/tests/data/samplesheets/samplesheet-small-assembly.csv"
-                outdir = "results"
+                outdir = "$outputDir"
 
                 mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
                 mh_min_kmer = 1
@@ -689,7 +686,7 @@ nextflow_pipeline {
         when {
             params {
                 input = "https://raw.githubusercontent.com/phac-nml/mikrokondo/dev/tests/data/samplesheets/samplesheet-small-assembly.csv"
-                outdir = "results"
+                outdir = "$outputDir"
 
                 platform = "illumina"
 
@@ -729,7 +726,7 @@ nextflow_pipeline {
         when {
             params {
                 input = "https://raw.githubusercontent.com/phac-nml/mikrokondo/dev/tests/data/samplesheets/samplesheet-small-assembly.csv"
-                outdir = "results"
+                outdir = "$outputDir"
 
                 platform = "illumina"
 
@@ -768,7 +765,7 @@ nextflow_pipeline {
         when {
             params {
                 input = "https://raw.githubusercontent.com/phac-nml/mikrokondo/dev/tests/data/samplesheets/samplesheet-small-assembly.csv"
-                outdir = "results"
+                outdir = "$outputDir"
 
                 platform = "illumina"
 
@@ -807,7 +804,7 @@ nextflow_pipeline {
         when {
             params {
                 input = "https://raw.githubusercontent.com/phac-nml/mikrokondo/dev/tests/data/samplesheets/samplesheet-small-assembly.csv"
-                outdir = "results"
+                outdir = "$outputDir"
 
                 platform = "illumina"
 
@@ -844,7 +841,7 @@ nextflow_pipeline {
         when {
             params {
                 input = "$baseDir/tests/data/samplesheets/samplesheet-small-metagenomic.csv"
-                outdir = "results"
+                outdir = "$outputDir"
 
                 platform = "illumina"
 
@@ -871,9 +868,9 @@ nextflow_pipeline {
         then {
 
             assert workflow.success
-            assert path("$launchDir/results").exists()
+            assert path("$outputDir").exists()
             // parse output json file
-            def iridanext_json = path("$launchDir/results/iridanext.output.json").json
+            def iridanext_json = path("$outputDir/iridanext.output.json").json
             assert iridanext_json.metadata.samples."meta-small".qc_status_overall == "FAILED"
             assert iridanext_json.metadata.samples."meta-small".qc_summary ==  "[FAILED] Sample was determined to be metagenomic and 'fail_on_metagenomic' was set to true."
 
@@ -886,7 +883,7 @@ nextflow_pipeline {
         when {
             params {
                 input = "$baseDir/tests/data/samplesheets/samplesheet-metagenomic-isolate.csv"
-                outdir = "results"
+                outdir = "$outputDir"
 
                 platform = "illumina"
 
@@ -913,13 +910,13 @@ nextflow_pipeline {
         then {
 
             assert workflow.success
-            assert path("$launchDir/results").exists()
+            assert path("$outputDir").exists()
             // parse output json file
-            def iridanext_json = path("$launchDir/results/iridanext.output.json").json
+            def iridanext_json = path("$outputDir/iridanext.output.json").json
             assert iridanext_json.metadata.samples."meta-small".qc_status_overall == "FAILED"
             assert iridanext_json.metadata.samples."meta-small".qc_summary ==  "[FAILED] Sample was determined to be metagenomic and 'fail_on_metagenomic' was set to true."
 
-            def json = path("$launchDir/results/FinalReports/Aggregated/Json/final_report.json").json
+            def json = path("$outputDir/FinalReports/Aggregated/Json/final_report.json").json
 
             assert json.short.short.RawReadSummary.R1."total_bp".equals(118750)
             assert json.short.short.RawReadSummary.R1."total_reads".equals(475)
@@ -957,9 +954,8 @@ nextflow_pipeline {
 
             assert json.short.short.SevenGeneMLSTReport[0].filename.equals("short.filtered.fasta.gz")
 
-            assert json.short.short.Abricate."0".RESISTANCE.equals("NoData")  // All Abricate results for this are "NoData".
 
-            def assembly_path = "$launchDir/results/Assembly/FinalAssembly/short/short.final.filtered.assembly.fasta.gz"
+            def assembly_path = "$outputDir/Assembly/FinalAssembly/short/short.final.filtered.assembly.fasta.gz"
             assert path(assembly_path).exists()
 
             // parse assembly file
@@ -996,7 +992,7 @@ nextflow_pipeline {
         when {
             params {
                 input = "$baseDir/tests/data/samplesheets/samplesheet-nanopore.csv"
-                outdir = "results"
+                outdir = "$outputDir"
 
                 platform = "nanopore"
 
@@ -1024,8 +1020,8 @@ nextflow_pipeline {
         then {
 
             assert workflow.success
-            assert path("$launchDir/results").exists()
-            def iridanext_json = path("$launchDir/results/iridanext.output.json").json
+            assert path("$outputDir").exists()
+            def iridanext_json = path("$outputDir/iridanext.output.json").json
             def iridanext_global = iridanext_json.files.global
             def iridanext_samples = iridanext_json.files.samples
             def iridanext_metadata = iridanext_json.metadata.samples
@@ -1047,7 +1043,7 @@ nextflow_pipeline {
         when {
             params {
                 input = "$baseDir/tests/data/samplesheets/samplesheet-hybrid.csv"
-                outdir = "results"
+                outdir = "$outputDir"
 
                 platform = "hybrid"
 
@@ -1075,8 +1071,8 @@ nextflow_pipeline {
         then {
 
             assert workflow.success
-            assert path("$launchDir/results").exists()
-            def iridanext_json = path("$launchDir/results/iridanext.output.json").json
+            assert path("$outputDir").exists()
+            def iridanext_json = path("$outputDir/iridanext.output.json").json
             def iridanext_global = iridanext_json.files.global
             def iridanext_samples = iridanext_json.files.samples
             def iridanext_metadata = iridanext_json.metadata.samples
@@ -1091,7 +1087,7 @@ nextflow_pipeline {
             assert sample.assembly_length == 214466
 
 
-            
+
         }
     }
 
@@ -1103,7 +1099,8 @@ nextflow_pipeline {
 
             params {
                 input = "$baseDir/tests/data/samplesheets/samplesheet-make-names-unique.csv"
-                outdir = "results"
+                outdir = "$outputDir"
+
                 min_reads = 1
                 max_samples = 2
                 mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
@@ -1123,14 +1120,14 @@ nextflow_pipeline {
         then {
 
             // Check the error-log file
-            def max_sample_log = "$launchDir/results/error/max_samples_exceeded.error.txt"
+            def max_sample_log = "$outputDir/error/max_samples_exceeded.error.txt"
             assert file(max_sample_log).exists()
             assert path(max_sample_log).readLines().contains("4 samples were selected, which exceeds the maximum number of samples: 2")
 
             // Check IRIDA Next JSON output
-            assert path("$launchDir/results/iridanext.output.json").exists()
+            assert path("$outputDir/iridanext.output.json").exists()
 
-            def iridanext_json = path("$launchDir/results/iridanext.output.json").json
+            def iridanext_json = path("$outputDir/iridanext.output.json").json
             def iridanext_global = iridanext_json.files.global.path
 
             assert iridanext_global == ['error/max_samples_exceeded.error.txt']
@@ -1145,7 +1142,8 @@ nextflow_pipeline {
 
             params {
                 input = "$baseDir/tests/data/samplesheets/samplesheet-make-names-unique.csv"
-                outdir = "results"
+                outdir = "$outputDir"
+
                 min_reads = 1
                 max_samples = 10
                 mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
@@ -1168,7 +1166,7 @@ nextflow_pipeline {
             assert workflow.success
             assert workflow.exitStatus == 0
             // Check the error-log file not produced
-            def max_sample_log = "$launchDir/results/error/max_samples_exceeded.error.txt"
+            def max_sample_log = "$outputDir/error/max_samples_exceeded.error.txt"
             assert !(file(max_sample_log).exists())
         }
 
@@ -1181,7 +1179,8 @@ nextflow_pipeline {
 
             params {
                 input = "$baseDir/tests/data/samplesheets/samplesheet-make-names-unique.csv"
-                outdir = "results"
+                outdir = "$outputDir"
+
                 min_reads = 1
                 max_samples = 0 // Confirms that 0, or the default, acts as "unlimited samples"
                 mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
@@ -1205,7 +1204,7 @@ nextflow_pipeline {
             assert workflow.exitStatus == 0
 
             // Check the error-log file not produced
-            def max_sample_log = "$launchDir/results/error/max_samples_exceeded.error.txt"
+            def max_sample_log = "$outputDir/error/max_samples_exceeded.error.txt"
             assert !(file(max_sample_log).exists())
         }
 

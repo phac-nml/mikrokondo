@@ -84,7 +84,7 @@ class FastQData:
 
     def __add__(self, obj: "FastQData") -> "FastQData":
         """
-        Combine two FastQData objects creating a new FastQData object 
+        Combine two FastQData objects creating a new FastQData object
         containing the required totals to create summary metrics
         """
         new_data = FastQData("combined", self.numeric_conversion)
@@ -418,7 +418,7 @@ if __name__ == "__main__":
         fq_data[data.name] = data.to_dict()
         combined_data += data
         sys.stderr.write(f"Finished reading file: {name}\n")
-    
+
     fq_data[combined_data.name] = combined_data.to_dict()
     with args.output.open('w') as output:
         json.dump(fq_data, output, indent=2, default=decimal_serializer)

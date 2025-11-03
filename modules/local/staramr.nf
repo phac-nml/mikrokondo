@@ -46,9 +46,6 @@ process STARAMR {
         gzip -c -d $fasta > $fasta_name
     fi
 
-    # Trim line endings to fit the blastDB, and keep contig headers unique, thank you to Dillon Barker for the awk!!
-    awk '/>/ {print substr(\$0, 1, 49 - length(NR))"_" NR} \$0!~">" {print \$0}' $fasta_name > temp.fasta
-    mv temp.fasta $fasta_name
     staramr search $args -o $prefix $db_ $fasta_name
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

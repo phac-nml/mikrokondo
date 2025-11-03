@@ -12,7 +12,7 @@ nextflow_workflow {
 
             params {
                 input = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/samplesheets/samplesheet-campy-staph.csv"
-                outdir = "results"
+                outdir = "$outputDir"
                 min_reads = 1
                 mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
                 mh_min_kmer = 1
@@ -51,7 +51,7 @@ nextflow_workflow {
 
             params {
                 input = "$baseDir/tests/data/samplesheets/samplesheet-merge-test.csv"
-                outdir = "results"
+                outdir = "$outputDir"
                 min_reads = 1
                 mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
                 mh_min_kmer = 1
@@ -92,7 +92,7 @@ nextflow_workflow {
 
             params {
                 input = "$baseDir/tests/data/samplesheets/samplesheet-set-ext-id.csv"
-                outdir = "results"
+                outdir = "$outputDir"
                 min_reads = 1
                 mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
                 mh_min_kmer = 1
@@ -131,7 +131,7 @@ nextflow_workflow {
 
             params {
                 input = "$baseDir/tests/data/samplesheets/samplesheet-make-names-unique.csv"
-                outdir = "results"
+                outdir = "$outputDir"
                 min_reads = 1
                 mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
                 mh_min_kmer = 1
