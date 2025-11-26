@@ -2,7 +2,7 @@
 include { QUAST } from "../../modules/local/quast_assembly.nf"
 include { SEQKIT_STATS } from "../../modules/local/seqkit_stats.nf"
 include { SEQKIT_FILTER } from "../../modules/local/seqkit_filter.nf"
-include { CHECKM_LINEAGEWF } from "../../modules/local/checkm_lineagewf.nf"
+include { CHECKM2 } from "../../modules/local/checkm2.nf"
 include { MLST } from "../../modules/local/mlst.nf"
 
 
@@ -94,13 +94,16 @@ workflow QC_ASSEMBLIES {
     versions = versions.mix(pub_final_assembly.versions)
 
     if(!params.skip_checkm){
-        CHECKM_LINEAGEWF(assembled_reads.map{
+        //CHECKM_LINEAGEWF(assembled_reads.map{
+        //    meta, contigs, reads -> tuple(meta, contigs)
+        //})
+        checkm_data = CHECKM2(assembled_reads.map{
             meta, contigs, reads -> tuple(meta, contigs)
         })
-        reports = reports.mix(CHECKM_LINEAGEWF.out.checkm_results.map{
+        reports = reports.mix(checkm_data.checkm_results.map{
             meta, results -> tuple(meta, params.checkm, results)
         })
-        versions = versions.mix(CHECKM_LINEAGEWF.out.versions)
+        versions = versions.mix(checkm_data.versions)
     }
 
     if(!params.skip_mlst){

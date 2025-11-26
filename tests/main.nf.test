@@ -25,7 +25,7 @@ nextflow_pipeline {
                 skip_bakta = true
                 skip_staramr = true
                 skip_mobrecon = true
-                skip_checkm = true
+                skip_checkm = false
                 skip_raw_read_metrics = false
                 skip_polishing = true
                 skip_allele_calling = true
