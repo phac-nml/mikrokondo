@@ -18,17 +18,15 @@ process CHECKM2 {
   def args = task.ext.args ?: ''
   prefix = task.ext.prefix ?: "${meta.id}" 
   def is_compressed = fasta.getName().endsWith(params.checkm.gzip_ext) ? true : false
-  def fasta_name = fasta.getName().replace(params.checkm.gzip_ext, "")
-  def file_ext = file(fasta_name).getExtension()
   """
   mkdir $prefix
   echo $fasta > input_file.txt 
-  checkm2 predict --threads ${task.cpus} \\
-  --input input_file.txt \\ 
-  --output-directory $prefix \\
+
+  checkm2 predict --threads ${task.cpus} \
+  --input input_file.txt \
+  --output-directory $prefix \
   $args
- 
- 
+  
 
   cat <<-END_VERSIONS > versions.yml
   "${task.process}":

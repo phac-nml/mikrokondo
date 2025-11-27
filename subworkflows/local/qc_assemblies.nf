@@ -3,6 +3,7 @@ include { QUAST } from "../../modules/local/quast_assembly.nf"
 include { SEQKIT_STATS } from "../../modules/local/seqkit_stats.nf"
 include { SEQKIT_FILTER } from "../../modules/local/seqkit_filter.nf"
 include { CHECKM2 } from "../../modules/local/checkm2.nf"
+include { CHECKM2_DOWNLOAD } from "../../modules/local/checkm2_download.nf"
 include { MLST } from "../../modules/local/mlst.nf"
 
 
@@ -94,16 +95,25 @@ workflow QC_ASSEMBLIES {
     versions = versions.mix(pub_final_assembly.versions)
 
     if(!params.skip_checkm){
-        //CHECKM_LINEAGEWF(assembled_reads.map{
-        //    meta, contigs, reads -> tuple(meta, contigs)
-        //})
-        checkm_data = CHECKM2(assembled_reads.map{
-            meta, contigs, reads -> tuple(meta, contigs)
-        })
-        reports = reports.mix(checkm_data.checkm_results.map{
-            meta, results -> tuple(meta, params.checkm, results)
-        })
-        versions = versions.mix(checkm_data.versions)
+      def ch_checkmdb = null
+      if(params.download_checkm2_db && params.checkm2_db != null){
+          log.warn "CheckM2 database passed and download checkm2 database selected. Using passed database: $params.checkm2_db"
+      }else if(params.download_checkm2_db){
+          // should only run once
+          checkm2_data = CHECKM2_DOWNLOAD(...)
+          ch_checkmdb = checkm2_db.database.first() // convert database to value channel
+          versions = versions.mix(checkm2_data.versions)
+      }else{
+          ch_checkmdb = file(params.checkm2_db, checkIfExists: true)
+        }
+
+      checkm_data = CHECKM2(assembled_reads.map{
+          meta, contigs, reads -> tuple(meta, contigs)
+      })
+      reports = reports.mix(checkm_data.checkm_results.map{
+          meta, results -> tuple(meta, params.checkm, results)
+      })
+      versions = versions.mix(checkm_data.versions)
     }
 
     if(!params.skip_mlst){
