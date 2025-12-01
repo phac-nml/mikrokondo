@@ -22,7 +22,7 @@ nextflow_pipeline {
 
                 skip_bakta = true
                 skip_mobrecon = true
-                skip_checkm = true
+                skip_checkm = false
                 skip_raw_read_metrics = true
                 skip_polishing = true
 
