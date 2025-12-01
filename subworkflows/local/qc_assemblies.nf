@@ -96,22 +96,27 @@ workflow QC_ASSEMBLIES {
 
     if(!params.skip_checkm){
       def ch_checkmdb = null
+
       if(params.download_checkm2_db && params.checkm2_db != null){
           log.warn "CheckM2 database passed and download checkm2 database selected. Using passed database: $params.checkm2_db"
+          ch_checkmdb = file(params.checkm2_db, checkIfExists: true)
       }else if(params.download_checkm2_db){
           // should only run once
-          checkm2_data = CHECKM2_DOWNLOAD(...)
-          ch_checkmdb = checkm2_db.database.first() // convert database to value channel
+          checkm2_data = CHECKM2_DOWNLOAD()
+          ch_checkmdb = checkm2_data.database // convert database to value channel
           versions = versions.mix(checkm2_data.versions)
-      }else{
+      }else if(params.checkm2_db != null){
           ch_checkmdb = file(params.checkm2_db, checkIfExists: true)
-        }
+      }else{
+          error("CheckM2 selected to be run, but no database selected is selected and params.download_checkm2_db != true")
+      }
 
       checkm_data = CHECKM2(assembled_reads.map{
           meta, contigs, reads -> tuple(meta, contigs)
-      })
+      }, ch_checkmdb)
+
       reports = reports.mix(checkm_data.checkm_results.map{
-          meta, results -> tuple(meta, params.checkm, results)
+          meta, results -> tuple(meta, params.checkm2, results)
       })
       versions = versions.mix(checkm_data.versions)
     }

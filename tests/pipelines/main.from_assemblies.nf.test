@@ -3,6 +3,7 @@ nextflow_pipeline {
 
     name "Integration Tests from assemblies for MIKROKONDO"
     script "main.nf"
+    config "tests/nextflow.ecoli.config"
 
     test("Test starting from assemblies ecoli") {
         tag "from_assemblies_ecoli"
@@ -29,6 +30,8 @@ nextflow_pipeline {
                 skip_subtyping = false
 
                 skip_allele_calling = true
+                download_checkm2_db = false
+                checkm2_db = "$baseDir/tests/data/databases/TestCheckm2DB.dmnd"
 
                 max_memory = "2.GB"
                 max_cpus = 1
@@ -123,9 +126,8 @@ nextflow_pipeline {
             // output metadata
             def ecoli_metadata = iridanext_metadata.ecoli_GCA_000947975
 
-            assert ecoli_metadata."qc_status_overall" == "FAILED"
-            assert !ecoli_metadata.containsKey("qc_status_contamination")
-            assert !ecoli_metadata.containsKey("Checkm Value")
+            //assert !ecoli_metadata.containsKey("qc_status_contamination")
+            //assert !ecoli_metadata.containsKey("Checkm Value")
             assert !ecoli_metadata.containsKey("qc_status_read_depth_fixed")
             assert !ecoli_metadata.containsKey("Average Coverage Value")
             assert ecoli_metadata."qc_status_assembly_n50" == "PASSED"
@@ -136,7 +138,13 @@ nextflow_pipeline {
             assert ecoli_metadata.assembly_length == 5333525
             assert ecoli_metadata.qc_status_assembly_num_contigs == "PASSED"
             assert ecoli_metadata.assembly_num_contigs == 187
-            assert ecoli_metadata.qc_summary == "FAILED Species ID: Escherichia coli; Passed Tests: 3/4; Organism QC Criteria: Escherichia"
+            //assert ecoli_metadata.qc_summary == "FAILED Species ID: Escherichia coli; Passed Tests: 3/4; Organism QC Criteria: Escherichia"
+            assert ecoli_metadata.qc_summary == "PASSED Species ID: Escherichia coli; Passed Tests: 4/4; Organism QC Criteria: Escherichia"
+
+            assert ecoli_metadata.checkm2_value == 0.34 
+            assert ecoli_metadata.qc_status_contamination == "PASSED"
+            assert ecoli_metadata."qc_status_overall" == "PASSED"
+
 
             assert ecoli_metadata."Downsampled" == false
 
@@ -195,6 +203,7 @@ nextflow_pipeline {
             assert ecoli_metadata."StarAMR Predicted Phenotype" == "streptomycin, kanamycin, ampicillin, ceftriaxone, trimethoprim, ciprofloxacin I/R, nalidixic acid, sulfisoxazole, tetracycline"
             assert ecoli_metadata."StarAMR CGE Predicted Phenotype" == "Streptomycin, Amoxicillin, Ampicillin, Aztreonam, Cefepime, Cefotaxime, Ceftazidime, Ceftriaxone, Piperacillin, Ticarcillin, Cephalothin, Trimethoprim, Nalidixic acid, Ciprofloxacin, Sulfamethoxazole, Doxycycline, Tetracycline"
             assert ecoli_metadata."StarAMR Plasmid" == "IncQ1"
+
 
             // Read in filtered assembly fasta to verify number of contigs
             def assemblyLines = path("$outputDir/Assembly/FinalAssembly/ecoli_GCA_000947975/ecoli_GCA_000947975.final.filtered.assembly.fasta.gz").readLinesGzip()

@@ -6,6 +6,7 @@ process CHECKM2 {
     
   input:
   tuple val(meta), path(fasta)
+  path(database)
 
 
   output:
@@ -20,11 +21,11 @@ process CHECKM2 {
   def is_compressed = fasta.getName().endsWith(params.checkm.gzip_ext) ? true : false
   """
   mkdir $prefix
-  echo $fasta > input_file.txt 
 
   checkm2 predict --threads ${task.cpus} \
-  --input input_file.txt \
+  --input $fasta \
   --output-directory $prefix \
+  --database_path $database \
   $args
   
 

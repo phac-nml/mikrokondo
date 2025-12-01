@@ -3,6 +3,22 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+### Updated
+
+- Updated coreutils container to version 9.5 allowing https downloads.
+
+- Updated CheckM to CheckM2
+
+### Removed
+
+- Removed CheckM from mikrokondo, which is now replaced by CheckM2.
+
+### Added
+
+- Added options and process for automatic download of the CheckM2 database.
+
 ## [0.9.5] - 2025-11-03
 
 ### `Updated`
