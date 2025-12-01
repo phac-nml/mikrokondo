@@ -108,7 +108,7 @@ workflow QC_ASSEMBLIES {
       }else if(params.checkm2_db != null){
           ch_checkmdb = file(params.checkm2_db, checkIfExists: true)
       }else{
-          error("CheckM2 selected to be run, but no database selected is selected and params.download_checkm2_db != true")
+          error("CheckM2 selected to be run, but no database is selected and params.download_checkm2_db != true")
       }
 
       checkm_data = CHECKM2(assembled_reads.map{
