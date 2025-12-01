@@ -18,7 +18,7 @@ process CHECKM2 {
   script:
   def args = task.ext.args ?: ''
   prefix = task.ext.prefix ?: "${meta.id}" 
-  def is_compressed = fasta.getName().endsWith(params.checkm.gzip_ext) ? true : false
+  def is_compressed = fasta.getName().endsWith("gz") ? true : false
   """
   mkdir $prefix
 
