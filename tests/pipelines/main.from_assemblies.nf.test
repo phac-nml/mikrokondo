@@ -141,7 +141,7 @@ nextflow_pipeline {
             //assert ecoli_metadata.qc_summary == "FAILED Species ID: Escherichia coli; Passed Tests: 3/4; Organism QC Criteria: Escherichia"
             assert ecoli_metadata.qc_summary == "PASSED Species ID: Escherichia coli; Passed Tests: 4/4; Organism QC Criteria: Escherichia"
 
-            assert ecoli_metadata.checkm2_value == 0.34
+            assert ecoli_metadata.checkm_value == 0.34
             assert ecoli_metadata.qc_status_contamination == "PASSED"
             assert ecoli_metadata."qc_status_overall" == "PASSED"
 
