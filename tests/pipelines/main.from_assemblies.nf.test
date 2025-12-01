@@ -22,7 +22,7 @@ nextflow_pipeline {
 
                 skip_bakta = true
                 skip_mobrecon = true
-                skip_checkm = false
+                skip_checkm = true
                 skip_raw_read_metrics = true
                 skip_polishing = true
 
@@ -233,7 +233,7 @@ nextflow_pipeline {
 
                 skip_bakta = true
                 skip_mobrecon = true
-                skip_checkm = false
+                skip_checkm = true
                 skip_raw_read_metrics = true
                 skip_polishing = true
                 skip_species_classification = true
@@ -301,7 +301,7 @@ nextflow_pipeline {
 
                 skip_bakta = true
                 skip_mobrecon = true
-                skip_checkm = false
+                skip_checkm = true
                 skip_raw_read_metrics = true
                 skip_polishing = true
 
@@ -380,7 +380,7 @@ nextflow_pipeline {
 
                 skip_bakta = true
                 skip_mobrecon = true
-                skip_checkm = false
+                skip_checkm = true
                 skip_raw_read_metrics = true
                 skip_polishing = true
 
@@ -569,7 +569,7 @@ nextflow_pipeline {
 
                 skip_bakta = true
                 skip_mobrecon = true
-                skip_checkm = false
+                skip_checkm = true
                 skip_raw_read_metrics = true
                 skip_polishing = true
 
@@ -728,7 +728,7 @@ nextflow_pipeline {
 
                 skip_bakta = true
                 skip_mobrecon = true
-                skip_checkm = false
+                skip_checkm = true
                 skip_raw_read_metrics = true
                 skip_polishing = true
 
@@ -880,7 +880,7 @@ nextflow_pipeline {
 
                 skip_bakta = true
                 skip_mobrecon = true
-                skip_checkm = false
+                skip_checkm = true
                 skip_raw_read_metrics = true
                 skip_polishing = true
                 skip_mlst = true
@@ -957,7 +957,7 @@ nextflow_pipeline {
 
                 skip_bakta = true
                 skip_mobrecon = true
-                skip_checkm = false
+                skip_checkm = true
                 skip_raw_read_metrics = true
                 skip_polishing = true
                 skip_mlst = true
@@ -1029,7 +1029,7 @@ nextflow_pipeline {
 
                 skip_bakta = true
                 skip_mobrecon = true
-                skip_checkm = false
+                skip_checkm = true
                 skip_raw_read_metrics = true
                 skip_polishing = true
                 skip_mlst = true
@@ -1096,7 +1096,7 @@ nextflow_pipeline {
 
                 skip_bakta = true
                 skip_mobrecon = true
-                skip_checkm = false
+                skip_checkm = true
                 skip_raw_read_metrics = true
                 skip_polishing = true
                 skip_mlst = true
@@ -1147,7 +1147,7 @@ nextflow_pipeline {
 
                 skip_bakta = true
                 skip_mobrecon = true
-                skip_checkm = false
+                skip_checkm = true
                 skip_raw_read_metrics = true
                 skip_polishing = true
                 skip_mlst = true
