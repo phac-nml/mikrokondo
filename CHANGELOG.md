@@ -7,17 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Updated
 
-- Updated coreutils container to version 9.5 allowing https downloads.
+- Updated coreutils container to version 9.5 allowing https downloads. [PR 201](https://github.com/phac-nml/mikrokondo/pull/201)
 
-- Updated CheckM to CheckM2
+- Updated CheckM to CheckM2. [PR 201](https://github.com/phac-nml/mikrokondo/pull/201)
 
 ### Removed
 
-- Removed CheckM from mikrokondo, which is now replaced by CheckM2.
+- Removed CheckM from mikrokondo, which is now replaced by CheckM2. [PR 201](https://github.com/phac-nml/mikrokondo/pull/201)
 
 ### Added
 
-- Added options and process for automatic download of the CheckM2 database.
+- Added options and process for automatic download of the CheckM2 database. [PR 201](https://github.com/phac-nml/mikrokondo/pull/201)
 
 ## [0.9.5] - 2025-11-03
 
