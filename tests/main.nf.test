@@ -229,6 +229,99 @@ nextflow_pipeline {
 
     }
 
+    test("Should run without failure fail CheckM.") {
+        tag "succeed_assembly_fail_checkm"
+
+        when {
+            params {
+                input = "https://raw.githubusercontent.com/phac-nml/mikrokondo/dev/tests/data/samplesheets/samplesheet-small-assembly.csv"
+                outdir = "$outputDir"
+
+                platform = "illumina"
+
+                mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
+                mh_min_kmer = 1
+
+                dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+                kraken2_db = "$baseDir/tests/data/kraken2/test"
+
+                min_reads = 100
+
+                skip_allele_calling = true
+
+                QCReport {
+                    escherichia{search = "Escherichia"}
+                    salmonella{search = "Salmonella"}
+                    listeria{search = "Listeria"}
+                    klebsiella{search = "Klebsiella"}
+                    shigella{search = "Shigella"}
+                    staphylococcus{search = "Staphylococcus"}
+                    fallthrough {
+                        search = "No organism specific QC data available."
+                        raw_average_quality = 30
+                        min_n50 = 1
+                        max_n50 = 1000000000
+                        min_nr_contigs = 1
+                        max_nr_contigs = 100000000
+                        fixed_genome_size = 1000
+                        min_length = 0
+                        max_length = 10000000000000
+                        max_checkm_contamination = -1.0
+                        min_average_coverage = 30
+                    }
+                }
+
+
+                skip_bakta = true
+                skip_staramr = false
+                skip_mobrecon = false
+                skip_checkm = false
+                skip_raw_read_metrics = false
+                skip_polishing = false
+
+                max_memory = "2.GB"
+                max_cpus = 1
+            }
+        }
+
+        then {
+            // compare IRIDA Next JSON output
+            def iridanext_json = path("$outputDir/iridanext.output.json").json
+            def iridanext_global = iridanext_json.files.global
+            def iridanext_samples = iridanext_json.files.samples
+            def iridanext_metadata = iridanext_json.metadata.samples
+
+            // output metadata
+            assert iridanext_metadata.short."qc_status_overall" == "FAILED"
+            assert iridanext_metadata.short."qc_status_contamination" == "FAILED"
+            assert iridanext_metadata.short."checkm_value" == 0.0
+            assert iridanext_metadata.short."qc_status_read_depth_fixed" == "PASSED"
+            assert iridanext_metadata.short."mean_read_depth_fixed" == 237.5
+            assert iridanext_metadata.short."qc_status_assembly_n50" == "PASSED"
+            assert iridanext_metadata.short."n50_value" == 4949
+            assert iridanext_metadata.short."qc_status_read_qual" == "PASSED"
+            assert iridanext_metadata.short."raw_average_quality_value" == 40.0
+            assert iridanext_metadata.short."qc_status_assembly_genome_size" == "PASSED"
+            assert iridanext_metadata.short."assembly_length" == 4949
+            assert iridanext_metadata.short."qc_status_assembly_num_contigs" == "PASSED"
+            assert iridanext_metadata.short."assembly_num_contigs" == 1
+            assert iridanext_metadata.short."qc_summary" == "FAILED Species ID: No Species Identified; Passed Tests: 5/6; Organism QC Criteria: No organism specific QC data available."
+
+
+
+            // Check that the pipline_info parameters file contains the expected parameters
+            def parameters_json = path("$outputDir/pipeline_info/short.mikrokondo.parameters.json").json
+            assert parameters_json.input == "https://raw.githubusercontent.com/phac-nml/mikrokondo/dev/tests/data/samplesheets/samplesheet-small-assembly.csv"
+            assert parameters_json.outdir.endsWith("/output")
+            assert parameters_json.platform == "illumina"
+            assert parameters_json.mh_min_kmer == 1
+            assert parameters_json.mash_sketch == "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
+            assert parameters_json.locidex.min_evalue == 0.0001
+
+
+        }
+
+    }
 
     test("Should run without failure.") {
         tag "succeed_assembly"
