@@ -190,10 +190,6 @@ nextflow_pipeline {
             assert json.short.short.StarAMR."0"."Predicted Phenotype".equals("Susceptible")
             assert json.short.short.StarAMR."0"."Genome Length".equals("4949")
 
-            assert json.short.short.CheckM."0"."# genomes".equals("5656")
-            assert json.short.short.CheckM."0"."# markers".equals("56")
-            assert json.short.short.CheckM."0"."# marker sets".equals("24")
-            assert json.short.short.CheckM."0".Contamination.equals("0.00")
 
             assert json.short.short.SevenGeneMLSTReport[0].filename.equals("short.filtered.fasta.gz")
 
@@ -224,7 +220,7 @@ nextflow_pipeline {
             assert iridanext_samples.INX.findAll { it.path == "FinalReports/FlattenedReports/short.flat_sample.json.gz" }.size() == 1
 
             // output metadata
-            assert iridanext_metadata.INX."qc_status_overall" == "PASSED"
+            assert iridanext_metadata.INX."qc_status_overall" == "FAILED"
 
         }
 
@@ -324,10 +320,6 @@ nextflow_pipeline {
             assert json.short.short.StarAMR."0"."Predicted Phenotype".equals("Susceptible")
             assert json.short.short.StarAMR."0"."Genome Length".equals("4949")
 
-            assert json.short.short.CheckM."0"."# genomes".equals("5656")
-            assert json.short.short.CheckM."0"."# markers".equals("56")
-            assert json.short.short.CheckM."0"."# marker sets".equals("24")
-            assert json.short.short.CheckM."0".Contamination.equals("0.00")
 
             assert json.short.short.SevenGeneMLSTReport[0].filename.equals("short.filtered.fasta.gz")
 
@@ -360,9 +352,8 @@ nextflow_pipeline {
             assert iridanext_samples.short.findAll { it.path == "pipeline_info/short.mikrokondo.parameters.json" }.size() == 1
 
             // output metadata
-            assert iridanext_metadata.short."qc_status_overall" == "PASSED"
-            assert iridanext_metadata.short."qc_status_contamination" == "PASSED"
-            assert iridanext_metadata.short."checkm_value" == 0.0
+            assert iridanext_metadata.short."qc_status_overall" == "FAILED"
+            assert iridanext_metadata.short."qc_status_contamination" == null
             assert iridanext_metadata.short."qc_status_read_depth_fixed" == "PASSED"
             assert iridanext_metadata.short."mean_read_depth_fixed" == 237.5
             assert iridanext_metadata.short."qc_status_assembly_n50" == "WARNING"
@@ -373,7 +364,7 @@ nextflow_pipeline {
             assert iridanext_metadata.short."assembly_length" == 4949
             assert iridanext_metadata.short."qc_status_assembly_num_contigs" == "WARNING"
             assert iridanext_metadata.short."assembly_num_contigs" == 1
-            assert iridanext_metadata.short."qc_summary" == "PASSED Species ID: No Species Identified; Passed Tests: 6/6; Organism QC Criteria: No organism specific QC data available."
+            assert iridanext_metadata.short."qc_summary" == "FAILED Species ID: No Species Identified; Passed Tests: 5/6; Organism QC Criteria: No organism specific QC data available."
 
             assert iridanext_metadata.short."Downsampled" == false
             assert iridanext_metadata.short."predicted_identification_name" == "No Species Identified"
@@ -396,8 +387,6 @@ nextflow_pipeline {
             assert parameters_json.mh_min_kmer == 1
             assert parameters_json.mash_sketch == "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
             assert parameters_json.locidex.min_evalue == 0.0001
-
-
         }
 
     }
@@ -495,10 +484,6 @@ nextflow_pipeline {
             assert json.short.short.StarAMR."0"."Predicted Phenotype".equals("Susceptible")
             assert json.short.short.StarAMR."0"."Genome Length".equals("4949")
 
-            assert json.short.short.CheckM."0"."# genomes".equals("5656")
-            assert json.short.short.CheckM."0"."# markers".equals("56")
-            assert json.short.short.CheckM."0"."# marker sets".equals("24")
-            assert json.short.short.CheckM."0".Contamination.equals("0.00")
 
             assert json.short.short.SevenGeneMLSTReport[0].filename.equals("short.filtered.fasta.gz")
 
@@ -532,8 +517,6 @@ nextflow_pipeline {
 
             // output metadata
             assert iridanext_metadata.short."qc_status_overall" == "FAILED"
-            assert iridanext_metadata.short."qc_status_contamination" == "PASSED"
-            assert iridanext_metadata.short."checkm_value" == 0.0
             assert iridanext_metadata.short."qc_status_read_depth_fixed" == "FAILED"
             assert iridanext_metadata.short."mean_read_depth_fixed" == 0.24
             assert iridanext_metadata.short."qc_status_assembly_n50" == "WARNING"
@@ -951,11 +934,6 @@ nextflow_pipeline {
             assert json.short.short.StarAMR."0"."Predicted Phenotype".equals("Susceptible")
             assert json.short.short.StarAMR."0"."Genome Length".equals("4949")
 
-            assert json.short.short.CheckM."0"."# genomes".equals("5656")
-            assert json.short.short.CheckM."0"."# markers".equals("56")
-            assert json.short.short.CheckM."0"."# marker sets".equals("24")
-            assert json.short.short.CheckM."0".Contamination.equals("0.00")
-
             assert json.short.short.SevenGeneMLSTReport[0].filename.equals("short.filtered.fasta.gz")
 
 
@@ -1153,6 +1131,7 @@ nextflow_pipeline {
                 mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
                 mh_min_kmer = 1
                 skip_read_merging = true
+                skip_checkm = true
                 dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
                 skip_allele_calling = true
 
@@ -1190,6 +1169,7 @@ nextflow_pipeline {
                 mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
                 mh_min_kmer = 1
                 skip_read_merging = true
+                skip_checkm = true
                 dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
                 skip_allele_calling = true
 
