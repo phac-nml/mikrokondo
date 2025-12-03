@@ -238,7 +238,7 @@ def create_action_call(sample_data, species_tag){
             def reisolate = 0
             def qual_data = val.value["QualityAnalysis"]
             def meta_data = val.value["meta"]
-            def sample_status = "FAILED"
+            def sample_status = ReportFunctions.QCStatus.FAILED
 
             if(meta_data.metagenomic){
                 // nothing to do here
@@ -311,7 +311,7 @@ def create_action_call(sample_data, species_tag){
                 qual_message.add("[FAILED] Checks had to be ignored")
             }else{
                 qual_message.add("[PASSED] All Checks passed")
-                sample_status = "PASSED"
+                sample_status = ReportFunctions.QCStatus.PASSED
             }
 
             def organism_criteria = sample_data[val.key][species_tag]
@@ -331,9 +331,10 @@ def create_action_call(sample_data, species_tag){
             def terminal_message = populate_qual_message(qual_data).join("\n")
             log.info "\n$val.key\n${terminal_message}\n${sample_status}\n${final_message}"
 
+            def ignored_checks_message = checks_ignored ? "Ignored ${checks_ignored}; " : ""
             // Reseq recommended should go to a seperate field
             // Requested output should be: [PASS|FAILED] Species ID: [species] [Tests passed] [Organism criteria available]
-            qc_message = "${sample_status} ${species_id}; ${tests_passed}; Organism QC Criteria: ${organism_criteria}"
+            qc_message = "${sample_status}; ${tests_passed}; ${ignored_checks_message}${species_id}; Organism QC Criteria: ${organism_criteria}"
 
             sample_data[val.key]["QCSummary"] = qc_message
             sample_data[val.key]["QCStatus"] = sample_status
@@ -467,7 +468,7 @@ def range_comp(fields, qc_data, comp_val, qc_obj){
     }
 
     def vals = [qc_data[fields[0]], qc_data[fields[1]]].sort()
-    if(vals[0] == null){
+    if(vals[0] == null || vals[1] == null){
         qc_obj.message ="[WARNING ${qc_obj.field}] No comparison of available for ${qc_obj.field}. Sample value: ${comp_val}"
         qc_obj.status = true
         return qc_obj
@@ -475,7 +476,7 @@ def range_comp(fields, qc_data, comp_val, qc_obj){
     if(vals[0] <= comp_val && comp_val <= vals[1]){
         qc_obj.status = true
         qc_obj.message = "[PASSED ${qc_obj.field}] ${comp_val} is within acceptable QC range for ${qc_data.search} (${fields[0]}: ${vals[0]} - ${fields[1]} ${vals[1]})"
-        qc_obj.qc_status = "PASSED"
+        qc_obj.qc_status = ReportFunctions.QCStatus.PASSED
     }else{
         if(comp_val < vals[0]){
             qc_obj.low = true
@@ -483,7 +484,7 @@ def range_comp(fields, qc_data, comp_val, qc_obj){
             qc_obj.low = false
         }
         qc_obj.message = "[FAILED ${qc_obj.field}] ${comp_val} is outside the acceptable ranges for ${qc_data.search} (${fields[0]}: ${vals[0]} - ${fields[1]} ${vals[1]})"
-        qc_obj.qc_status = "FAILED"
+        qc_obj.qc_status = ReportFunctions.QCStatus.FAILED
     }
     return qc_obj
 }
@@ -504,11 +505,11 @@ def greater_equal_comp(fields, qc_data, comp_val, qc_obj){
     if(comp_val >= vals ){
         qc_obj.status = true
         qc_obj.message = "[PASSED ${qc_obj.field}] ${comp_val} meets QC parameter of => ${vals} for ${qc_data.search}"
-        qc_obj.qc_status  = "PASSED"
+        qc_obj.qc_status  = ReportFunctions.QCStatus.PASSED
     }else{
         qc_obj.low = true
         qc_obj.message = "[FAILED ${qc_obj.field}] ${comp_val} is less than QC parameter of ${vals} for ${qc_data.search}"
-        qc_obj.qc_status  = "FAILED"
+        qc_obj.qc_status  = ReportFunctions.QCStatus.FAILED
     }
     return qc_obj
 }
@@ -530,18 +531,25 @@ def lesser_equal_comp(fields, qc_data, comp_val, qc_obj){
     if(comp_val <= vals ){
         qc_obj.status = true
         qc_obj.message = "[PASSED ${qc_obj.field}] ${comp_val} meets QC parameter of <= ${vals} for ${qc_data.search}"
-        qc_obj.qc_status = "PASSED"
+        qc_obj.qc_status = ReportFunctions.QCStatus.PASSED
     }else{
         qc_obj.low = false
         qc_obj.message = "[FAILED ${qc_obj.field}] ${comp_val} is greater than than QC parameter of ${vals} for ${qc_data.search}"
-        qc_obj.qc_status = "FAILED"
+        qc_obj.qc_status = ReportFunctions.QCStatus.FAILED
     }
     return qc_obj
 }
 
 def prep_qc_vals(qc_vals, qc_data, comp_val, field_val){
     // Low value is added to designate if a value was too low or too high if it fails a qc threshold
-    def status = ["status": false, "message": "", "field": field_val, "low": false, "value": comp_val, "qc_status": "WARNING"]
+    def status = [
+      "status": false, 
+      "message": "", 
+      "field": field_val, 
+      "low": false, 
+      "value": comp_val, 
+      "qc_status": ReportFunctions.QCStatus.WARNING
+    ]
     def comp_fields = qc_vals.compare_fields
     switch(qc_vals.comp_type.toUpperCase()){
         case 'GE':

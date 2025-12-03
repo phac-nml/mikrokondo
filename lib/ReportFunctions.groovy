@@ -11,6 +11,21 @@ class ReportFunctions {
 
     }
 
+    enum QCStatus{
+        PASSED,
+        FAILED,
+        WARNING
+    }
+    
+
+    static def metricFailed(java.util.LinkedHashMap qual_data, java.lang.String metric){
+        return qual_data && qual_data.containsKey(metric) && !qual_data[metric].status
+    }
+    
+    static def metricIgnored(java.util.LinkedHashMap qual_data, java.lang.String metric){
+        return qual_data && (!qual_data.containsKey(metric) || !qual_data[metric].status || qual_data[metric].qc_status == QCStatus.WARNING)
+    }
+
     static def select_qc_func(java.util.LinkedHashMap qual_data, java.lang.String metric, java.util.ArrayList qc_message, java.util.LinkedHashMap meta_info, java.lang.String func) {
         def check_failed = 0
         def reisolate = 0
@@ -82,11 +97,13 @@ class ReportFunctions {
         def checks_ignored = 0
         def failed_p = false
         def checks = 0
+        def metric_exists_and_failed =  metricFailed(qual_data, metric)
+        def metric_ignored = metricIgnored(qual_data, metric)
 
-        if (qual_data && qual_data.containsKey(metric) && !qual_data[metric].status) {
+        if (metric_exists_and_failed) {
             checks_failed = 1
             failed_p = true
-        }else if (qual_data && (!qual_data.containsKey(metric) || !qual_data[metric].status)) {
+        }else if (metric_ignored) {
             checks_ignored = 1
         }else if (qual_data == null) {
             checks_ignored = 1
@@ -102,12 +119,15 @@ class ReportFunctions {
         def checks_failed = 0
         def checks_ignored = 0
         def checks = 0
-        if (qual_data && qual_data.containsKey(metric) && !qual_data[metric].status) {
+        def metric_exists_and_failed =  metricFailed(qual_data, metric)
+        def metric_ignored = metricIgnored(qual_data, metric)
+
+        if (metric_exists_and_failed) {
             reisolate = 1
             resequence = 1
             failed_p = true
             checks_failed = 1
-        }else if (qual_data && (!qual_data.containsKey(metric) || !qual_data[metric].status)) {
+        }else if (metric_ignored) {
             checks_ignored = 1
         }else if (qual_data == null) {
             checks_ignored = 1
@@ -123,12 +143,14 @@ class ReportFunctions {
         def checks_failed = 0
         def checks_ignored = 0
         def checks = 0
-        if (qual_data && qual_data.containsKey(metric) && !qual_data[metric].status) {
+        def metric_exists_and_failed =  metricFailed(qual_data, metric)
+        def metric_ignored = metricIgnored(qual_data, metric)
+        if (metric_exists_and_failed) {
             reisolate = 1
             resequence = 1
             failed_p = true
             checks_failed = 1
-        }else if (qual_data && (!qual_data.containsKey(metric) || !qual_data[metric].status)) {
+        }else if (metric_ignored) {
             checks_ignored = 1
         }else if (qual_data == null) {
             checks_ignored = 1

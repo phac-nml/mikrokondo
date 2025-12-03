@@ -88,7 +88,7 @@ nextflow_pipeline {
             assert !iridanext_metadata.CSE.containsKey("assembly_length")
             assert !iridanext_metadata.CSE.containsKey("qc_status_assembly_num_contigs")
             assert !iridanext_metadata.CSE.containsKey("assembly_num_contigs")
-            assert iridanext_metadata.CSE."qc_summary" == "FAILED Species ID: No organism specific QC data available.; Passed Tests: 1/6; Organism QC Criteria: No organism specific QC data available."
+            assert iridanext_metadata.CSE."qc_summary" == "FAILED; Passed Tests: 1/7; Species ID: No organism specific QC data available.; Organism QC Criteria: No organism specific QC data available."
 
             assert iridanext_metadata.CSE."Downsampled" == false
             assert !iridanext_metadata.CSE.containsKey("predicted_identification_name")
@@ -223,7 +223,7 @@ nextflow_pipeline {
             assert iridanext_samples.INX.findAll { it.path == "FinalReports/FlattenedReports/short.flat_sample.json.gz" }.size() == 1
 
             // output metadata
-            assert iridanext_metadata.INX."qc_status_overall" == "PASSED"
+            assert iridanext_metadata.INX."qc_status_overall" == "FAILED"
 
         }
 
@@ -305,7 +305,7 @@ nextflow_pipeline {
             assert iridanext_metadata.short."assembly_length" == 4949
             assert iridanext_metadata.short."qc_status_assembly_num_contigs" == "PASSED"
             assert iridanext_metadata.short."assembly_num_contigs" == 1
-            assert iridanext_metadata.short."qc_summary" == "FAILED Species ID: No Species Identified; Passed Tests: 5/6; Organism QC Criteria: No organism specific QC data available."
+            assert iridanext_metadata.short."qc_summary" == "FAILED; Passed Tests: 5/7; Species ID: No Species Identified; Organism QC Criteria: No organism specific QC data available."
 
 
 
@@ -451,7 +451,7 @@ nextflow_pipeline {
             assert iridanext_samples.short.findAll { it.path == "pipeline_info/short.mikrokondo.parameters.json" }.size() == 1
 
             // output metadata
-            assert iridanext_metadata.short."qc_status_overall" == "PASSED"
+            assert iridanext_metadata.short."qc_status_overall" == "FAILED"
             assert iridanext_metadata.short."qc_status_contamination" == "PASSED"
             assert iridanext_metadata.short."checkm_value" == 0.0
             assert iridanext_metadata.short."qc_status_read_depth_fixed" == "PASSED"
@@ -464,7 +464,7 @@ nextflow_pipeline {
             assert iridanext_metadata.short."assembly_length" == 4949
             assert iridanext_metadata.short."qc_status_assembly_num_contigs" == "WARNING"
             assert iridanext_metadata.short."assembly_num_contigs" == 1
-            assert iridanext_metadata.short."qc_summary" == "PASSED Species ID: No Species Identified; Passed Tests: 6/6; Organism QC Criteria: No organism specific QC data available."
+            assert iridanext_metadata.short."qc_summary" == "FAILED; Passed Tests: 3/7; Ignored 3; Species ID: No Species Identified; Organism QC Criteria: No organism specific QC data available."
 
             assert iridanext_metadata.short."Downsampled" == false
             assert iridanext_metadata.short."predicted_identification_name" == "No Species Identified"
@@ -634,7 +634,7 @@ nextflow_pipeline {
             assert iridanext_metadata.short."assembly_length" == 4949
             assert iridanext_metadata.short."qc_status_assembly_num_contigs" == "WARNING"
             assert iridanext_metadata.short."assembly_num_contigs" == 1
-            assert iridanext_metadata.short.qc_summary == "FAILED Species ID: No Species Identified; Passed Tests: 5/6; Organism QC Criteria: No organism specific QC data available."
+            assert iridanext_metadata.short.qc_summary == "FAILED; Passed Tests: 2/7; Ignored 3; Species ID: No Species Identified; Organism QC Criteria: No organism specific QC data available."
 
             assert iridanext_metadata.short."Downsampled" == false
             assert iridanext_metadata.short."predicted_identification_name" == "No Species Identified"
@@ -1127,7 +1127,7 @@ nextflow_pipeline {
             assert sample.n50_value == 214772
             assert sample.assembly_num_contigs == 1
             assert sample.assembly_length == 214772
-            assert sample.qc_summary == "FAILED Species ID: No Species Identified; Passed Tests: 3/6; Organism QC Criteria: No organism specific QC data available."
+            assert sample.qc_summary == "FAILED; Passed Tests: 0/7; Ignored 3; Species ID: No Species Identified; Organism QC Criteria: No organism specific QC data available." 
         }
     }
 
@@ -1179,7 +1179,7 @@ nextflow_pipeline {
             assert sample.n50_value == 214466
             assert sample.assembly_num_contigs == 1
             assert sample.assembly_length == 214466
-            assert sample.qc_summary == "FAILED Species ID: No Species Identified; Passed Tests: 3/6; Organism QC Criteria: No organism specific QC data available."
+            assert sample.qc_summary == "FAILED; Passed Tests: 0/7; Ignored 3; Species ID: No Species Identified; Organism QC Criteria: No organism specific QC data available."
 
         }
     }
