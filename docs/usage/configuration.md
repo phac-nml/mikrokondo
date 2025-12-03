@@ -77,6 +77,8 @@ QCReport {
         max_length = 6000000 // The maximum genome length the organism in the search field is allowed to have
         max_checkm_contamination = 3.0 // The maximum level of allowed contamination allowed by CheckM
         min_average_coverage = 30 // The minimum average coverage allowed
+        min_wgmlst_loci: The minimum number of wgMLST loci required per a sample
+
         // If you wish to make use of IDField and IDTool you will need to set both values
         IDField = null // null|JSON path to relevant file results if null the mash or kraken2 results will be used
         IDTool = null // null|tool name used to create file result if null mash or kraken2 will be written
@@ -313,7 +315,7 @@ Internally the `manifest.json` contains the following structure. Modifications t
 }
 ```
 
-### How automated selection works.
+### How automated selection works
 
 Mikrokondo is able to identify the species that a sample represents internally, but in order to identify the correct WgMLST scheme to use for allele calling the top-level key in the `manifest.json` file must be a name that can be parsed from the speciation output of Mash or Kraken2 e.g. _Salmonella enterica_, _Campylobacter_A anatolicus_, _Escherichia_ etc.
 
