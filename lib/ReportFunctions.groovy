@@ -16,12 +16,12 @@ class ReportFunctions {
         FAILED,
         WARNING
     }
-    
+
 
     static def metricFailed(java.util.LinkedHashMap qual_data, java.lang.String metric){
         return qual_data && qual_data.containsKey(metric) && !qual_data[metric].status
     }
-    
+
     static def metricIgnored(java.util.LinkedHashMap qual_data, java.lang.String metric){
         return qual_data && (!qual_data.containsKey(metric) || !qual_data[metric].status || qual_data[metric].qc_status == QCStatus.WARNING)
     }
