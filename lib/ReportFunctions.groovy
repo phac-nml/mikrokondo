@@ -125,7 +125,7 @@ class ReportFunctions {
         if (metric_exists_and_failed) {
             reisolate = 1
             resequence = 1
-            failed_p = true
+            failed_p = false
             checks_failed = 1
         }else if (metric_ignored) {
             checks_ignored = 1

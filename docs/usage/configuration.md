@@ -78,6 +78,8 @@ QCReport {
         max_checkm_contamination = 3.0 // The maximum level of allowed contamination allowed by CheckM
         min_average_coverage = 30 // The minimum average coverage allowed
         min_wgmlst_loci: The minimum number of wgMLST loci required per a sample
+        min_illumina_read_length: The lowest mean illumina read length you can tolerated for your data
+        max_illumina_read_length: The highest mean illumina read length you can tolerate for your sample
 
         // If you wish to make use of IDField and IDTool you will need to set both values
         IDField = null // null|JSON path to relevant file results if null the mash or kraken2 results will be used
@@ -102,6 +104,8 @@ QCReport {
         max_length = null
         max_checkm_contamination = 3.0
         min_average_coverage = 30
+        min_illumina_read_length = 120
+        max_illumina_read_length = 300 
         IDField = null
         IDTool = null
         PrimaryTypeID = null
