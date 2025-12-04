@@ -3,6 +3,20 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+### Added
+
+- Added new quality control metric `qc_wgmlst_loci_count`. [PR 202](https://github.com/phac-nml/mikrokondo/pull/202)
+
+- Added new quality control metric for read length `qc_status_read_length`. [PR 202](https://github.com/phac-nml/mikrokondo/pull/202)
+
+- The number of ignored tests has been added to the QCMessage output. [PR 202](https://github.com/phac-nml/mikrokondo/pull/202)
+
+### Changed
+
+- Format and order of the final QCMessage is re-arranged for clarity. [PR 202](https://github.com/phac-nml/mikrokondo/pull/202)
+
 ## [0.9.5] - 2025-11-03
 
 ### `Updated`

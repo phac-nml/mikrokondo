@@ -1281,6 +1281,28 @@ nextflow_pipeline {
 
                 max_memory = "2.GB"
                 max_cpus = 1
+                QCReport {
+                    escherichia{search = "Escherichia"}
+                    salmonella{search = "Salmonella"}
+                    listeria{search = "Listeria"}
+                    shigella{search = "Shigella"}
+                    staphylococcus{search = "Staphylococcus"}
+                    klebsiella{search = "Klebsiella"}
+                    fallthrough {
+                        search = "No organism specific QC data available."
+                        raw_average_quality = 0
+                        min_n50 = 0
+                        max_n50 = 1000000000
+                        min_nr_contigs = 0
+                        max_nr_contigs = 100000000
+                        fixed_genome_size = 1000
+                        min_length = 0
+                        max_length = 100000000
+                        max_checkm_contamination = 3.0
+                        min_average_coverage = 0
+                        min_long_read_length = 0
+                    }
+                }
             }
         }
 
@@ -1296,12 +1318,14 @@ nextflow_pipeline {
             assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Tables/final_report.tsv" }.size() == 1
             assert iridanext_samples.Senterica_simulated.findAll { it.path == "Assembly/FinalAssembly/Senterica_simulated/Senterica_simulated.final.filtered.assembly.fasta.gz" }.size() == 1
             def sample = iridanext_metadata.Senterica_simulated
+            assert sample."qc_status_read_length" == "PASSED"
+            assert sample."mean_long_read_length" == 9706
             assert sample.gc == "51.51"
             assert sample.raw_average_quality_value == 13.4
             assert sample.n50_value == 214772
             assert sample.assembly_num_contigs == 1
             assert sample.assembly_length == 214772
-            assert sample.qc_summary == "FAILED; Passed Tests: 0/7; Ignored 3; Species ID: No Species Identified; Organism QC Criteria: No organism specific QC data available." 
+            assert sample.qc_summary == "FAILED; Passed Tests: 6/8; Species ID: No Species Identified; Organism QC Criteria: No organism specific QC data available." 
         }
     }
 

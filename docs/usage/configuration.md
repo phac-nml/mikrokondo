@@ -80,6 +80,7 @@ QCReport {
         min_wgmlst_loci: The minimum number of wgMLST loci required per a sample
         min_illumina_read_length: The lowest mean illumina read length you can tolerated for your data
         max_illumina_read_length: The highest mean illumina read length you can tolerate for your sample
+        min_long_read_length: The minimum mean read length allowed for long read data like pacbio and nanopore
 
         // If you wish to make use of IDField and IDTool you will need to set both values
         IDField = null // null|JSON path to relevant file results if null the mash or kraken2 results will be used
@@ -106,6 +107,7 @@ QCReport {
         min_average_coverage = 30
         min_illumina_read_length = 120
         max_illumina_read_length = 300 
+        min_long_read_length = 300
         IDField = null
         IDTool = null
         PrimaryTypeID = null
