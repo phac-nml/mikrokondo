@@ -209,7 +209,7 @@ An extensive list of references for the tools used by the pipeline can be found 
 
 ## Legal and Compliance Information
 
-Copyright Government of Canada 2023
+Copyright Government of Canada 2025
 
 Written by: National Microbiology Laboratory, Public Health Agency of Canada
 

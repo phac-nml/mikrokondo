@@ -458,7 +458,8 @@
         },
         "download_checkm2_db": {
           "type": "boolean",
-          "description": "Download the CheckM2 database if one is not being passed."
+          "description": "Download the CheckM2 database if one is not being passed.",
+          "hidden": true
         }
       }
     },
