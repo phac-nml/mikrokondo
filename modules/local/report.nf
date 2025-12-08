@@ -208,7 +208,7 @@ def create_action_call(sample_data, species_tag){
     based on conditions passed.
 
     ***** LOGIC ****
-    contamination checkm resequence and reisolate
+    contamination checkm2 resequence and reisolate
 
     // Are reads provided?
         // Coverage low, need to resequence
@@ -277,12 +277,12 @@ def create_action_call(sample_data, species_tag){
 
 
             // ! TODO Summing of ignored checks is messy and the logic can likely be cleaned up
-            if(qual_data && qual_data.containsKey("checkm_contamination") && !qual_data.checkm_contamination.status){
+            if(qual_data && qual_data.containsKey("checkm2_contamination") && !qual_data.checkm2_contamination.status){
                 reisolate = reisolate + contamination_fail
                 resequence += 1
                 failed_p = true
                 checks_failed += 1
-            }else if (qual_data && (!qual_data.containsKey("checkm_contamination") || !qual_data.checkm_contamination.status)){
+            }else if (qual_data && (!qual_data.containsKey("checkm2_contamination") || !qual_data.checkm2_contamination.status)){
                 checks_ignored += 1
             }else if(qual_data == null){
                 checks_ignored += 1
