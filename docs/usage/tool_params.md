@@ -174,21 +174,15 @@ Assemblies can be prevented from going into further analyses based on the Quast 
   - nr_contigs_value: The minimum number of contigs an assembly must have to proceed further through the pipeline.
   - sample_header: The column name in the Quast output containing the sample information. Do not alter this field unless doing pipeline development.
 
-### CheckM
+### CheckM2
 
-CheckM is used within the pipeline for assessing contamination in assemblies.
+CheckM2 is used within the pipeline for assessing contamination in assemblies.
 
-- checkm
+- checkm2
   - singularity: Singularity container containing CheckM
   - docker: Docker container containing CheckM
-  - alignment_ext: Extension on the genes alignment within CheckM. Do not alter this field unless doing pipeline development.
-  - results_ext: The extension of the file containing the CheckM results. Do not alter this field unless doing pipeline development.
-  - tsv_ext: The extension containing the tsv results from CheckM. Do not alter this field unless doing pipeline development.
-  - folder_name: The name of the folder containing the outputs from CheckM. Do not alter this field unless doing pipeline development.
-  - gzip_ext: The compression extension for CheckM. Do not alter this field unless doing pipeline development.
-  - lineage_ms: The name of the lineages.ms file output by CheckM. Do not alter this field unless doing pipeline development.
-  - threads: The number of threads to use in CheckM. Do not alter this field unless doing pipeline development.
-  - report_tag: The name of the CheckM data in the summary report. Do not alter this field unless doing pipeline development.
+  - download_link: The link used to pull the checkm2 model if selected.
+  - report_tag: Name of the data outputs in the final report. Do not touch this field.
   - header_p: Denotes that the result used by the pipeline in generation of the summary report contains a header. Do not alter this field unless doing pipeline development.
 
 ### Kraken2
@@ -232,7 +226,7 @@ Mash is used repeatedly throughout the pipeline for estimation of genome size fr
   - mash_ext: Extension of the mash screen file. Do not alter this field unless doing pipeline development.
   - output_reads_ext: Extension of mash outputs when run on reads. Do not alter this field unless doing pipeline development.
   - output_taxa_ext: Extension of mash output when run on contigs. Do not alter this field unless doing pipeline development.
-  - mash_sketch: The GTDB sketch used by the pipeline, this sketch is special as it contains the taxonomic paths in the classification step of the pipeline. It can as of 2023-10-05 be found here: https://zenodo.org/record/8408361
+  - mash_sketch: The GTDB sketch used by the pipeline, this sketch is special as it contains the taxonomic paths in the classification step of the pipeline. It can as of 2023-10-05 be found here: <https://zenodo.org/record/8408361>
   - sketch_ext: File extension of a mash sketch. Do not alter this field unless doing pipeline development.
   - json_ext: File extension of json data output by Mash. Do not alter this field unless doing pipeline development.
   - sketch_kmer_size: The size of the kmers used in the sketching in genome size estimation.
@@ -249,7 +243,7 @@ This process is used to determine if a sample is metagenomic or not.
 - mash_meta.
   - report_tag: The name of this output field in the summary report. Do not alter this field unless doing pipeline development.
 
-### top_hit_species:
+### top_hit_species
 
 As Kraken2 of Mash can be used for determining the species present in the pipeline, the share a common report tag.
 
