@@ -16,7 +16,7 @@
                     "fastp": "0.23.2"
                 },
                 "GZIP_FILES": {
-                    "gzip": "BusyBox v1.22.1"
+                    "gzip": "BusyBox v1.36.1"
                 },
                 "MASH_SCREEN": {
                     "mash": "2.3"
@@ -40,12 +40,12 @@
                     "pilonpolisher": "No version statement listed"
                 },
                 "PUBLISH_FINAL_ASSEMBLIES": {
-                    "mkdir": "8.31",
-                    "mv": "8.31"
+                    "mkdir": "9.5",
+                    "mv": "9.5"
                 },
                 "PUBLISH_FINAL_READS": {
-                    "mkdir": "8.31",
-                    "mv": "8.31"
+                    "mkdir": "9.5",
+                    "mv": "9.5"
                 },
                 "QUAST": {
                     "quast": "5.2.0"

@@ -207,7 +207,7 @@ def create_action_call(sample_data, species_tag){
     based on conditions passed.
 
     ***** LOGIC ****
-    contamination checkm resequence and reisolate
+    contamination checkm2 resequence and reisolate
 
     // Are reads provided?
         // Coverage low, need to resequence
