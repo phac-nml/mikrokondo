@@ -38,6 +38,10 @@ class ReportFunctions {
                 check_ignored) = ReportFunctions.autofail_reisolate(qual_data, metric, qc_message)
                 break
             case FuncType.READQUALITY:
+                // meta_info.assembly is always false unless only an assembly is passed to 
+                // the pipeline. If meta_info.assembly is true the function will break and 
+                // simply return the default values and will not affect the final pass fail status 
+                // of the pipeline.
                 if (!meta_info.assembly) {
                     (checks,
                     reisolate,
@@ -48,6 +52,10 @@ class ReportFunctions {
                 }
                 break
             case FuncType.COVERAGE:
+                // meta_info.assembly is always false unless only an assembly is passed to 
+                // the pipeline. If meta_info.assembly is true the function will break and 
+                // simply return the default values and will not affect the final pass fail status 
+                // of the pipeline.
                 if (!meta_info.assembly) {
                     (checks,
                     reisolate,
