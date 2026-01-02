@@ -126,8 +126,8 @@ nextflow_pipeline {
             // output metadata
             def ecoli_metadata = iridanext_metadata.ecoli_GCA_000947975
 
-            assert ecoli_metadata.containsKey("Checkm Value")
-            assert ecoli_metadata."Checkm Value" == 0.34
+            assert ecoli_metadata.containsKey("checkm_value")
+            assert ecoli_metadata."checkm_value" == 0.34
             assert ecoli_metadata.containsKey("qc_status_contamination")
             assert ecoli_metadata."qc_status_contamination" == "PASSED"
             assert !ecoli_metadata.containsKey("qc_status_read_depth_fixed")

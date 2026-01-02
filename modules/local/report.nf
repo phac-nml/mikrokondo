@@ -266,6 +266,7 @@ def create_action_call(sample_data, species_tag){
             }
 
             def qual_message = []
+            def ignored_message = []
             def checks_failed = 0
             def checks = 0
             def checks_ignored = 0
@@ -278,7 +279,7 @@ def create_action_call(sample_data, species_tag){
                 if(qc_report_field.value.on){
                     // Need to figure out how to handle the requirement of a category requiring reads...
                     // number is too hight as not excluding read checks
-                    def (checked, rei, res, fail_p, chck_f, chck_i) = ReportFunctions.select_qc_func(qual_data, qc_report_field.key, qual_message, meta_data, qc_report_field.value.qc_func)
+                    def (checked, rei, res, fail_p, chck_f, chck_i) = ReportFunctions.select_qc_func(qual_data, qc_report_field.key, qual_message, ignored_message, meta_data, qc_report_field.value.qc_func)
                     //reisolate = rei + contamination_fail
                     checks_failed += chck_f
                     resequence += res
@@ -290,6 +291,7 @@ def create_action_call(sample_data, species_tag){
                     checks += checked
                 }
             }
+            println ignored_message
 
             (reisolate, resequence) = n50_nrcontigs_decision(qual_data, nr_contigs_failed, n50_failed, qual_message, reisolate, resequence)
 
@@ -330,7 +332,7 @@ def create_action_call(sample_data, species_tag){
             def terminal_message = populate_qual_message(qual_data).join("\n")
             log.info "\n$val.key\n${terminal_message}\n${sample_status}\n${final_message}"
 
-            def ignored_checks_message = checks_ignored ? "Ignored ${checks_ignored}; " : ""
+            def ignored_checks_message = checks_ignored ? "Ignored checks ${checks_ignored}: ${ignored_message.join(", ")}; " : ""
             // Reseq recommended should go to a seperate field
             // Requested output should be: [PASS|FAILED] Species ID: [species] [Tests passed] [Organism criteria available]
             qc_message = "${sample_status}; ${tests_passed}; ${ignored_checks_message}${species_id}; Organism QC Criteria: ${organism_criteria}"
@@ -636,7 +638,9 @@ def get_qc_data_species(value_data, qc_data){
                 def prepped_data = prep_qc_vals(v, species_data, out, k)
                 quality_messages[k] = prepped_data
             }else{
-                quality_messages[k] = ["field": k, "message": "[${k}] No data"]
+                quality_messages[k] = [
+                "field": k, 
+                "message": "[${k}] No data"]
             }
         }
     }
@@ -776,12 +780,10 @@ def parse_data(file_path, extension, report_data, headers_key){
             return_text = table_values(file_path, report_data.header_p, ',', headers)
             break
         case "json":
-            //println "${file_path.getSimpleName()} is json"
             return_text = json_values(file_path, report_data)
             break
         case "screen":
             // Passsing on mash as the parser result is output
-            //println "${file_path.getSimpleName()} is Mash output"
             //table_values(file_path, report_data.header_p, '\t', headers)
             break
         default:
