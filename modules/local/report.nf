@@ -266,7 +266,6 @@ def create_action_call(sample_data, species_tag){
             }
 
             def qual_message = []
-            //def failed_p = false
             def checks_failed = 0
             def checks = 0
             def checks_ignored = 0
