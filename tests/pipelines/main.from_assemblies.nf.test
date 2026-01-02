@@ -126,8 +126,10 @@ nextflow_pipeline {
             // output metadata
             def ecoli_metadata = iridanext_metadata.ecoli_GCA_000947975
 
-            //assert !ecoli_metadata.containsKey("qc_status_contamination")
-            //assert !ecoli_metadata.containsKey("Checkm Value")
+            assert ecoli_metadata.containsKey("Checkm Value")
+            assert ecoli_metadata."Checkm Value" == 0.34
+            assert ecoli_metadata.containsKey("qc_status_contamination")
+            assert ecoli_metadata."qc_status_contamination" == "PASSED"
             assert !ecoli_metadata.containsKey("qc_status_read_depth_fixed")
             assert !ecoli_metadata.containsKey("Average Coverage Value")
             assert ecoli_metadata."qc_status_assembly_n50" == "PASSED"
@@ -138,7 +140,7 @@ nextflow_pipeline {
             assert ecoli_metadata.assembly_length == 5333525
             assert ecoli_metadata.qc_status_assembly_num_contigs == "PASSED"
             assert ecoli_metadata.assembly_num_contigs == 187
-            assert ecoli_metadata.qc_summary == "FAILED; Passed Tests: 3/5; Species ID: Escherichia coli; Organism QC Criteria: Escherichia"
+            assert ecoli_metadata.qc_summary == "FAILED; Passed Tests: 4/5; Species ID: Escherichia coli; Organism QC Criteria: Escherichia"
 
             assert ecoli_metadata."Downsampled" == false
 
