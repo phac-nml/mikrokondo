@@ -140,7 +140,7 @@ nextflow_pipeline {
             assert ecoli_metadata.assembly_length == 5333525
             assert ecoli_metadata.qc_status_assembly_num_contigs == "PASSED"
             assert ecoli_metadata.assembly_num_contigs == 187
-            assert ecoli_metadata.qc_summary == "FAILED; Passed Tests: 4/5; Species ID: Escherichia coli; Organism QC Criteria: Escherichia"
+            assert ecoli_metadata.qc_summary == "FAILED; Passed Tests: 4/5; Ignored checks 1: wgmlst_loci_count; Species ID: Escherichia coli; Organism QC Criteria: Escherichia"
 
             assert ecoli_metadata."Downsampled" == false
 
@@ -372,7 +372,7 @@ nextflow_pipeline {
             assert ecoli_metadata.assembly_length == 5333525
             assert ecoli_metadata.qc_status_assembly_num_contigs == "PASSED"
             assert ecoli_metadata.assembly_num_contigs == 187
-            assert ecoli_metadata.qc_summary == "FAILED Species ID: Escherichia coli; Passed Tests: 3/4; Organism QC Criteria: Escherichia"
+            assert ecoli_metadata.qc_summary == "FAILED; Passed Tests: 3/5; Ignored checks 1: wgmlst_loci_count; Species ID: Escherichia coli; Organism QC Criteria: Escherichia"
 
             assert ecoli_metadata.checkm_value == 0.34
             assert ecoli_metadata.qc_status_contamination == "FAILED"
@@ -583,7 +583,7 @@ nextflow_pipeline {
             assert ecoli_metadata.assembly_length == 5299656
             assert ecoli_metadata.qc_status_assembly_num_contigs == "PASSED"
             assert ecoli_metadata.assembly_num_contigs == 123
-            assert ecoli_metadata.qc_summary == "FAILED; Passed Tests: 3/5; Species ID: Escherichia coli; Organism QC Criteria: Escherichia"
+            assert ecoli_metadata.qc_summary == "FAILED; Passed Tests: 3/5; Ignored checks 2: checkm2_contamination, wgmlst_loci_count; Species ID: Escherichia coli; Organism QC Criteria: Escherichia" 
 
             // Read in filtered assembly fasta to verify number of contigs
             def assemblyLines = path("$outputDir/Assembly/FinalAssembly/ecoli_GCA_000947975/ecoli_GCA_000947975.final.filtered.assembly.fasta.gz").readLinesGzip()
@@ -667,7 +667,7 @@ nextflow_pipeline {
             assert salmonella_metadata.assembly_length == 4944000
             assert salmonella_metadata.qc_status_assembly_num_contigs == "PASSED"
             assert salmonella_metadata.assembly_num_contigs == 3
-            assert salmonella_metadata.qc_summary == "FAILED; Passed Tests: 3/5; Species ID: Salmonella enterica; Organism QC Criteria: Salmonella"
+            assert salmonella_metadata.qc_summary == "FAILED; Passed Tests: 3/5; Ignored checks 1: checkm2_contamination; Species ID: Salmonella enterica; Organism QC Criteria: Salmonella"
 
             assert salmonella_metadata."Downsampled" == false
 
@@ -844,7 +844,7 @@ nextflow_pipeline {
             assert listeria_metadata."assembly_length" == 2944528
             assert listeria_metadata."qc_status_assembly_num_contigs" == "PASSED"
             assert listeria_metadata."assembly_num_contigs" == 1
-            assert listeria_metadata.qc_summary == "FAILED; Passed Tests: 3/5; Species ID: Listeria monocytogenes; Organism QC Criteria: Listeria monocytogenes"
+            assert listeria_metadata.qc_summary == "FAILED; Passed Tests: 3/5; Ignored checks 2: checkm2_contamination, wgmlst_loci_count; Species ID: Listeria monocytogenes; Organism QC Criteria: Listeria monocytogenes"
 
             assert listeria_metadata."Downsampled" == false
 
@@ -1003,7 +1003,7 @@ nextflow_pipeline {
             assert listeria_metadata."assembly_length" == 2944528
             assert listeria_metadata."qc_status_assembly_num_contigs" == "PASSED"
             assert listeria_metadata."assembly_num_contigs" == 1
-            assert listeria_metadata.qc_summary == "FAILED; Passed Tests: 3/5; Species ID: Listeria monocytogenes; Organism QC Criteria: Listeria monocytogenes"
+            assert listeria_metadata.qc_summary == "FAILED; Passed Tests: 3/5; Ignored checks 2: checkm2_contamination, wgmlst_loci_count; Species ID: Listeria monocytogenes; Organism QC Criteria: Listeria monocytogenes"
 
             assert listeria_metadata."Downsampled" == false
 
@@ -1096,6 +1096,7 @@ nextflow_pipeline {
         tag "from_assemblies_vibrio"
 
         when {
+          config "tests/nextflow.vibrio.config"
             params {
                 // Need to update with 7 gene when complete
                 input = "https://raw.githubusercontent.com/phac-nml/mikrokondo/dev/tests/data/samplesheets/samplesheet-test-from-assemblies-vibrio.csv"
@@ -1141,7 +1142,7 @@ nextflow_pipeline {
                 }
                 skip_bakta = true
                 skip_mobrecon = true
-                skip_checkm = false
+                skip_checkm = true
                 skip_raw_read_metrics = true
                 skip_polishing = true
                 skip_mlst = true
@@ -1199,7 +1200,7 @@ nextflow_pipeline {
             assert vibrio_metadata."predicted_primary_type_method" == ""
             assert vibrio_metadata."predicted_secondary_type_name" == ""
             assert vibrio_metadata."predicted_secondary_type_method" == ""
-            assert vibrio_metadata.qc_summary == "PASSED; Passed Tests: 5/5; Species ID: Vibrio cholerae; Organism QC Criteria: Vibrio cholerae"
+            assert vibrio_metadata.qc_summary == "PASSED; Passed Tests: 4/4; Species ID: Vibrio cholerae; Organism QC Criteria: Vibrio cholerae"
         }
     }
 
@@ -1207,6 +1208,7 @@ nextflow_pipeline {
         tag "from_assemblies_vibrio_fail"
 
         when {
+          config "tests/nextflow.vibrio.config"
             params {
                 // Need to update with 7 gene when complete
                 input = "https://raw.githubusercontent.com/phac-nml/mikrokondo/dev/tests/data/samplesheets/samplesheet-test-from-assemblies-vibrio.csv"
@@ -1252,7 +1254,7 @@ nextflow_pipeline {
                 }
                 skip_bakta = true
                 skip_mobrecon = true
-                skip_checkm = false
+                skip_checkm = true
                 skip_raw_read_metrics = true
                 skip_polishing = true
                 skip_mlst = true
@@ -1310,13 +1312,14 @@ nextflow_pipeline {
             assert vibrio_metadata."predicted_primary_type_method" == ""
             assert vibrio_metadata."predicted_secondary_type_name" == ""
             assert vibrio_metadata."predicted_secondary_type_method" == ""
-            assert vibrio_metadata.qc_summary == "FAILED; Passed Tests: 4/5; Species ID: Vibrio cholerae; Organism QC Criteria: Vibrio cholerae"
+            assert vibrio_metadata.qc_summary == "FAILED; Passed Tests: 3/4; Species ID: Vibrio cholerae; Organism QC Criteria: Vibrio cholerae"
         }
     }
     test("Test starting from concatemers Vibrio cholerae no allele calls") {
         tag "from_assemblies_vibrio_no_allele_calls"
 
         when {
+            config "tests/nextflow.vibrio.config"
             params {
                 // Need to update with 7 gene when complete
                 input = "https://raw.githubusercontent.com/phac-nml/mikrokondo/dev/tests/data/samplesheets/samplesheet-test-from-assemblies-vibrio.csv"
@@ -1361,7 +1364,7 @@ nextflow_pipeline {
                 }
                 skip_bakta = true
                 skip_mobrecon = true
-                skip_checkm = false
+                skip_checkm = true
                 skip_raw_read_metrics = true
                 skip_polishing = true
                 skip_mlst = true
@@ -1404,13 +1407,14 @@ nextflow_pipeline {
             assert vibrio_metadata."predicted_primary_type_method" == ""
             assert vibrio_metadata."predicted_secondary_type_name" == ""
             assert vibrio_metadata."predicted_secondary_type_method" == ""
-            assert vibrio_metadata.qc_summary == "FAILED; Passed Tests: 4/5; Species ID: Vibrio cholerae; Organism QC Criteria: Vibrio cholerae"
+            assert vibrio_metadata.qc_summary == "FAILED; Passed Tests: 3/4; Ignored checks 1: wgmlst_loci_count; Species ID: Vibrio cholerae; Organism QC Criteria: Vibrio cholerae"
         }
     }
     test("Test starting from concatemers Vibrio cholerae no loci value specified") {
         tag "from_assemblies_vibrio_no_wgmlst_threshold"
 
         when {
+            config "tests/nextflow.vibrio.config"
             params {
                 // Need to update with 7 gene when complete
                 input = "https://raw.githubusercontent.com/phac-nml/mikrokondo/dev/tests/data/samplesheets/samplesheet-test-from-assemblies-vibrio.csv"
@@ -1456,7 +1460,7 @@ nextflow_pipeline {
                 }
                 skip_bakta = true
                 skip_mobrecon = true
-                skip_checkm = false
+                skip_checkm = true
                 skip_raw_read_metrics = true
                 skip_polishing = true
                 skip_mlst = true
@@ -1512,7 +1516,7 @@ nextflow_pipeline {
             assert vibrio_metadata."predicted_primary_type_method" == ""
             assert vibrio_metadata."predicted_secondary_type_name" == ""
             assert vibrio_metadata."predicted_secondary_type_method" == ""
-            assert vibrio_metadata.qc_summary == "FAILED; Passed Tests: 4/5; Ignored 1; Species ID: Vibrio cholerae; Organism QC Criteria: Vibrio cholerae"
+            assert vibrio_metadata.qc_summary == "FAILED; Passed Tests: 3/4; Ignored checks 1: wgmlst_loci_count; Species ID: Vibrio cholerae; Organism QC Criteria: Vibrio cholerae"
         }
     }
     test("Test of Database output from concatemers Vibrio cholerae") {

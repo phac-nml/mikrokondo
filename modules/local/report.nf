@@ -291,7 +291,6 @@ def create_action_call(sample_data, species_tag){
                     checks += checked
                 }
             }
-            println ignored_message
 
             (reisolate, resequence) = n50_nrcontigs_decision(qual_data, nr_contigs_failed, n50_failed, qual_message, reisolate, resequence)
 
