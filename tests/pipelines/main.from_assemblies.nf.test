@@ -583,7 +583,7 @@ nextflow_pipeline {
             assert ecoli_metadata.assembly_length == 5299656
             assert ecoli_metadata.qc_status_assembly_num_contigs == "PASSED"
             assert ecoli_metadata.assembly_num_contigs == 123
-            assert ecoli_metadata.qc_summary == "FAILED; Passed Tests: 3/5; Ignored checks 2: checkm2_contamination, wgmlst_loci_count; Species ID: Escherichia coli; Organism QC Criteria: Escherichia" 
+            assert ecoli_metadata.qc_summary == "FAILED; Passed Tests: 3/5; Ignored checks 2: checkm2_contamination, wgmlst_loci_count; Species ID: Escherichia coli; Organism QC Criteria: Escherichia"
 
             // Read in filtered assembly fasta to verify number of contigs
             def assemblyLines = path("$outputDir/Assembly/FinalAssembly/ecoli_GCA_000947975/ecoli_GCA_000947975.final.filtered.assembly.fasta.gz").readLinesGzip()

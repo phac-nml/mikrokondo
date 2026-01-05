@@ -29,7 +29,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Removed CheckM from mikrokondo, which is now replaced by CheckM2. [PR 201](https://github.com/phac-nml/mikrokondo/pull/201)
 
-
 ## [0.9.5] - 2025-11-03
 
 ### `Updated`
