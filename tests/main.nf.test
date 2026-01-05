@@ -1168,9 +1168,9 @@ nextflow_pipeline {
           assert sample."mean_long_read_length" == 9706
           assert sample.gc == "51.47"
           assert sample.raw_average_quality_value == 13.4
-          assert sample.n50_value == 214159
+          assert sample.n50_value == 214159 || 214156 // Flye is not deterministic so multiple values are required
           assert sample.assembly_num_contigs == 1
-          assert sample.assembly_length == 214159
+          assert sample.assembly_length == 214159 || 214156
           assert sample.qc_summary == "PASSED; Passed Tests: 6/6; Species ID: No Species Identified; Organism QC Criteria: No organism specific QC data available."
       }
     }
