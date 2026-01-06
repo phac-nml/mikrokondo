@@ -467,23 +467,23 @@ def range_comp(fields, qc_data, comp_val, qc_obj){
         return qc_obj
     }
 
-    def vals = [qc_data[fields[0]], qc_data[fields[1]]].sort()
-    if(vals[0] == null || vals[1] == null){
+    def comp_vals = [qc_data[fields[0]], qc_data[fields[1]]].sort()
+    if(comp_vals[0] == null || comp_vals[1] == null){
         qc_obj.message ="[WARNING ${qc_obj.field}] No comparison of available for ${qc_obj.field}. Sample value: ${comp_val}"
         qc_obj.status = true
         return qc_obj
     }
-    if(vals[0] <= comp_val && comp_val <= vals[1]){
+    if(comp_vals[0] <= comp_val && comp_val <= comp_vals[1]){
         qc_obj.status = true
-        qc_obj.message = "[PASSED ${qc_obj.field}] ${comp_val} is within acceptable QC range for ${qc_data.search} (${fields[0]}: ${vals[0]} - ${fields[1]} ${vals[1]})"
+        qc_obj.message = "[PASSED ${qc_obj.field}] ${comp_val} is within acceptable QC range for ${qc_data.search} (${fields[0]}: ${comp_vals[0]} - ${fields[1]} ${comp_vals[1]})"
         qc_obj.qc_status = ReportFunctions.QCStatus.PASSED
     }else{
-        if(comp_val < vals[0]){
+        if(comp_val < comp_vals[0]){
             qc_obj.low = true
         }else{
             qc_obj.low = false
         }
-        qc_obj.message = "[FAILED ${qc_obj.field}] ${comp_val} is outside the acceptable ranges for ${qc_data.search} (${fields[0]}: ${vals[0]} - ${fields[1]} ${vals[1]})"
+        qc_obj.message = "[FAILED ${qc_obj.field}] ${comp_val} is outside the acceptable ranges for ${qc_data.search} (${fields[0]}: ${comp_vals[0]} - ${fields[1]} ${comp_vals[1]})"
         qc_obj.qc_status = ReportFunctions.QCStatus.FAILED
     }
     return qc_obj
@@ -495,20 +495,20 @@ def greater_equal_comp(fields, qc_data, comp_val, qc_obj){
         qc_obj.status = true
         return qc_obj
     }
-    def vals = qc_data[fields[0]]
-    if(vals == null){
+    def comp_vals = qc_data[fields[0]]
+    if(comp_vals == null){
         qc_obj.message ="[WARNING ${qc_obj.field}] No comparison available. Sample value: ${comp_val}"
         qc_obj.status = true
         return qc_obj
     }
 
-    if(comp_val >= vals ){
+    if(comp_val >= comp_vals ){
         qc_obj.status = true
-        qc_obj.message = "[PASSED ${qc_obj.field}] ${comp_val} meets QC parameter of => ${vals} for ${qc_data.search}"
+        qc_obj.message = "[PASSED ${qc_obj.field}] ${comp_val} meets QC parameter of => ${comp_vals} for ${qc_data.search}"
         qc_obj.qc_status  = ReportFunctions.QCStatus.PASSED
     }else{
         qc_obj.low = true
-        qc_obj.message = "[FAILED ${qc_obj.field}] ${comp_val} is less than QC parameter of ${vals} for ${qc_data.search}"
+        qc_obj.message = "[FAILED ${qc_obj.field}] ${comp_val} is less than QC parameter of ${comp_vals} for ${qc_data.search}"
         qc_obj.qc_status  = ReportFunctions.QCStatus.FAILED
     }
     return qc_obj
@@ -521,20 +521,20 @@ def lesser_equal_comp(fields, qc_data, comp_val, qc_obj){
         qc_obj.status = true
         return qc_obj
     }
-    def vals = qc_data[fields[0]]
-    if(vals == null){
+    def comp_vals = qc_data[fields[0]]
+    if(comp_vals == null){
         qc_obj.message = "[WARNING ${qc_obj.field}] No comparison available for ${qc_obj.field}. Sample value: ${comp_val}"
         qc_obj.status = true
         return qc_obj
     }
 
-    if(comp_val <= vals ){
+    if(comp_val <= comp_vals ){
         qc_obj.status = true
-        qc_obj.message = "[PASSED ${qc_obj.field}] ${comp_val} meets QC parameter of <= ${vals} for ${qc_data.search}"
+        qc_obj.message = "[PASSED ${qc_obj.field}] ${comp_val} meets QC parameter of <= ${comp_vals} for ${qc_data.search}"
         qc_obj.qc_status = ReportFunctions.QCStatus.PASSED
     }else{
         qc_obj.low = false
-        qc_obj.message = "[FAILED ${qc_obj.field}] ${comp_val} is greater than than QC parameter of ${vals} for ${qc_data.search}"
+        qc_obj.message = "[FAILED ${qc_obj.field}] ${comp_val} is greater than than QC parameter of ${comp_vals} for ${qc_data.search}"
         qc_obj.qc_status = ReportFunctions.QCStatus.FAILED
     }
     return qc_obj
