@@ -126,8 +126,10 @@ nextflow_pipeline {
             // output metadata
             def ecoli_metadata = iridanext_metadata.ecoli_GCA_000947975
 
-            //assert !ecoli_metadata.containsKey("qc_status_contamination")
-            //assert !ecoli_metadata.containsKey("Checkm Value")
+            assert ecoli_metadata.containsKey("checkm_value")
+            assert ecoli_metadata."checkm_value" == 0.34
+            assert ecoli_metadata.containsKey("qc_status_contamination")
+            assert ecoli_metadata."qc_status_contamination" == "PASSED"
             assert !ecoli_metadata.containsKey("qc_status_read_depth_fixed")
             assert !ecoli_metadata.containsKey("Average Coverage Value")
             assert ecoli_metadata."qc_status_assembly_n50" == "PASSED"
@@ -138,13 +140,7 @@ nextflow_pipeline {
             assert ecoli_metadata.assembly_length == 5333525
             assert ecoli_metadata.qc_status_assembly_num_contigs == "PASSED"
             assert ecoli_metadata.assembly_num_contigs == 187
-            //assert ecoli_metadata.qc_summary == "FAILED Species ID: Escherichia coli; Passed Tests: 3/4; Organism QC Criteria: Escherichia"
-            assert ecoli_metadata.qc_summary == "PASSED Species ID: Escherichia coli; Passed Tests: 4/4; Organism QC Criteria: Escherichia"
-
-            assert ecoli_metadata.checkm_value == 0.34
-            assert ecoli_metadata.qc_status_contamination == "PASSED"
-            assert ecoli_metadata."qc_status_overall" == "PASSED"
-
+            assert ecoli_metadata.qc_summary == "FAILED; Passed Tests: 4/5; Ignored checks 1: wgmlst_loci_count; Species ID: Escherichia coli; Organism QC Criteria: Escherichia"
 
             assert ecoli_metadata."Downsampled" == false
 
@@ -376,7 +372,7 @@ nextflow_pipeline {
             assert ecoli_metadata.assembly_length == 5333525
             assert ecoli_metadata.qc_status_assembly_num_contigs == "PASSED"
             assert ecoli_metadata.assembly_num_contigs == 187
-            assert ecoli_metadata.qc_summary == "FAILED Species ID: Escherichia coli; Passed Tests: 3/4; Organism QC Criteria: Escherichia"
+            assert ecoli_metadata.qc_summary == "FAILED; Passed Tests: 3/5; Ignored checks 1: wgmlst_loci_count; Species ID: Escherichia coli; Organism QC Criteria: Escherichia"
 
             assert ecoli_metadata.checkm_value == 0.34
             assert ecoli_metadata.qc_status_contamination == "FAILED"
@@ -587,7 +583,7 @@ nextflow_pipeline {
             assert ecoli_metadata.assembly_length == 5299656
             assert ecoli_metadata.qc_status_assembly_num_contigs == "PASSED"
             assert ecoli_metadata.assembly_num_contigs == 123
-            assert ecoli_metadata.qc_summary == "FAILED Species ID: Escherichia coli; Passed Tests: 3/4; Organism QC Criteria: Escherichia"
+            assert ecoli_metadata.qc_summary == "FAILED; Passed Tests: 3/5; Ignored checks 2: checkm2_contamination, wgmlst_loci_count; Species ID: Escherichia coli; Organism QC Criteria: Escherichia"
 
             // Read in filtered assembly fasta to verify number of contigs
             def assemblyLines = path("$outputDir/Assembly/FinalAssembly/ecoli_GCA_000947975/ecoli_GCA_000947975.final.filtered.assembly.fasta.gz").readLinesGzip()
@@ -671,7 +667,7 @@ nextflow_pipeline {
             assert salmonella_metadata.assembly_length == 4944000
             assert salmonella_metadata.qc_status_assembly_num_contigs == "PASSED"
             assert salmonella_metadata.assembly_num_contigs == 3
-            assert salmonella_metadata.qc_summary == "FAILED Species ID: Salmonella enterica; Passed Tests: 3/4; Organism QC Criteria: Salmonella"
+            assert salmonella_metadata.qc_summary == "FAILED; Passed Tests: 3/5; Ignored checks 1: checkm2_contamination; Species ID: Salmonella enterica; Organism QC Criteria: Salmonella"
 
             assert salmonella_metadata."Downsampled" == false
 
@@ -848,7 +844,7 @@ nextflow_pipeline {
             assert listeria_metadata."assembly_length" == 2944528
             assert listeria_metadata."qc_status_assembly_num_contigs" == "PASSED"
             assert listeria_metadata."assembly_num_contigs" == 1
-            assert listeria_metadata.qc_summary == "FAILED Species ID: Listeria monocytogenes; Passed Tests: 3/4; Organism QC Criteria: Listeria monocytogenes"
+            assert listeria_metadata.qc_summary == "FAILED; Passed Tests: 3/5; Ignored checks 2: checkm2_contamination, wgmlst_loci_count; Species ID: Listeria monocytogenes; Organism QC Criteria: Listeria monocytogenes"
 
             assert listeria_metadata."Downsampled" == false
 
@@ -1007,7 +1003,7 @@ nextflow_pipeline {
             assert listeria_metadata."assembly_length" == 2944528
             assert listeria_metadata."qc_status_assembly_num_contigs" == "PASSED"
             assert listeria_metadata."assembly_num_contigs" == 1
-            assert listeria_metadata.qc_summary == "FAILED Species ID: Listeria monocytogenes; Passed Tests: 3/4; Organism QC Criteria: Listeria monocytogenes"
+            assert listeria_metadata.qc_summary == "FAILED; Passed Tests: 3/5; Ignored checks 2: checkm2_contamination, wgmlst_loci_count; Species ID: Listeria monocytogenes; Organism QC Criteria: Listeria monocytogenes"
 
             assert listeria_metadata."Downsampled" == false
 
@@ -1096,10 +1092,11 @@ nextflow_pipeline {
             assert iridanext_metadata.listeria_GCF_000196035."predicted_secondary_type_method" == "LISSERO 0.4.9"
         }
     }
-    test("Test starting from concatemers Vibrio cholerae") {
+    test("Test starting from concatemers Vibrio cholerae pass") {
         tag "from_assemblies_vibrio"
 
         when {
+          config "tests/nextflow.vibrio.config"
             params {
                 // Need to update with 7 gene when complete
                 input = "https://raw.githubusercontent.com/phac-nml/mikrokondo/dev/tests/data/samplesheets/samplesheet-test-from-assemblies-vibrio.csv"
@@ -1112,7 +1109,37 @@ nextflow_pipeline {
                 kraken2_db = "$baseDir/tests/data/kraken2/test"
                 lx_allele_database = "$baseDir/tests/data/databases/locidex_dbs"
                 qt_min_contig_length = 1
-
+                QCReport {
+                    escherichia{search = "Escherichia"}
+                    salmonella{search = "Salmonella"}
+                    listeria{search = "Listeria"}
+                    shigella{search = "Shigella"}
+                    vibrio{
+                      search = "Vibrio cholerae"
+                      raw_average_quality = 30
+                      min_n50 = 1
+                      max_n50 = 4300000
+                      min_nr_contigs = 1
+                      max_nr_contigs = 150
+                      fixed_genome_size = 1000
+                      min_length = 1
+                      max_length = 4300000
+                      max_checkm_contamination = 3.0
+                      min_average_coverage = 1
+                      min_wgmlst_loci = 6
+                      IDField = null
+                      IDTool = null
+                      PrimaryTypeID = null
+                      PrimaryTypeIDMethod = null
+                      SecondaryTypeID = null
+                      SecondaryTypeIDMethod = null
+                    }
+                    staphylococcus{search = "Staphylococcus"}
+                    klebsiella{search = "Klebsiella"}
+                    fallthrough {
+                        search = "No organism specific QC data available."
+                  }
+                }
                 skip_bakta = true
                 skip_mobrecon = true
                 skip_checkm = true
@@ -1158,6 +1185,9 @@ nextflow_pipeline {
             assert vibrio_metadata.locidex_count_loci_found == 7
             assert vibrio_metadata.locidex_count_loci_missing == 0
 
+            assert vibrio_metadata.qc_status_wgmlst_loci == "PASSED"
+            assert vibrio_metadata.wgmlst_loci_count == 7
+
 
             // Output files check
             assert path("$outputDir/Assembly/Subtyping/Locidex/Select/st_120.st_120_SelectedLocidexConfig.locidex.db.json")
@@ -1170,10 +1200,325 @@ nextflow_pipeline {
             assert vibrio_metadata."predicted_primary_type_method" == ""
             assert vibrio_metadata."predicted_secondary_type_name" == ""
             assert vibrio_metadata."predicted_secondary_type_method" == ""
-            assert vibrio_metadata.qc_summary == "FAILED Species ID: Vibrio cholerae; Passed Tests: 1/4; Organism QC Criteria: Vibrio cholerae"
+            assert vibrio_metadata.qc_summary == "PASSED; Passed Tests: 4/4; Species ID: Vibrio cholerae; Organism QC Criteria: Vibrio cholerae"
         }
     }
 
+    test("Test starting from concatemers Vibrio cholerae fail mlst") {
+        tag "from_assemblies_vibrio_fail"
+
+        when {
+          config "tests/nextflow.vibrio.config"
+            params {
+                // Need to update with 7 gene when complete
+                input = "https://raw.githubusercontent.com/phac-nml/mikrokondo/dev/tests/data/samplesheets/samplesheet-test-from-assemblies-vibrio.csv"
+                outdir = "$outputDir"
+
+                platform = "illumina"
+
+                mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/mash.msh"
+                dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+                kraken2_db = "$baseDir/tests/data/kraken2/test"
+                lx_allele_database = "$baseDir/tests/data/databases/locidex_dbs"
+                qt_min_contig_length = 1
+                QCReport {
+                    escherichia{search = "Escherichia"}
+                    salmonella{search = "Salmonella"}
+                    listeria{search = "Listeria"}
+                    shigella{search = "Shigella"}
+                    vibrio{
+                      search = "Vibrio cholerae"
+                      raw_average_quality = 30
+                      min_n50 = 1
+                      max_n50 = 4300000
+                      min_nr_contigs = 1
+                      max_nr_contigs = 150
+                      fixed_genome_size = 1000
+                      min_length = 1
+                      max_length = 4300000
+                      max_checkm_contamination = 3.0
+                      min_average_coverage = 1
+                      min_wgmlst_loci = 3800
+                      IDField = null
+                      IDTool = null
+                      PrimaryTypeID = null
+                      PrimaryTypeIDMethod = null
+                      SecondaryTypeID = null
+                      SecondaryTypeIDMethod = null
+                    }
+                    staphylococcus{search = "Staphylococcus"}
+                    klebsiella{search = "Klebsiella"}
+                    fallthrough {
+                        search = "No organism specific QC data available."
+                  }
+                }
+                skip_bakta = true
+                skip_mobrecon = true
+                skip_checkm = true
+                skip_raw_read_metrics = true
+                skip_polishing = true
+                skip_mlst = true
+                skip_version_gathering = true
+                skip_staramr = true
+                skip_length_filtering_contigs = true
+
+                skip_subtyping = false
+                skip_allele_calling = false
+                lx_report_max_stop = 100
+                lx_report_mode = "normal"
+                max_memory = "2.GB"
+                max_cpus = 1
+            }
+        }
+
+        then {
+            assert workflow.success
+            assert path("$outputDir").exists()
+
+            // Compare IRIDANext json
+            assert path("$outputDir/iridanext.output.json").exists()
+            def iridanext_json = path("$outputDir/iridanext.output.json").json
+            def iridanext_global = iridanext_json.files.global
+            def iridanext_samples = iridanext_json.files.samples
+            def iridanext_metadata = iridanext_json.metadata.samples
+            def vibrio_metadata = iridanext_metadata.st_120
+
+            // Output files
+            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Json/final_report.json" }.size() == 1
+            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Tables/final_report.tsv" }.size() == 1
+            assert iridanext_samples.st_120.findAll { it.path == "FinalReports/FlattenedReports/st_120.flat_sample.json.gz" }.size() == 1
+            assert iridanext_samples.st_120.findAll { it.path == "Assembly/Subtyping/Locidex/Report/st_120.locidex.report.profile.mlst.subtyping.json.gz" }.size() == 1
+            assert iridanext_samples.st_120.findAll { it.path == "Assembly/Subtyping/Locidex/Summary/st_120.locidex.summary.json" }.size() == 1
+
+            assert vibrio_metadata.locidex_db_name == "Vibrio cholerae"
+            assert vibrio_metadata.locidex_db_date == "2024-07-30"
+            assert vibrio_metadata.locidex_db_version == "1.0.0"
+            assert vibrio_metadata.locidex_db_total_loci_count == 7
+            assert vibrio_metadata.locidex_count_loci_found == 7
+            assert vibrio_metadata.locidex_count_loci_missing == 0
+
+            assert vibrio_metadata.qc_status_wgmlst_loci == "FAILED"
+            assert vibrio_metadata.wgmlst_loci_count == 7
+
+
+            // Output files check
+            assert path("$outputDir/Assembly/Subtyping/Locidex/Select/st_120.st_120_SelectedLocidexConfig.locidex.db.json")
+            assert path("$outputDir/Assembly/Subtyping/Locidex/Extract/st_120/st_120.raw.locidex.extract.extracted.seqs.subtyping.fasta.gz")
+            assert path("$outputDir/Assembly/Subtyping/Locidex/Search/st_120.locidex.seq_store.json.gz")
+            assert path("$outputDir/Assembly/Subtyping/Locidex/Report/st_120.locidex.report.profile.mlst.subtyping.json.gz")
+            assert path("$outputDir/Assembly/Subtyping/Locidex/Summary/st_120.locidex.summary.json")
+
+            assert vibrio_metadata."predicted_primary_type_name" == ""
+            assert vibrio_metadata."predicted_primary_type_method" == ""
+            assert vibrio_metadata."predicted_secondary_type_name" == ""
+            assert vibrio_metadata."predicted_secondary_type_method" == ""
+            assert vibrio_metadata.qc_summary == "FAILED; Passed Tests: 3/4; Species ID: Vibrio cholerae; Organism QC Criteria: Vibrio cholerae"
+        }
+    }
+    test("Test starting from concatemers Vibrio cholerae no allele calls") {
+        tag "from_assemblies_vibrio_no_allele_calls"
+
+        when {
+            config "tests/nextflow.vibrio.config"
+            params {
+                // Need to update with 7 gene when complete
+                input = "https://raw.githubusercontent.com/phac-nml/mikrokondo/dev/tests/data/samplesheets/samplesheet-test-from-assemblies-vibrio.csv"
+                outdir = "$outputDir"
+
+                platform = "illumina"
+
+                mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/mash.msh"
+                dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+                kraken2_db = "$baseDir/tests/data/kraken2/test"
+                lx_allele_database = "$baseDir/tests/data/databases/locidex_dbs"
+                qt_min_contig_length = 1
+                QCReport {
+                    escherichia{search = "Escherichia"}
+                    salmonella{search = "Salmonella"}
+                    listeria{search = "Listeria"}
+                    shigella{search = "Shigella"}
+                    vibrio{
+                      search = "Vibrio cholerae"
+                      raw_average_quality = 30
+                      min_n50 = 1
+                      max_n50 = 4300000
+                      min_nr_contigs = 1
+                      max_nr_contigs = 150
+                      fixed_genome_size = 1000
+                      min_length = 1
+                      max_length = 4300000
+                      max_checkm_contamination = 3.0
+                      min_average_coverage = 1
+                      IDField = null
+                      IDTool = null
+                      PrimaryTypeID = null
+                      PrimaryTypeIDMethod = null
+                      SecondaryTypeID = null
+                      SecondaryTypeIDMethod = null
+                    }
+                    staphylococcus{search = "Staphylococcus"}
+                    klebsiella{search = "Klebsiella"}
+                    fallthrough {
+                        search = "No organism specific QC data available."
+                  }
+                }
+                skip_bakta = true
+                skip_mobrecon = true
+                skip_checkm = true
+                skip_raw_read_metrics = true
+                skip_polishing = true
+                skip_mlst = true
+                skip_version_gathering = true
+                skip_staramr = true
+                skip_length_filtering_contigs = true
+
+                skip_subtyping = false
+                skip_allele_calling = true
+                lx_report_max_stop = 100
+                lx_report_mode = "normal"
+                max_memory = "2.GB"
+                max_cpus = 1
+            }
+        }
+
+        then {
+            assert workflow.success
+            assert path("$outputDir").exists()
+
+            // Compare IRIDANext json
+            assert path("$outputDir/iridanext.output.json").exists()
+            def iridanext_json = path("$outputDir/iridanext.output.json").json
+            def iridanext_global = iridanext_json.files.global
+            def iridanext_samples = iridanext_json.files.samples
+            def iridanext_metadata = iridanext_json.metadata.samples
+            def vibrio_metadata = iridanext_metadata.st_120
+
+            // Output files
+            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Json/final_report.json" }.size() == 1
+            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Tables/final_report.tsv" }.size() == 1
+            assert iridanext_samples.st_120.findAll { it.path == "FinalReports/FlattenedReports/st_120.flat_sample.json.gz" }.size() == 1
+
+
+            assert vibrio_metadata.qc_status_wgmlst_loci == null
+            assert vibrio_metadata.wgmlst_loci_count == null
+
+
+            assert vibrio_metadata."predicted_primary_type_name" == ""
+            assert vibrio_metadata."predicted_primary_type_method" == ""
+            assert vibrio_metadata."predicted_secondary_type_name" == ""
+            assert vibrio_metadata."predicted_secondary_type_method" == ""
+            assert vibrio_metadata.qc_summary == "FAILED; Passed Tests: 3/4; Ignored checks 1: wgmlst_loci_count; Species ID: Vibrio cholerae; Organism QC Criteria: Vibrio cholerae"
+        }
+    }
+    test("Test starting from concatemers Vibrio cholerae no loci value specified") {
+        tag "from_assemblies_vibrio_no_wgmlst_threshold"
+
+        when {
+            config "tests/nextflow.vibrio.config"
+            params {
+                // Need to update with 7 gene when complete
+                input = "https://raw.githubusercontent.com/phac-nml/mikrokondo/dev/tests/data/samplesheets/samplesheet-test-from-assemblies-vibrio.csv"
+                outdir = "$outputDir"
+
+                platform = "illumina"
+
+                mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/mash.msh"
+                dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+                kraken2_db = "$baseDir/tests/data/kraken2/test"
+                lx_allele_database = "$baseDir/tests/data/databases/locidex_dbs"
+                qt_min_contig_length = 1
+                QCReport {
+                    escherichia{search = "Escherichia"}
+                    salmonella{search = "Salmonella"}
+                    listeria{search = "Listeria"}
+                    shigella{search = "Shigella"}
+                    vibrio{
+                      search = "Vibrio cholerae"
+                      raw_average_quality = 30
+                      min_n50 = 1
+                      max_n50 = 4300000
+                      min_nr_contigs = 1
+                      max_nr_contigs = 150
+                      fixed_genome_size = 1000
+                      min_length = 1
+                      max_length = 4300000
+                      max_checkm_contamination = 3.0
+                      min_average_coverage = 1
+                      min_wgmlst_loci = null
+                      IDField = null
+                      IDTool = null
+                      PrimaryTypeID = null
+                      PrimaryTypeIDMethod = null
+                      SecondaryTypeID = null
+                      SecondaryTypeIDMethod = null
+                    }
+                    staphylococcus{search = "Staphylococcus"}
+                    klebsiella{search = "Klebsiella"}
+                    fallthrough {
+                        search = "No organism specific QC data available."
+                  }
+                }
+                skip_bakta = true
+                skip_mobrecon = true
+                skip_checkm = true
+                skip_raw_read_metrics = true
+                skip_polishing = true
+                skip_mlst = true
+                skip_version_gathering = true
+                skip_staramr = true
+                skip_length_filtering_contigs = true
+
+                skip_subtyping = false
+                skip_allele_calling = false
+                lx_report_max_stop = 100
+                lx_report_mode = "normal"
+                max_memory = "2.GB"
+                max_cpus = 1
+            }
+        }
+
+        then {
+            assert workflow.success
+            assert path("$outputDir").exists()
+
+            // Compare IRIDANext json
+            assert path("$outputDir/iridanext.output.json").exists()
+            def iridanext_json = path("$outputDir/iridanext.output.json").json
+            def iridanext_global = iridanext_json.files.global
+            def iridanext_samples = iridanext_json.files.samples
+            def iridanext_metadata = iridanext_json.metadata.samples
+            def vibrio_metadata = iridanext_metadata.st_120
+
+            // Output files
+            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Json/final_report.json" }.size() == 1
+            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Tables/final_report.tsv" }.size() == 1
+            assert iridanext_samples.st_120.findAll { it.path == "FinalReports/FlattenedReports/st_120.flat_sample.json.gz" }.size() == 1
+
+            assert vibrio_metadata.locidex_db_name == "Vibrio cholerae"
+            assert vibrio_metadata.locidex_db_date == "2024-07-30"
+            assert vibrio_metadata.locidex_db_version == "1.0.0"
+            assert vibrio_metadata.locidex_db_total_loci_count == 7
+            assert vibrio_metadata.locidex_count_loci_found == 7
+            assert vibrio_metadata.locidex_count_loci_missing == 0
+
+            assert vibrio_metadata.qc_status_wgmlst_loci == "WARNING"
+            assert vibrio_metadata.wgmlst_loci_count == 7
+
+
+            // Output files check
+            assert path("$outputDir/Assembly/Subtyping/Locidex/Select/st_120.st_120_SelectedLocidexConfig.locidex.db.json")
+            assert path("$outputDir/Assembly/Subtyping/Locidex/Extract/st_120/st_120.raw.locidex.extract.extracted.seqs.subtyping.fasta.gz")
+            assert path("$outputDir/Assembly/Subtyping/Locidex/Search/st_120.locidex.seq_store.json.gz")
+            assert path("$outputDir/Assembly/Subtyping/Locidex/Report/st_120.locidex.report.profile.mlst.subtyping.json.gz")
+            assert path("$outputDir/Assembly/Subtyping/Locidex/Summary/st_120.locidex.summary.json")
+
+            assert vibrio_metadata."predicted_primary_type_name" == ""
+            assert vibrio_metadata."predicted_primary_type_method" == ""
+            assert vibrio_metadata."predicted_secondary_type_name" == ""
+            assert vibrio_metadata."predicted_secondary_type_method" == ""
+            assert vibrio_metadata.qc_summary == "FAILED; Passed Tests: 3/4; Ignored checks 1: wgmlst_loci_count; Species ID: Vibrio cholerae; Organism QC Criteria: Vibrio cholerae"
+        }
+    }
     test("Test of Database output from concatemers Vibrio cholerae") {
     tag "from_assemblies_vibrio_allele_scheme"
 
