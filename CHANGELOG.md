@@ -5,19 +5,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
-### Updated
+### `Added`
+
+- Added new quality control metric `qc_wgmlst_loci_count`. [PR 202](https://github.com/phac-nml/mikrokondo/pull/202)
+
+- Added new quality control metric for read length `qc_status_read_length`. [PR 202](https://github.com/phac-nml/mikrokondo/pull/202)
+
+- The number of ignored tests has been added to the QCMessage output. [PR 202](https://github.com/phac-nml/mikrokondo/pull/202)
+
+- Added options and process for automatic download of the CheckM2 database. [PR 201](https://github.com/phac-nml/mikrokondo/pull/201)
+
+### `Changed`
+
+- Format and order of the final QCMessage is re-arranged for clarity. [PR 202](https://github.com/phac-nml/mikrokondo/pull/202)
+
+### `Updated`
 
 - Updated coreutils container to version 9.5 allowing https downloads. [PR 201](https://github.com/phac-nml/mikrokondo/pull/201)
 
 - Updated CheckM to CheckM2. [PR 201](https://github.com/phac-nml/mikrokondo/pull/201)
 
-### Removed
+### `Removed`
 
 - Removed CheckM from mikrokondo, which is now replaced by CheckM2. [PR 201](https://github.com/phac-nml/mikrokondo/pull/201)
-
-### Added
-
-- Added options and process for automatic download of the CheckM2 database. [PR 201](https://github.com/phac-nml/mikrokondo/pull/201)
 
 ## [0.9.5] - 2025-11-03
 

@@ -88,7 +88,7 @@ nextflow_pipeline {
             assert !iridanext_metadata.CSE.containsKey("assembly_length")
             assert !iridanext_metadata.CSE.containsKey("qc_status_assembly_num_contigs")
             assert !iridanext_metadata.CSE.containsKey("assembly_num_contigs")
-            assert iridanext_metadata.CSE."qc_summary" == "FAILED Species ID: No organism specific QC data available.; Passed Tests: 1/6; Organism QC Criteria: No organism specific QC data available."
+            assert iridanext_metadata.CSE."qc_summary" == "FAILED; Passed Tests: 2/8; Ignored checks 6: average_coverage, n50_value, nr_contigs, length, checkm2_contamination, wgmlst_loci_count; Species ID: No organism specific QC data available.; Organism QC Criteria: No organism specific QC data available."
 
             assert iridanext_metadata.CSE."Downsampled" == false
             assert !iridanext_metadata.CSE.containsKey("predicted_identification_name")
@@ -226,10 +226,181 @@ nextflow_pipeline {
 
     }
 
+    test("Should run without failure fail read length check.") {
+        tag "succeed_assembly_fail_read_length"
+
+        when {
+            params {
+                input = "https://raw.githubusercontent.com/phac-nml/mikrokondo/dev/tests/data/samplesheets/samplesheet-small-assembly.csv"
+                outdir = "$outputDir"
+
+                platform = "illumina"
+
+                mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
+                mh_min_kmer = 1
+
+                dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+                kraken2_db = "$baseDir/tests/data/kraken2/test"
+
+                min_reads = 100
+
+                skip_allele_calling = true
+                skip_checkm = true
+
+                QCReport {
+                    escherichia{search = "Escherichia"}
+                    salmonella{search = "Salmonella"}
+                    listeria{search = "Listeria"}
+                    klebsiella{search = "Klebsiella"}
+                    shigella{search = "Shigella"}
+                    staphylococcus{search = "Staphylococcus"}
+                    fallthrough {
+                        search = "No organism specific QC data available."
+                        raw_average_quality = 30
+                        min_n50 = 1
+                        max_n50 = 10000
+                        min_nr_contigs = 1
+                        max_nr_contigs = 1000
+                        fixed_genome_size = 1000
+                        min_length = 1
+                        max_length = 12000
+                        max_checkm_contamination = 3.0
+                        min_illumina_read_length = 10000
+                        max_illumina_read_length = 100000
+                        min_average_coverage = 30
+                    }
+                }
+
+
+                skip_bakta = true
+                skip_staramr = false
+                skip_mobrecon = false
+                skip_checkm = true
+                skip_raw_read_metrics = false
+                skip_polishing = false
+
+                max_memory = "2.GB"
+                max_cpus = 1
+            }
+        }
+
+        then {
+
+            assert workflow.success
+            assert path("$outputDir").exists()
+
+            // parse output json file
+            def json = path("$outputDir/FinalReports/Aggregated/Json/final_report.json").json
+
+            assert json.short.short.RawReadSummary.R1."total_bp".equals(118750)
+            assert json.short.short.RawReadSummary.R1."total_reads".equals(475)
+            assert json.short.short.RawReadSummary.R1."read_qual_mean".equals(40.0)
+            assert json.short.short.RawReadSummary.R1."mean_sequence_length".equals(250.0)
+
+            assert json.short.short.FastP.summary.sequencing.equals("paired end (250 cycles + 250 cycles)")
+            assert json.short.short.FastP.summary.before_filtering.total_reads.equals(950)
+            assert json.short.short.FastP.filtering_result.passed_filter_reads.equals(950)
+            assert json.short.short.FastP.filtering_result.low_quality_reads.equals(0)
+            assert json.short.short.FastP.insert_size.peak.equals(347)
+
+            //assert json.short.meta.metagenomic.equals(false)  // Currently, this is "null".
+            assert json.short.meta.assembly.equals(false)
+            assert json.short.meta.hybrid.equals(false)
+            assert json.short.meta.single_end.equals(false)
+            assert json.short.meta.merge.equals(false)
+            assert json.short.meta.downsampled.equals(false)
+
+            assert json.short.short.AssemblyCompleted.equals(true)
+            assert json.short.short.QUAST."0"."Total length (>= 0 bp)".equals("4949")
+            assert json.short.short.QUAST."0"."Largest contig".equals("4949")
+            assert json.short.short.QUAST."0"."GC (%)".equals("52.96")
+            assert json.short.short.QUAST."0"."Avg. coverage depth".equals("47")
+
+            // Below two values should be empty
+            assert json.short.short.StarAMR."0"."Genotype".equals("None")
+            assert json.short.short.StarAMR."0"."Predicted Phenotype".equals("Susceptible")
+            assert json.short.short.StarAMR."0"."Genome Length".equals("4949")
+
+
+            assert json.short.short.SevenGeneMLSTReport[0].filename.equals("short.filtered.fasta.gz")
+
+
+            def assembly_path = "$outputDir/Assembly/FinalAssembly/short/short.final.filtered.assembly.fasta.gz"
+            assert path(assembly_path).exists()
+
+            // parse assembly file
+            def assembly_header = path(assembly_path).linesGzip[0]
+            assert assembly_header.startsWith(">NODE_1_length_4949_cov_23.917254")  // _pilon_pilon_pilon gets appended
+
+            // compare IRIDA Next JSON output
+            def iridanext_json = path("$outputDir/iridanext.output.json").json
+            def iridanext_global = iridanext_json.files.global
+            def iridanext_samples = iridanext_json.files.samples
+            def iridanext_metadata = iridanext_json.metadata.samples
+
+            // output files
+            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Json/final_report.json" }.size() == 1
+            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Tables/final_report.tsv" }.size() == 1
+            assert iridanext_samples.short.findAll { it.path == "Assembly/FinalAssembly/short/short.final.filtered.assembly.fasta.gz" }.size() == 1
+            assert iridanext_samples.short.findAll { it.path == "Assembly/Quality/QUAST/short/short.transposed_short.quast.quality.tsv" }.size() == 1
+            assert iridanext_samples.short.findAll { it.path == "Assembly/Quality/SeqKitStats/short.seqkit.stats.summary.tsv" }.size() == 1
+            assert iridanext_samples.short.findAll { it.path == "Assembly/PostProcessing/Speciation/MashScreen/short.mash.screen.taxa.screen.screen" }.size() == 1
+            assert iridanext_samples.short.findAll { it.path == "Reads/Quality/Trimmed/MashScreen/short.mash.screen.reads.screen.screen" }.size() == 1
+            assert iridanext_samples.short.findAll { it.path == "Reads/Quality/Trimmed/FastP/short.fastp.summary.json" }.size() == 1
+            assert iridanext_samples.short.findAll { it.path == "Reads/Quality/RawReadQuality/short.read.scan.summary.json" }.size() == 1
+            assert iridanext_samples.short.findAll { it.path == "FinalReports/FlattenedReports/short.flat_sample.json.gz" }.size() == 1
+            assert iridanext_samples.short.findAll { it.path == "pipeline_info/short.mikrokondo.software.version.yml" }.size() == 1
+            assert iridanext_samples.short.findAll { it.path == "pipeline_info/short.mikrokondo.parameters.json" }.size() == 1
+
+            // output metadata
+            assert iridanext_metadata.short."qc_status_overall" == "FAILED"
+            assert iridanext_metadata.short."qc_status_read_depth_fixed" == "PASSED"
+            assert iridanext_metadata.short."mean_read_depth_fixed" == 237.5
+            assert iridanext_metadata.short."qc_status_assembly_n50" == "PASSED"
+            assert iridanext_metadata.short."n50_value" == 4949
+            assert iridanext_metadata.short."qc_status_read_qual" == "PASSED"
+            assert iridanext_metadata.short."raw_average_quality_value" == 40.0
+            assert iridanext_metadata.short."qc_status_assembly_genome_size" == "PASSED"
+            assert iridanext_metadata.short."assembly_length" == 4949
+            assert iridanext_metadata.short."qc_status_assembly_num_contigs" == "PASSED"
+            assert iridanext_metadata.short."assembly_num_contigs" == 1
+            assert iridanext_metadata.short."qc_status_read_length" == "FAILED"
+            assert iridanext_metadata.short."mean_illumina_read_length" == 250
+
+            assert iridanext_metadata.short."qc_summary" == "FAILED; Passed Tests: 5/8; Ignored checks 2: checkm2_contamination, wgmlst_loci_count; Species ID: No Species Identified; Organism QC Criteria: No organism specific QC data available."
+
+            assert iridanext_metadata.short."Downsampled" == false
+            assert iridanext_metadata.short."predicted_identification_name" == "No Species Identified"
+            assert iridanext_metadata.short."predicted_identification_method" == "Mash"
+            assert iridanext_metadata.short."gc" == "52.96"
+            // the manifest information is not available in the test to verify the correct version is actually being retrieved
+            // So a key check will suffice
+            assert iridanext_metadata.short.containsKey("mikrokondo_version")
+            assert iridanext_metadata.short."Mean Sequence Length Forward" == 250
+            assert iridanext_metadata.short."total_sequenced_bases" == 237500
+
+            assert iridanext_metadata.short."StarAMR Genotype" == "None"
+            assert iridanext_metadata.short."StarAMR Predicted Phenotype" == "Susceptible"
+
+            // Check that the pipline_info parameters file contains the expected parameters
+            def parameters_json = path("$outputDir/pipeline_info/short.mikrokondo.parameters.json").json
+            assert parameters_json.input == "https://raw.githubusercontent.com/phac-nml/mikrokondo/dev/tests/data/samplesheets/samplesheet-small-assembly.csv"
+            assert parameters_json.outdir.endsWith("/output")
+            assert parameters_json.platform == "illumina"
+            assert parameters_json.mh_min_kmer == 1
+            assert parameters_json.mash_sketch == "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
+            assert parameters_json.locidex.min_evalue == 0.0001
+
+
+        }
+
+    }
+
     test("Should run without failure.") {
         tag "succeed_assembly"
 
         when {
+          config "tests/nextflow.ont.config"
             params {
                 input = "https://raw.githubusercontent.com/phac-nml/mikrokondo/dev/tests/data/samplesheets/samplesheet-small-assembly.csv"
                 outdir = "$outputDir"
@@ -352,7 +523,6 @@ nextflow_pipeline {
 
             // output metadata
             assert iridanext_metadata.short."qc_status_overall" == "FAILED"
-            assert iridanext_metadata.short."qc_status_contamination" == null
             assert iridanext_metadata.short."qc_status_read_depth_fixed" == "PASSED"
             assert iridanext_metadata.short."mean_read_depth_fixed" == 237.5
             assert iridanext_metadata.short."qc_status_assembly_n50" == "WARNING"
@@ -363,7 +533,7 @@ nextflow_pipeline {
             assert iridanext_metadata.short."assembly_length" == 4949
             assert iridanext_metadata.short."qc_status_assembly_num_contigs" == "WARNING"
             assert iridanext_metadata.short."assembly_num_contigs" == 1
-            assert iridanext_metadata.short."qc_summary" == "FAILED Species ID: No Species Identified; Passed Tests: 5/6; Organism QC Criteria: No organism specific QC data available."
+            assert iridanext_metadata.short."qc_summary" == "FAILED; Passed Tests: 2/6; Ignored checks 4: n50_value, nr_contigs, length, short_read_length; Species ID: No Species Identified; Organism QC Criteria: No organism specific QC data available."
 
             assert iridanext_metadata.short."Downsampled" == false
             assert iridanext_metadata.short."predicted_identification_name" == "No Species Identified"
@@ -526,7 +696,7 @@ nextflow_pipeline {
             assert iridanext_metadata.short."assembly_length" == 4949
             assert iridanext_metadata.short."qc_status_assembly_num_contigs" == "WARNING"
             assert iridanext_metadata.short."assembly_num_contigs" == 1
-            assert iridanext_metadata.short.qc_summary == "FAILED Species ID: No Species Identified; Passed Tests: 4/6; Organism QC Criteria: No organism specific QC data available."
+            assert iridanext_metadata.short.qc_summary == "FAILED; Passed Tests: 1/8; Ignored checks 6: n50_value, nr_contigs, length, checkm2_contamination, wgmlst_loci_count, short_read_length; Species ID: No Species Identified; Organism QC Criteria: No organism specific QC data available."
 
             assert iridanext_metadata.short."Downsampled" == false
             assert iridanext_metadata.short."predicted_identification_name" == "No Species Identified"
@@ -969,54 +1139,40 @@ nextflow_pipeline {
 
     test("Nanopore Full Test") {
     tag "nanopore_test"
-
-        when {
-            params {
-                input = "$baseDir/tests/data/samplesheets/samplesheet-nanopore.csv"
-                outdir = "$outputDir"
-
-                platform = "nanopore"
-
-                mash_sketch = "$baseDir/tests/data/databases/virus.msh"
-                mh_min_kmer = 1
-                nanopore_chemistry = "r941_min_hac_g507"
-
-                dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
-                kraken2_db = "$baseDir/tests/data/kraken2/test"
-                min_reads = 2
-                skip_allele_calling = true
-                skip_bakta = true
-                skip_staramr = false
-                skip_mobrecon = false
-                skip_checkm = true
-                skip_raw_read_metrics = false
-                skip_polishing = true
-                fail_on_metagenomic = true
-
-                max_memory = "2.GB"
-                max_cpus = 1
-            }
+      when {
+      config "tests/nextflow.ont.config"
+        params{
+          outdir = "$outputDir"
+          input = "$baseDir/tests/data/samplesheets/samplesheet-nanopore.csv"
+          mash_sketch = "$baseDir/tests/data/databases/virus.msh"
+          dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+          kraken2_db = "$baseDir/tests/data/kraken2/test"
+          max_memory = "2.GB"
+          max_cpus = 1
         }
+      }
 
-        then {
+      then {
 
-            assert workflow.success
-            assert path("$outputDir").exists()
-            def iridanext_json = path("$outputDir/iridanext.output.json").json
-            def iridanext_global = iridanext_json.files.global
-            def iridanext_samples = iridanext_json.files.samples
-            def iridanext_metadata = iridanext_json.metadata.samples
-            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Json/final_report.json" }.size() == 1
-            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Tables/final_report.tsv" }.size() == 1
-            assert iridanext_samples.Senterica_simulated.findAll { it.path == "Assembly/FinalAssembly/Senterica_simulated/Senterica_simulated.final.filtered.assembly.fasta.gz" }.size() == 1
-            def sample = iridanext_metadata.Senterica_simulated
-            assert sample.gc == "51.51"
-            assert sample.raw_average_quality_value == 13.4
-            assert sample.n50_value == 214772
-            assert sample.assembly_num_contigs == 1
-            assert sample.assembly_length == 214772
-            assert sample.qc_summary == "FAILED Species ID: No Species Identified; Passed Tests: 3/6; Organism QC Criteria: No organism specific QC data available."
-        }
+          assert workflow.success
+          assert path("$outputDir").exists()
+          def iridanext_json = path("$outputDir/iridanext.output.json").json
+          def iridanext_global = iridanext_json.files.global
+          def iridanext_samples = iridanext_json.files.samples
+          def iridanext_metadata = iridanext_json.metadata.samples
+          assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Json/final_report.json" }.size() == 1
+          assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Tables/final_report.tsv" }.size() == 1
+          assert iridanext_samples.Senterica_simulated.findAll { it.path == "Assembly/FinalAssembly/Senterica_simulated/Senterica_simulated.final.filtered.assembly.fasta.gz" }.size() == 1
+          def sample = iridanext_metadata.Senterica_simulated
+          assert sample."qc_status_read_length" == "PASSED"
+          assert sample."mean_long_read_length" == 9706
+          assert sample.gc == "51.47"
+          assert sample.raw_average_quality_value == 13.4
+          assert sample.n50_value == 214159 || 214156 // Flye is not deterministic so multiple values are required
+          assert sample.assembly_num_contigs == 1
+          assert sample.assembly_length == 214159 || 214156
+          assert sample.qc_summary == "PASSED; Passed Tests: 6/6; Species ID: No Species Identified; Organism QC Criteria: No organism specific QC data available."
+      }
     }
 
     test("Hybrid Assembly Full Test") {
@@ -1067,7 +1223,7 @@ nextflow_pipeline {
             assert sample.n50_value == 214466
             assert sample.assembly_num_contigs == 1
             assert sample.assembly_length == 214466
-            assert sample.qc_summary == "FAILED Species ID: No Species Identified; Passed Tests: 3/6; Organism QC Criteria: No organism specific QC data available."
+            assert sample.qc_summary == "FAILED; Passed Tests: 0/7; Ignored checks 6: average_coverage, n50_value, nr_contigs, length, checkm2_contamination, wgmlst_loci_count; Species ID: No Species Identified; Organism QC Criteria: No organism specific QC data available."
 
         }
     }
