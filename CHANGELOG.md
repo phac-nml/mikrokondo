@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Changed`
 
-- Changed default CheckM contamination threshold to 5%.
+- Changed default CheckM contamination threshold to 5%. [PR 206](https://github.com/phac-nml/mikrokondo/pull/206)
 
 ## [0.9.5] - 2025-11-03
 
