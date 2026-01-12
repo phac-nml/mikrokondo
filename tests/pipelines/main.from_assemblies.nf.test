@@ -105,6 +105,7 @@ nextflow_pipeline {
             assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Tables/final_report.tsv" }.size() == 1
             assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/Quality/QUAST/ecoli_GCA_000947975/ecoli_GCA_000947975.transposed_ecoli_GCA_000947975.quast.quality.tsv" }.size() == 1
             assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/Quality/SeqKitStats/ecoli_GCA_000947975.seqkit.stats.summary.tsv" }.size() == 1
+            assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/Quality/CheckM2/ecoli_GCA_000947975/ecoli_GCA_000947975.quality_report.checkm2.quality.tsv" }.size() == 1
             assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/PostProcessing/Speciation/MashScreen/ecoli_GCA_000947975.mash.screen.taxa.screen.screen" }.size() == 1
             assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/Subtyping/ECTyper/ecoli_GCA_000947975/ecoli_GCA_000947975.blastn_output_alleles.ectyper.subtyping.txt" }.size() == 1
             assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/Subtyping/ECTyper/ecoli_GCA_000947975/ecoli_GCA_000947975.ectyper.ectyper.subtyping.log" }.size() == 1

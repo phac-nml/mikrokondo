@@ -10,7 +10,9 @@ process CHECKM2 {
 
 
   output:
-  tuple val(meta), path("${prefix}/**"), emit: checkm_output
+  tuple val(meta), path("${prefix}/protein_files/*"), emit: protein_output
+  tuple val(meta), path("${prefix}/checkm2.log"), emit: log
+  tuple val(meta), path("${prefix}/diamond_output/*"), emit: diamond_output
   tuple val(meta), path("${prefix}/quality_report.tsv"), emit: checkm_results
   path "versions.yml", emit: versions
 

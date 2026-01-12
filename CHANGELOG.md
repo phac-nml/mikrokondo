@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added options and process for automatic download of the CheckM2 database. [PR 201](https://github.com/phac-nml/mikrokondo/pull/201)
 
+- Added CheckM2 output file to IRIDANext outputs. [PR 204](https://github.com/phac-nml/mikrokondo/pull/204)
+
 ### `Changed`
 
 - Format and order of the final QCMessage is re-arranged for clarity. [PR 202](https://github.com/phac-nml/mikrokondo/pull/202)
