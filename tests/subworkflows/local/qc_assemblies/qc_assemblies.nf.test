@@ -158,7 +158,6 @@ nextflow_workflow {
 
 
             with(workflow.out.contigs_out){
-              println workflow.out.contigs_out.size()
                 assert size() == 2 
                 assert path(get(0)[1]).linesGzip.size() == 2;
                 assert path(get(1)[1]).linesGzip.size() == 6;

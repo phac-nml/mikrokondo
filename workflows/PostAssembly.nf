@@ -66,9 +66,6 @@ workflow POST_ASSEMBLY {
 
     // take quast data used for filtering is not needed along side the channel
     ch_filtered_contigs = QC_ASSEMBLY.out.contigs_out
-    //ch_filtered_contigs = QC_ASSEMBLY.out.quast_data.map{
-    //    meta, quast_files, contigs -> tuple(meta, contigs)
-    //}
 
     ch_speciation = Channel.empty()
     top_hit = channel.empty()
