@@ -21,6 +21,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Format and order of the final QCMessage is re-arranged for clarity. [PR 202](https://github.com/phac-nml/mikrokondo/pull/202)
 
+- Changed the max contamination threshold for CheckM2 to 5.0%. [PR 205](https://github.com/phac-nml/mikrokondo/pull/205)
+
 ### `Updated`
 
 - Updated coreutils container to version 9.5 allowing https downloads. [PR 201](https://github.com/phac-nml/mikrokondo/pull/201)
