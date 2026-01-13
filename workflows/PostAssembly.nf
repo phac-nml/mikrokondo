@@ -64,7 +64,6 @@ workflow POST_ASSEMBLY {
 
 
 
-    // take quast data used for filtering is not needed along side the channel
     ch_filtered_contigs = QC_ASSEMBLY.out.contigs_out
 
     ch_speciation = Channel.empty()
