@@ -114,6 +114,9 @@ workflow QC_ASSEMBLIES {
     }
 
     emit:
+    contigs_out = assembled_reads.map{
+        meta, contigs, reads -> tuple(meta, contigs)
+      }
     quast_data = quast_data.quast_table
     reports = reports
     versions = versions

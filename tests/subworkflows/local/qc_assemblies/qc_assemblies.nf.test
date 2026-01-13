@@ -156,6 +156,14 @@ nextflow_workflow {
                 assert contains([["id": "SAMPLE2"], ["report_tag": "MaxContigToShort"], false])
             }
 
+
+            with(workflow.out.contigs_out){
+              println workflow.out.contigs_out.size()
+                assert size() == 2 
+                assert path(get(0)[1]).linesGzip.size() == 2;
+                assert path(get(1)[1]).linesGzip.size() == 6;
+              }
+
             with(path("$outputDir/Assembly/Quality/QUAST/SAMPLE1/SAMPLE1.quast.quality.tsv").readLines()) {
                 assert contains("Assembly\tsample1")
                 assert contains("# contigs (>= 0 bp)\t4")
