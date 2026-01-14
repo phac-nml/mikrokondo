@@ -401,6 +401,10 @@ nextflow_pipeline {
             def sistr_input_assembly = path(sistr_subtyping.readLines()[1].split('\t')[7])
             // Verify that the input fasta file for sistr is filtered and only contains 3 sequences 
             assert sistr_input_assembly.fasta.size() == 3
+            // Verifies filtered assembly is passed to SISTR
+            assert sistr_input_assembly.endsWith("salmonella_GCA_000008105.filtered.fasta")
+            def filtered_fasta = path("$outputDir/Assembly/FinalAssembly/salmonella_GCA_000008105/salmonella_GCA_000008105.final.filtered.assembly.fasta.gz").fasta
+            assert sistr_input_assembly.fasta == filtered_fasta
 
 
             assert path("$outputDir/Assembly/Annotation/StarAMR/salmonella_GCA_000008105/salmonella_GCA_000008105.plasmidfinder.staramr.annotation.tsv").exists()
