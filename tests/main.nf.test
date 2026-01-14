@@ -290,6 +290,19 @@ nextflow_pipeline {
             assert workflow.success
             assert path("$outputDir").exists()
 
+            // Not comparing directly as the headers change
+            def spades_file = path("$outputDir/Assembly/Assembling/Spades/Contigs/short.spades.contigs.assembly.fasta.gz").fasta
+            def racon_file = path("$outputDir/Assembly/Assembling/ConsensusGeneration/Racon/Consensus/short.short_assembly_consensus.racon.assembly.fasta.gz").fasta
+            def pilon_polished = path("$outputDir/Assembly/Assembling/ConsensusGeneration/Polishing/Pilon/Fasta/short.short_polished.pilon.assembly.fasta.gz").fasta
+            
+
+            // Verify the assemblies actually change as polishing progresses
+            assert spades_file != racon_file
+            assert racon_file != pilon_polished
+            assert pilon_polished == path("$outputDir/Assembly/FinalAssembly/short/short.final.filtered.assembly.fasta.gz").fasta
+
+            // Verify polished assembly goes too quast
+
             // parse output json file
             def json = path("$outputDir/FinalReports/Aggregated/Json/final_report.json").json
 
