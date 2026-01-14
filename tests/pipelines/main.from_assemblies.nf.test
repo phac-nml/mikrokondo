@@ -390,10 +390,18 @@ nextflow_pipeline {
             assert workflow.success
             assert path("$outputDir").exists()
 
+            // Test the number of fasta sequences input
+            assert path("$baseDir/tests/data/genomes/salmonella/GCA_000008105.1_ASM810v1_genomic.fna.gz").fasta.size() == 4
+
             assert path("$outputDir/Assembly/Subtyping/SISTR/salmonella_GCA_000008105.sistr.allele.subtyping.fasta").exists()
             assert path("$outputDir/Assembly/Subtyping/SISTR/salmonella_GCA_000008105.sistr.allele.subtyping.json").exists()
             assert path("$outputDir/Assembly/Subtyping/SISTR/salmonella_GCA_000008105.sistr.cgmlst.subtyping.csv").exists()
-            assert path("$outputDir/Assembly/Subtyping/SISTR/salmonella_GCA_000008105.sistr.subtyping.tab").exists()
+            def sistr_subtyping = path("$outputDir/Assembly/Subtyping/SISTR/salmonella_GCA_000008105.sistr.subtyping.tab")
+            assert sistr_subtyping.exists()
+            def sistr_input_assembly = path(sistr_subtyping.readLines()[1].split('\t')[7])
+            // Verify that the input fasta file for sistr is filtered and only contains 3 sequences 
+            assert sistr_input_assembly.fasta.size() == 3
+
 
             assert path("$outputDir/Assembly/Annotation/StarAMR/salmonella_GCA_000008105/salmonella_GCA_000008105.plasmidfinder.staramr.annotation.tsv").exists()
             assert path("$outputDir/Assembly/Annotation/StarAMR/salmonella_GCA_000008105/salmonella_GCA_000008105.pointfinder.staramr.annotation.tsv").exists()
