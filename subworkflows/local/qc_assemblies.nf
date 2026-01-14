@@ -13,7 +13,7 @@ process PUBLISH_FINAL_ASSEMBLIES {
 
 
     input:
-    tuple val(meta), path(contigs), path(reads)
+    tuple val(meta), path(contigs)
 
     output:
     tuple val(meta), path("*/*"), emit: final_assembly
@@ -94,7 +94,7 @@ workflow QC_ASSEMBLIES {
 
 
 
-    pub_final_assembly = PUBLISH_FINAL_ASSEMBLIES(assembled_reads)
+    pub_final_assembly = PUBLISH_FINAL_ASSEMBLIES(assemblies)
     versions = versions.mix(pub_final_assembly.versions)
 
     if(!params.skip_checkm){

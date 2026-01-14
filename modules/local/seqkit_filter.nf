@@ -8,11 +8,11 @@ process SEQKIT_FILTER {
 
 
     input:
-    tuple val(meta), path(contigs), path(reads)
+    tuple val(meta), path(contigs)
     val min_length
 
     output:
-    tuple val(meta), path("${prefix}${params.seqkit.fasta_ext}"), path(reads), emit: filtered_sequences
+    tuple val(meta), path("${prefix}${params.seqkit.fasta_ext}"), emit: filtered_sequences
     path "versions.yml", emit: versions
 
     script:
