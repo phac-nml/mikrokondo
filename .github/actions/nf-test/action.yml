@@ -59,6 +59,7 @@ runs:
       env:
         NFT_WORKDIR: ${{ env.NFT_WORKDIR }}
       run: |
+        export NXF_FILE_ROOT=$PWD
         nf-test test \
           --profile=+${{ inputs.profile }} \
           $(if [ -n "${{ inputs.tags }}" ]; then echo "--tag ${{ inputs.tags }}"; fi) \
