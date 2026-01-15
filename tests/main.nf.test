@@ -299,9 +299,8 @@ nextflow_pipeline {
             // Verify the assemblies actually change as polishing progresses
             assert spades_file != racon_file
             assert racon_file != pilon_polished
+            assert spades_file != pilon_polished
             assert pilon_polished == path("$outputDir/Assembly/FinalAssembly/short/short.final.filtered.assembly.fasta.gz").fasta
-
-            // Verify polished assembly goes too quast
 
             // parse output json file
             def json = path("$outputDir/FinalReports/Aggregated/Json/final_report.json").json
