@@ -159,7 +159,9 @@ nextflow_workflow {
 
             with(workflow.out.contigs_out){
                 assert size() == 2
+                assert path("$baseDir/tests/data/sample1.fasta").readLines() == 8
                 assert path(get(0)[1]).linesGzip.size() == 2;
+                assert path("$baseDir/tests/data/sample2.fasta").readLines() == 6
                 assert path(get(1)[1]).linesGzip.size() == 6;
               }
 
