@@ -294,7 +294,7 @@ nextflow_pipeline {
             def spades_file = path("$outputDir/Assembly/Assembling/Spades/Contigs/short.spades.contigs.assembly.fasta.gz").fasta
             def racon_file = path("$outputDir/Assembly/Assembling/ConsensusGeneration/Racon/Consensus/short.short_assembly_consensus.racon.assembly.fasta.gz").fasta
             def pilon_polished = path("$outputDir/Assembly/Assembling/ConsensusGeneration/Polishing/Pilon/Fasta/short.short_polished.pilon.assembly.fasta.gz").fasta
-            
+
 
             // Verify the assemblies actually change as polishing progresses
             assert spades_file != racon_file

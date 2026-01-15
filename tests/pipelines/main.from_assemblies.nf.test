@@ -399,7 +399,7 @@ nextflow_pipeline {
             def sistr_subtyping = path("$outputDir/Assembly/Subtyping/SISTR/salmonella_GCA_000008105.sistr.subtyping.tab")
             assert sistr_subtyping.exists()
             def sistr_input_assembly = path(sistr_subtyping.readLines()[1].split('\t')[7])
-            // Verify that the input fasta file for sistr is filtered and only contains 3 sequences 
+            // Verify that the input fasta file for sistr is filtered and only contains 3 sequences
             assert sistr_input_assembly.fasta.size() == 3
             // Verifies filtered assembly is passed to SISTR
             assert sistr_input_assembly.endsWith("salmonella_GCA_000008105.filtered.fasta")
