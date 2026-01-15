@@ -79,7 +79,7 @@
                     "staramr": "0.11.1"
                 },
                 "Workflow": {
-                    "phac-nml/mikrokondo": "0.9.6"
+                    "phac-nml/mikrokondo": "0.9.7"
                 }
             },
             [
@@ -246,11 +246,11 @@
                 "short.short_vfdb.abricate.annotation.txt:md5,69af3321b0bc808b7ef85f102395736f",
                 "short.chromosome.mob.recon.annotation.fasta:md5,79c8d4b96fccf463fcd63643272fc338",
                 "short.contig_report.mob.recon.annotation.txt:md5,d0a686f48befe600e4f4fdea5ad35e89",
-                "short.detailed_summary.staramr.annotation.tsv:md5,58ab4ab0430515aef00291655526ba6f",
-                "short.mlst.staramr.annotation.tsv:md5,69f7018c94f1674a023ca5ccf65de14f",
+                "short.detailed_summary.staramr.annotation.tsv:md5,4982267556468e305b838847fae9ac86",
+                "short.mlst.staramr.annotation.tsv:md5,9920ad692fa9bb7b9f2a22abae50ce63",
                 "short.plasmidfinder.staramr.annotation.tsv:md5,06f38f23d6be0fb32bf66d31a517d78c",
                 "short.resfinder.staramr.annotation.tsv:md5,4620ef26ac38f3d8feddabd08e7a1579",
-                "short.summary.staramr.annotation.tsv:md5,e667bde5ec921b4c1e8445fa2b003e06",
+                "short.summary.staramr.annotation.tsv:md5,9f075192e43983520c7029977ab5561c",
                 "short.short_2.pilon.changes:md5,d41d8cd98f00b204e9800998ecf8427e",
                 "short.short_polished.pilon.assembly.fasta.gz:md5,fbc0a79211a992fb01565d3db0605cb0",
                 "short.short_assembly_consensus.racon.assembly.fasta.gz:md5,c61ac498cdc1b855de5cd111b97191fa",
@@ -274,8 +274,8 @@
                 "short.transposed_short.quast.quality.txt:md5,34c958540b3ff8291faac5d567010492",
                 "short.seqkit.stats.summary.tsv:md5,8d43322f1f175f140901bd011153d5c9",
                 "short.short_SelectedLocidexConfig.locidex.db.json:md5,f0088d692615b1281724062a7c3f008b",
-                "final_report.tsv:md5,6ca8448c54c35464556722fbb7d9816b",
-                "final_report_transposed.tsv:md5,65b64c1b9b9cd31da03a01f95e564455",
+                "final_report.tsv:md5,f8971cd5c98379a66ba4e39e6a08723f",
+                "final_report_transposed.tsv:md5,eb1527559b04962349a0427e8c1e292d",
                 "short.short_basecounts.seqtk.size.txt:md5,04b33e373a310541151b29277f90c896",
                 "short.final.R1.trimmed.reads.fastq.gz:md5,588aaec8788a7c42e94e780c633a876c",
                 "short.final.R2.trimmed.reads.fastq.gz:md5,ac3372e43364f374bd7569ed09e4f5a9",
@@ -293,6 +293,6 @@
             "nf-test": "0.9.2",
             "nextflow": "25.04.8"
         },
-        "timestamp": "2026-01-13T09:08:34.52922169"
+        "timestamp": "2026-01-14T10:39:56.813622228"
     }
 }

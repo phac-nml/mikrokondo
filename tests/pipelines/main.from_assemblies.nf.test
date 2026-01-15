@@ -354,12 +354,13 @@ nextflow_pipeline {
         }
     }
 
+
     test("Test starting from assemblies salmonella") {
         tag "from_assemblies_salmonella"
 
         when {
             params {
-                input = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/samplesheets/samplesheet-test-from-assemblies-salmonella.csv"
+                input = "$projectDir/tests/data/samplesheets/samplesheet-test-from-assemblies-salmonella.csv"
                 outdir = "$outputDir"
 
                 platform = "illumina"
@@ -367,7 +368,7 @@ nextflow_pipeline {
                 mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/mash.msh"
                 dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
                 kraken2_db = "$baseDir/tests/data/kraken2/test"
-                qt_min_contig_length = 1
+                qt_min_contig_length = 1100
 
                 skip_bakta = true
                 skip_mobrecon = true
@@ -390,10 +391,22 @@ nextflow_pipeline {
             assert workflow.success
             assert path("$outputDir").exists()
 
+            // Test the number of fasta sequences input
+            assert path("$baseDir/tests/data/genomes/salmonella/GCA_000008105.1_ASM810v1_genomic.fna.gz").fasta.size() == 4
+
             assert path("$outputDir/Assembly/Subtyping/SISTR/salmonella_GCA_000008105.sistr.allele.subtyping.fasta").exists()
             assert path("$outputDir/Assembly/Subtyping/SISTR/salmonella_GCA_000008105.sistr.allele.subtyping.json").exists()
             assert path("$outputDir/Assembly/Subtyping/SISTR/salmonella_GCA_000008105.sistr.cgmlst.subtyping.csv").exists()
-            assert path("$outputDir/Assembly/Subtyping/SISTR/salmonella_GCA_000008105.sistr.subtyping.tab").exists()
+            def sistr_subtyping = path("$outputDir/Assembly/Subtyping/SISTR/salmonella_GCA_000008105.sistr.subtyping.tab")
+            assert sistr_subtyping.exists()
+            def sistr_input_assembly = path(sistr_subtyping.readLines()[1].split('\t')[7])
+            // Verify that the input fasta file for sistr is filtered and only contains 3 sequences
+            assert sistr_input_assembly.fasta.size() == 3
+            // Verifies filtered assembly is passed to SISTR
+            assert sistr_input_assembly.endsWith("salmonella_GCA_000008105.filtered.fasta")
+            def filtered_fasta = path("$outputDir/Assembly/FinalAssembly/salmonella_GCA_000008105/salmonella_GCA_000008105.final.filtered.assembly.fasta.gz").fasta
+            assert sistr_input_assembly.fasta == filtered_fasta
+
 
             assert path("$outputDir/Assembly/Annotation/StarAMR/salmonella_GCA_000008105/salmonella_GCA_000008105.plasmidfinder.staramr.annotation.tsv").exists()
             assert path("$outputDir/Assembly/Annotation/StarAMR/salmonella_GCA_000008105/salmonella_GCA_000008105.pointfinder.staramr.annotation.tsv").exists()

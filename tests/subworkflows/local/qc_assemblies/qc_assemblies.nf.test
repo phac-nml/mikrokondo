@@ -156,10 +156,22 @@ nextflow_workflow {
                 assert contains([["id": "SAMPLE2"], ["report_tag": "MaxContigToShort"], false])
             }
 
+
+            with(workflow.out.contigs_out){
+                assert size() == 2
+                assert path("$baseDir/tests/data/sample1.fasta").readLines().size() == 8
+                assert path(get(0)[1]).linesGzip.size() == 2;
+                assert path("$baseDir/tests/data/sample2.fasta").readLines().size() == 6
+                assert path(get(1)[1]).linesGzip.size() == 6;
+              }
+
             with(path("$outputDir/Assembly/Quality/QUAST/SAMPLE1/SAMPLE1.quast.quality.tsv").readLines()) {
                 assert contains("Assembly\tsample1")
                 assert contains("# contigs (>= 0 bp)\t4")
                 assert contains("Total length (>= 0 bp)\t10")
+                // Metrics correspond to filtered metrics below
+                assert contains("# contigs\t1")
+                assert contains("Total length\t4")
                 assert contains("N50\t4")
             }
 
