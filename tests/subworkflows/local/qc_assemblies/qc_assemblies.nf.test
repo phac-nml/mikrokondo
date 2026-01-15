@@ -170,7 +170,7 @@ nextflow_workflow {
                 assert contains("# contigs (>= 0 bp)\t4")
                 assert contains("Total length (>= 0 bp)\t10")
                 // Metrics correspond to filtered metrics below
-                assert contains("# contigs\t1") 
+                assert contains("# contigs\t1")
                 assert contains("Total length\t4")
                 assert contains("N50\t4")
             }
