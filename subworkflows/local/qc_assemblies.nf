@@ -14,7 +14,7 @@ process PUBLISH_FINAL_ASSEMBLIES {
 
 
     input:
-    tuple val(meta), path(contigs), path(reads)
+    tuple val(meta), path(contigs)
 
     output:
     tuple val(meta), path("*/*"), emit: final_assembly
@@ -75,6 +75,10 @@ workflow QC_ASSEMBLIES {
         meta, contigs, reads, contig_length -> tuple(meta, contigs, reads)
     }
 
+    assemblies = pre_checked_data.map{
+        meta, contigs, reads -> tuple(meta, contigs)
+      }
+
     quast_data = QUAST(pre_checked_data)
     versions = versions.mix(quast_data.versions)
     reports = reports.mix(quast_data.quast_table.map{
@@ -84,14 +88,14 @@ workflow QC_ASSEMBLIES {
     min_length = Channel.value(params.quast.min_contig_length)
 
     if(!params.skip_length_filtering_contigs){
-        filterd_contigs = SEQKIT_FILTER(pre_checked_data, min_length)
+        filterd_contigs = SEQKIT_FILTER(assemblies, min_length)
         versions = versions.mix(filterd_contigs.versions)
-        assembled_reads = filterd_contigs.filtered_sequences
+        assemblies = filterd_contigs.filtered_sequences
     }
 
 
 
-    pub_final_assembly = PUBLISH_FINAL_ASSEMBLIES(assembled_reads)
+    pub_final_assembly = PUBLISH_FINAL_ASSEMBLIES(assemblies)
     versions = versions.mix(pub_final_assembly.versions)
 
     if(!params.skip_checkm){
@@ -111,9 +115,7 @@ workflow QC_ASSEMBLIES {
           error("CheckM2 selected to be run, but no database is selected and params.download_checkm2_db != true")
       }
 
-      checkm_data = CHECKM2(assembled_reads.map{
-          meta, contigs, reads -> tuple(meta, contigs)
-      }, ch_checkmdb)
+      checkm_data = CHECKM2(assemblies, ch_checkmdb)
 
       reports = reports.mix(checkm_data.checkm_results.map{
           meta, results -> tuple(meta, params.checkm2, results)
@@ -122,9 +124,7 @@ workflow QC_ASSEMBLIES {
     }
 
     if(!params.skip_mlst){
-        MLST(assembled_reads.map{
-            meta, contigs, reads -> tuple(meta, contigs)
-        })
+        MLST(assemblies)
         reports = reports.mix(MLST.out.json.map{
             meta, json -> tuple(meta, params.mlst, json)
         })
@@ -132,6 +132,7 @@ workflow QC_ASSEMBLIES {
     }
 
     emit:
+    contigs_out = assemblies
     quast_data = quast_data.quast_table
     reports = reports
     versions = versions

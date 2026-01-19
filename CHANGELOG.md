@@ -33,6 +33,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Removed CheckM from mikrokondo, which is now replaced by CheckM2. [PR 201](https://github.com/phac-nml/mikrokondo/pull/201)
 
+## [0.9.7] - 2026-01-13
+
+### `Fixed`
+
+- Filtered contigs were not being passed to other subsequent processes, resulting in ECTyper, SISTR etc receiving unfiltered contigs. [PR 207](https://github.com/phac-nml/mikrokondo/pull/207)
+
+## [0.9.6] - 2026-01-12
+
+### `Changed`
+
+- Changed default CheckM contamination threshold to 5%. [PR 206](https://github.com/phac-nml/mikrokondo/pull/206)
+
 ## [0.9.5] - 2025-11-03
 
 ### `Updated`

@@ -7,11 +7,19 @@
                         {
                             "id": "SAMPLE2"
                         },
+                        "SAMPLE2.filtered.fasta.gz:md5,e66e9ede13862cf4ea20ff88d7210a3e"
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "SAMPLE2"
+                        },
                         "transposed_SAMPLE2.tsv:md5,64e3ddbb01183b22ae234e490637a3b7",
                         "sample2.fasta:md5,ec16731b69a71e32d686b3a006127ba6"
                     ]
                 ],
-                "1": [
+                "2": [
                     [
                         {
                             "id": "SAMPLE1"
@@ -82,12 +90,24 @@
                         "SAMPLE2.tsv:md5,d0ef267769bfd788c8d484fd6e63fb35"
                     ]
                 ],
+<<<<<<< HEAD
                 "2": [
                     "versions.yml:md5,6fb743739894380a3929a229b57d1cc3",
+=======
+                "3": [
+>>>>>>> cdf21658c80ed14283f382122438401b181840e9
                     "versions.yml:md5,7531e2c7e3f82f40f432af6b47f2879b",
                     "versions.yml:md5,af079a3d8ae9ebd777f169eb697dcfd1",
                     "versions.yml:md5,af079a3d8ae9ebd777f169eb697dcfd1",
                     "versions.yml:md5,b08afc3129cf0e1dddee612ed2eaceb8"
+                ],
+                "contigs_out": [
+                    [
+                        {
+                            "id": "SAMPLE2"
+                        },
+                        "SAMPLE2.filtered.fasta.gz:md5,e66e9ede13862cf4ea20ff88d7210a3e"
+                    ]
                 ],
                 "quast_data": [
                     [
@@ -180,8 +200,14 @@
         ],
         "meta": {
             "nf-test": "0.9.2",
+<<<<<<< HEAD
             "nextflow": "25.04.7"
         },
         "timestamp": "2025-12-01T15:01:11.310703295"
+=======
+            "nextflow": "25.04.8"
+        },
+        "timestamp": "2026-01-13T15:03:37.347944413"
+>>>>>>> cdf21658c80ed14283f382122438401b181840e9
     }
 }

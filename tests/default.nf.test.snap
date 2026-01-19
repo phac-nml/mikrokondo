@@ -79,7 +79,7 @@
                     "staramr": "0.11.1"
                 },
                 "Workflow": {
-                    "phac-nml/mikrokondo": "0.9.5"
+                    "phac-nml/mikrokondo": "0.9.7"
                 }
             },
             [
@@ -246,11 +246,11 @@
                 "short.short_vfdb.abricate.annotation.txt:md5,69af3321b0bc808b7ef85f102395736f",
                 "short.chromosome.mob.recon.annotation.fasta:md5,79c8d4b96fccf463fcd63643272fc338",
                 "short.contig_report.mob.recon.annotation.txt:md5,d0a686f48befe600e4f4fdea5ad35e89",
-                "short.detailed_summary.staramr.annotation.tsv:md5,58ab4ab0430515aef00291655526ba6f",
-                "short.mlst.staramr.annotation.tsv:md5,69f7018c94f1674a023ca5ccf65de14f",
+                "short.detailed_summary.staramr.annotation.tsv:md5,4982267556468e305b838847fae9ac86",
+                "short.mlst.staramr.annotation.tsv:md5,9920ad692fa9bb7b9f2a22abae50ce63",
                 "short.plasmidfinder.staramr.annotation.tsv:md5,06f38f23d6be0fb32bf66d31a517d78c",
                 "short.resfinder.staramr.annotation.tsv:md5,4620ef26ac38f3d8feddabd08e7a1579",
-                "short.summary.staramr.annotation.tsv:md5,e667bde5ec921b4c1e8445fa2b003e06",
+                "short.summary.staramr.annotation.tsv:md5,9f075192e43983520c7029977ab5561c",
                 "short.short_2.pilon.changes:md5,d41d8cd98f00b204e9800998ecf8427e",
                 "short.short_polished.pilon.assembly.fasta.gz:md5,fbc0a79211a992fb01565d3db0605cb0",
                 "short.short_assembly_consensus.racon.assembly.fasta.gz:md5,c61ac498cdc1b855de5cd111b97191fa",
