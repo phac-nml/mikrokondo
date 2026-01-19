@@ -90,12 +90,8 @@
                         "SAMPLE2.tsv:md5,d0ef267769bfd788c8d484fd6e63fb35"
                     ]
                 ],
-<<<<<<< HEAD
                 "2": [
                     "versions.yml:md5,6fb743739894380a3929a229b57d1cc3",
-=======
-                "3": [
->>>>>>> cdf21658c80ed14283f382122438401b181840e9
                     "versions.yml:md5,7531e2c7e3f82f40f432af6b47f2879b",
                     "versions.yml:md5,af079a3d8ae9ebd777f169eb697dcfd1",
                     "versions.yml:md5,af079a3d8ae9ebd777f169eb697dcfd1",
