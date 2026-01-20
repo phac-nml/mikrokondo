@@ -77,7 +77,7 @@
                             "polyg_min_len": 10,
                             "polyx_min_len": 10,
                             "illumina_length_min": 35,
-                            "illumina_length_max": 400,
+                            "illumina_length_max": 1000,
                             "single_end_length_min": 1000,
                             "dedup_reads": false,
                             "args": {
@@ -175,7 +175,7 @@
                             "polyg_min_len": 10,
                             "polyx_min_len": 10,
                             "illumina_length_min": 35,
-                            "illumina_length_max": 400,
+                            "illumina_length_max": 1000,
                             "single_end_length_min": 1000,
                             "dedup_reads": false,
                             "args": {
@@ -238,9 +238,9 @@
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "25.04.7"
+            "nextflow": "25.04.8"
         },
-        "timestamp": "2025-12-01T14:59:12.041338285"
+        "timestamp": "2026-01-20T10:21:11.258006995"
     },
     "Test clean reads run without failure fake nanopore (downsampling)": {
         "content": [
@@ -336,7 +336,7 @@
                             "polyg_min_len": 10,
                             "polyx_min_len": 10,
                             "illumina_length_min": 35,
-                            "illumina_length_max": 400,
+                            "illumina_length_max": 1000,
                             "single_end_length_min": 1000,
                             "dedup_reads": false,
                             "args": {
@@ -454,7 +454,7 @@
                             "polyg_min_len": 10,
                             "polyx_min_len": 10,
                             "illumina_length_min": 35,
-                            "illumina_length_max": 400,
+                            "illumina_length_max": 1000,
                             "single_end_length_min": 1000,
                             "dedup_reads": false,
                             "args": {
@@ -515,9 +515,9 @@
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "25.04.7"
+            "nextflow": "25.04.8"
         },
-        "timestamp": "2025-12-01T14:59:51.19945776"
+        "timestamp": "2026-01-20T10:21:44.907393327"
     },
     "Test clean reads run without failure illumina (downsampling)": {
         "content": [
@@ -597,7 +597,7 @@
                             "polyg_min_len": 10,
                             "polyx_min_len": 10,
                             "illumina_length_min": 35,
-                            "illumina_length_max": 400,
+                            "illumina_length_max": 1000,
                             "single_end_length_min": 1000,
                             "dedup_reads": false,
                             "args": {
@@ -716,7 +716,7 @@
                             "polyg_min_len": 10,
                             "polyx_min_len": 10,
                             "illumina_length_min": 35,
-                            "illumina_length_max": 400,
+                            "illumina_length_max": 1000,
                             "single_end_length_min": 1000,
                             "dedup_reads": false,
                             "args": {
@@ -800,9 +800,9 @@
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "25.04.7"
+            "nextflow": "25.04.8"
         },
-        "timestamp": "2025-12-01T15:00:05.149765244"
+        "timestamp": "2026-01-20T10:21:57.93594894"
     },
     "Test clean reads run without failure fake nanopore": {
         "content": [
@@ -879,7 +879,7 @@
                             "polyg_min_len": 10,
                             "polyx_min_len": 10,
                             "illumina_length_min": 35,
-                            "illumina_length_max": 400,
+                            "illumina_length_max": 1000,
                             "single_end_length_min": 1000,
                             "dedup_reads": false,
                             "args": {
@@ -977,7 +977,7 @@
                             "polyg_min_len": 10,
                             "polyx_min_len": 10,
                             "illumina_length_min": 35,
-                            "illumina_length_max": 400,
+                            "illumina_length_max": 1000,
                             "single_end_length_min": 1000,
                             "dedup_reads": false,
                             "args": {
@@ -1037,9 +1037,9 @@
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "25.04.7"
+            "nextflow": "25.04.8"
         },
-        "timestamp": "2025-12-01T14:59:37.884797911"
+        "timestamp": "2026-01-20T10:21:32.990105556"
     },
     "Test clean reads run without failure illumina unzipped": {
         "content": [
@@ -1119,7 +1119,7 @@
                             "polyg_min_len": 10,
                             "polyx_min_len": 10,
                             "illumina_length_min": 35,
-                            "illumina_length_max": 400,
+                            "illumina_length_max": 1000,
                             "single_end_length_min": 1000,
                             "dedup_reads": false,
                             "args": {
@@ -1217,7 +1217,7 @@
                             "polyg_min_len": 10,
                             "polyx_min_len": 10,
                             "illumina_length_min": 35,
-                            "illumina_length_max": 400,
+                            "illumina_length_max": 1000,
                             "single_end_length_min": 1000,
                             "dedup_reads": false,
                             "args": {
@@ -1280,8 +1280,8 @@
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "25.04.7"
+            "nextflow": "25.04.8"
         },
-        "timestamp": "2025-12-01T14:59:24.503229831"
+        "timestamp": "2026-01-20T10:21:21.874735388"
     }
 }
