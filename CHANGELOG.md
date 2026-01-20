@@ -23,6 +23,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Changed the max contamination threshold for CheckM2 to 5.0%. [PR 205](https://github.com/phac-nml/mikrokondo/pull/205)
 
+- Changed the default value of `fp_illumina_length_max` to 1000. [PR 209](https://github.com/phac-nml/mikrokondo/pull/209)
+
 ### `Updated`
 
 - Updated coreutils container to version 9.5 allowing https downloads. [PR 201](https://github.com/phac-nml/mikrokondo/pull/201)
