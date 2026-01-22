@@ -593,7 +593,7 @@
         },
         "fp_illumina_length_max": {
           "type": "integer",
-          "default": 400,
+          "default": 1000,
           "minimum": 0,
           "description": "Reads longer than length_limit will be discarded, 0 means no limitation."
         },
