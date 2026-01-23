@@ -28,6 +28,7 @@ process CHECKM2 {
   --input $fasta \
   --output-directory $prefix \
   --database_path $database \
+  --tmpdir $PWD \
   $args
   
 
