@@ -3,6 +3,7 @@ nextflow_pipeline {
 
     name "Integration Tests from assemblies for MIKROKONDO"
     script "main.nf"
+    config "tests/nextflow.ecoli.config"
 
     test("Test starting from assemblies ecoli") {
         tag "from_assemblies_ecoli"
@@ -21,7 +22,7 @@ nextflow_pipeline {
 
                 skip_bakta = true
                 skip_mobrecon = true
-                skip_checkm = true
+                skip_checkm = false
                 skip_raw_read_metrics = true
                 skip_polishing = true
 
@@ -29,9 +30,246 @@ nextflow_pipeline {
                 skip_subtyping = false
 
                 skip_allele_calling = true
+                download_checkm2_db = false
+                checkm2_db = "$baseDir/tests/data/databases/TestCheckm2DB.dmnd"
 
                 max_memory = "2.GB"
                 max_cpus = 1
+            }
+        }
+
+        then {
+            assert workflow.success
+            assert path("$outputDir").exists()
+
+            // parse final report json file
+            def final_report = path("$outputDir/FinalReports/Aggregated/Json/final_report.json").json
+            def ecoli_json = final_report.ecoli_GCA_000947975.ecoli_GCA_000947975
+            assert ecoli_json.StarAMR."0".Genotype.equals("aph(3'')-Ib, aph(6)-Id, blaCTX-M-15, blaTEM-1B, dfrA7, gyrA (S83A), sul1, sul2, tet(A)")
+            assert ecoli_json.StarAMR."0"."Predicted Phenotype".equals("streptomycin, kanamycin, ampicillin, ceftriaxone, trimethoprim, ciprofloxacin I/R, nalidixic acid, sulfisoxazole, tetracycline")
+            assert ecoli_json.StarAMR."0"."CGE Predicted Phenotype".equals("Streptomycin, Amoxicillin, Ampicillin, Aztreonam, Cefepime, Cefotaxime, Ceftazidime, Ceftriaxone, Piperacillin, Ticarcillin, Cephalothin, Trimethoprim, Nalidixic acid, Ciprofloxacin, Sulfamethoxazole, Doxycycline, Tetracycline")
+            assert ecoli_json.StarAMR."0".Plasmid.equals("IncQ1")
+            assert ecoli_json.StarAMR."0".Scheme.equals("ecoli_achtman_4")
+            assert ecoli_json.StarAMR."0"."Sequence Type".equals("678")
+            assert ecoli_json.PointfinderDB.equals("escherichia_coli")
+            assert ecoli_json.ECTyperSubtyping."0".Species.equals("Escherichia coli")
+            assert ecoli_json.ECTyperSubtyping."0"."O-type".equals("O104")
+            assert ecoli_json.ECTyperSubtyping."0"."H-type".equals("H4")
+            assert ecoli_json.ECTyperSubtyping."0".Serotype.equals("O104:H4")
+            assert ecoli_json.ECTyperSubtyping."0".DatabaseVer.equals("v1.0 (11-03-2020)")
+            assert ecoli_json.ECTyperSubtyping."0".QC.equals("PASS (REPORTABLE)")
+
+            assert final_report.ecoli_GCA_000947975.QualityAnalysis.n50_value.value == 122025
+            assert final_report.ecoli_GCA_000947975.QualityAnalysis.n50_value.qc_status == "PASSED"
+            assert final_report.ecoli_GCA_000947975.QualityAnalysis.nr_contigs.qc_status == "PASSED"
+            assert final_report.ecoli_GCA_000947975.QualityAnalysis.nr_contigs.value == 187
+            assert final_report.ecoli_GCA_000947975.QualityAnalysis.length.value == 5333525
+            assert final_report.ecoli_GCA_000947975.QualityAnalysis.length.qc_status == "PASSED"
+
+            // parse final report tsv file
+            def final_report_tmap = [:]
+            def final_report_tsv = path("$outputDir/FinalReports/Aggregated/Tables/final_report.tsv").readLines()
+            final_report_tsv.each {
+                def tokens = it.split("\t")
+                if(tokens.size() >=2)
+                {
+                    final_report_tmap[tokens[0]] = tokens[1]
+                }
+            }
+            assert final_report_tsv[0] == "\tecoli_GCA_000947975"
+            assert final_report_tmap."QUAST.0.Total length" == "5333525"
+            assert final_report_tmap."QUAST.0.Largest contig" == "300823"
+            assert final_report_tmap."QUAST.0.# contigs" == "187"
+            assert final_report_tmap."QUAST.0.N50" == "122025"
+            assert final_report_tmap."StarAMR.0.Genotype" == "aph(3'')-Ib, aph(6)-Id, blaCTX-M-15, blaTEM-1B, dfrA7, gyrA (S83A), sul1, sul2, tet(A)"
+            assert final_report_tmap."StarAMR.0.Predicted Phenotype" == "streptomycin, kanamycin, ampicillin, ceftriaxone, trimethoprim, ciprofloxacin I/R, nalidixic acid, sulfisoxazole, tetracycline"
+            assert final_report_tmap."StarAMR.0.CGE Predicted Phenotype" == "Streptomycin, Amoxicillin, Ampicillin, Aztreonam, Cefepime, Cefotaxime, Ceftazidime, Ceftriaxone, Piperacillin, Ticarcillin, Cephalothin, Trimethoprim, Nalidixic acid, Ciprofloxacin, Sulfamethoxazole, Doxycycline, Tetracycline"
+            assert final_report_tmap."StarAMR.0.Plasmid" == "IncQ1"
+            assert final_report_tmap."StarAMR.0.Scheme" == "ecoli_achtman_4"
+            assert final_report_tmap."StarAMR.0.Sequence Type" == "678"
+            assert final_report_tmap."ECTyperSubtyping.0.Species" == "Escherichia coli"
+            assert final_report_tmap."ECTyperSubtyping.0.O-type" == "O104"
+            assert final_report_tmap."ECTyperSubtyping.0.H-type" == "H4"
+            assert final_report_tmap."ECTyperSubtyping.0.Serotype" == "O104:H4"
+            assert final_report_tmap."ECTyperSubtyping.0.DatabaseVer" == "v1.0 (11-03-2020)"
+            assert final_report_tmap."ECTyperSubtyping.0.QC" == "PASS (REPORTABLE)"
+
+            // compare IRIDA Next JSON output
+            def iridanext_json = path("$outputDir/iridanext.output.json").json
+            def iridanext_global = iridanext_json.files.global
+            def iridanext_samples = iridanext_json.files.samples
+            def iridanext_metadata = iridanext_json.metadata.samples
+
+            // output files
+            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Json/final_report.json" }.size() == 1
+            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Tables/final_report.tsv" }.size() == 1
+            assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/Quality/QUAST/ecoli_GCA_000947975/ecoli_GCA_000947975.transposed_ecoli_GCA_000947975.quast.quality.tsv" }.size() == 1
+            assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/Quality/SeqKitStats/ecoli_GCA_000947975.seqkit.stats.summary.tsv" }.size() == 1
+            assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/Quality/CheckM2/ecoli_GCA_000947975/ecoli_GCA_000947975.quality_report.checkm2.quality.tsv" }.size() == 1
+            assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/PostProcessing/Speciation/MashScreen/ecoli_GCA_000947975.mash.screen.taxa.screen.screen" }.size() == 1
+            assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/Subtyping/ECTyper/ecoli_GCA_000947975/ecoli_GCA_000947975.blastn_output_alleles.ectyper.subtyping.txt" }.size() == 1
+            assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/Subtyping/ECTyper/ecoli_GCA_000947975/ecoli_GCA_000947975.ectyper.ectyper.subtyping.log" }.size() == 1
+            assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/Subtyping/ECTyper/ecoli_GCA_000947975/ecoli_GCA_000947975.output.ectyper.subtyping.tsv" }.size() == 1
+            assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "FinalReports/FlattenedReports/ecoli_GCA_000947975.flat_sample.json.gz" }.size() == 1
+
+            // Abricate annotations
+            assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/Annotation/Abricate/ecoli_GCA_000947975.ecoli_GCA_000947975_argannot.abricate.annotation.txt" }.size() == 1
+            assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/Annotation/Abricate/ecoli_GCA_000947975.ecoli_GCA_000947975_card.abricate.annotation.txt" }.size() == 1
+            assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/Annotation/Abricate/ecoli_GCA_000947975.ecoli_GCA_000947975_ecoh.abricate.annotation.txt" }.size() == 1
+            assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/Annotation/Abricate/ecoli_GCA_000947975.ecoli_GCA_000947975_ecoli_vf.abricate.annotation.txt" }.size() == 1
+            assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/Annotation/Abricate/ecoli_GCA_000947975.ecoli_GCA_000947975_megares.abricate.annotation.txt" }.size() == 1
+            assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/Annotation/Abricate/ecoli_GCA_000947975.ecoli_GCA_000947975_ncbi.abricate.annotation.txt" }.size() == 1
+            assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/Annotation/Abricate/ecoli_GCA_000947975.ecoli_GCA_000947975_plasmidfinder.abricate.annotation.txt" }.size() == 1
+            assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/Annotation/Abricate/ecoli_GCA_000947975.ecoli_GCA_000947975_resfinder.abricate.annotation.txt" }.size() == 1
+            assert iridanext_samples.ecoli_GCA_000947975.findAll { it.path == "Assembly/Annotation/Abricate/ecoli_GCA_000947975.ecoli_GCA_000947975_vfdb.abricate.annotation.txt" }.size() == 1
+
+
+            // output metadata
+            def ecoli_metadata = iridanext_metadata.ecoli_GCA_000947975
+
+            assert ecoli_metadata.containsKey("checkm_value")
+            assert ecoli_metadata."checkm_value" == 0.34
+            assert ecoli_metadata.containsKey("qc_status_contamination")
+            assert ecoli_metadata."qc_status_contamination" == "PASSED"
+            assert !ecoli_metadata.containsKey("qc_status_read_depth_fixed")
+            assert !ecoli_metadata.containsKey("Average Coverage Value")
+            assert ecoli_metadata."qc_status_assembly_n50" == "PASSED"
+            assert ecoli_metadata."n50_value" == 122025
+            assert !ecoli_metadata.containsKey("Raw Average Quality Status")
+            assert !ecoli_metadata.containsKey("Raw Average Quality Value")
+            assert ecoli_metadata.qc_status_assembly_genome_size == "PASSED"
+            assert ecoli_metadata.assembly_length == 5333525
+            assert ecoli_metadata.qc_status_assembly_num_contigs == "PASSED"
+            assert ecoli_metadata.assembly_num_contigs == 187
+            assert ecoli_metadata.qc_summary == "FAILED; Passed Tests: 4/5; Ignored checks 1: wgmlst_loci_count; Species ID: Escherichia coli; Organism QC Criteria: Escherichia"
+
+            assert ecoli_metadata."Downsampled" == false
+
+            assert ecoli_metadata."predicted_identification_name" == "Escherichia coli"
+            assert ecoli_metadata."predicted_identification_method" == "ECTyper"
+            assert ecoli_metadata."predicted_primary_type_name" == "O104:H4"
+            assert ecoli_metadata."predicted_primary_type_method" == "ectyper 2.0.0"
+            assert ecoli_metadata."predicted_secondary_type_name" == "678"
+            assert ecoli_metadata."predicted_secondary_type_method" == "mlst 2.23.0"
+
+            assert ecoli_metadata.SpeciesTopHit == "Escherichia coli"
+            assert ecoli_metadata.IdentificationMethod == "Mash"
+
+            assert ecoli_metadata."ECTyper Database" == "v1.0 (11-03-2020)"
+            assert ecoli_metadata."ECTyper Evidence" == "Based on 3 allele(s)"
+            assert ecoli_metadata."ECTyper GeneCoverages (%)" == "100;100;100;"
+            assert ecoli_metadata."ECTyper GeneIdentities (%)" == "100;100;100;"
+            assert ecoli_metadata."ECTyper GeneScores" == "wzx:1;wzy:1;fliC:1;"
+            assert ecoli_metadata."ECTyper H-Antigen" == "H4"
+            assert ecoli_metadata."ECTyper O-Antigen" == "O104"
+            assert ecoli_metadata."ECTyper QCFlag" == "PASS (REPORTABLE)"
+            assert ecoli_metadata."ECTyper Serotype" == "O104:H4"
+            assert ecoli_metadata."ECTyper Subtyping" == "Escherichia coli"
+            assert ecoli_metadata."ECTyper Warnings" == "-"
+
+            assert ecoli_metadata."ECTyper Pathotype" == "EAEC/STEC"
+            assert ecoli_metadata."ECTyper Pathotype Counts" == "2"
+            assert ecoli_metadata."ECTyper Pathotype Genes" == "aaiC,aap,aatA,aggA,aggR,hlyE,stx2"
+            assert ecoli_metadata."ECTyper Pathotype Gene Names" == "aaiC: type VI secretion system protein AaiC/Hcp2,aap: dispersin,aatA: dispersin export ABC transporter outer membrane protein AatA,aggA: aggregative adherence fimbria I major subunit AggA,aggR: aggregative adherence transcriptional regulator AggR,hlyE: hemolysin E chromosomal,stx2: Shiga toxin 2 subtype a complete sequence (subunits A and B)"
+            assert ecoli_metadata."ECTyper Pathotype Accessions" == "QCJ14421.1;KJ028043.1;AFRH01000026;EHF16298.1;CU928159;AVXX01000010.1;AB030484"
+            assert ecoli_metadata."ECTyper Pathotype Allele IDs" == "2;4;8;15;21;95;183"
+            assert ecoli_metadata."ECTyper Pathotype Identities (%)" == "99.803;100.0;100.0;100.0;99.875;98.904;100.0"
+            assert ecoli_metadata."ECTyper Pathotype Coverages (%)" == "100;100;100;100;100;100;100"
+            assert ecoli_metadata."ECTyper Pathotype Gene Length Ratios" == "507/507;351/351;1239/1239;504/504;798/798;912/912;1241/1241"
+            assert ecoli_metadata."ECTyper Pathotype Rule IDs" == "5:EAEC:aatA;6:EAEC:aaiC;7:EAEC:aggR;8:EAEC:aggA;27:STEC:stx2"
+            assert ecoli_metadata."ECTyper Pathotype Gene Counts" == "EAEC:4 (aaiC,aatA,aggA,aggR);STEC:1 (stx2)"
+            assert ecoli_metadata."ECTyper PathoDBVer" == "v2024-10-03"
+            assert ecoli_metadata."ECTyper Stx Subtypes" == "stx2a"
+            assert ecoli_metadata."ECTyper Stx Accessions" == "AB030484"
+            assert ecoli_metadata."ECTyper Stx Allele IDs" == "183"
+            assert ecoli_metadata."ECTyper Stx Allele Names" == "Shiga toxin 2 subtype a complete sequence (subunits A and B)"
+            assert ecoli_metadata."ECTyper Stx Identities (%)" == "100.0"
+            assert ecoli_metadata."ECTyper Stx Coverages (%)" == "100"
+            assert ecoli_metadata."ECTyper Stx Lengths" == "1241"
+            assert ecoli_metadata."ECTyper Stx Contig Names" == "JRKE01000049.1"
+            assert ecoli_metadata."ECTyper Stx Coordinates" == "18489-19729"
+
+            assert ecoli_metadata."gc" == "50.58"
+            assert !ecoli_metadata.containsKey("Mean Sequence Length Forward")
+            assert !ecoli_metadata.containsKey("BaseCount")
+
+            assert ecoli_metadata."7 Gene ST" == "678"
+            assert ecoli_metadata."7 Gene Scheme" == "ecoli_achtman_4"
+
+            assert ecoli_metadata."StarAMR Genotype" == "aph(3'')-Ib, aph(6)-Id, blaCTX-M-15, blaTEM-1B, dfrA7, gyrA (S83A), sul1, sul2, tet(A)"
+            assert ecoli_metadata."StarAMR Predicted Phenotype" == "streptomycin, kanamycin, ampicillin, ceftriaxone, trimethoprim, ciprofloxacin I/R, nalidixic acid, sulfisoxazole, tetracycline"
+            assert ecoli_metadata."StarAMR CGE Predicted Phenotype" == "Streptomycin, Amoxicillin, Ampicillin, Aztreonam, Cefepime, Cefotaxime, Ceftazidime, Ceftriaxone, Piperacillin, Ticarcillin, Cephalothin, Trimethoprim, Nalidixic acid, Ciprofloxacin, Sulfamethoxazole, Doxycycline, Tetracycline"
+            assert ecoli_metadata."StarAMR Plasmid" == "IncQ1"
+
+
+            // Read in filtered assembly fasta to verify number of contigs
+            def assemblyLines = path("$outputDir/Assembly/FinalAssembly/ecoli_GCA_000947975/ecoli_GCA_000947975.final.filtered.assembly.fasta.gz").readLinesGzip()
+            def actualNumberContigs = assemblyLines.findAll { it.startsWith(">") }.size()
+            def actualLength = assemblyLines.findAll { !it.startsWith(">") }.collect { it.strip().size() }.sum()
+            assert actualNumberContigs == 187
+            assert actualLength == 5333525
+        }
+    }
+
+    test("Test starting from assemblies ecoli fail CheckM2") {
+        tag "from_assemblies_ecoli_fail_checkm"
+
+        when {
+            params {
+                input = "$baseDir/tests/data/samplesheets/samplesheet-test-from-assemblies.csv"
+                outdir = "$outputDir"
+
+                platform = "illumina"
+
+                mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
+                dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+                kraken2_db = "$baseDir/tests/data/kraken2/test"
+                qt_min_contig_length = 1
+
+                skip_bakta = true
+                skip_mobrecon = true
+                skip_checkm = false
+                skip_raw_read_metrics = true
+                skip_polishing = true
+
+                skip_staramr = false
+                skip_subtyping = false
+
+                skip_allele_calling = true
+                download_checkm2_db = false
+                checkm2_db = "$baseDir/tests/data/databases/TestCheckm2DB.dmnd"
+
+                max_memory = "2.GB"
+                max_cpus = 1
+                QCReport {
+                    escherichia{
+                      search = "Escherichia"
+                        raw_average_quality = 30
+                        min_n50 = 1
+                        max_n50 = 1000000
+                        min_nr_contigs = 1
+                        max_nr_contigs = 10000000
+                        fixed_genome_size = 1000000
+                        min_length = 1
+                        max_length = 10000000
+                        max_checkm2_contamination = -1.0
+                        min_average_coverage = 30
+                        IDField = ["ECTyperSubtyping", "0", "Species"]
+                        IDTool = "ECTyper"
+                        PrimaryTypeID = ["ECTyperSubtyping", "0", "Serotype"]
+                        PrimaryTypeIDMethod = "ectyper 2.0.0"
+                        SecondaryTypeID = ["ECTyperSubtyping", 0, "sequence_type"]
+                        SecondaryTypeIDMethod = ""
+                    }
+                    salmonella{search = "Salmonella"}
+                    listeria{search = "Listeria"}
+                    shigella{search = "Shigella"}
+                    klebsiella{search = "Klebsiella"}
+                    staphylococcus{search = "Staphylococcus"}
+                    fallthrough {
+                        search = "No organism specific QC data available."
+                    }
+                }
             }
         }
 
@@ -123,9 +361,8 @@ nextflow_pipeline {
             // output metadata
             def ecoli_metadata = iridanext_metadata.ecoli_GCA_000947975
 
-            assert ecoli_metadata."qc_status_overall" == "FAILED"
-            assert !ecoli_metadata.containsKey("qc_status_contamination")
-            assert !ecoli_metadata.containsKey("Checkm Value")
+            //assert !ecoli_metadata.containsKey("qc_status_contamination")
+            //assert !ecoli_metadata.containsKey("Checkm Value")
             assert !ecoli_metadata.containsKey("qc_status_read_depth_fixed")
             assert !ecoli_metadata.containsKey("Average Coverage Value")
             assert ecoli_metadata."qc_status_assembly_n50" == "PASSED"
@@ -136,7 +373,12 @@ nextflow_pipeline {
             assert ecoli_metadata.assembly_length == 5333525
             assert ecoli_metadata.qc_status_assembly_num_contigs == "PASSED"
             assert ecoli_metadata.assembly_num_contigs == 187
-            assert ecoli_metadata.qc_summary == "FAILED Species ID: Escherichia coli; Passed Tests: 3/4; Organism QC Criteria: Escherichia"
+            assert ecoli_metadata.qc_summary == "FAILED; Passed Tests: 3/5; Ignored checks 1: wgmlst_loci_count; Species ID: Escherichia coli; Organism QC Criteria: Escherichia"
+
+            assert ecoli_metadata.checkm_value == 0.34
+            assert ecoli_metadata.qc_status_contamination == "FAILED"
+            assert ecoli_metadata."qc_status_overall" == "FAILED"
+
 
             assert ecoli_metadata."Downsampled" == false
 
@@ -144,8 +386,6 @@ nextflow_pipeline {
             assert ecoli_metadata."predicted_identification_method" == "ECTyper"
             assert ecoli_metadata."predicted_primary_type_name" == "O104:H4"
             assert ecoli_metadata."predicted_primary_type_method" == "ectyper 2.0.0"
-            assert ecoli_metadata."predicted_secondary_type_name" == "678"
-            assert ecoli_metadata."predicted_secondary_type_method" == "mlst 2.23.0"
 
             assert ecoli_metadata.SpeciesTopHit == "Escherichia coli"
             assert ecoli_metadata.IdentificationMethod == "Mash"
@@ -195,6 +435,7 @@ nextflow_pipeline {
             assert ecoli_metadata."StarAMR Predicted Phenotype" == "streptomycin, kanamycin, ampicillin, ceftriaxone, trimethoprim, ciprofloxacin I/R, nalidixic acid, sulfisoxazole, tetracycline"
             assert ecoli_metadata."StarAMR CGE Predicted Phenotype" == "Streptomycin, Amoxicillin, Ampicillin, Aztreonam, Cefepime, Cefotaxime, Ceftazidime, Ceftriaxone, Piperacillin, Ticarcillin, Cephalothin, Trimethoprim, Nalidixic acid, Ciprofloxacin, Sulfamethoxazole, Doxycycline, Tetracycline"
             assert ecoli_metadata."StarAMR Plasmid" == "IncQ1"
+
 
             // Read in filtered assembly fasta to verify number of contigs
             def assemblyLines = path("$outputDir/Assembly/FinalAssembly/ecoli_GCA_000947975/ecoli_GCA_000947975.final.filtered.assembly.fasta.gz").readLinesGzip()
@@ -343,7 +584,7 @@ nextflow_pipeline {
             assert ecoli_metadata.assembly_length == 5299656
             assert ecoli_metadata.qc_status_assembly_num_contigs == "PASSED"
             assert ecoli_metadata.assembly_num_contigs == 123
-            assert ecoli_metadata.qc_summary == "FAILED Species ID: Escherichia coli; Passed Tests: 3/4; Organism QC Criteria: Escherichia"
+            assert ecoli_metadata.qc_summary == "FAILED; Passed Tests: 3/5; Ignored checks 2: checkm2_contamination, wgmlst_loci_count; Species ID: Escherichia coli; Organism QC Criteria: Escherichia"
 
             // Read in filtered assembly fasta to verify number of contigs
             def assemblyLines = path("$outputDir/Assembly/FinalAssembly/ecoli_GCA_000947975/ecoli_GCA_000947975.final.filtered.assembly.fasta.gz").readLinesGzip()
@@ -440,7 +681,7 @@ nextflow_pipeline {
             assert salmonella_metadata.assembly_length == 4944000
             assert salmonella_metadata.qc_status_assembly_num_contigs == "PASSED"
             assert salmonella_metadata.assembly_num_contigs == 3
-            assert salmonella_metadata.qc_summary == "FAILED Species ID: Salmonella enterica; Passed Tests: 3/4; Organism QC Criteria: Salmonella"
+            assert salmonella_metadata.qc_summary == "FAILED; Passed Tests: 3/5; Ignored checks 1: checkm2_contamination; Species ID: Salmonella enterica; Organism QC Criteria: Salmonella"
 
             assert salmonella_metadata."Downsampled" == false
 
@@ -617,7 +858,7 @@ nextflow_pipeline {
             assert listeria_metadata."assembly_length" == 2944528
             assert listeria_metadata."qc_status_assembly_num_contigs" == "PASSED"
             assert listeria_metadata."assembly_num_contigs" == 1
-            assert listeria_metadata.qc_summary == "FAILED Species ID: Listeria monocytogenes; Passed Tests: 3/4; Organism QC Criteria: Listeria monocytogenes"
+            assert listeria_metadata.qc_summary == "FAILED; Passed Tests: 3/5; Ignored checks 2: checkm2_contamination, wgmlst_loci_count; Species ID: Listeria monocytogenes; Organism QC Criteria: Listeria monocytogenes"
 
             assert listeria_metadata."Downsampled" == false
 
@@ -776,7 +1017,7 @@ nextflow_pipeline {
             assert listeria_metadata."assembly_length" == 2944528
             assert listeria_metadata."qc_status_assembly_num_contigs" == "PASSED"
             assert listeria_metadata."assembly_num_contigs" == 1
-            assert listeria_metadata.qc_summary == "FAILED Species ID: Listeria monocytogenes; Passed Tests: 3/4; Organism QC Criteria: Listeria monocytogenes"
+            assert listeria_metadata.qc_summary == "FAILED; Passed Tests: 3/5; Ignored checks 2: checkm2_contamination, wgmlst_loci_count; Species ID: Listeria monocytogenes; Organism QC Criteria: Listeria monocytogenes"
 
             assert listeria_metadata."Downsampled" == false
 
@@ -865,10 +1106,11 @@ nextflow_pipeline {
             assert iridanext_metadata.listeria_GCF_000196035."predicted_secondary_type_method" == "LISSERO 0.4.9"
         }
     }
-    test("Test starting from concatemers Vibrio cholerae") {
+    test("Test starting from concatemers Vibrio cholerae pass") {
         tag "from_assemblies_vibrio"
 
         when {
+          config "tests/nextflow.vibrio.config"
             params {
                 // Need to update with 7 gene when complete
                 input = "https://raw.githubusercontent.com/phac-nml/mikrokondo/dev/tests/data/samplesheets/samplesheet-test-from-assemblies-vibrio.csv"
@@ -881,7 +1123,37 @@ nextflow_pipeline {
                 kraken2_db = "$baseDir/tests/data/kraken2/test"
                 lx_allele_database = "$baseDir/tests/data/databases/locidex_dbs"
                 qt_min_contig_length = 1
-
+                QCReport {
+                    escherichia{search = "Escherichia"}
+                    salmonella{search = "Salmonella"}
+                    listeria{search = "Listeria"}
+                    shigella{search = "Shigella"}
+                    vibrio{
+                      search = "Vibrio cholerae"
+                      raw_average_quality = 30
+                      min_n50 = 1
+                      max_n50 = 4300000
+                      min_nr_contigs = 1
+                      max_nr_contigs = 150
+                      fixed_genome_size = 1000
+                      min_length = 1
+                      max_length = 4300000
+                      max_checkm_contamination = 3.0
+                      min_average_coverage = 1
+                      min_wgmlst_loci = 6
+                      IDField = null
+                      IDTool = null
+                      PrimaryTypeID = null
+                      PrimaryTypeIDMethod = null
+                      SecondaryTypeID = null
+                      SecondaryTypeIDMethod = null
+                    }
+                    staphylococcus{search = "Staphylococcus"}
+                    klebsiella{search = "Klebsiella"}
+                    fallthrough {
+                        search = "No organism specific QC data available."
+                  }
+                }
                 skip_bakta = true
                 skip_mobrecon = true
                 skip_checkm = true
@@ -927,6 +1199,9 @@ nextflow_pipeline {
             assert vibrio_metadata.locidex_count_loci_found == 7
             assert vibrio_metadata.locidex_count_loci_missing == 0
 
+            assert vibrio_metadata.qc_status_wgmlst_loci == "PASSED"
+            assert vibrio_metadata.wgmlst_loci_count == 7
+
 
             // Output files check
             assert path("$outputDir/Assembly/Subtyping/Locidex/Select/st_120.st_120_SelectedLocidexConfig.locidex.db.json")
@@ -939,9 +1214,325 @@ nextflow_pipeline {
             assert vibrio_metadata."predicted_primary_type_method" == ""
             assert vibrio_metadata."predicted_secondary_type_name" == ""
             assert vibrio_metadata."predicted_secondary_type_method" == ""
+            assert vibrio_metadata.qc_summary == "PASSED; Passed Tests: 4/4; Species ID: Vibrio cholerae; Organism QC Criteria: Vibrio cholerae"
         }
     }
 
+    test("Test starting from concatemers Vibrio cholerae fail mlst") {
+        tag "from_assemblies_vibrio_fail"
+
+        when {
+          config "tests/nextflow.vibrio.config"
+            params {
+                // Need to update with 7 gene when complete
+                input = "https://raw.githubusercontent.com/phac-nml/mikrokondo/dev/tests/data/samplesheets/samplesheet-test-from-assemblies-vibrio.csv"
+                outdir = "$outputDir"
+
+                platform = "illumina"
+
+                mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/mash.msh"
+                dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+                kraken2_db = "$baseDir/tests/data/kraken2/test"
+                lx_allele_database = "$baseDir/tests/data/databases/locidex_dbs"
+                qt_min_contig_length = 1
+                QCReport {
+                    escherichia{search = "Escherichia"}
+                    salmonella{search = "Salmonella"}
+                    listeria{search = "Listeria"}
+                    shigella{search = "Shigella"}
+                    vibrio{
+                      search = "Vibrio cholerae"
+                      raw_average_quality = 30
+                      min_n50 = 1
+                      max_n50 = 4300000
+                      min_nr_contigs = 1
+                      max_nr_contigs = 150
+                      fixed_genome_size = 1000
+                      min_length = 1
+                      max_length = 4300000
+                      max_checkm_contamination = 3.0
+                      min_average_coverage = 1
+                      min_wgmlst_loci = 3800
+                      IDField = null
+                      IDTool = null
+                      PrimaryTypeID = null
+                      PrimaryTypeIDMethod = null
+                      SecondaryTypeID = null
+                      SecondaryTypeIDMethod = null
+                    }
+                    staphylococcus{search = "Staphylococcus"}
+                    klebsiella{search = "Klebsiella"}
+                    fallthrough {
+                        search = "No organism specific QC data available."
+                  }
+                }
+                skip_bakta = true
+                skip_mobrecon = true
+                skip_checkm = true
+                skip_raw_read_metrics = true
+                skip_polishing = true
+                skip_mlst = true
+                skip_version_gathering = true
+                skip_staramr = true
+                skip_length_filtering_contigs = true
+
+                skip_subtyping = false
+                skip_allele_calling = false
+                lx_report_max_stop = 100
+                lx_report_mode = "normal"
+                max_memory = "2.GB"
+                max_cpus = 1
+            }
+        }
+
+        then {
+            assert workflow.success
+            assert path("$outputDir").exists()
+
+            // Compare IRIDANext json
+            assert path("$outputDir/iridanext.output.json").exists()
+            def iridanext_json = path("$outputDir/iridanext.output.json").json
+            def iridanext_global = iridanext_json.files.global
+            def iridanext_samples = iridanext_json.files.samples
+            def iridanext_metadata = iridanext_json.metadata.samples
+            def vibrio_metadata = iridanext_metadata.st_120
+
+            // Output files
+            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Json/final_report.json" }.size() == 1
+            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Tables/final_report.tsv" }.size() == 1
+            assert iridanext_samples.st_120.findAll { it.path == "FinalReports/FlattenedReports/st_120.flat_sample.json.gz" }.size() == 1
+            assert iridanext_samples.st_120.findAll { it.path == "Assembly/Subtyping/Locidex/Report/st_120.locidex.report.profile.mlst.subtyping.json.gz" }.size() == 1
+            assert iridanext_samples.st_120.findAll { it.path == "Assembly/Subtyping/Locidex/Summary/st_120.locidex.summary.json" }.size() == 1
+
+            assert vibrio_metadata.locidex_db_name == "Vibrio cholerae"
+            assert vibrio_metadata.locidex_db_date == "2024-07-30"
+            assert vibrio_metadata.locidex_db_version == "1.0.0"
+            assert vibrio_metadata.locidex_db_total_loci_count == 7
+            assert vibrio_metadata.locidex_count_loci_found == 7
+            assert vibrio_metadata.locidex_count_loci_missing == 0
+
+            assert vibrio_metadata.qc_status_wgmlst_loci == "FAILED"
+            assert vibrio_metadata.wgmlst_loci_count == 7
+
+
+            // Output files check
+            assert path("$outputDir/Assembly/Subtyping/Locidex/Select/st_120.st_120_SelectedLocidexConfig.locidex.db.json")
+            assert path("$outputDir/Assembly/Subtyping/Locidex/Extract/st_120/st_120.raw.locidex.extract.extracted.seqs.subtyping.fasta.gz")
+            assert path("$outputDir/Assembly/Subtyping/Locidex/Search/st_120.locidex.seq_store.json.gz")
+            assert path("$outputDir/Assembly/Subtyping/Locidex/Report/st_120.locidex.report.profile.mlst.subtyping.json.gz")
+            assert path("$outputDir/Assembly/Subtyping/Locidex/Summary/st_120.locidex.summary.json")
+
+            assert vibrio_metadata."predicted_primary_type_name" == ""
+            assert vibrio_metadata."predicted_primary_type_method" == ""
+            assert vibrio_metadata."predicted_secondary_type_name" == ""
+            assert vibrio_metadata."predicted_secondary_type_method" == ""
+            assert vibrio_metadata.qc_summary == "FAILED; Passed Tests: 3/4; Species ID: Vibrio cholerae; Organism QC Criteria: Vibrio cholerae"
+        }
+    }
+    test("Test starting from concatemers Vibrio cholerae no allele calls") {
+        tag "from_assemblies_vibrio_no_allele_calls"
+
+        when {
+            config "tests/nextflow.vibrio.config"
+            params {
+                // Need to update with 7 gene when complete
+                input = "https://raw.githubusercontent.com/phac-nml/mikrokondo/dev/tests/data/samplesheets/samplesheet-test-from-assemblies-vibrio.csv"
+                outdir = "$outputDir"
+
+                platform = "illumina"
+
+                mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/mash.msh"
+                dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+                kraken2_db = "$baseDir/tests/data/kraken2/test"
+                lx_allele_database = "$baseDir/tests/data/databases/locidex_dbs"
+                qt_min_contig_length = 1
+                QCReport {
+                    escherichia{search = "Escherichia"}
+                    salmonella{search = "Salmonella"}
+                    listeria{search = "Listeria"}
+                    shigella{search = "Shigella"}
+                    vibrio{
+                      search = "Vibrio cholerae"
+                      raw_average_quality = 30
+                      min_n50 = 1
+                      max_n50 = 4300000
+                      min_nr_contigs = 1
+                      max_nr_contigs = 150
+                      fixed_genome_size = 1000
+                      min_length = 1
+                      max_length = 4300000
+                      max_checkm_contamination = 3.0
+                      min_average_coverage = 1
+                      IDField = null
+                      IDTool = null
+                      PrimaryTypeID = null
+                      PrimaryTypeIDMethod = null
+                      SecondaryTypeID = null
+                      SecondaryTypeIDMethod = null
+                    }
+                    staphylococcus{search = "Staphylococcus"}
+                    klebsiella{search = "Klebsiella"}
+                    fallthrough {
+                        search = "No organism specific QC data available."
+                  }
+                }
+                skip_bakta = true
+                skip_mobrecon = true
+                skip_checkm = true
+                skip_raw_read_metrics = true
+                skip_polishing = true
+                skip_mlst = true
+                skip_version_gathering = true
+                skip_staramr = true
+                skip_length_filtering_contigs = true
+
+                skip_subtyping = false
+                skip_allele_calling = true
+                lx_report_max_stop = 100
+                lx_report_mode = "normal"
+                max_memory = "2.GB"
+                max_cpus = 1
+            }
+        }
+
+        then {
+            assert workflow.success
+            assert path("$outputDir").exists()
+
+            // Compare IRIDANext json
+            assert path("$outputDir/iridanext.output.json").exists()
+            def iridanext_json = path("$outputDir/iridanext.output.json").json
+            def iridanext_global = iridanext_json.files.global
+            def iridanext_samples = iridanext_json.files.samples
+            def iridanext_metadata = iridanext_json.metadata.samples
+            def vibrio_metadata = iridanext_metadata.st_120
+
+            // Output files
+            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Json/final_report.json" }.size() == 1
+            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Tables/final_report.tsv" }.size() == 1
+            assert iridanext_samples.st_120.findAll { it.path == "FinalReports/FlattenedReports/st_120.flat_sample.json.gz" }.size() == 1
+
+
+            assert vibrio_metadata.qc_status_wgmlst_loci == null
+            assert vibrio_metadata.wgmlst_loci_count == null
+
+
+            assert vibrio_metadata."predicted_primary_type_name" == ""
+            assert vibrio_metadata."predicted_primary_type_method" == ""
+            assert vibrio_metadata."predicted_secondary_type_name" == ""
+            assert vibrio_metadata."predicted_secondary_type_method" == ""
+            assert vibrio_metadata.qc_summary == "FAILED; Passed Tests: 3/4; Ignored checks 1: wgmlst_loci_count; Species ID: Vibrio cholerae; Organism QC Criteria: Vibrio cholerae"
+        }
+    }
+    test("Test starting from concatemers Vibrio cholerae no loci value specified") {
+        tag "from_assemblies_vibrio_no_wgmlst_threshold"
+
+        when {
+            config "tests/nextflow.vibrio.config"
+            params {
+                // Need to update with 7 gene when complete
+                input = "https://raw.githubusercontent.com/phac-nml/mikrokondo/dev/tests/data/samplesheets/samplesheet-test-from-assemblies-vibrio.csv"
+                outdir = "$outputDir"
+
+                platform = "illumina"
+
+                mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/mash.msh"
+                dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+                kraken2_db = "$baseDir/tests/data/kraken2/test"
+                lx_allele_database = "$baseDir/tests/data/databases/locidex_dbs"
+                qt_min_contig_length = 1
+                QCReport {
+                    escherichia{search = "Escherichia"}
+                    salmonella{search = "Salmonella"}
+                    listeria{search = "Listeria"}
+                    shigella{search = "Shigella"}
+                    vibrio{
+                      search = "Vibrio cholerae"
+                      raw_average_quality = 30
+                      min_n50 = 1
+                      max_n50 = 4300000
+                      min_nr_contigs = 1
+                      max_nr_contigs = 150
+                      fixed_genome_size = 1000
+                      min_length = 1
+                      max_length = 4300000
+                      max_checkm_contamination = 3.0
+                      min_average_coverage = 1
+                      min_wgmlst_loci = null
+                      IDField = null
+                      IDTool = null
+                      PrimaryTypeID = null
+                      PrimaryTypeIDMethod = null
+                      SecondaryTypeID = null
+                      SecondaryTypeIDMethod = null
+                    }
+                    staphylococcus{search = "Staphylococcus"}
+                    klebsiella{search = "Klebsiella"}
+                    fallthrough {
+                        search = "No organism specific QC data available."
+                  }
+                }
+                skip_bakta = true
+                skip_mobrecon = true
+                skip_checkm = true
+                skip_raw_read_metrics = true
+                skip_polishing = true
+                skip_mlst = true
+                skip_version_gathering = true
+                skip_staramr = true
+                skip_length_filtering_contigs = true
+
+                skip_subtyping = false
+                skip_allele_calling = false
+                lx_report_max_stop = 100
+                lx_report_mode = "normal"
+                max_memory = "2.GB"
+                max_cpus = 1
+            }
+        }
+
+        then {
+            assert workflow.success
+            assert path("$outputDir").exists()
+
+            // Compare IRIDANext json
+            assert path("$outputDir/iridanext.output.json").exists()
+            def iridanext_json = path("$outputDir/iridanext.output.json").json
+            def iridanext_global = iridanext_json.files.global
+            def iridanext_samples = iridanext_json.files.samples
+            def iridanext_metadata = iridanext_json.metadata.samples
+            def vibrio_metadata = iridanext_metadata.st_120
+
+            // Output files
+            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Json/final_report.json" }.size() == 1
+            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Tables/final_report.tsv" }.size() == 1
+            assert iridanext_samples.st_120.findAll { it.path == "FinalReports/FlattenedReports/st_120.flat_sample.json.gz" }.size() == 1
+
+            assert vibrio_metadata.locidex_db_name == "Vibrio cholerae"
+            assert vibrio_metadata.locidex_db_date == "2024-07-30"
+            assert vibrio_metadata.locidex_db_version == "1.0.0"
+            assert vibrio_metadata.locidex_db_total_loci_count == 7
+            assert vibrio_metadata.locidex_count_loci_found == 7
+            assert vibrio_metadata.locidex_count_loci_missing == 0
+
+            assert vibrio_metadata.qc_status_wgmlst_loci == "WARNING"
+            assert vibrio_metadata.wgmlst_loci_count == 7
+
+
+            // Output files check
+            assert path("$outputDir/Assembly/Subtyping/Locidex/Select/st_120.st_120_SelectedLocidexConfig.locidex.db.json")
+            assert path("$outputDir/Assembly/Subtyping/Locidex/Extract/st_120/st_120.raw.locidex.extract.extracted.seqs.subtyping.fasta.gz")
+            assert path("$outputDir/Assembly/Subtyping/Locidex/Search/st_120.locidex.seq_store.json.gz")
+            assert path("$outputDir/Assembly/Subtyping/Locidex/Report/st_120.locidex.report.profile.mlst.subtyping.json.gz")
+            assert path("$outputDir/Assembly/Subtyping/Locidex/Summary/st_120.locidex.summary.json")
+
+            assert vibrio_metadata."predicted_primary_type_name" == ""
+            assert vibrio_metadata."predicted_primary_type_method" == ""
+            assert vibrio_metadata."predicted_secondary_type_name" == ""
+            assert vibrio_metadata."predicted_secondary_type_method" == ""
+            assert vibrio_metadata.qc_summary == "FAILED; Passed Tests: 3/4; Ignored checks 1: wgmlst_loci_count; Species ID: Vibrio cholerae; Organism QC Criteria: Vibrio cholerae"
+        }
+    }
     test("Test of Database output from concatemers Vibrio cholerae") {
     tag "from_assemblies_vibrio_allele_scheme"
 

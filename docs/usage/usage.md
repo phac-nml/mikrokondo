@@ -12,9 +12,11 @@ Many parameters can be altered or accessed from the command line. For a full lis
 This pipeline requires the following as input:
 
 ### Sample files (gzip)
+
 This pipeline requires sample files to be gzipped (symlinks may be problematic).
 
 ### Samplesheet (CSV)
+
 Mikrokondo requires a sample sheet to be run. This FOFN (file of file names) contains the samples names and allows a user to combine read-sets based on that name if provided. The sample-sheet can utilize the following header fields:
 
 - sample
@@ -58,11 +60,12 @@ _Example merging paired-end data_
 |my_sample|path_to_forward_reads_1|path_to_reversed_reads_1|
 |my_sample|path_to_forward_reads_2|path_to_reversed_reads_2|
 
-*The value of `my_sample` is repeated twice allowing sample to be merged on the common key. This works for nanopore data, hybrid assembly data and assemblies*
+_The value of `my_sample` is repeated twice allowing sample to be merged on the common key. This works for nanopore data, hybrid assembly data and assemblies_
 
 ## Command line arguments
 
 > **Note:** All the below settings can be permanently changed in the `nextflow.config` file within the `params` section. For example, to permanently set a nanopore chemistry and use Kraken for speciation:
+
 ```
 --run_kraken = true // Note the lack of quotes
 --nanopore_chemistry "r1041_e82_400bps_hac_v4.2.0" // Note the quotes used here
@@ -82,6 +85,7 @@ _Example merging paired-end data_
 - `--show_hidden_params`: By default, parameters set as _hidden_ in the schema are not shown on the command line when a user runs with `--help`. Specifying this option will tell the pipeline to show all parameters.
 
 #### General tool options
+
 - `--fly_read_type VALUE`: Flye allows for different assembly options. The default value is set too `hq` (High quality for Nanopore reads, and HiFi for bacterial reads). User options include `hq`, `corr` and `raw`, and a default value can be specified in the `nextflow.config` file.
 - `--hybrid_unicycler true`: to use unicycler for assembly instead of Flye->Racon>Pilon.
     >**Note:** You may need to check the `conf/base.config` `process_high_memory` declaration and provide it upwards of 1000GB of memory if you get errors mentioning `tputs`. This error is not very clear sadly but increasing resources available to the process will help.
@@ -91,12 +95,10 @@ _Example merging paired-end data_
 - `--run_kraken TRUE`: can be used to enable Kraken2 for speciation instead of Mash.
 - `--target_depth`: refers to the target bp depth for a set of reads. When sample read sets have an estimated depth higher than this target, it is downsampled to achieve the depth. No downsampling occurs when estimated depth is lower than this value (default 100).
 
-
 #### Skip Options
 
 Numerous steps within mikrokondo can be turned off without compromising the stability of the pipeline. This skip options can reduce run-time of the pipeline or allow for completion of the pipeline despite errors.
-** All of the above options can be turned on by entering `--{skip_option} true` in the command line arguments to the pipeline (where optional parameters can be added)**
-
+**All of the above options can be turned on by entering `--{skip_option} true` in the command line arguments to the pipeline (where optional parameters can be added)**
 
 - `--skip_read_merging`: Do not merge reads, if duplicate sample names are present the names will be made unique.
 - `--skip_abricate`: turn off abricate AMR detection
@@ -118,8 +120,10 @@ Numerous steps within mikrokondo can be turned off without compromising the stab
 - `--skip_length_filtering_contigs`: Skip length filtering of contigs based on the `--qt_min_contig_length` parameter.
 - `--skip_allele_calling`: Skip allele calling with Locidex.
 - `--fail_on_metagenomic`: Samples that are found to be contaminated or metagenomic are not processed past auto detection saving users computational resources.
+- `--download_checkm2_db`: Download the specified CheckM2 database (see tool parameters). If this parameter is set to true and a and CheckM2 database is provided to the parameter `--checkm2_db` a runtime error will be raised.
 
 #### Datasets
+
 Different databases/pre-computed files are required for usage within mikrokondo. These can be downloaded or created by the user, and if not configured within the `nextflow.config` file they can be passed in as files with the following command-line arguments.
 
 - `--dehosting_idx`: The minimap2 index to be used for dehosting.
@@ -127,16 +131,18 @@ Different databases/pre-computed files are required for usage within mikrokondo.
 - `--bakta_db`: Bakta database for genome annotation.
 - `--kraken2_db`: Kraken2 database that can be used for speciation and binning of meta-genomically assembled contigs.
 - `--staramr_db`: An optional StarAMR database to be passed in, it is recommended to use the database packaged in the container.
+- `--checkm2_db`: The field used to specify the path to a checkm2 database that has already been downloaded. If you do not have the database downloaded already the pipeline can do it for you by setting the `download_checkm2_db` parameter to true.
 
 #### Allele Scheme Options
+
 Allele scheme selection parameters.
 
 - `--override_allele_scheme`: Provide the path to an allele scheme (currently only locidex is supported) that will be used for all samples provided. e.g. no automated allele database selection is performed, this scheme will be applied.
 - `--lx_allele_database`: A path to a `manifest.json` file used by locidex for automated allele selection. This option cannot be used along side `--override_allele_scheme`.
   >**Note:** The provide only a path to the `manifest.json` file as `some/directory` **NOT** `some/directory/manifest.json`
 
-
 #### FastP Arguments
+
 For simplicity parameters affecting FastP have been moved to the top level. Each argument matches one listed within the [FastP](https://phac-nml.github.io/mikrokondo/usage/tool_params/#fastp) usage section with only a `fp_` being appended to the front of the argument. For a more detailed description of what each argument does please review the tool specific parameters for [FastP](https://phac-nml.github.io/mikrokondo/usage/tool_params/#fastp) here.
 
 - `--fp_average_quality`: If a read/read-pair quality is less than this value it is discarded
@@ -153,21 +159,25 @@ For simplicity parameters affecting FastP have been moved to the top level. Each
 - `--fp_dedup_reads`: A parameter to be turned on to allow for deduplication of reads.
 
 #### Bakta Parameters
+
 Top level parameters that can be passed to Bakta.
 
 - `--ba_min_contig_length`: Minimum contig length to be analyzed by Bakta
 
 #### Quast Parameters
+
 Top level parameters that can be passed to Quast.
 
 - `--qt_min_contig_length`: Minimum length of a contig to be analyzed within Quast.
 
 #### Mash Parameters
+
 Top level parameters to be passed to Mash.
 
 - `--mh_min_kmer`: The minimum time a kmer needs to appear to be used in genome size estimation by mash.
 
 #### ECTyper Parameters
+
 Top level parameters to pass to ECTyper. Each argument corresponds to one within ECTyper.
 
 - `--ec_opid`: The minimum percent identity to determine an O antigens presence, It must be an integer.
@@ -177,12 +187,13 @@ Top level parameters to pass to ECTyper. Each argument corresponds to one within
 - `--ec_enable_verification`: A boolean value to enable species verification in ECTyper.
 
 #### SISTR Parameters
+
 Top level parameters for SISTR.
 
 - `--sr_full_cgmlst`: A boolean value (default is true) to use the full cgMLST set of alleles for SISTR which includes some highly similar alleles.
 
-
 #### Locidex Parameters
+
 Top level parameters for Locidex. The currently implemented allele caller, do not that internally Locidex uses blast so many of the parameters correspond to blast options.
 
 - `--lx_min_evalue`: Minimum e-value required for a match.
@@ -236,7 +247,7 @@ All output files will be written into the `outdir` (specified by the user). More
 - **ReadQuality** - dir containing all read tool related output, including contamination, fastq, mash, and subsampled read sets (when present)
 - **subtyping** - dir containing all subtyping tool related output, including SISTR, ECtyper, etc.
 - **SummaryReport** - dir containing collated results files for all tools, including:
-   - Individual sample flattened json reports
-   - **final_report** - All tool results for all samples in both .json (including a flattened version) and .tsv format
+  - Individual sample flattened json reports
+  - **final_report** - All tool results for all samples in both .json (including a flattened version) and .tsv format
 - **bco.json** - data providence file generated from the nf-prov plug-in
 - **manifest.json** - data providence file generated from the nf-prov plug-in

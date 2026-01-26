@@ -9,33 +9,32 @@
 <!-- [![Launch on Nextflow Tower](https://img.shields.io/badge/Launch%20%F0%9F%9A%80-Nextflow%20Tower-%234256e7)](https://tower.nf/launch?pipeline=https://github.com/mk-kondo/mikrokondo) -->
 
 - [Introduction](#introduction)
-  * [What is mikrokondo?](#what-is-mikrokondo-)
-  * [Is mikrokondo right for me?](#is-mikrokondo-right-for-me-)
-  * [Citation](#citation)
-    + [Contact](#contact)
+  - [What is mikrokondo?](#what-is-mikrokondo-)
+  - [Is mikrokondo right for me?](#is-mikrokondo-right-for-me-)
+  - [Citation](#citation)
+    - [Contact](#contact)
 - [Installing mikrokondo](#installing-mikrokondo)
-  * [Step 1: Installing Nextflow](#step-1--installing-nextflow)
-  * [Step 2: Choose a Container Engine](#step-2--choose-a-container-engine)
-    + [Docker or Singularity?](#docker-or-singularity-)
-  * [Step 3: Install dependencies](#step-3--install-dependencies)
-    + [Dependencies listed](#dependencies-listed)
-  * [Step 4: Further resources to download](#step-4--further-resources-to-download)
-    + [Configuration and settings:](#configuration-and-settings-)
+  - [Step 1: Installing Nextflow](#step-1--installing-nextflow)
+  - [Step 2: Choose a Container Engine](#step-2--choose-a-container-engine)
+    - [Docker or Singularity?](#docker-or-singularity-)
+  - [Step 3: Install dependencies](#step-3--install-dependencies)
+    - [Dependencies listed](#dependencies-listed)
+  - [Step 4: Further resources to download](#step-4--further-resources-to-download)
+    - [Configuration and settings:](#configuration-and-settings-)
 - [Getting Started](#getting-started)
-  * [Usage](#usage)
-    + [Data Input/formats](#data-input-formats)
-    + [Output/Results](#output-results)
-  * [Run example data](#run-example-data)
-  * [Testing](#testing)
-    + [Install nf-test](#install-nf-test)
-    + [Run tests](#run-tests)
-  * [Troubleshooting and FAQs:](#troubleshooting-and-faqs-)
-  * [References](#references)
-  * [Legal and Compliance Information:](#legal-and-compliance-information-)
-  * [Updates and Release Notes:](#updates-and-release-notes-)
+  - [Usage](#usage)
+    - [Data Input/formats](#data-input-formats)
+    - [Output/Results](#output-results)
+  - [Run example data](#run-example-data)
+  - [Testing](#testing)
+    - [Install nf-test](#install-nf-test)
+    - [Run tests](#run-tests)
+  - [Troubleshooting and FAQs:](#troubleshooting-and-faqs-)
+  - [References](#references)
+  - [Legal and Compliance Information:](#legal-and-compliance-information-)
+  - [Updates and Release Notes:](#updates-and-release-notes-)
 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
-
 
 # Introduction
 
@@ -96,8 +95,9 @@ Besides the Nextflow run time (requires Java), and container engine the dependen
 - [Kraken2 database](https://benlangmead.github.io/aws-indexes/k2): Required for binning of metagenomic data and is an alternative to using Mash for speciation
 - [Bakta database](https://zenodo.org/record/7669534): Running Bakta is optional and there is a light database option, however the full one is recommended. You will have to unzip and un-tar the database for usage. You can skip running Bakta however making the requirement of downloading this database **optional**.
 - [StarAMR database](https://github.com/phac-nml/staramr#database-build): Running StarAMR is optional and requires downloading the StarAMR databases. Also if you wish to avoid downloading the database, the container for StarAMR has a database included which mikrokondo will default to using if one is not specified making this requirement **optional**.
+- [CheckM2 database](https://zenodo.org/records/14897628/files/checkm2_database.tar.gz): The path to the downloaded and extracted CheckM2 database. This step is optional as the database can be downloaded automatically by setting the parameter `--download_checkm2_db` to true.
 
-### Configuration and settings:
+### Configuration and settings
 
 The above downloadable resources must be updated in the following places in your `nextflow.config`. The spots to update in the params section of the `nextflow.config` are listed below:
 
@@ -122,6 +122,7 @@ staramr_db = "/PATH/TO/STARMAR/DB"
 The above parameters can be accessed for the command line as for passing arguments to the pipeline if not set in the `nextflow.config` file.
 
 # Getting Started
+
 ## Usage
 
 ```
@@ -135,6 +136,7 @@ Under the usage section you can find example commands, instructions for configur
 ### Data Input/formats
 
 Mikrokondo requires two things as input:
+
 1. **Sample files** - fastq and fasta must be in gzip format
 2. **Sample sheet** - this FOFN (file of file names) contains sample names and allows user to combine read-sets. The following header fields are accepted:
    - sample
@@ -150,18 +152,18 @@ For more information see the [usage docs](https://phac-nml.github.io/mikrokondo/
 All output files will be written into the `outdir` (specified by the user). More explicit tool results can be found in both the [Workflow](workflows/CleanAssemble/) and [Subworkflow](subworkflows/) sections of the docs. Here is a brief description of the outdir structure (though in brief the further into the structure you head, the further in the workflow the tool has been run):
 
 - **Assembly** - contains all output files generated as a result of read assembly and tools using assembled contigs as input
-	- **Annotation** - contains output files generated from tools applying annotation and/or gene characterization from assembled contigs
-	- **Assembling** - contains output files generated as a part of the assembly process in nested order
-	- **FinalAssembly** - this directory will always contain the final output contig files from the last step in the assembly process (will take into account any skip flags in the process)
-	- **PostProcessing** - contains output files from intermediary tools that run after assembly but before annotation takes place in the workflow
-	- **Quality** - contains all output files generated as a result of quality tools after assembly
+  - **Annotation** - contains output files generated from tools applying annotation and/or gene characterization from assembled contigs
+  - **Assembling** - contains output files generated as a part of the assembly process in nested order
+  - **FinalAssembly** - this directory will always contain the final output contig files from the last step in the assembly process (will take into account any skip flags in the process)
+  - **PostProcessing** - contains output files from intermediary tools that run after assembly but before annotation takes place in the workflow
+  - **Quality** - contains all output files generated as a result of quality tools after assembly
 - **Subtyping** - contains all output files from workflow subtyping tools, based off assembled contigs
 - **FinalReports** - contains assorted reports including aggregated and flat reports
 - **pipeline_info** - includes tool versions and other pipeline specific information
 - **Reads** - contains all output files generated as a result of read processing and tools using reads as input
-	- **FinalReads** - this directory will contain the final output read files from the last step in read processing (taking into account any skip flags used in the run)
-	- **Processing** - contains output files from tools run to process reads in nested order
-	- **Quality** - contains all output files generated from read quality tools
+  - **FinalReads** - this directory will contain the final output read files from the last step in read processing (taking into account any skip flags used in the run)
+  - **Processing** - contains output files from tools run to process reads in nested order
+  - **Quality** - contains all output files generated from read quality tools
 
 ## Run example data
 
@@ -195,9 +197,9 @@ nf-test test
 
 Add `--profile singularity` to switch from using docker by default to using singularity.
 
-## Troubleshooting and FAQs:
+## Troubleshooting and FAQs
 
-Within release 0.1.0, Bakta is currently skipped however it can be enabled from the command line or within the nextflow.config (please check the docs for more information). It has been disabled by default due issues in using the latest bakta database releases due to an issue with `amr_finder` there are fixes available and older databases still work however they have not been tested. A user can still enable Bakta themselves or fix the database. More information is provided here: https://github.com/oschwengers/bakta/issues/268
+Within release 0.1.0, Bakta is currently skipped however it can be enabled from the command line or within the nextflow.config (please check the docs for more information). It has been disabled by default due issues in using the latest bakta database releases due to an issue with `amr_finder` there are fixes available and older databases still work however they have not been tested. A user can still enable Bakta themselves or fix the database. More information is provided here: <https://github.com/oschwengers/bakta/issues/268>
 
 For a list of common issues or errors and their solutions, please read our [FAQ section](https://phac-nml.github.io/mikrokondo/troubleshooting/FAQ/).
 
@@ -205,9 +207,9 @@ For a list of common issues or errors and their solutions, please read our [FAQ 
 
 An extensive list of references for the tools used by the pipeline can be found in the [`CITATIONS.md`](CITATIONS.md) file.
 
-## Legal and Compliance Information:
+## Legal and Compliance Information
 
-Copyright Government of Canada 2023
+Copyright Government of Canada 2025
 
 Written by: National Microbiology Laboratory, Public Health Agency of Canada
 
@@ -219,4 +221,4 @@ This pipeline uses code and infrastructure developed and maintained by the [nf-c
 >
 > _Nat Biotechnol._ 2020 Feb 13. doi: [10.1038/s41587-020-0439-x](https://dx.doi.org/10.1038/s41587-020-0439-x).
 
-## Updates and Release Notes:
+## Updates and Release Notes

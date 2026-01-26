@@ -178,3 +178,4 @@ gzipped
 monocytogenes
 cardinality
 ncbi
+coreutils
