@@ -1,0 +1,1812 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../installation/">
+      
+      
+        <link rel="next" href="../examples/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>Running MikroKondo - mikrokondo</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#running-mikrokondo" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="mikrokondo" class="md-header__button md-logo" aria-label="mikrokondo" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            mikrokondo
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Running MikroKondo
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../installation/" class="md-tabs__link">
+          
+  
+  
+  Usage
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../troubleshooting/FAQ/" class="md-tabs__link">
+          
+  
+  
+  Troubleshooting
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../workflows/CleanAssemble/" class="md-tabs__link">
+          
+  
+  
+  Workflows
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../subworkflows/assemble_reads/" class="md-tabs__link">
+          
+  
+  
+  Subworkflows
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="mikrokondo" class="md-nav__button md-logo" aria-label="mikrokondo" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    mikrokondo
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Usage
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Usage
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Running MikroKondo
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Running MikroKondo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Usage
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#input" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Input
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Input">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sample-files-gzip" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sample files (gzip)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#samplesheet-csv" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Samplesheet (CSV)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#command-line-arguments" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Command line arguments
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Command line arguments">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#nf-core-boiler-plate-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Nf-core boiler plate options
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#general-tool-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        General tool options
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#skip-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Skip Options
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#datasets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Datasets
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#allele-scheme-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Allele Scheme Options
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fastp-arguments" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FastP Arguments
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bakta-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bakta Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quast-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quast Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mash-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mash Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ectyper-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ECTyper Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sistr-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SISTR Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#locidex-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Locidex Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#containers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Containers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#platform-specification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Platform specification
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#slurm-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Slurm options
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Output
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Command Line Examples
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Utilities/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Utilities
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configuration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tool_params/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tool Specific Parameters
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Troubleshooting
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../troubleshooting/FAQ/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FAQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Workflows
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Workflows
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workflows/CleanAssemble/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Clean Assemble
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workflows/PostAssembly/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Post assembly
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Subworkflows
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Subworkflows
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../subworkflows/assemble_reads/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Assembly
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../subworkflows/bin_contigs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bin Contigs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../subworkflows/clean_reads/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Read Quality Control
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../subworkflows/determine_species/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Determine Species
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../subworkflows/genomes_annotate/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Genome Annotation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../subworkflows/hybrid_assembly/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hybrid Assembly
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../subworkflows/input_check/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Input Verification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../subworkflows/polish_assemblies/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Assembly Polishing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../subworkflows/qc_assembly/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Assembly Quality Control
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../subworkflows/subtype_genome/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Genome Sub-typing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="running-mikrokondo">Running MikroKondo</h1>
+<h2 id="usage">Usage</h2>
+<p>MikroKondo can be run like most other nextflow pipelines. The most basic usage is as follows:
+<code>nextflow run main.nf --input PATH_TO_SAMPLE_SHEET --outdir OUTPUT_DIR --platform SEQUENCING_PLATFORM  -profile CONTAINER_TYPE</code></p>
+<p>Many parameters can be altered or accessed from the command line. For a full list of parameters to be altered please refer to the <code>nextflow.config</code> file in the repo.</p>
+<h2 id="input">Input</h2>
+<p>This pipeline requires the following as input:</p>
+<h3 id="sample-files-gzip">Sample files (gzip)</h3>
+<p>This pipeline requires sample files to be gzipped (symlinks may be problematic).</p>
+<h3 id="samplesheet-csv">Samplesheet (CSV)</h3>
+<p>Mikrokondo requires a sample sheet to be run. This FOFN (file of file names) contains the samples names and allows a user to combine read-sets based on that name if provided. The sample-sheet can utilize the following header fields:</p>
+<ul>
+<li>sample</li>
+<li>fastq_1</li>
+<li>fastq_2</li>
+<li>long_reads</li>
+<li>assembly</li>
+</ul>
+<blockquote>
+<p><strong>Note:</strong> Illegal characters (e.g. characters that match the expression [^A-Za-z0-9_-] ) in the sample name will be replaced with underscores.</p>
+</blockquote>
+<p>Example layouts for different sample-sheets include:</p>
+<p><em>Illumina paired-end data</em></p>
+<table>
+<thead>
+<tr>
+<th>sample</th>
+<th>fastq_1</th>
+<th>fastq_2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sample</td>
+<td>path_to_forward_reads</td>
+<td>path_to_reversed_reads</td>
+</tr>
+</tbody>
+</table>
+<p><em>Nanopore</em></p>
+<table>
+<thead>
+<tr>
+<th>sample</th>
+<th>long_reads</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sample</td>
+<td>path_to_reads</td>
+</tr>
+</tbody>
+</table>
+<p><em>Hybrid Assembly</em></p>
+<table>
+<thead>
+<tr>
+<th>sample</th>
+<th>fastq_1</th>
+<th>fastq_2</th>
+<th>long_reads</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sample</td>
+<td>path_to_forward_reads</td>
+<td>path_to_reversed_reads</td>
+<td>path_to_long_reads</td>
+</tr>
+</tbody>
+</table>
+<p><em>Starting with assembly only</em></p>
+<table>
+<thead>
+<tr>
+<th>sample</th>
+<th>assembly</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sample</td>
+<td>path_to_assembly</td>
+</tr>
+</tbody>
+</table>
+<p><em>Example merging paired-end data</em></p>
+<table>
+<thead>
+<tr>
+<th>sample</th>
+<th>fastq_1</th>
+<th>fastq_2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>my_sample</td>
+<td>path_to_forward_reads_1</td>
+<td>path_to_reversed_reads_1</td>
+</tr>
+<tr>
+<td>my_sample</td>
+<td>path_to_forward_reads_2</td>
+<td>path_to_reversed_reads_2</td>
+</tr>
+</tbody>
+</table>
+<p><em>The value of <code>my_sample</code> is repeated twice allowing sample to be merged on the common key. This works for nanopore data, hybrid assembly data and assemblies</em></p>
+<h2 id="command-line-arguments">Command line arguments</h2>
+<blockquote>
+<p><strong>Note:</strong> All the below settings can be permanently changed in the <code>nextflow.config</code> file within the <code>params</code> section. For example, to permanently set a nanopore chemistry and use Kraken for speciation:</p>
+</blockquote>
+<pre><code>--run_kraken = true // Note the lack of quotes
+--nanopore_chemistry &quot;r1041_e82_400bps_hac_v4.2.0&quot; // Note the quotes used here
+</code></pre>
+<h4 id="nf-core-boiler-plate-options">Nf-core boiler plate options</h4>
+<ul>
+<li><code>--publish_dir_mode</code>: Method used to save pipeline results to output directory</li>
+<li><code>--email</code>: Email address for completion summary.</li>
+<li><code>--email_on_fail</code>: An email address to send a summary email to when the pipeline is completed - ONLY sent if the pipeline does not exit successfully.</li>
+<li><code>--plaintext_email</code>: Send plain-text email instead of HTML.</li>
+<li><code>--monochrome_logs</code>: Do not use coloured log outputs.</li>
+<li><code>--hook_url</code>: Incoming hook URL for messaging service. Currently, MS Teams and Slack are supported.</li>
+<li><code>--help</code>: Display help text.</li>
+<li><code>--version</code>: Display version and exit.</li>
+<li><code>--validate_params</code>: Boolean whether to validate parameters against the schema at runtime.</li>
+<li><code>--show_hidden_params</code>: By default, parameters set as <em>hidden</em> in the schema are not shown on the command line when a user runs with <code>--help</code>. Specifying this option will tell the pipeline to show all parameters.</li>
+</ul>
+<h4 id="general-tool-options">General tool options</h4>
+<ul>
+<li><code>--fly_read_type VALUE</code>: Flye allows for different assembly options. The default value is set too <code>hq</code> (High quality for Nanopore reads, and HiFi for bacterial reads). User options include <code>hq</code>, <code>corr</code> and <code>raw</code>, and a default value can be specified in the <code>nextflow.config</code> file.</li>
+<li><code>--hybrid_unicycler true</code>: to use unicycler for assembly instead of Flye-&gt;Racon&gt;Pilon.
+    &gt;<strong>Note:</strong> You may need to check the <code>conf/base.config</code> <code>process_high_memory</code> declaration and provide it upwards of 1000GB of memory if you get errors mentioning <code>tputs</code>. This error is not very clear sadly but increasing resources available to the process will help.</li>
+<li><code>--metagenomic_run true</code>: users can specify samples are metagenomic via this flag, the pipeline will skip running the contamination mash check and proceed with metagenomic assembly.</li>
+<li><code>--min_reads NUM</code>: refers to the minimum number of reads required after the fastP step to progress a set of sample reads to assembly (default: 1000).</li>
+<li><code>--nanopore_chemistry YOUR_MODEL_HERE</code>: a Medaka model must be specified for polishing. A list of allowed models can be found here: <a href="https://github.com/nanoporetech/medaka/blob/master/medaka/options.py">Medaka models python script</a> or <a href="https://github.com/nanoporetech/medaka/tree/master/medaka/data">Medaka models available for download</a></li>
+<li><code>--run_kraken TRUE</code>: can be used to enable Kraken2 for speciation instead of Mash.</li>
+<li><code>--target_depth</code>: refers to the target bp depth for a set of reads. When sample read sets have an estimated depth higher than this target, it is downsampled to achieve the depth. No downsampling occurs when estimated depth is lower than this value (default 100).</li>
+</ul>
+<h4 id="skip-options">Skip Options</h4>
+<p>Numerous steps within mikrokondo can be turned off without compromising the stability of the pipeline. This skip options can reduce run-time of the pipeline or allow for completion of the pipeline despite errors.
+<strong>All of the above options can be turned on by entering <code>--{skip_option} true</code> in the command line arguments to the pipeline (where optional parameters can be added)</strong></p>
+<ul>
+<li><code>--skip_read_merging</code>: Do not merge reads, if duplicate sample names are present the names will be made unique.</li>
+<li><code>--skip_abricate</code>: turn off abricate AMR detection</li>
+<li><code>--skip_bakta</code>: turn off bakta annotation pipeline (generally a slow step, requiring a database to be specified).</li>
+<li><code>--skip_checkm</code>: used as part of the contamination detection within mikrokondo, its run time and resource usage can be quite lengthy.</li>
+<li><code>--skip_depth_sampling</code>: genome size of reads is estimated using mash and reads can be down-sampled to target depth in order to have a better assembly, if this is of no interest to you, this flag will skip this step entirely. <strong>If you have specified that your run is metagenomic, down sampling is turned off.</strong></li>
+<li><code>--skip_mobrecon</code>: turn off mob-suite recon.</li>
+<li><code>--skip_ont_header_cleaning</code>: Nanopore data may fail in the pipeline due to duplicate headers, while rare it can cause assemblies to fail. Unlike the other options on this list, skipping header cleaning is defaulted to TRUE.</li>
+<li><code>--skip_polishing</code>: if running a metagenomic assembly or encountering issues with polishing steps, this flag will disable polishing and retrieve assembly directly from Spades/Fly. <strong>this does not apply to hybrid assemblies.</strong></li>
+<li><code>--skip_report</code>: prevents the generation of the final summary report.</li>
+<li><code>--skip_species_classification</code>: prevents Mash or Kraken2 being run on assembled genome, also <strong>prevents subtyping workflow from triggering.</strong></li>
+<li><code>--skip_starmar</code>: turn off starAMR AMR detection.</li>
+<li><code>--skip_subtyping</code>: to turn off automatic triggering of subtyping in the pipeline (useful when target organism does not have a subtyping tool installed within mikrokondo).</li>
+<li><code>--skip_version_gathering</code>: prevents the collation of tool versions. This process generally takes a couple minutes (at worst) but can be useful when during recurrent runs of the pipeline (like when testing settings).</li>
+<li><code>--skip_report</code>: Prevents creation of final report summary report amalgamating outputs of all other files, this will also turnoff the creation of individual sub-reports.</li>
+<li><code>--skip_metagenomic_detection</code>: Skips classification of sample as metagenomic and forces a sample to be analyzed as an isolate.</li>
+<li><code>--skip_raw_read_metrics</code>: Prevents generation of raw read metrics, e.g. metrics generated about the reads before any trimming or filtering is performed.</li>
+<li><code>--skip_mlst</code>: Skip seven gene MLST.</li>
+<li><code>--skip_length_filtering_contigs</code>: Skip length filtering of contigs based on the <code>--qt_min_contig_length</code> parameter.</li>
+<li><code>--skip_allele_calling</code>: Skip allele calling with Locidex.</li>
+<li><code>--fail_on_metagenomic</code>: Samples that are found to be contaminated or metagenomic are not processed past auto detection saving users computational resources.</li>
+<li><code>--download_checkm2_db</code>: Download the specified CheckM2 database (see tool parameters). If this parameter is set to true and a and CheckM2 database is provided to the parameter <code>--checkm2_db</code> a runtime error will be raised.</li>
+</ul>
+<h4 id="datasets">Datasets</h4>
+<p>Different databases/pre-computed files are required for usage within mikrokondo. These can be downloaded or created by the user, and if not configured within the <code>nextflow.config</code> file they can be passed in as files with the following command-line arguments.</p>
+<ul>
+<li><code>--dehosting_idx</code>: The minimap2 index to be used for dehosting.</li>
+<li><code>--mash_sketch</code>: The mash sketch to be used for contamination detection and speciation.</li>
+<li><code>--bakta_db</code>: Bakta database for genome annotation.</li>
+<li><code>--kraken2_db</code>: Kraken2 database that can be used for speciation and binning of meta-genomically assembled contigs.</li>
+<li><code>--staramr_db</code>: An optional StarAMR database to be passed in, it is recommended to use the database packaged in the container.</li>
+<li><code>--checkm2_db</code>: The field used to specify the path to a checkm2 database that has already been downloaded. If you do not have the database downloaded already the pipeline can do it for you by setting the <code>download_checkm2_db</code> parameter to true.</li>
+</ul>
+<h4 id="allele-scheme-options">Allele Scheme Options</h4>
+<p>Allele scheme selection parameters.</p>
+<ul>
+<li><code>--override_allele_scheme</code>: Provide the path to an allele scheme (currently only locidex is supported) that will be used for all samples provided. e.g. no automated allele database selection is performed, this scheme will be applied.</li>
+<li><code>--lx_allele_database</code>: A path to a <code>manifest.json</code> file used by locidex for automated allele selection. This option cannot be used along side <code>--override_allele_scheme</code>.<blockquote>
+<p><strong>Note:</strong> The provide only a path to the <code>manifest.json</code> file as <code>some/directory</code> <strong>NOT</strong> <code>some/directory/manifest.json</code></p>
+</blockquote>
+</li>
+</ul>
+<h4 id="fastp-arguments">FastP Arguments</h4>
+<p>For simplicity parameters affecting FastP have been moved to the top level. Each argument matches one listed within the <a href="https://phac-nml.github.io/mikrokondo/usage/tool_params/#fastp">FastP</a> usage section with only a <code>fp_</code> being appended to the front of the argument. For a more detailed description of what each argument does please review the tool specific parameters for <a href="https://phac-nml.github.io/mikrokondo/usage/tool_params/#fastp">FastP</a> here.</p>
+<ul>
+<li><code>--fp_average_quality</code>: If a read/read-pair quality is less than this value it is discarded</li>
+<li><code>--fp_cut_tail_mean_quality</code>: the quality threshold to trim reads to</li>
+<li><code>--fp_cut_tail_window_size</code>: The window size to cut a tail with.</li>
+<li><code>--fp_complexity_threshold</code>: The threshold for low complexity filter.</li>
+<li><code>--fp_qualified_phred</code>: The quality of a base to be qualified if filtering by unqualified bases.</li>
+<li><code>--fp_unqualified_percent_limit</code>: The percent amount of bases that are allowed to be unqualified in a read.</li>
+<li><code>--fp_polyg_min_len</code>: The minimum length to detect a polyG tail.</li>
+<li><code>--fp_polyx_min_len</code>: The minimum length to detect a polyX tail.</li>
+<li><code>--fp_illumina_length_min</code>: The minimum read length to be allowed in illumina data.</li>
+<li><code>--fp_illumina_length_max</code>: The maximum read length allowed for illumina data.</li>
+<li><code>--fp_single_end_length_min</code>: the minimum read length allowed in Pacbio or Nanopore data.</li>
+<li><code>--fp_dedup_reads</code>: A parameter to be turned on to allow for deduplication of reads.</li>
+</ul>
+<h4 id="bakta-parameters">Bakta Parameters</h4>
+<p>Top level parameters that can be passed to Bakta.</p>
+<ul>
+<li><code>--ba_min_contig_length</code>: Minimum contig length to be analyzed by Bakta</li>
+</ul>
+<h4 id="quast-parameters">Quast Parameters</h4>
+<p>Top level parameters that can be passed to Quast.</p>
+<ul>
+<li><code>--qt_min_contig_length</code>: Minimum length of a contig to be analyzed within Quast.</li>
+</ul>
+<h4 id="mash-parameters">Mash Parameters</h4>
+<p>Top level parameters to be passed to Mash.</p>
+<ul>
+<li><code>--mh_min_kmer</code>: The minimum time a kmer needs to appear to be used in genome size estimation by mash.</li>
+</ul>
+<h4 id="ectyper-parameters">ECTyper Parameters</h4>
+<p>Top level parameters to pass to ECTyper. Each argument corresponds to one within ECTyper.</p>
+<ul>
+<li><code>--ec_opid</code>: The minimum percent identity to determine an O antigens presence, It must be an integer.</li>
+<li><code>--ec_opcov</code>: The minimum percent coverage of O antigen, It must be an integer.</li>
+<li><code>--ec_hpid</code>: The minimum percent identity to determine an H antigens presence, It must be an integer.</li>
+<li><code>--ec_hcov</code>: The minimum percent coverage of the H antigen, It must be an integer.</li>
+<li><code>--ec_enable_verification</code>: A boolean value to enable species verification in ECTyper.</li>
+</ul>
+<h4 id="sistr-parameters">SISTR Parameters</h4>
+<p>Top level parameters for SISTR.</p>
+<ul>
+<li><code>--sr_full_cgmlst</code>: A boolean value (default is true) to use the full cgMLST set of alleles for SISTR which includes some highly similar alleles.</li>
+</ul>
+<h4 id="locidex-parameters">Locidex Parameters</h4>
+<p>Top level parameters for Locidex. The currently implemented allele caller, do not that internally Locidex uses blast so many of the parameters correspond to blast options.</p>
+<ul>
+<li><code>--lx_min_evalue</code>: Minimum e-value required for a match.</li>
+<li><code>--lx_min_dna_len</code>: Global minimum query length of DNA strand.</li>
+<li><code>--lx_min_aa_len</code>: Global minimum query length of an Amino Acid strand.</li>
+<li><code>--lx_max_dna_len</code>: Global maximum query length of DNA strand.</li>
+<li><code>--lx_max_aa_len</code>: Global maximum query length of Amino Acid strand.</li>
+<li><code>--lx_min_dna_ident</code>: Global minimum DNA percent identity required for match. (float).</li>
+<li><code>--lx_min_aa_ident</code>: Global minimum Amino Acid percent identity required for match. (float).</li>
+<li><code>--lx_min_dna_match_cov</code>: Global minimum DNA percent hit coverage identity required for match (float).</li>
+<li><code>--lx_min_aa_match_cov</code>: Global minimum Amino Acid hit coverage identity required for match (float).</li>
+<li><code>--lx_max_target_seqs</code>: Maximum number of sequence hits per query.</li>
+<li><code>--lx_extraction_mode</code>: Different ways to run locidex (Options: snps, trim, raw, extend).</li>
+<li><code>--lx_report_mode</code>: Allele profile assignment (Options: normal or conservative).</li>
+<li><code>--lx_report_prop</code>: Metadata label to use for aggregation. Only alphanumeric characters, underscores and dashes are allowed in names.</li>
+<li><code>--lx_report_max_ambig</code>: Maximum number of ambiguous characters allowed in a sequence.</li>
+<li><code>--lx_report_max_stop</code>: Maximum number of internal stop codons allowed in a sequence.</li>
+</ul>
+<h4 id="containers">Containers</h4>
+<p>Different container services can be specified from the command line when running mikrokondo in the <code>-profile</code> option. This option is specified at the end of your command line argument. Examples of different container services are specified below:</p>
+<ul>
+<li>For Docker: <code>nextflow run main.nf MY_OPTIONS -profile docker</code></li>
+<li>For Singularity: <code>nextflow run main.nf MY_OPTIONS -profile singularity</code></li>
+<li>For Apptainer: <code>nextflow run main.nf MY_OPTIONS -profile apptainer</code></li>
+<li>For Shifter: <code>nextflow run main.nf MY_OPTIONS -profile shifter</code></li>
+<li>For Charliecloud: <code>nextflow run main.nf MY_OPTIONS -profile charliecloud</code></li>
+<li>For Gitpod: <code>nextflow run main.nf MY_OPTIONS -profile gitpod</code></li>
+<li>For Podman: <code>nextflow run main.nf MY_OPTIONS -profile podman</code></li>
+</ul>
+<h4 id="platform-specification">Platform specification</h4>
+<ul>
+<li><code>--platform illumina</code> for Illumina.</li>
+<li><code>--platform nanopore</code> for Nanopore.</li>
+<li><code>--platform pacbio</code> for Pacbio</li>
+<li><code>--platform hybrid</code> for hybrid assemblies.<blockquote>
+<p><strong>Note:</strong> when denoting your run as using a hybrid platform, you must also add in the long_read_opt parameter as the default value is nanopore**. <code>--long_read_opt nanopore</code> for nanopore or <code>--long_read_opt pacbio</code> for pacbio.</p>
+</blockquote>
+</li>
+</ul>
+<h4 id="slurm-options">Slurm options</h4>
+<ul>
+<li><code>slurm_p true</code>: slurm executor will be used.</li>
+<li><code>slurm_profile STRING</code>: a string to allow the user to specify which slurm partition to use.</li>
+</ul>
+<h2 id="output">Output</h2>
+<p>All output files will be written into the <code>outdir</code> (specified by the user). More explicit tool results can be found in both the <a href="/workflows/CleanAssemble/">Workflow</a> and <a href="/subworkflows/assemble_reads/">Subworkflow</a> sections of the docs. Here is a brief description of the outdir structure:</p>
+<ul>
+<li><strong>annotations</strong> - dir containing all annotation tool output.</li>
+<li><strong>assembly</strong> - dir containing all assembly tool related output, including quality, 7 gene MLST and taxon determination.</li>
+<li><strong>pipeline_info</strong> - dir containing all pipeline related information including software versions used and execution reports.</li>
+<li><strong>ReadQuality</strong> - dir containing all read tool related output, including contamination, fastq, mash, and subsampled read sets (when present)</li>
+<li><strong>subtyping</strong> - dir containing all subtyping tool related output, including SISTR, ECtyper, etc.</li>
+<li><strong>SummaryReport</strong> - dir containing collated results files for all tools, including:</li>
+<li>Individual sample flattened json reports</li>
+<li><strong>final_report</strong> - All tool results for all samples in both .json (including a flattened version) and .tsv format</li>
+<li><strong>bco.json</strong> - data providence file generated from the nf-prov plug-in</li>
+<li><strong>manifest.json</strong> - data providence file generated from the nf-prov plug-in</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.expand", "navigation.top", "toc.integrate", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotation", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

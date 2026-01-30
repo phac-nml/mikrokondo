@@ -1,0 +1,2287 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../configuration/">
+      
+      
+        <link rel="next" href="../../troubleshooting/FAQ/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>Tool Specific Parameters - mikrokondo</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#tool-specific-parameters" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="mikrokondo" class="md-header__button md-logo" aria-label="mikrokondo" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            mikrokondo
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Tool Specific Parameters
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../installation/" class="md-tabs__link">
+          
+  
+  
+  Usage
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../troubleshooting/FAQ/" class="md-tabs__link">
+          
+  
+  
+  Troubleshooting
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../workflows/CleanAssemble/" class="md-tabs__link">
+          
+  
+  
+  Workflows
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../subworkflows/assemble_reads/" class="md-tabs__link">
+          
+  
+  
+  Subworkflows
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="mikrokondo" class="md-nav__button md-logo" aria-label="mikrokondo" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    mikrokondo
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Usage
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Usage
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../usage/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Running MikroKondo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Command Line Examples
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Utilities/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Utilities
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configuration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tool Specific Parameters
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tool Specific Parameters
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#abricate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Abricate
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#raw-read-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Raw Read Metrics
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#coreutils" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Coreutils
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#python" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Python
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kat" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        KAT
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#seqtk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Seqtk
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rasusa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rasusa
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fastp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FastP
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chopper" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chopper
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#flye" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flye
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spades" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Spades
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fastqc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FastQC
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quast" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quast
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quast-filter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quast Filter
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#checkm2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CheckM2
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kraken2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kraken2
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#seven-gene-mlst" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Seven Gene MLST
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mash" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mash
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mash-meta" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mash Meta
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#top_hit_species" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        top_hit_species
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contamination-removal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Contamination Removal
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#minimap2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Minimap2
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#samtools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Samtools
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#racon" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Racon
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pilon" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pilon
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pilon-iterative-polishing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pilon Iterative Polishing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#medaka-polishing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Medaka Polishing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#unicycler" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unicycler
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mob-suite-recon" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mob-suite Recon
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#staramr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        StarAMR
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bakta" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bakta
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bandage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bandage
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#subtyping-report" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Subtyping Report
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Subtyping Report">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ectyper" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ECTyper
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kleborate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kleborate
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spatyper" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Spatyper
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sistr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SISTR
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lissero" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lissero
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shigeifinder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shigeifinder
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shigatyper-replaced-with-shigeifinder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shigatyper (Replaced with Shigeifinder)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kraken2-contig-binning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kraken2 Contig Binning
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#locidex-allele-calling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Locidex (Allele Calling)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#locidex-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Locidex Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Troubleshooting
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../troubleshooting/FAQ/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FAQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Workflows
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Workflows
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workflows/CleanAssemble/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Clean Assemble
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workflows/PostAssembly/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Post assembly
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Subworkflows
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Subworkflows
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../subworkflows/assemble_reads/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Assembly
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../subworkflows/bin_contigs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bin Contigs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../subworkflows/clean_reads/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Read Quality Control
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../subworkflows/determine_species/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Determine Species
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../subworkflows/genomes_annotate/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Genome Annotation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../subworkflows/hybrid_assembly/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hybrid Assembly
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../subworkflows/input_check/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Input Verification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../subworkflows/polish_assemblies/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Assembly Polishing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../subworkflows/qc_assembly/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Assembly Quality Control
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../subworkflows/subtype_genome/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Genome Sub-typing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="tool-specific-parameters">Tool Specific Parameters</h1>
+<p>To access tool specific parameters from the command line you must use the dot operator. For organization and readability sake, the below documentation is nested to indicate where the dot operator is used. For example:</p>
+<pre><code>- quast
+    - min_contig_length NUM
+</code></pre>
+<p>Translates to <code>--quast.min_contig_length NUM</code> on the CLI.</p>
+<blockquote>
+<p><strong>Note:</strong> Easily changed parameters are bolded. Sensible defaults are provided.</p>
+</blockquote>
+<h3 id="abricate">Abricate</h3>
+<p>Screens contigs for antimicrobial and virulence genes. If you wish to use a different Abricate database you may need to update the container you use.</p>
+<ul>
+<li>abricate</li>
+<li>singularity: Abricate singularity container</li>
+<li>docker: Abricate docker container</li>
+<li><strong>args</strong>: Can be a string of additional command line arguments to pass to abricate</li>
+<li>report_tag: determines the name of the Abricate output in the final summary file. <strong>Do not change this unless doing pipeline development.</strong></li>
+<li>header_p: This field tells the report module that the Abricate output contains headers. <strong>Do not change this unless doing pipeline development.</strong></li>
+</ul>
+<h3 id="raw-read-metrics">Raw Read Metrics</h3>
+<p>A custom Python script that gathers quality metrics for each fastq file.</p>
+<ul>
+<li>raw_reads</li>
+<li>high_precision: When set to true, floating point precision of values output are accurate down to very small decimal places. Recommended to leave this setting as false (use the standard floats), it is much faster and having such precise decimal places is not needed for this module.</li>
+<li>report_tag: this field determines the name of the Raw Read Metric field in the final summary report. <strong>Do not change this unless doing pipeline development.</strong></li>
+</ul>
+<h3 id="coreutils">Coreutils</h3>
+<p>In cases where a process uses bash scripting only, Nextflow by default will utilize system binaries when they are available and no container is specified. For reproducibility, we have chosen to use containers in such cases. When a better container is available, you can direct the pipeline to use it via below commands:</p>
+<ul>
+<li>coreutils</li>
+<li>singularity: coreutils singularity container</li>
+<li>docker: coreutils docker container</li>
+</ul>
+<h3 id="python">Python</h3>
+<p>Some scripts require Python3, therefore a well tested Python3 container is provided for reproducibility. However, as all the scripts within mikrokondo use only the standard library you can swap these containers to use any python interpreter version. For instance, swapping in <strong>pypy3</strong> may result a massive performance boost from the scripts, though this is currently untested.</p>
+<ul>
+<li>python3</li>
+<li>singularity: Python3 singularity container</li>
+<li>docker: Python3 docker container</li>
+</ul>
+<h3 id="kat">KAT</h3>
+<p>Kat was previously used to estimate genome size, however at the time of writing KAT appears to be only infrequently updated and newer versions would have issues running/sometimes giving an incorrect output due to failures in peak recognition. Therefore, KAT has been removed from the pipeline, It's code still remains but it <strong>will be removed in the future</strong>.</p>
+<h3 id="seqtk">Seqtk</h3>
+<p>Seqtk is used for both the sub-sampling of reads and conversion of fasta files to fastq files in mikrokondo. The usage of seqtk to convert a fasta to a fastq is needed in certain typing tools requiring reads as input (this was a design decision to keep the pipeline generalizable).</p>
+<ul>
+<li>seqtk</li>
+<li>singularity: Singularity container for seqtk</li>
+<li>docker: Docker container for seqtk</li>
+<li>seed: A seed value for sub-sampling</li>
+<li>reads_ext: Extension of reads after sub-sampling, do not touch alter this unless doing pipeline development.</li>
+<li>assembly_fastq: Extension of the fastas after being converted to fastq files. Do not change this unless doing pipeline development.</li>
+<li>report_tag: Name of seqtk data in the final summary report. Do not change this unless doing pipeline development.</li>
+</ul>
+<h3 id="rasusa">Rasusa</h3>
+<p>For long read data Rasusa is used for down sampling as it take read length into consideration when down sampling.</p>
+<ul>
+<li>rasusa</li>
+<li>singularity: singularity container for rasusa</li>
+<li>docker: docker container for rasusa</li>
+<li>seed: A seed value for sub-sampling</li>
+<li>reads_ext: The extension of the generated fastq files. Do not change this unless doing pipeline development.</li>
+</ul>
+<h3 id="fastp">FastP</h3>
+<p>Fastp is fast and widely used program for gathering of read quality metrics, adapter trimming, read filtering and read trimming. FastP has extensive options for configuration which are detailed in their documentation, but sensible defaults have been set. <strong>Adapter trimming in Fastp is performed using overlap analysis, however if you do not trust this you can specify the sequencing adapters used directly in the additional arguments for Fastp</strong>.</p>
+<ul>
+<li>fastp</li>
+<li>singularity: singularity container for FastP</li>
+<li>docker: docker container for FastP</li>
+<li>fastq_ext: extension of the output Fastp trimmed reads, Do not change this unless doing pipeline development.</li>
+<li>html_ext: Extension of the html report output by fastp, Do not touch unless doing pipeline development.</li>
+<li>json_ext: Extension of json report output by FastP do not touch unless doing pipeline development.</li>
+<li>report_tag: Title of FastP data in the summary report.</li>
+<li><strong>average_quality_e</strong>: If a read/read-pair quality is less than this value it is discarded. Can be set from the command line with <code>--fp_average_quality</code>.</li>
+<li><strong>cut_tail_mean_quality</strong>: The mean quality threshold for a sliding window below which trailing bases are trimmed from the reads. Can be set from the command line with <code>--fp_cut_tail_mean_quality</code></li>
+<li><strong>cut_tail_window_size</strong>: The window size to cut a tail with. Can be set from the command line with <code>--fp_cut_tail_window_size</code>.</li>
+<li><strong>complexity_threshold</strong>: the threshold for low complexity filter. Can be set from the command line with <code>--fp_complexity_threshold</code>.</li>
+<li><strong>qualified_quality_phred</strong>: the quality of a base to be qualified if filtering by unqualified bases. Can be set from the command line with <code>--fp_qualified_phred</code>.</li>
+<li><strong>unqualified_percent_limit</strong>: The percent amount of bases that are allowed to be unqualified in a read. This parameter is affected by the above qualified_quality_phred parameter and can be specified from the command line with <code>--fp_unqualified_percent_limit</code>.</li>
+<li><strong>polyg_min_len</strong>: The minimum length to detect a polyG tail. This value can be set from the command line with <code>--fp_polyg_min_len</code>.</li>
+<li><strong>polyx_min_len</strong>: The minimum length to detect a polyX tail. This value can be set from the command line with <code>--fp_polyx_min_len</code>.</li>
+<li><strong>illumina_length_min</strong>: The minimum read length to be allowed in illumina data. This value can be set from the command line with <code>--fp_illumina_length_min</code>.</li>
+<li><strong>illumina_length_max</strong>: The maximum read length allowed for illumina data. This value can be set from the command line with <code>--fp_illumina_length_max</code>.</li>
+<li><strong>single_end_length_min</strong>: the minimum read length allowed in Pacbio or Nanopore data. This value can be set from the command line with <code>--fp_single_end_length_min</code>.</li>
+<li><strong>dedup_reads</strong>: A parameter to be turned on to allow for deduplication of reads. This value can be set from the command line with <code>--fp_dedup_reads</code>.</li>
+<li><strong>illumina_args</strong>: The command string passed to Fastp when using illumina data, if you override this parameter other set parameters such as average_quality_e must be overridden as well as the command string will be passed to FastP as written</li>
+<li><strong>single_end_args</strong>: The command string passed to FastP if single end data is used e.g. Pacbio or Nanopore data. If this option is overridden you must specify all parameters passed to Fastp as this string is passed to FastP as written.</li>
+<li>report_exclude_fields: Fields in the summary json to be excluded from the final aggregated report. Do not alter this field unless doing pipeline development</li>
+</ul>
+<h3 id="chopper">Chopper</h3>
+<p>Chopper was originally used for trimming of Nanopore reads, but FastP was able to do the same work so Chopper is no longer used. Its code currently remains but it cannot be run in the pipeline.</p>
+<h3 id="flye">Flye</h3>
+<p>Flye is used for assembly of Nanopore data.</p>
+<ul>
+<li>flye</li>
+<li>nanopore<ul>
+<li>raw: corresponds to the option in Flye of <code>--nano-raw</code></li>
+<li>corr: corresponds to the option in Flye of <code>--nano-corr</code></li>
+<li>hq: corresponds to the option in Flye of <code>--nano-hq</code></li>
+</ul>
+</li>
+<li>pacbio<ul>
+<li>raw: corresponds to the option in Flye of <code>--pacbio-raw</code></li>
+<li>corr: corresponds to the option in Flye of <code>--pacbio-corr</code></li>
+<li>hifi: corresponds to the option in Flye of <code>--pacbio-hifi</code></li>
+</ul>
+</li>
+<li>singularity: Singularity container for Flye</li>
+<li>docker: Docker container for Flye</li>
+<li>fasta_ext: The file extension for fasta files. Do not alter this field unless doing pipeline development</li>
+<li>gfa_ext: The file extension for gfa files. Do not alter this field unless doing pipeline development</li>
+<li>gv_ext: The file extension for gv files. Do not alter this field unless doing pipeline development</li>
+<li>txt_ext: the file extension for txt files. Do not alter this field unless doing pipeline development</li>
+<li>log_ext: the file extension for the Flye log files. Do not alter this field unless doing pipeline development</li>
+<li>json_ext: the file extension for the Flye json files. Do not alter this field unless doing pipeline development</li>
+<li><strong>polishing_iterations</strong>: The number of polishing iterations for Flye.</li>
+<li>ext_args: Extra command line options to pass to Flye</li>
+</ul>
+<h3 id="spades">Spades</h3>
+<p>Used for paired end read assembly</p>
+<ul>
+<li>spades</li>
+<li>singularity: Singularity container for spades</li>
+<li>docker: Docker container for spades</li>
+<li>scaffolds_ext: The file extension for the scaffolds file. Do not alter this field unless doing pipeline development</li>
+<li>contigs_ext: The file extension containing assembled contigs. Do not alter this field unless doing pipeline development</li>
+<li>transcripts_ext: The file extension for the assembled transcripts. Do not alter this field unless doing pipeline development</li>
+<li>assembly_graphs_ext: the file extension of the assembly graphs. Do not alter this field unless doing pipeline development</li>
+<li>log_ext: The file extension for the log files. Do not alter this field unless doing pipeline development</li>
+<li>outdir: The name of the output directory for assemblies. Do not alter this field unless doing pipeline development</li>
+</ul>
+<h3 id="fastqc">FastQC</h3>
+<p>This is a default tool added to nf-core pipelines. This feature will likely be removed in the future but for those fond of it, the outputs of FastQC still remain.</p>
+<ul>
+<li>fastqc</li>
+<li>html_ext: The file extension of the fastqc html file. Do not alter this field unless doing pipeline development</li>
+<li>zip_ext: The file extension of the zipped FastQC outputs. Do not alter this field unless doing pipeline development</li>
+</ul>
+<h3 id="quast">Quast</h3>
+<p>Quast is used to gather assembly metrics which automated quality control criteria are the applied too.</p>
+<ul>
+<li>quast</li>
+<li>singularity: Singularity container for quast.</li>
+<li>docker: Docker container for quast.</li>
+<li>suffix: The suffix attached to quast outputs. Do not alter this field unless doing pipeline development.</li>
+<li>report_base: The base term for output quast files to be used in reporting. Do not alter this field unless doing pipeline development.</li>
+<li>report_prefix: The prefix of the quast outputs to be used in reporting. Do not alter this field unless doing pipeline development.</li>
+<li><strong>min_contig_length</strong>: The minimum length of for contigs to be used in quasts generation of metrics. Do not alter this field unless doing pipeline development. This argument can be set from the command line with <code>--qt_min_contig_length</code>.</li>
+<li><strong>args</strong>: A command string to past to quast, altering this is unadvised as certain options may affect your reporting output. This string will be passed to quast verbatim. Do not alter this field unless doing pipeline development.</li>
+<li>header_p: This tells the pipeline that the Quast report outputs contains a header. Do not alter this field unless doing pipeline development.</li>
+</ul>
+<h3 id="quast-filter">Quast Filter</h3>
+<p>Assemblies can be prevented from going into further analyses based on the Quast output. The options for the mentioned filter are listed here.</p>
+<ul>
+<li>quast_filter</li>
+<li>n50_field: The name of the field to search for and filter. Do not alter this field unless doing pipeline development.</li>
+<li>n50_value: The minimum value the field specified is allowed to contain.</li>
+<li>nr_contigs_field: The name of field in the Quast report to filter on. Do not alter this field unless doing pipeline development.</li>
+<li>nr_contigs_value: The minimum number of contigs an assembly must have to proceed further through the pipeline.</li>
+<li>sample_header: The column name in the Quast output containing the sample information. Do not alter this field unless doing pipeline development.</li>
+</ul>
+<h3 id="checkm2">CheckM2</h3>
+<p>CheckM2 is used within the pipeline for assessing contamination in assemblies.</p>
+<ul>
+<li>checkm2</li>
+<li>singularity: Singularity container containing CheckM</li>
+<li>docker: Docker container containing CheckM</li>
+<li>download_link: The link used to pull the checkm2 model if selected.</li>
+<li>report_tag: Name of the data outputs in the final report. Do not touch this field.</li>
+<li>header_p: Denotes that the result used by the pipeline in generation of the summary report contains a header. Do not alter this field unless doing pipeline development.</li>
+</ul>
+<h3 id="kraken2">Kraken2</h3>
+<p>Kraken2 can be used a substitute for mash in speciation of samples, and it is used to bin contigs of metagenomic samples.</p>
+<ul>
+<li>kraken</li>
+<li>singularity: Singularity container for the Kraken2.</li>
+<li>docker: Docker container for Kraken2.</li>
+<li>classified_suffix: Suffix for classified data from Kraken2. Do not alter this field unless doing pipeline development.</li>
+<li>unclassified_suffix: Suffix for unclassified data from Kraken2. Do not alter this field unless doing pipeline development.</li>
+<li>report_suffix: The name of the report output by Kraken2.</li>
+<li>output_suffix: The name of the output file from Kraken2. Do not alter this field unless doing pipeline development.</li>
+<li><strong>tophit_level</strong>: The taxonomic level to classify a sample at. e.g. default is <code>S</code> for species but you could use <code>S1</code> or <code>F</code>.</li>
+<li>save_output_fastqs: Option to save the output fastq files from Kraken2. Do not alter this field unless doing pipeline development.</li>
+<li>save_read_assignments: Option to save how Kraken2 assigns reads. Do not alter this field unless doing pipeline development.</li>
+<li><strong>run_kraken_quick</strong>: This option can be set to <code>true</code> if one wishes to run Kraken2 in quick mode.</li>
+<li>report_tag: The name of the Kraken2 data in the final report. Do not alter this field unless doing pipeline development.</li>
+<li>header_p: Tell the pipeline that the file used for reporting does or does not contain header data. Do not alter this field unless doing pipeline development.</li>
+<li>headers: A list of headers in the Kraken2 report. Do not alter this field unless doing pipeline development.</li>
+</ul>
+<h3 id="seven-gene-mlst">Seven Gene MLST</h3>
+<p>Run Torsten Seemann's seven gene MLST program.</p>
+<ul>
+<li>mlst</li>
+<li>singularity: Singularity container for mlst.</li>
+<li>docker: Docker container for mlst.</li>
+<li><strong>args</strong>: Additional arguments to pass to mlst.</li>
+<li>tsv_ext: Extension of the mlst tabular file. Do not alter this field unless doing pipeline development.</li>
+<li>json_ext: Extension of the mlst output JSON file. Do not alter this field unless doing pipeline development.</li>
+<li>report_tag: Name of the data outputs in the final report. Do not alter this field unless doing pipeline development.</li>
+</ul>
+<h3 id="mash">Mash</h3>
+<p>Mash is used repeatedly throughout the pipeline for estimation of genome size from reads, contamination detection and for determining the final species of an assembly.</p>
+<ul>
+<li>mash</li>
+<li>singularity: Singularity container for mash.</li>
+<li>docker: Docker container for mash.</li>
+<li>mash_ext: Extension of the mash screen file. Do not alter this field unless doing pipeline development.</li>
+<li>output_reads_ext: Extension of mash outputs when run on reads. Do not alter this field unless doing pipeline development.</li>
+<li>output_taxa_ext: Extension of mash output when run on contigs. Do not alter this field unless doing pipeline development.</li>
+<li>mash_sketch: The GTDB sketch used by the pipeline, this sketch is special as it contains the taxonomic paths in the classification step of the pipeline. It can as of 2023-10-05 be found here: <a href="https://zenodo.org/record/8408361">https://zenodo.org/record/8408361</a></li>
+<li>sketch_ext: File extension of a mash sketch. Do not alter this field unless doing pipeline development.</li>
+<li>json_ext: File extension of json data output by Mash. Do not alter this field unless doing pipeline development.</li>
+<li>sketch_kmer_size: The size of the kmers used in the sketching in genome size estimation.</li>
+<li><strong>min_kmer</strong>: The minimum number of kmer copies required to pass the noise filter. this value is used in estimation of genome size from reads. The default value is 10 as it seems to work well for Illumina data. This value can be set from the command line by setting <code>--mh_min_kmer</code>.</li>
+<li>final_sketch_name: <strong>to be removed</strong> This parameter was originally part of a subworkflow included in the pipeline for generation of the GTDB sketch. But this has been removed and replaced with scripting.</li>
+<li>report_tag: Report tag for Mash in the summary report. Do not alter this field unless doing pipeline development.</li>
+<li>header_p: Tells the pipeline if the output data contains headers. Do not alter this field unless doing pipeline development.</li>
+<li>headers: A list of the headers the output of mash should contain. Do not alter this field unless doing pipeline development.</li>
+</ul>
+<h3 id="mash-meta">Mash Meta</h3>
+<p>This process is used to determine if a sample is metagenomic or not.</p>
+<ul>
+<li>mash_meta.</li>
+<li>report_tag: The name of this output field in the summary report. Do not alter this field unless doing pipeline development.</li>
+</ul>
+<h3 id="top_hit_species">top_hit_species</h3>
+<p>As Kraken2 of Mash can be used for determining the species present in the pipeline, the share a common report tag.</p>
+<ul>
+<li>top_hig_species</li>
+<li>report_tag: The name of the determined species in the final report. Do not alter this field unless doing pipeline development.</li>
+</ul>
+<h3 id="contamination-removal">Contamination Removal</h3>
+<p>This step is used to remove contaminants from read data, it exists to perform dehosting, and removal of kitomes.</p>
+<ul>
+<li>r_contaminants</li>
+<li>singularity: Singularity container used to perform dehosting, this container contains minimap2 and samtools.</li>
+<li>docker: Docker container used to perform dehosting, this container contains minimap2 and samtools.</li>
+<li>phix_fa: The path to file containing the phiX fasta.</li>
+<li>homo_sapiens_fa: The path to file containing the human genomes fasta.</li>
+<li>pacbio_mg: The path to file containing the pacbio sequencing control.</li>
+<li>output_ext: The extension of the deconned fastq files. Do not alter this field unless doing pipeline development.</li>
+<li>mega_mm2_idx: The path to the minimap2 index used for dehosting. Do not alter this field unless doing pipeline development.</li>
+<li>mm2_illumina: The arguments passed to minimap2 for Illumina data. Do not alter this field unless doing pipeline development.</li>
+<li>mm2_pac: The arguments passed to minimap2 for Pacbio Data. Do not alter this field unless doing pipeline development.</li>
+<li>mm2_ont: The arguments passed to minimap2 for Nanopore data. Do not alter this field unless doing pipeline development.</li>
+<li>samtools_output_ext: The extension of the output from samtools. Do not alter this field unless doing pipeline development.</li>
+<li>samtools_singletons_ext: The extension of singleton reads from samtools. Do not alter this field unless doing pipeline development.</li>
+<li>output_ext: The name of the files output from samtools. Do not alter this field unless doing pipeline development.</li>
+<li>output_dir: The directory where deconned reads are placed. Do not alter this field unless doing pipeline development.</li>
+</ul>
+<h3 id="minimap2">Minimap2</h3>
+<p>Minimap2 is used frequently throughout the pipeline for decontamination and mapping reads back to assemblies for polishing.</p>
+<ul>
+<li>minimap2</li>
+<li>singularity: The singularity container for minimap2, the same one is used for contamination removal.</li>
+<li>docker: The Docker container for minimap2, the same one is used for contamination removal.</li>
+<li>index_outdir: The directory where created indices are output. Do not alter this field unless doing pipeline development.</li>
+<li>index_ext: The file extension of create indices. Do not alter this field unless doing pipeline development.</li>
+</ul>
+<h3 id="samtools">Samtools</h3>
+<p>Samtools is used for sam to bam conversion in the pipeline.</p>
+<ul>
+<li>samtools</li>
+<li>singularity: The Singularity container containing samtools, the same container is used as the one in contamination removal.</li>
+<li>docker: The Docker container containing samtools, the same container is used as the on in contamination removal.</li>
+<li>bam_ext: The extension of the bam file from samtools. Do not alter this field unless doing pipeline development.</li>
+<li>bai_ext: the extension of the bam index from samtools. Do not alter this field unless doing pipeline development.</li>
+</ul>
+<h3 id="racon">Racon</h3>
+<p>Racon is used as a first pass for polishing assemblies.</p>
+<ul>
+<li>racon</li>
+<li>singularity: The Singularity container containing racon.</li>
+<li>docker: The Docker container containing racon.</li>
+<li>consensus_suffix: The suffix for racons outputs. Do not alter this field unless doing pipeline development.</li>
+<li>consensus_ext: The file extension for the racon consensus sequence. Do not alter this field unless doing pipeline development.</li>
+<li>outdir: The directory containing the polished sequences. Do not alter this field unless doing pipeline development.</li>
+</ul>
+<h3 id="pilon">Pilon</h3>
+<p>Pilon was added to the pipeline, but it is run iteratively which at the time of writing this pipeline was not well supported in Nextflow so a separate script and containers are provided to utilize Pilon. The code for Pilon remains in the pipeline so that when able to do so easily, iterative Pilon polishing can be integrated directly into the pipeline.</p>
+<h3 id="pilon-iterative-polishing">Pilon Iterative Polishing</h3>
+<p>This process is a wrapper around minimap2, samtools and Pilon for iterative polishing containers are built <strong>but if you ever have problems with this step, disabling polishing will fix your issue (at the cost of polishing)</strong>.</p>
+<ul>
+<li>pilon_iterative</li>
+<li>singularity: The container containing the iterative pilon program. If you ever have issues with the singularity image you can use the Docker image as Nextflow will automatically convert the docker image into a singularity image.</li>
+<li>docker: The Docker container for the Pilon iterative polisher.</li>
+<li>outdir: The directory where polished data is output. Do not alter this field unless doing pipeline development.</li>
+<li>fasta_ext: File extension for the fasta to be polished. Do not alter this field unless doing pipeline development.</li>
+<li>fasta_outdir: The output directory name for the polished fastas. Do not alter this field unless doing pipeline development.</li>
+<li>vcf_ext: File extension for the VCF output by Pilon. Do not alter this field unless doing pipeline development.</li>
+<li>vcf_outdir: output directory containing the VCF files from Pilon. Do not alter this field unless doing pipeline development.</li>
+<li>bam_ext: Bam file extension. Do not alter this field unless doing pipeline development.</li>
+<li>bai_ext: Bam index file extension. Do not alter this field unless doing pipeline development.</li>
+<li>changes_ext: File extensions for the pilon output containing the changes applied to the assembly. Do not alter this field unless doing pipeline development.</li>
+<li>changes_outdir: The output directory for the pilon changes. Do not alter this field unless doing pipeline development.</li>
+<li>max_memory_multiplier: On failure this program will try again with more memory, the multiplier is the factor that the amount of memory passed to the program will be increased by. Do not alter this field unless doing pipeline development.</li>
+<li><strong>max_polishing_illumina</strong>: Number of iterations for polishing an illumina assembly with illumina reads.</li>
+<li><strong>max_polishing_nanopore</strong>: Number of iterations to polish a Nanopore assembly with (will use illumina reads if provided).</li>
+<li><strong>max_polishing_pacbio</strong>: Number iterations to polish assembly with (will use illumina reads if provided).</li>
+</ul>
+<h3 id="medaka-polishing">Medaka Polishing</h3>
+<p>Medaka is used for polishing of Nanopore assemblies, make sure you specify a medaka model when using the pipeline so the correct settings are applied. If you have issues with Medaka running, try disabling resume or alternatively <strong>disable polishing</strong> as Medaka can be troublesome to run.</p>
+<ul>
+<li>medaka</li>
+<li>singularity: Singularity container with Medaka.</li>
+<li>docker: Docker container with Medaka.</li>
+<li>model: This parameter will be auto filled with the model specified at the top level by the <code>nanopore_chemistry</code> option. Do not alter this field unless doing pipeline development.</li>
+<li>fasta_ext: Polished fasta output. Do not alter this field unless doing pipeline development.</li>
+<li>batch_size: The batch size passed to medaka, this can improve performance. Do not alter this field unless doing pipeline development.</li>
+</ul>
+<h3 id="unicycler">Unicycler</h3>
+<p>Unicycler is an option provided for hybrid assembly, it is a great option and outputs an excellent assembly but it requires <strong>A lot</strong> of resources. Which is why the alternate hybrid assembly option using Flye-&gt;Racon-&gt;Pilon is available. As well there can be a fairly cryptic Spades error generated by Unicycler that usually relates to memory usage, it will typically say something involving <code>tputs</code>.</p>
+<ul>
+<li>unicycler</li>
+<li>singularity: The Singularity container containing Unicycler.</li>
+<li>docker: The Docker container containing Unicycler.</li>
+<li>scaffolds_ext: The scaffolds file extension output by unicycler. Do not alter this field unless doing pipeline development.</li>
+<li>assembly_ext: The assembly extension output by Unicycler. Do not alter this field unless doing pipeline development.</li>
+<li>log_ext: The log file output by Unicycler. Do not alter this field unless doing pipeline development.</li>
+<li>outdir: The output directory the Unicycler data is sent to. Do not alter this field unless doing pipeline development.</li>
+<li>mem_modifier: Specifies a high amount of memory for Unicycler to prevent a common spades error that is fairly cryptic. Do not alter this field unless doing pipeline development.</li>
+<li>threads_increase_factor: Factor to increase the number of threads passed to Unicycler. Do not alter this field unless doing pipeline development.</li>
+</ul>
+<h3 id="mob-suite-recon">Mob-suite Recon</h3>
+<p>mob-suite recon provides annotation of plasmids in the assembly data.</p>
+<ul>
+<li>mobsuite_recon</li>
+<li>singularity: The singularity container containing mob-suite recon.</li>
+<li>docker: The Docker container containing mob-suite recon.</li>
+<li><strong>args</strong>: Additional arguments to pass to mobsuite.</li>
+<li>fasta_ext: The file extension for FASTAs. Do not alter this field unless doing pipeline development.</li>
+<li>results_ext: The file extension for results in mob-suite. Do not alter this field unless doing pipeline development.</li>
+<li>mob_results_file: The final results to be included in the final report by mob-suite. Do not alter this field unless doing pipeline development.</li>
+<li>report_tag: The field name of mob-suite data in the final report. Do not alter this field unless doing pipeline development.</li>
+<li>header_p: Default is <code>true</code> and indicates that the results output by mob-suite contains a header. Do not alter this field unless doing pipeline development.</li>
+</ul>
+<h2 id="staramr">StarAMR</h2>
+<p>StarAMR provides annotation of antimicrobial resistance genes within your data. The process will alter FASTA headers of input files to ensure the header length &lt;50 characters long.</p>
+<ul>
+<li>staramr</li>
+<li>singularity: The singularity container containing staramr.</li>
+<li>docker: The Docker container containing StarAMR.</li>
+<li><strong>db</strong>: The database for StarAMR. The default value of <code>null</code> tells the pipeline to use the database included in the StarAMR container. However you can specify a path to a valid StarAMR database and use that instead.</li>
+<li>tsv_ext: File extension of the reports from StarAMR. Do not alter this field unless doing pipeline development.</li>
+<li>txt_ext: File extension of the text reports from StarAMR. Do not alter this field unless doing pipeline development.</li>
+<li>xlsx_ext: File extension of the excel spread sheet from StarAMR. Do not alter this field unless doing pipeline development.</li>
+<li><strong>args</strong>: Additional arguments to pass to StarAMR. Do not alter this field unless doing pipeline development.</li>
+<li>point_finder_dbs: A list containing the valid databases StarAMR supports for pointfinder. The way they are structured matches what StarAMR needs for input. Do not alter this field unless doing pipeline development.</li>
+<li>report_tag: The field name of StarAMR in the final summary report. Do not alter this field unless doing pipeline development.</li>
+<li>header_p: Indicates the final report from StarAMR contains a header line. Do not alter this field unless doing pipeline development.</li>
+</ul>
+<h2 id="bakta">Bakta</h2>
+<p>Bakta is used to provide annotation of genomes, it is very reliable but it can be slow.</p>
+<ul>
+<li>bakta</li>
+<li>singularity: The singularity container containing Bakta.</li>
+<li>docker: The Docker container containing Bakta.</li>
+<li><strong>db</strong>: the path where the downloaded Bakta database should be downloaded. This can be set from the command line using the argument <code>--bakta_db</code>.</li>
+<li>output_dir: The name of the folder where Bakta data is saved too. Do not alter this field unless doing pipeline development.</li>
+<li>embl_ext: File extension of embl file. Do not alter this field unless doing pipeline development.</li>
+<li>faa_ext: File extension of faa file. Do not alter this field unless doing pipeline development.</li>
+<li>ffn_ext: File extension of the ffn file. Do not alter this field unless doing pipeline development.</li>
+<li>fna_ext: File extension of the fna file. Do not alter this field unless doing pipeline development.</li>
+<li>gbff_ext: File extension of gbff file. Do not alter this field unless doing pipeline development.</li>
+<li>gff_ext: File extension of GFF file. Do not alter this field unless doing pipeline development.</li>
+<li>threads: Number of threads for Bakta to use, remember more is not always better. Do not alter this field unless doing pipeline development.</li>
+<li>hypotheticals_tsv_ext: File extension for hypothetical genes. Do not alter this field unless doing pipeline development.</li>
+<li>hypotheticals_faa_ext: File extension of hypothetical genes fasta. Do not alter this field unless doing pipeline development.</li>
+<li>tsv_ext: The file extension of the final bakta tsv report. Do not alter this field unless doing pipeline development.</li>
+<li>txt_ext: The file extension of the txt report. Do not alter this field unless doing pipeline development.</li>
+<li>min_contig_length: The minimum contig length to be annotated by Bakta. This can be set from the command line using the argument <code>--ba_min_contig_length</code>.</li>
+</ul>
+<h2 id="bandage">Bandage</h2>
+<p>Bandage is included to make bandage plots of the initial assemblies e.g. Spades, Flye or Unicycler. These images can be useful in determining the quality of an assembly.</p>
+<ul>
+<li>bandage</li>
+<li>singularity: The path to the singularity image containing bandage.</li>
+<li>docker: The path to the docker file containing bandage.</li>
+<li>svg_ext: The extension of the SVG file created by bandage. Do not alter this field unless doing pipeline development.</li>
+<li>outdir: The output directory of the bandage images.</li>
+</ul>
+<h2 id="subtyping-report">Subtyping Report</h2>
+<p>All sub typing report tools contain a common report tag so that they can be identified by the program.</p>
+<ul>
+<li>subtyping_report</li>
+<li>report_tag: Subtyping report name. Do not alter this field unless doing pipeline development.</li>
+</ul>
+<h3 id="ectyper">ECTyper</h3>
+<p>ECTyper is used to perform <em>in-silico</em> typing of <em>Escherichia</em> and is automatically triggered by the pipeline.</p>
+<ul>
+<li>ectyper</li>
+<li>singularity: The path to the singularity container containing ECTyper.</li>
+<li>docker: The path to the Docker container containing ECTyper.</li>
+<li>log_ext: File extension of the ECTyper log file. Do not alter this field unless doing pipeline development.</li>
+<li>tsv_ext: File extension of the ECTyper text file. Do not alter this field unless doing pipeline development.</li>
+<li>txt_ext: Text file extension of ECTyper output. Do not alter this field unless doing pipeline development.</li>
+<li>report_tag: Report tag for ECTyper data. Do not alter this field unless doing pipeline development.</li>
+<li>header_p: denotes if the table output from ECTyper contains a header. Do not alter this field unless doing pipeline development.</li>
+<li>ec_opid`: The minimum percent identity to determine an O antigens presence, It must be an integer.</li>
+<li>ec_opcov: The minimum percent coverage of O antigen, It must be an integer.</li>
+<li>ec_hpid: The minimum percent identity to determine an H antigens presence, It must be an integer.</li>
+<li>ec_hcov: The minimum percent coverage of the H antigen, It must be an integer.</li>
+<li>ec_enable_verification: A boolean value to enable species verification in ECTyper.</li>
+</ul>
+<h3 id="kleborate">Kleborate</h3>
+<p>Kleborate performs automatic typing of <em>Kelbsiella</em>.</p>
+<ul>
+<li>kleborate</li>
+<li>singularity: The path to the singularity container containing Kleborate.</li>
+<li>docker: The path to the docker container containing Kleborate.</li>
+<li>txt_ext: The subtyping report tag for Kleborate. Do not alter this field unless doing pipeline development.</li>
+<li>report_tag: The report tag for Kleborate. Do not alter this field unless doing pipeline development.</li>
+<li>header_p: Denotes the Kleborate table contains a header. Do not alter this field unless doing pipeline development.</li>
+</ul>
+<h3 id="spatyper">Spatyper</h3>
+<p>Performs typing of <em>Staphylococcus</em> species.</p>
+<ul>
+<li>spatyper</li>
+<li>singularity: The path to the singularity container containing Spatyper.</li>
+<li>docker: The path to docker container containing Spatyper.</li>
+<li>tsv_ext: The file extension of the Spatyper output. Do not alter this field unless doing pipeline development.</li>
+<li>report_tag: The report tag for Spatyper. Do not alter this field unless doing pipeline development.</li>
+<li>header_p: denotes whether or not the output table contains a header. Do not alter this field unless doing pipeline development.</li>
+<li>repeats: An optional file specifying repeats can be passed to Spatyper.</li>
+<li>repeat_order: An optional file containing a repeat order to pass to Spatyper.</li>
+</ul>
+<h3 id="sistr">SISTR</h3>
+<p><em>In-silico Salmonella</em> serotype prediction.</p>
+<ul>
+<li>sistr</li>
+<li>singularity: The path to the singularity container containing SISTR.</li>
+<li>docker: The path to the Docker container containing SISTR.</li>
+<li>tsv_ext: The file extension of the SISTR output. Do not alter this field unless doing pipeline development.</li>
+<li>allele_fasta_ext: The extension of the alleles identified by SISTR. Do not alter this field unless doing pipeline development.</li>
+<li>allele_json_ext: The extension to the output JSON file from SISTR. Do not alter this field unless doing pipeline development.</li>
+<li>cgmlst_tag: The extension of the CGMLST file from SISTR. Do not alter this field unless doing pipeline development.</li>
+<li>report_tag: The report tag for SISTR. Do not alter this field unless doing pipeline development.</li>
+<li>header_p: Denotes whether or not the output table contains a header. Do not alter this field unless doing pipeline development.</li>
+</ul>
+<h3 id="lissero">Lissero</h3>
+<p><em>in-silico Listeria</em> typing.</p>
+<ul>
+<li>lissero</li>
+<li>singularity: The path to the singularity container containing Lissero.</li>
+<li>docker: The path to the docker container containing Lissero.</li>
+<li>tsv_ext: The file extension of the Lissero output. Do not alter this field unless doing pipeline development.</li>
+<li>report_tag: The report tag for Lissero. Do not alter this field unless doing pipeline development.</li>
+<li>header_p: Denotes if the output table of Lissero contains a header. Do not alter this field unless doing pipeline development.</li>
+</ul>
+<h3 id="shigeifinder">Shigeifinder</h3>
+<p><em>in-silico Shigella</em> typing.</p>
+<blockquote>
+<p><strong>NOTE:</strong> It is unlikely this subtyper will be triggered as GTDB has merged <em>E.coli</em> and <em>Shigella</em> in an updated sketch. An updated version of ECTyper will be released soon to address the shortfalls of this sketch. If you are relying on <em>Shigella</em> detection add <code>--run_kraken true</code> to your command line or update the value in the <code>.nextflow.config</code> as Kraken2 (while slower) can still detect <em>Shigella</em>.</p>
+</blockquote>
+<ul>
+<li>shigeifinder</li>
+<li>singularity: The Singularity container containing Shigeifinder.</li>
+<li>docker: The path to the Docker container containing Shigeifinder.</li>
+<li>container_version: The version number <strong>to be updated with the containers</strong> as Shigeifinder does not currently have a version number tracked in the command.</li>
+<li>tsv_ext: Extension of output report.</li>
+<li>report_tag: The name of the output report for shigeifinder.</li>
+<li>header_p: Denotes that the output from Shigeifinder includes header values.</li>
+</ul>
+<h3 id="shigatyper-replaced-with-shigeifinder">Shigatyper (Replaced with Shigeifinder)</h3>
+<p>Code still remains but it will likely be removed later on.</p>
+<ul>
+<li>shigatyper</li>
+<li>singularity: The Singularity container containing Shigatyper.</li>
+<li>docker: The path to the Docker container containing Shigatyper.</li>
+<li>tsv_ext: The tsv file extension. Do not alter this field unless doing pipeline development.</li>
+<li>report_tag: The report tag for Shigatyper. Do not alter this field unless doing pipeline development.</li>
+<li>header_p: Denotes if the report output contains a header. Do not alter this field unless doing pipeline development.</li>
+</ul>
+<h2 id="kraken2-contig-binning">Kraken2 Contig Binning</h2>
+<p>Bins contigs based on the Kraken2 output for contaminated/metagenomic samples. This is implemented by using a custom script.</p>
+<ul>
+<li>kraken_bin</li>
+<li><strong>taxonomic_level</strong>: The taxonomic level to bin contigs at. Binning at species level is not recommended the default is to bin at a genus level which is species by a character of <code>G</code>. To bin at a higher level such as family you would specify <code>F</code>.</li>
+<li>fasta_ext: The extension of the fasta files output. Do not alter this field unless doing pipeline development.</li>
+</ul>
+<h2 id="locidex-allele-calling">Locidex (Allele Calling)</h2>
+<p>Parameters for use of locidex in allele calling.</p>
+<ul>
+<li>Locidex</li>
+<li>singularity: The Singularity container containing Locidex.</li>
+<li>docker: The path to the Docker container containing Locidex.</li>
+<li>private_repository: The path to the Docker container containing Locidex in a private repository (this helps in cloud execution environments).</li>
+<li>min_evalue = See <code>--lx_min_evalue</code>.</li>
+<li>min_dna_len = See <code>--lx_min_dna_len</code>.</li>
+<li>min_aa_len = See <code>--lx_min_aa_len</code>.</li>
+<li>max_dna_len = See <code>--lx_max_dna_len</code>.</li>
+<li>max_aa_len = See <code>--lx_max_aa_len</code>.</li>
+<li>min_dna_ident = See <code>--lx_min_dna_ident</code>.</li>
+<li>min_aa_ident = See <code>--lx_min_aa_ident</code>.</li>
+<li>min_dna_match_cov = See <code>--lx_min_dna_match_cov</code>.</li>
+<li>min_aa_match_cov = See <code>--lx_min_aa_match_cov</code></li>
+<li>max_target_seqs = See <code>--lx_max_target_seqs</code>.</li>
+<li>extraction_mode = See <code>--lx_extraction_mode</code>.</li>
+<li>report_mode = See <code>--lx_report_mode</code>.</li>
+<li>report_prop = See <code>--lx_report_prop</code>.</li>
+<li>report_max_ambig = See <code>--lx_report_max_ambig</code>.</li>
+<li>report_max_stop = See <code>--lx_report_max_stop</code>.</li>
+<li>allele_database = See <code>--lx_allele_database</code>.</li>
+<li>date_format_string: The date format used in parsing the locidex <code>manifest.json</code> file. Do not alter this field unless doing pipeline development.</li>
+<li>manifest_db_path: Do not alter this field unless doing pipeline development.</li>
+<li>manifest_config_key: The name of key holding config data. Do not alter this field unless doing pipeline development.</li>
+<li>manifest_config_name: The name field to use in the locidex <code>manifest.json</code> file for db identification. Do not alter this field unless doing pipeline development.</li>
+<li>manifest_config_version: Config key field containing the version information for locidex. Do not alter this field unless doing pipeline development.</li>
+<li>manifest_name: The name of the <code>manifest.json</code> file for locidex. Do not alter this field unless doing pipeline development.</li>
+<li>config_data_file: The name of the locidex database file containing config information. Do not alter this field unless doing pipeline development.</li>
+<li>database_config_value_date: Name of the field containing the date in the locidex <code>manifest.json</code>. Do not alter this field unless doing pipeline development.</li>
+<li>extracted_seqs_suffix: Extracted sequences file suffix. Do not alter this field unless doing pipeline development.</li>
+<li>seq_store_suffix: Seq store suffix. Do not alter this field unless doing pipeline development.</li>
+<li>gbk_suffix: Extension name of the generated GBK file. Do not alter this field unless doing pipeline development.</li>
+<li>extraction_dir: Directory name of the locidex extract outputs. Do not alter this field unless doing pipeline development.</li>
+<li>report_suffix: Report suffix of the locidex outputs. Do not alter this field unless doing pipeline development.</li>
+<li>db_config_output_name: Output name of the selected database used for locidex. Do not alter this field unless doing pipeline development.</li>
+<li>report_tag: The report tag for Locidex Report. Do not alter this field unless doing pipeline development.</li>
+</ul>
+<h2 id="locidex-summary">Locidex Summary</h2>
+<p>The information used in creating a summary of the locidex outputs.</p>
+<ul>
+<li>locidex_summary</li>
+<li>report_tag: The report tag for the locidex summary. Do not alter this field unless doing pipeline development.</li>
+<li>data_key: The field containing the relevant data to summarize. Do not alter this field unless doing pipeline development.</li>
+<li>data_profile_key: The key containing the profile information. Do not alter this field unless doing pipeline development.</li>
+<li>data_sample_key: The name of the key containing the sample info. Do not alter this field unless doing pipeline development.</li>
+<li>missing_allele_value: The field used for the missing allele value. Do not alter this field unless doing pipeline development.</li>
+<li><strong>reportable_alleles</strong>: A list of alleles to show their presence or absence of in the final output.</li>
+<li>report_exclude_fields: Fields to exclude from the final summary report. Do not alter this field unless doing pipeline development.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.expand", "navigation.top", "toc.integrate", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotation", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
