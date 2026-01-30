@@ -3,6 +3,38 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+### `Added`
+
+- Added new quality control metric `qc_wgmlst_loci_count`. [PR 202](https://github.com/phac-nml/mikrokondo/pull/202)
+
+- Added new quality control metric for read length `qc_status_read_length`. [PR 202](https://github.com/phac-nml/mikrokondo/pull/202)
+
+- The number of ignored tests has been added to the QCMessage output. [PR 202](https://github.com/phac-nml/mikrokondo/pull/202)
+
+- Added options and process for automatic download of the CheckM2 database. [PR 201](https://github.com/phac-nml/mikrokondo/pull/201)
+
+- Added CheckM2 output file to IRIDANext outputs. [PR 204](https://github.com/phac-nml/mikrokondo/pull/204)
+
+### `Changed`
+
+- Format and order of the final QCMessage is re-arranged for clarity. [PR 202](https://github.com/phac-nml/mikrokondo/pull/202)
+
+- Changed the max contamination threshold for CheckM2 to 5.0%. [PR 205](https://github.com/phac-nml/mikrokondo/pull/205)
+
+- Changed the default value of `fp_illumina_length_max` to 1000. [PR 209](https://github.com/phac-nml/mikrokondo/pull/209)
+
+### `Updated`
+
+- Updated coreutils container to version 9.5 allowing https downloads. [PR 201](https://github.com/phac-nml/mikrokondo/pull/201)
+
+- Updated CheckM to CheckM2. [PR 201](https://github.com/phac-nml/mikrokondo/pull/201)
+
+### `Removed`
+
+- Removed CheckM from mikrokondo, which is now replaced by CheckM2. [PR 201](https://github.com/phac-nml/mikrokondo/pull/201)
+
 ## [0.9.7] - 2026-01-13
 
 ### `Fixed`

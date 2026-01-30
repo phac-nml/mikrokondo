@@ -40,6 +40,6 @@ template:
   prefix: phac-nml
   name: mikrokondo
   description: Mikrokondo Pipeline
-  version: 0.9.7
+  version: 0.10.0
   outdir: .
   is_nfcore: false

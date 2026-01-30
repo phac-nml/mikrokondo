@@ -25,3 +25,6 @@ nextflow_schema_nfv2.json
 .vscode
 .nf-test.log
 .docker
+*.dmnd
+.yarn
+.pnp.cjs
