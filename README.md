@@ -118,7 +118,7 @@ mash_sketch = "/PATH/TO/MASH/SKETCH/"
 // Passing in a StarAMR database is optional if one is not specified the database in the container will be used. You can just leave the db option as null if you do not wish to pass one
 staramr_db = "/PATH/TO/STARMAR/DB"
 
-// CheckM2 Database 
+// CheckM2 Database
 checkim2_db = /PATH/TO/CHECKM2/DB
 ```
 
