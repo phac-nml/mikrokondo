@@ -11,10 +11,10 @@
 ## Pipeline tools
 
 - [Abricate](https://github.com/tseemann/abricate)
-  > Seemann T, Abricate, Github https://github.com/tseemann/abricate
+  > Seemann T, Abricate, Github <https://github.com/tseemann/abricate>
 
 - [Bakta](https://github.com/oschwengers/bakta#citation)
-  > Schwengers O., Jelonek L., Dieckmann M. A., Beyvers S., Blom J., Goesmann A. (2021). Bakta: rapid and standardized annotation of bacterial genomes via alignment-free sequence identification. Microbial Genomics, 7(11). https://doi.org/10.1099/mgen.0.000685
+  > Schwengers O., Jelonek L., Dieckmann M. A., Beyvers S., Blom J., Goesmann A. (2021). Bakta: rapid and standardized annotation of bacterial genomes via alignment-free sequence identification. Microbial Genomics, 7(11). <https://doi.org/10.1099/mgen.0.000685>
 
 - [Bandage](https://github.com/rrwick/Bandage.git)
   > Wick R.R., Schultz M.B., Zobel J. & Holt K.E. (2015). Bandage: interactive visualisation of de novo genome assemblies. Bioinformatics, 31(20), 3350-3352.
@@ -26,21 +26,21 @@
   > Bessonov K, Laing C, Robertson J, Yong I, Ziebell K, Gannon VPJ, Nichani A, Arya G, Nash JHE, Christianson S. ECTyper: in silico Escherichia coli serotype and species prediction from raw and assembled whole-genome sequence data. Microb Genom. 2021 Dec;7(12):000728. doi: 10.1099/mgen.0.000728. PMID: 34860150; PMCID: PMC8767331.
 
 - [FastP](https://doi.org/10.1093/bioinformatics/bty560)
-  > Shifu Chen, Yanqing Zhou, Yaru Chen, Jia Gu; fastp: an ultra-fast all-in-one FASTQ preprocessor, Bioinformatics, Volume 34, Issue 17, 1 September 2018, Pages i884-i890, https://doi.org/10.1093/bioinformatics/bty560
+  > Shifu Chen, Yanqing Zhou, Yaru Chen, Jia Gu; fastp: an ultra-fast all-in-one FASTQ preprocessor, Bioinformatics, Volume 34, Issue 17, 1 September 2018, Pages i884-i890, <https://doi.org/10.1093/bioinformatics/bty560>
 
 - [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/)
 
 - [Flye](https://github.com/fenderglass/Flye)
-  > Mikhail Kolmogorov, Derek M. Bickhart, Bahar Behsaz, Alexey Gurevich, Mikhail Rayko, Sung Bong Shin, Kristen Kuhn, Jeffrey Yuan, Evgeny Polevikov, Timothy P. L. Smith and Pavel A. Pevzner "metaFlye: scalable long-read metagenome assembly using repeat graphs", Nature Methods, 2020 doi:s41592-020-00971-x
+  > Mikhail Kolmogorov, Derek M. Bickhart, Bahar Behsaz, Alexey Gurevich, Mikhail Rayko, Sung Bong Shin, Kristen Kuhn, Jeffrey Yuan, Evgeny Polevikov, Timothy P. L. Smith and Pavel A. Pevzner "metaFlye: scalable long-read metagenome assembly using repeat graphs", Nature Methods, 2020 doi:10.1038/s41592-020-00971-x
 
 - [GTDB](https://gtdb.ecogenomic.org/)
-  > Donovan H Parks, Maria Chuvochina, Christian Rinke, Aaron J Mussig, Pierre-Alain Chaumeil, Philip Hugenholtz, GTDB: an ongoing census of bacterial and archaeal diversity through a phylogenetically consistent, rank normalized and complete genome-based taxonomy, Nucleic Acids Research, Volume 50, Issue D1, 7 January 2022, Pages D785–D794, https://doi.org/10.1093/nar/gkab776
+  > Donovan H Parks, Maria Chuvochina, Christian Rinke, Aaron J Mussig, Pierre-Alain Chaumeil, Philip Hugenholtz, GTDB: an ongoing census of bacterial and archaeal diversity through a phylogenetically consistent, rank normalized and complete genome-based taxonomy, Nucleic Acids Research, Volume 50, Issue D1, 7 January 2022, Pages D785–D794, <https://doi.org/10.1093/nar/gkab776>
 
 - [Kleborate](https://github.com/klebgenomics/Kleborate)
   > Lam, MMC. et al. A genomic surveillance framework and genotyping tool for Klebsiella pneumoniae and its related species complex. Nature Communications (2021)
 
 - [Kraken2](https://github.com/DerrickWood/kraken2)
-  > Wood, D.E., Lu, J. & Langmead, B. Improved metagenomic analysis with Kraken 2. Genome Biol 20, 257 (2019). https://doi.org/10.1186/s13059-019-1891-0
+  > Wood, D.E., Lu, J. & Langmead, B. Improved metagenomic analysis with Kraken 2. Genome Biol 20, 257 (2019). <https://doi.org/10.1186/s13059-019-1891-0>
 
 - [LisSero](https://github.com/MDU-PHL/LisSero)
   > Doumith et al. Differentiation of the major Listeria monocytogenes serovars by multiplex PCR. J Clin Microbiol, 2004; 42:8; 3819-22
@@ -54,7 +54,7 @@
   > Li, H. (2021). New strategies to improve minimap2 alignment accuracy. Bioinformatics, 37:4572-4574. doi:10.1093/bioinformatics/btab705
 
 - [mlst](https://github.com/tseemann/mlst)
-  > Seemann T, mlst Github https://github.com/tseemann/mlst
+  > Seemann T, mlst Github <https://github.com/tseemann/mlst>
 
 - [mob-suite](https://github.com/phac-nml/mob-suite)
   > Robertson J, Nash JHE. MOB-suite: software tools for clustering, reconstruction and typing of plasmids from draft assemblies. Microb Genom. 2018 Aug;4(8):e000206. doi: 10.1099/mgen.0.000206. Epub 2018 Jul 27. PMID: 30052170; PMCID: PMC6159552.
@@ -72,7 +72,7 @@
   > Vaser R, Sović I, Nagarajan N, Šikić M. Fast and accurate de novo genome assembly from long uncorrected reads. Genome Res. 2017 May;27(5):737-746. doi: 10.1101/gr.214270.116. Epub 2017 Jan 18. PMID: 28100585; PMCID: PMC5411768.
 
 - [Samtools](https://github.com/samtools/samtools)
-  > Twelve years of SAMtools and BCFtools Petr Danecek, James K Bonfield, Jennifer Liddle, John Marshall, Valeriu Ohan, Martin O Pollard, Andrew Whitwham, Thomas Keane, Shane A McCarthy, Robert M Davies, Heng Li GigaScience, Volume 10, Issue 2, February 2021, giab008, https://doi.org/10.1093/gigascience/giab008
+  > Twelve years of SAMtools and BCFtools Petr Danecek, James K Bonfield, Jennifer Liddle, John Marshall, Valeriu Ohan, Martin O Pollard, Andrew Whitwham, Thomas Keane, Shane A McCarthy, Robert M Davies, Heng Li GigaScience, Volume 10, Issue 2, February 2021, giab008, <https://doi.org/10.1093/gigascience/giab008>
 
 - [Seqtk](https://github.com/lh3/seqtk.git)
 
@@ -86,13 +86,13 @@
   > Bankevich A., Nurk S., Antipov D., Gurevich A., Dvorkin M., Kulikov A. S., Lesin V., Nikolenko S., Pham S., Prjibelski A., Pyshkin A., Sirotkin A., Vyahhi N., Tesler G., Alekseyev M. A., Pevzner P. A. SPAdes: A New Genome Assembly Algorithm and Its Applications to Single-Cell Sequencing. Journal of Computational Biology, 2012
 
 - [Spatyper](https://github.com/HCGB-IGTP/spaTyper)
-  > Jose Francisco Sanchez-Herrero, & mjsull. (2020). spaTyper: Staphylococcal protein A (spa) characterization pipeline (v0.3.1). Zenodo. https://doi.org/10.5281/zenodo.4063625
+  > Jose Francisco Sanchez-Herrero, & mjsull. (2020). spaTyper: Staphylococcal protein A (spa) characterization pipeline (v0.3.1). Zenodo. <https://doi.org/10.5281/zenodo.4063625>
 
 - [StarAMR](https://github.com/phac-nml/staramr)
-  > Bharat A, Petkau A, Avery BP, Chen JC, Folster JP, Carson CA, Kearney A, Nadon C, Mabon P, Thiessen J, Alexander DC, Allen V, El Bailey S, Bekal S, German GJ, Haldane D, Hoang L, Chui L, Minion J, Zahariadis G, Domselaar GV, Reid-Smith RJ, Mulvey MR. Correlation between Phenotypic and In Silico Detection of Antimicrobial Resistance in Salmonella enterica in Canada Using Staramr. Microorganisms. 2022; 10(2):292. https://doi.org/10.3390/microorganisms10020292
+  > Bharat A, Petkau A, Avery BP, Chen JC, Folster JP, Carson CA, Kearney A, Nadon C, Mabon P, Thiessen J, Alexander DC, Allen V, El Bailey S, Bekal S, German GJ, Haldane D, Hoang L, Chui L, Minion J, Zahariadis G, Domselaar GV, Reid-Smith RJ, Mulvey MR. Correlation between Phenotypic and In Silico Detection of Antimicrobial Resistance in Salmonella enterica in Canada Using Staramr. Microorganisms. 2022; 10(2):292. <https://doi.org/10.3390/microorganisms10020292>
 
 - [Unicycler](https://github.com/rrwick/Unicycler)
-  > Wick RR, Judd LM, Gorrie CL, Holt KE (2017) Unicycler: Resolving bacterial genome assemblies from short and long sequencing reads. PLOS Computational Biology 13(6): e1005595. https://doi.org/10.1371/journal.pcbi.1005595
+  > Wick RR, Judd LM, Gorrie CL, Holt KE (2017) Unicycler: Resolving bacterial genome assemblies from short and long sequencing reads. PLOS Computational Biology 13(6): e1005595. <https://doi.org/10.1371/journal.pcbi.1005595>
 
 ## Software packaging/containerisation tools
 
