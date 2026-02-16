@@ -541,7 +541,7 @@ nextflow_pipeline {
             assert iridanext_metadata.short."gc" == "52.96"
             // the manifest information is not available in the test to verify the correct version is actually being retrieved
             // So a key check will suffice
-            assert iridanext_metadata.short."QUAST_Average_coverage_depth" == "47"
+            assert iridanext_metadata.short."QUAST_Average_Coverage_Depth" == "47"
 
             assert iridanext_metadata.short.containsKey("mikrokondo_version")
             assert iridanext_metadata.short."Mean Sequence Length Forward" == 250

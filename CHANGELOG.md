@@ -3,6 +3,12 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+### Added
+
+- Added new metadata field reporting the average coverage calculated by QUAST `QUAST_Average_Coverage_Depth`. [PR 210](https://github.com/phac-nml/mikrokondo/pull/210)
+
 ## 0.10.0 - 2026-1-30
 
 ### `Added`
