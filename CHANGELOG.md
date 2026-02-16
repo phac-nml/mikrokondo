@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Added new metadata field reporting the average coverage calculated by QUAST `QUAST_Average_Coverage_Depth`. [PR 210](https://github.com/phac-nml/mikrokondo/pull/210)
+- Added new metadata field reporting the average coverage calculated by QUAST `QUAST_Average_Coverage_Depth`. [PR 212](https://github.com/phac-nml/mikrokondo/pull/212)
 
 ## 0.10.0 - 2026-1-30
 
