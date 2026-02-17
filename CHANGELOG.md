@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added additional raw-read output field to the IRIDANext output table `total_sequenced_reads`. [PR 215](https://github.com/phac-nml/mikrokondo/pull/215)
 
+### Changed
+
+- Bumped `max_illumina_read_length` to 510bp. [PR 215](https://github.com/phac-nml/mikrokondo/pull/215)
+
 ## 0.10.1 - 2026-2-16
 
 ### Added
