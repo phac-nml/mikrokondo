@@ -221,6 +221,7 @@ nextflow_pipeline {
 
             // output metadata
             assert iridanext_metadata.INX."qc_status_overall" == "FAILED"
+            assert iridanext_metadata.INX."total_sequenced_reads" == 950
 
         }
 

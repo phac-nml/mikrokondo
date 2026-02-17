@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added additional StarAMR fields to the IRIDANext output table. [PR 215](https://github.com/phac-nml/mikrokondo/pull/215)
 
+- Added additional raw-read output field to the IRIDANext output table `total_sequenced_reads`. [PR 215](https://github.com/phac-nml/mikrokondo/pull/215)
+
 ## 0.10.1 - 2026-2-16
 
 ### Added
