@@ -141,7 +141,7 @@ workflow MIKROKONDO {
         prepped_data = INPUT_CHECK()
 
 
-        split_data = prepped_data.reads.branch{
+        /* split_data = prepped_data.reads.branch{
             post_assembly: it[0].assembly // [0] dentoes the meta tag
             read_data: true
         }
@@ -187,7 +187,7 @@ workflow MIKROKONDO {
             GZIP_FILES(updated_samples)
             ch_versions = ch_versions.mix(GZIP_FILES.out.versions)
         }
-
+ */
 
         if(!params.skip_version_gathering){
             // Save all parameters to the software report JSON file
@@ -196,7 +196,7 @@ workflow MIKROKONDO {
                 file("${params.outdir}/pipeline_parameters.json")
             )
             // Save all the software versions to a YAML file
-            software_versions_channel = CUSTOM_DUMPSOFTWAREVERSIONS (
+            /* software_versions_channel = CUSTOM_DUMPSOFTWAREVERSIONS (
             ch_versions.unique().collectFile(name: 'collated_versions.yml')
             ).yml
 
@@ -205,7 +205,7 @@ workflow MIKROKONDO {
             }.combine(paramsSummaryChannel).combine(software_versions_channel)
 
             REPORT_PIPELINE_PARAMETERS(
-            software_report_channel)
+            software_report_channel) */
         }
     }else{
         MAX_SAMPLES_CHECK(channel.value(number_of_samples))
