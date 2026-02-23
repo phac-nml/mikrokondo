@@ -195,17 +195,17 @@ workflow MIKROKONDO {
             paramsSummaryChannel = Channel.fromPath(
                 file("${params.outdir}/pipeline_parameters.json")
             )
-            // Save all the software versions to a YAML file
-            /* software_versions_channel = CUSTOM_DUMPSOFTWAREVERSIONS (
+            /* // Save all the software versions to a YAML file
+             software_versions_channel = CUSTOM_DUMPSOFTWAREVERSIONS (
             ch_versions.unique().collectFile(name: 'collated_versions.yml')
             ).yml
 
-
+                */
             software_report_channel = prepped_data.reads.map{it -> it[0]
-            }.combine(paramsSummaryChannel).combine(software_versions_channel)
-
+            }.combine(paramsSummaryChannel)
+            
             REPORT_PIPELINE_PARAMETERS(
-            software_report_channel) */
+            software_report_channel)
         }
     }else{
         MAX_SAMPLES_CHECK(channel.value(number_of_samples))
