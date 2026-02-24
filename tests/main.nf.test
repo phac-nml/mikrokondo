@@ -490,6 +490,7 @@ nextflow_pipeline {
             assert json.short.short.StarAMR."0"."Genotype".equals("None")
             assert json.short.short.StarAMR."0"."Predicted Phenotype".equals("Susceptible")
             assert json.short.short.StarAMR."0"."Genome Length".equals("4949")
+            assert json.short.short.StarAMR."0"."Quality Module Feedback" == "Genome length is not within the acceptable length range [4000000,6000000] ; N50 value is not greater than the specified minimum value [10000]"
 
 
             assert json.short.short.SevenGeneMLSTReport[0].filename.equals("short.filtered.fasta.gz")
@@ -550,6 +551,7 @@ nextflow_pipeline {
 
             assert iridanext_metadata.short."StarAMR Genotype" == "None"
             assert iridanext_metadata.short."StarAMR Predicted Phenotype" == "Susceptible"
+            assert iridanext_metadata.short."StarAMR Quality Module Feedback" == "Genome length is not within the acceptable length range [4000000,6000000] ; N50 value is not greater than the specified minimum value [10000]"
 
             // Check that the pipline_info parameters file contains the expected parameters
             def parameters_json = path("$outputDir/pipeline_info/short.mikrokondo.parameters.json").json
