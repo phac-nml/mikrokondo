@@ -81,6 +81,7 @@ nextflow_pipeline {
             assert final_report_tmap."QUAST.0.Largest contig" == "300823"
             assert final_report_tmap."QUAST.0.# contigs" == "187"
             assert final_report_tmap."QUAST.0.N50" == "122025"
+            assert final_report_tmap."StarAMR.0.Quality Module" == "Passed"
             assert final_report_tmap."StarAMR.0.Genotype" == "aph(3'')-Ib, aph(6)-Id, blaCTX-M-15, blaTEM-1B, dfrA7, gyrA (S83A), sul1, sul2, tet(A)"
             assert final_report_tmap."StarAMR.0.Predicted Phenotype" == "streptomycin, kanamycin, ampicillin, ceftriaxone, trimethoprim, ciprofloxacin I/R, nalidixic acid, sulfisoxazole, tetracycline"
             assert final_report_tmap."StarAMR.0.CGE Predicted Phenotype" == "Streptomycin, Amoxicillin, Ampicillin, Aztreonam, Cefepime, Cefotaxime, Ceftazidime, Ceftriaxone, Piperacillin, Ticarcillin, Cephalothin, Trimethoprim, Nalidixic acid, Ciprofloxacin, Sulfamethoxazole, Doxycycline, Tetracycline"
@@ -200,7 +201,12 @@ nextflow_pipeline {
             assert ecoli_metadata."StarAMR Predicted Phenotype" == "streptomycin, kanamycin, ampicillin, ceftriaxone, trimethoprim, ciprofloxacin I/R, nalidixic acid, sulfisoxazole, tetracycline"
             assert ecoli_metadata."StarAMR CGE Predicted Phenotype" == "Streptomycin, Amoxicillin, Ampicillin, Aztreonam, Cefepime, Cefotaxime, Ceftazidime, Ceftriaxone, Piperacillin, Ticarcillin, Cephalothin, Trimethoprim, Nalidixic acid, Ciprofloxacin, Sulfamethoxazole, Doxycycline, Tetracycline"
             assert ecoli_metadata."StarAMR Plasmid" == "IncQ1"
-
+            assert ecoli_metadata."StarAMR Quality Module" == "Passed"
+            assert ecoli_metadata."StarAMR Sequence Type" == "678"
+            assert ecoli_metadata."StarAMR Genome Length" == "5333525"
+            assert ecoli_metadata."StarAMR N50 Value" == "122025"
+            assert ecoli_metadata."StarAMR Number of Contigs Greater Than Or Equal To 300 bp" == "177"
+            assert ecoli_metadata."StarAMR Quality Module Feedback" == "NoData"
 
             // Read in filtered assembly fasta to verify number of contigs
             def assemblyLines = path("$outputDir/Assembly/FinalAssembly/ecoli_GCA_000947975/ecoli_GCA_000947975.final.filtered.assembly.fasta.gz").readLinesGzip()
