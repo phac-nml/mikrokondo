@@ -4,6 +4,7 @@ nextflow_workflow {
     workflow "QC_READS"
     tag "subworkflow"
     tag "clean_reads"
+    tag "snapshot_test"
 
     test("Test clean reads run without failure illumina") {
         tag "clean_illumina"

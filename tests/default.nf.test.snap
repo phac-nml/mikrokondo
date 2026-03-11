@@ -76,7 +76,7 @@
                     "spades": "3.15.5"
                 },
                 "STARAMR": {
-                    "staramr": "0.11.1"
+                    "staramr": "0.12.1"
                 },
                 "Workflow": {
                     "phac-nml/mikrokondo": "0.10.1"
@@ -247,7 +247,7 @@
                 "short.chromosome.mob.recon.annotation.fasta:md5,79c8d4b96fccf463fcd63643272fc338",
                 "short.contig_report.mob.recon.annotation.txt:md5,d0a686f48befe600e4f4fdea5ad35e89",
                 "short.detailed_summary.staramr.annotation.tsv:md5,4982267556468e305b838847fae9ac86",
-                "short.mlst.staramr.annotation.tsv:md5,9920ad692fa9bb7b9f2a22abae50ce63",
+                "short.mlst.staramr.annotation.tsv:md5,6d21f15013d39bd9dcae665a907b7120",
                 "short.plasmidfinder.staramr.annotation.tsv:md5,06f38f23d6be0fb32bf66d31a517d78c",
                 "short.resfinder.staramr.annotation.tsv:md5,4620ef26ac38f3d8feddabd08e7a1579",
                 "short.summary.staramr.annotation.tsv:md5,9f075192e43983520c7029977ab5561c",
@@ -293,6 +293,6 @@
             "nf-test": "0.9.2",
             "nextflow": "25.04.8"
         },
-        "timestamp": "2026-02-17T15:22:34.376698109"
+        "timestamp": "2026-03-11T09:39:12.929143381"
     }
 }
