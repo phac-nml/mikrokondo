@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Bumped `max_illumina_read_length` to 510bp. [PR 215](https://github.com/phac-nml/mikrokondo/pull/215)
 
+- Updated StarAMR to version 0.12.1 [PR 217](https://github.com/phac-nml/mikrokondo/pull/217)
+
 ## 0.10.1 - 2026-2-16
 
 ### Added
