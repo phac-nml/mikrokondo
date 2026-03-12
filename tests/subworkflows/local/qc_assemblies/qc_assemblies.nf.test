@@ -6,6 +6,7 @@ nextflow_workflow {
     tag "qc_assemblies"
 
     test("Test qc_assemblies one assembly too short") {
+      tag "snapshot_test"
 
         when {
             workflow {
