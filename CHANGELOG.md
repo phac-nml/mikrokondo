@@ -17,6 +17,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Updated StarAMR to version 0.12.1 [PR 217](https://github.com/phac-nml/mikrokondo/pull/217)
 
+- Set nextflow version 25.10.4 to replace 'latest-everything' to confirm compatibility with next IRIDA-Next nextflow version in `.github/workflows` for nf-test. [PR 219](https://github.com/phac-nml/mikrokondo/pull/219)
+
 ## 0.10.1 - 2026-2-16
 
 ### Added
