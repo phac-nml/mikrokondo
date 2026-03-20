@@ -66,7 +66,7 @@ jobs:
       fail-fast: false
       matrix:
         shard: ${{ fromJson(needs.nf-test-changes.outputs.shard) }}
-        profile: [docker, singularity]
+        profile: [conda, docker, singularity]
         isMain:
           - ${{ github.base_ref == 'master' || github.base_ref == 'main' }}
         # Exclude conda and singularity on dev
@@ -76,9 +76,8 @@ jobs:
           - isMain: false
             profile: "singularity"
         NXF_VER:
-          - "24.10.3"
           - "25.10.4"
-
+          - "24.10.3"
     env:
       NXF_ANSI_LOG: false
       TOTAL_SHARDS: ${{ needs.nf-test-changes.outputs.total_shards }}
@@ -88,26 +87,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Disk space cleanup # Clean up disk space to make more room for tests
-        uses: jlumbroso/free-disk-space@54081f138730dfa15788a46383842cd2f914a1be # v1.3.1
-        with:
-          # this might remove tools that are actually needed,
-          # if set to "true" but frees about 6 GB
-          tool-cache: false
-
-          # Setting some to "false" since it takes time to remove files
-          # Changed back to "true" if extra space is needed
-          android: true
-          dotnet: false
-          haskell: false
-          large-packages: false
-          docker-images: false
-          swap-storage: false
-
       - name: Run nf-test
         id: run_nf_test
         uses: ./.github/actions/nf-test
-        continue-on-error: ${{ matrix.NXF_VER == 'latest-everything' }}
+        continue-on-error: ${{ matrix.NXF_VER == 'latest-everything' }} # Currently not testing latest-everything, but if we do, we don't want it to cause workflow failure
         env:
           NFT_WORKDIR: ${{ env.NFT_WORKDIR }}
           NXF_VERSION: ${{ matrix.NXF_VER }}
