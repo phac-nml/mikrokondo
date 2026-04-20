@@ -59,14 +59,6 @@ workflow ANNOTATE_GENOMES {
 
     if(!params.skip_staramr){
 
-        def db_star = [] // set default value for database
-        if(params.staramr.db){
-            db_star = Channel.value("${params.staramr.db}")
-        }
-
-        // Dump db versions
-        // Removed as data is in results
-
         point_finder_organism = channel.empty()
         if(params.skip_species_classification){
             point_finder_organism = contig_data.map{ meta, assembly ->
