@@ -7,7 +7,7 @@ process STARAMR {
 
     input:
     tuple val(meta), path(fasta), val(point_finder_db)
-    path db
+    //path db
 
     output:
     tuple val(meta), path("$prefix/summary${params.staramr.tsv_ext}"), emit: summary
@@ -23,11 +23,11 @@ process STARAMR {
 
     script:
     def args = task.ext.args ?: ""
-    def db_ = ""
+    //def db_ = ""
     prefix = task.ext.prefix ?: "${meta.id}"
     def is_compressed = fasta.getName().endsWith(".gz") ? true : false
     def fasta_name = fasta.getName().replace(".gz", "")
-    if(db){
+    /* if(db){
         db_ = "-d $db"
     }else{
         log.info "Using default database in StarAMR for ${meta.id}"
@@ -39,7 +39,7 @@ process STARAMR {
         args = args + "--pointfinder-organism $point_finder_db"
     }else{
         log.info "No relevant pointfinder database could be identified for $meta.id"
-    }
+    } */
     """
     export TMPDIR=\$PWD # set env temp dir to in the folder
     if [ "$is_compressed" == "true" ]; then
