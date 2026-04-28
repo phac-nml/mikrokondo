@@ -54,11 +54,14 @@ workflow QC_READS {
     reports = Channel.empty()
     versions = Channel.empty()
     def platform_comp = platform.toString()
-
-    deconned_reads = REMOVE_CONTAMINANTS(reads, params.r_contaminants.mega_mm2_idx ? file(params.r_contaminants.mega_mm2_idx) : error("--dehosting_idx ${params.dehosting_idx} is invalid"), Channel.value(platform_comp))
-    versions = versions.mix(REMOVE_CONTAMINANTS.out.versions)
-
-    ch_meta_cleaned_reads = FASTP_TRIM(deconned_reads.reads) // can use the json output of this to decide if chopper should be run
+    if(!params.skip_dehosting){
+        deconned_reads = REMOVE_CONTAMINANTS(reads, params.r_contaminants.mega_mm2_idx ? file(params.r_contaminants.mega_mm2_idx) : error("--dehosting_idx ${params.dehosting_idx} is invalid"), Channel.value(platform_comp)).reads
+        versions = versions.mix(REMOVE_CONTAMINANTS.out.versions)
+    }else{
+        deconned_reads = reads
+    }
+    
+    ch_meta_cleaned_reads = FASTP_TRIM(deconned_reads) // can use the json output of this to decide if chopper should be run
     reports = reports.mix(ch_meta_cleaned_reads.fastp_json.map{
         meta, json -> tuple(meta, params.fastp, json)
     })
@@ -85,8 +88,15 @@ workflow QC_READS {
     total_base_counts = fastp_data.base_count.map{
         meta, bases -> tuple(meta, bases)
     }
+    
+    reads_cleaned = ch_meta_cleaned_reads.reads
+    if(params.use_unfiltered_reads){
+        // use the input reads for assembly not filtered reads
+        reads_cleaned = reads
+        log.warn "Unfiltered reads are being used for downstream prociessing."
+    }
 
-    filtered_samples = ch_meta_cleaned_reads.reads.join(reads_passed.passed).map{
+    filtered_samples = reads_cleaned.join(reads_passed.passed).map{
         meta, reads, count -> tuple(meta, reads) // Only keeping reads that pass a threshold
     }
 

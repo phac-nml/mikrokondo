@@ -32,8 +32,12 @@ process PARSE_FASTP{
         def data = file(json)
         String data_json = data.text
         def json_data = jsonSlurper.parseText(data_json)
-        total_reads_post = json_data.summary.after_filtering.total_reads.toLong()
-        total_bases = json_data.summary.after_filtering.total_bases.toLong()
+        def metric_used = 'after_filtering' 
+        if(params.use_unfiltered_reads){
+            metric_used = 'before_filtering'
+        }
+        total_reads_post = json_data.summary[metric_used].total_reads.toLong()
+        total_bases = json_data.summary[metric_used].total_bases.toLong()
         /*
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         Stating the variables to be filterd below as when testing running the pipeline
@@ -47,10 +51,6 @@ process PARSE_FASTP{
         */
         total_reads_post
         total_bases
-        // if this data is not logged the process does not work???
-        //log.info "Sample: ${meta.id}"
-        //log.info "  Total Reads After Filtering: ${total_reads_post}"
-        //log.info "  Total Bases After Filtering: ${total_bases}"
     }
 
 
