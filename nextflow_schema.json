@@ -456,6 +456,14 @@
           "type": "boolean",
           "description": "Samples which are determined to be metagenomic will not be assembled."
         },
+        "skip_dehosting": {
+          "type": "boolean",
+          "description": "Skip de-hosting and kitome removal."
+        },
+        "use_unfiltered_reads": {
+          "type": "boolean",
+          "description": "Use un-filtered reads for assembly, FastP output is still created however the unfiltered reads are used for subsequent processing."
+        },
         "download_checkm2_db": {
           "type": "boolean",
           "description": "Download the CheckM2 database if one is not being passed.",
@@ -720,6 +728,50 @@
         }
       }
     },
+    "shovill": {
+      "title": "Shovill",
+      "type": "object",
+      "description": "Parameters used for shovill.",
+      "default": "",
+      "properties": {
+        "use_shovill": {
+          "type": "boolean",
+          "description": "Use shovill for polishing instead of Spades, Racon and Pilon."
+        },
+        "shovill_assembler": {
+          "type": "string",
+          "default": "spades",
+          "description": "Select which assembler to use from Shovill.",
+          "enum": [
+            "spades",
+            "skesa",
+            "velvet",
+            "megahit"
+          ]
+        },
+        "shovill_minimum_coverage": {
+          "type": "integer",
+          "default": 2,
+          "description": "Set minimum conitgi coverage."
+        },
+        "shovill_plasmid_mode": {
+          "type": "boolean",
+          "description": "Enable plasmid mode if exists for assembler"
+        },
+        "shovill_no_stitch": {
+          "type": "boolean",
+          "description": "Disable read stitching."
+        },
+        "shovill_trim_adapters": {
+          "type": "boolean",
+          "description": "Enable adapter trimming."
+        },
+        "shovill_no_read_correction": {
+          "type": "boolean",
+          "description": "Enable read correction."
+        }
+      }
+    },
     "data_processing_thresholds": {
       "title": "Data processing thresholds",
       "type": "object",
@@ -815,6 +867,9 @@
     },
     {
       "$ref": "#/definitions/locidex"
+    },
+    {
+      "$ref": "#/definitions/shovill"
     },
     {
       "$ref": "#/definitions/data_processing_thresholds"
