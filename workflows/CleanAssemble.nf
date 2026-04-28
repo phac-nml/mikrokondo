@@ -103,7 +103,6 @@ workflow CLEAN_ASSEMBLE_READS {
 
     }else{
 
-        //QC_READS(INPUT_CHECK.out.reads, params.platform)
         QC_READS(prepped_input, params.platform)
         ch_versions = ch_versions.mix(QC_READS.out.versions)
         ch_reports = ch_reports.mix(QC_READS.out.reports)
@@ -119,7 +118,7 @@ workflow CLEAN_ASSEMBLE_READS {
         ch_reports = ch_reports.mix(ch_assembled_reads.reports)
         ch_versions = ch_versions.mix(ch_assembled_reads.versions)
 
-        if(!params.skip_polishing){
+        if(!params.skip_polishing && !params.use_shovill){
             POLISH_ASSEMBLIES(ch_trimmed_reads, ch_assembled_reads.final_contigs)
             ch_final_assembly = POLISH_ASSEMBLIES.out.assemblies
             ch_versions = ch_versions.mix(POLISH_ASSEMBLIES.out.versions)

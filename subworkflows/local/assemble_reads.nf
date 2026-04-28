@@ -1,8 +1,8 @@
 // Workflow for assembling reads
-// TODO add in read sub-sampling to reduce errors
 
 include { SEQTK_SIZE } from "../../modules/local/seqtk_size.nf"
 include { SPADES_ASSEMBLE } from "../../modules/local/spades_assemble.nf"
+include { SHOVILL_ASSEMBLE } from "../../modules/local/shovill_assemble.nf"
 include { FLYE_ASSEMBLE } from "../../modules/local/flye_assemble.nf"
 include { MINIMAP2_INDEX } from "../../modules/local/minimap2_index.nf"
 include { MINIMAP2_MAP } from "../../modules/local/minimap2_map.nf"
@@ -19,18 +19,28 @@ workflow ASSEMBLE_READS{
     final_contigs = Channel.empty()
     reports = Channel.empty()
 
-    // no report channel here?
     base_counts = SEQTK_SIZE(sample_data)
     reports = reports.mix(base_counts.base_counts.map{
         meta, file_bc -> tuple(meta, params.seqtk_size, extract_base_count(meta, file_bc));
     })
-
     versions = versions.mix(base_counts.versions)
 
 
     def platform_comp = params.platform.replaceAll("\\s", "").toString() // strip whitespace from entries
     if(platform_comp == params.opt_platforms.illumina){
-        ch_assembled = SPADES_ASSEMBLE(sample_data)
+        if(params.use_shovill){
+            split_sample_data = sample_data.branch{
+                it ->
+                metagenomic: it[0].metagenomic
+                isolate: true
+            } 
+            ch_assembled = SHOVILL_ASSEMBLE(split_sample_data.isolate)
+            split_sample_data.metagenomic.subscribe {
+                    meta, reads -> log.warn "Shovill cannot be used to assemble $meta.id as the sample is metagenomic. Please re-run these samples without Shovill and meta spades will be used for assembly instead."
+                }
+        }else{
+            ch_assembled = SPADES_ASSEMBLE(sample_data)
+        }
 
     }else if(platform_comp == params.opt_platforms.ont || platform_comp == params.opt_platforms.pacbio){
         def options = ["hq", "corr", "raw"]
@@ -69,7 +79,7 @@ workflow ASSEMBLE_READS{
     versions = versions.mix(BANDAGE_IMAGE.out.versions)
 
 
-    if(!params.skip_polishing){
+    if(!params.skip_polishing && !params.use_shovill){ // shovill performs its own polishing
         // TODO move this too polishing
         // RACON is next and is common in all steps
         minimap2_idx = MINIMAP2_INDEX(ch_assembled.contigs)
