@@ -56,13 +56,13 @@ process SHOVILL_ASSEMBLE {
     """
     shovill --R1 ${reads[0]} --R2 ${reads[1]} --cpus $task.cpus \\
     --ram ${task.memory.toGiga()} --depth 0 \\
-    --outdir ${meta.id} \\
+    --outdir ${meta.id} --force \\
     --minlen 0 \\
     --mincov ${params.shovill.minimum_coverage} \\
     ${args.join(' ')} --assembler $params.shovill_assembler
 
     mv ${meta.id}/contigs.fa ${meta.id}/${meta.id}.contigs.fa
-    mv ${meta.id}/contigs.gfa ${meta.id}/${meta.id}.contigs.gfa
+    mv ${meta.id}/*.gfa ${meta.id}/${meta.id}.contigs.gfa
 
  
     cat <<-END_VERSIONS > versions.yml
