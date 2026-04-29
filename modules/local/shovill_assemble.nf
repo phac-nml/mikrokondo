@@ -44,7 +44,7 @@ process SHOVILL_ASSEMBLE {
         args += "--nostitch"
     }
 
-    if(!params.skip_polishing){
+    if(params.skip_polishing){
         args += "--nocorr"
     }
 
