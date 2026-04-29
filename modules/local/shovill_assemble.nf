@@ -12,7 +12,7 @@ process SHOVILL_ASSEMBLE {
     output:
     tuple val(meta), path("${meta.id}/*.contigs.fa"), emit: contigs
     tuple val(meta), path("${meta.id}/*.contigs.gfa"),  emit: graphs
-    tuple val(meta), path("${meta.id}/shovill.corrections"), emit: corrections
+    tuple val(meta), path("${meta.id}/shovill.corrections"), emit: corrections, optional: true
     tuple val(meta), path("${meta.id}/shovill.log"), emit: log
     tuple val(meta), path("${meta.id}/{velvet,megahit,spades,skesa}.fasta"), emit: raw_contigs
     path "versions.yml", emit: versions
