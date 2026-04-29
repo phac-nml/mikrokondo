@@ -84,19 +84,11 @@ workflow QC_READS {
         meta, count -> tuple(meta, params.filtered_reads, true)
     })
 
-
     total_base_counts = fastp_data.base_count.map{
         meta, bases -> tuple(meta, bases)
     }
-    
-    reads_cleaned = ch_meta_cleaned_reads.reads
-    if(params.use_unfiltered_reads){
-        // use the input reads for assembly not filtered reads
-        reads_cleaned = reads
-        log.warn "Unfiltered reads are being used for downstream prociessing."
-    }
 
-    filtered_samples = reads_cleaned.join(reads_passed.passed).map{
+    filtered_samples = ch_meta_cleaned_reads.reads.join(reads_passed.passed).map{
         meta, reads, count -> tuple(meta, reads) // Only keeping reads that pass a threshold
     }
 

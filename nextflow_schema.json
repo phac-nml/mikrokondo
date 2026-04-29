@@ -460,9 +460,9 @@
           "type": "boolean",
           "description": "Skip de-hosting and kitome removal."
         },
-        "use_unfiltered_reads": {
+        "skip_read_filtering": {
           "type": "boolean",
-          "description": "Use un-filtered reads for assembly, FastP output is still created however the unfiltered reads are used for subsequent processing."
+          "description": "FastP is still run however options related to filtering are disabled."
         },
         "download_checkm2_db": {
           "type": "boolean",
