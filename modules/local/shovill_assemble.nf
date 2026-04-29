@@ -52,15 +52,14 @@ process SHOVILL_ASSEMBLE {
         args += "--keepfiles"
     }
 
-
+    // depth and minlen are hard coded to 0 as mikrokondo will perform the contig filtering and down-sampling
     """
-    shovill --R1 ${reads[0]} --R2 ${reads[1]} \
-    --cpus $task.cpus --ram ${task.memory.toGiga()} \
-    --depth 0 # Hard coded to zero to as mk does down sampling \
-    --outdir ${meta.id} \
-    --minlen 0 # Hard coded to zero as mk handles contig filtering \
-    --mincov ${params.shovill.minimum_coverage} \
-    ${args.join(' ')}  --assembler $params.shovill_assembler \
+    shovill --R1 ${reads[0]} --R2 ${reads[1]} --cpus $task.cpus \\
+    --ram ${task.memory.toGiga()} --depth 0 \\
+    --outdir ${meta.id} \\
+    --minlen 0 \\
+    --mincov ${params.shovill.minimum_coverage} \\
+    ${args.join(' ')} --assembler $params.shovill_assembler
 
     mv ${meta.id}/contigs.fa ${meta.id}/${meta.id}.contigs.fa
     mv ${meta.id}/contigs.gfa ${meta.id}/${meta.id}.contigs.gfa
