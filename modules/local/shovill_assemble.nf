@@ -10,8 +10,8 @@ process SHOVILL_ASSEMBLE {
     tuple val(meta), path(reads)
 
     output:
-    tuple val(meta), path("${meta.id}/*.contigs.fa"), emit: contigs
-    tuple val(meta), path("${meta.id}/*.contigs.gfa"),  emit: graphs
+    tuple val(meta), path("${meta.id}/*.contigs.fa.gz"), emit: contigs
+    tuple val(meta), path("${meta.id}/*.contigs.gfa.gz"),  emit: graphs
     tuple val(meta), path("${meta.id}/shovill.corrections"), emit: corrections, optional: true
     tuple val(meta), path("${meta.id}/shovill.log"), emit: log
     tuple val(meta), path("${meta.id}/{velvet,megahit,spades,skesa}.fasta"), emit: raw_contigs
@@ -63,6 +63,8 @@ process SHOVILL_ASSEMBLE {
 
     mv ${meta.id}/contigs.fa ${meta.id}/${meta.id}.contigs.fa
     mv ${meta.id}/*.gfa ${meta.id}/${meta.id}.contigs.gfa
+    gzip -n ${meta.id}/${meta.id}.contigs.fa  
+    gzip -n ${meta.id}/${meta.id}.contigs.gfa 
 
  
     cat <<-END_VERSIONS > versions.yml
