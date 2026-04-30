@@ -46,10 +46,6 @@ Some scripts require Python3, therefore a well tested Python3 container is provi
   - singularity: Python3 singularity container
   - docker: Python3 docker container
 
-### KAT
-
-Kat was previously used to estimate genome size, however at the time of writing KAT appears to be only infrequently updated and newer versions would have issues running/sometimes giving an incorrect output due to failures in peak recognition. Therefore, KAT has been removed from the pipeline, It's code still remains but it **will be removed in the future**.
-
 ### Seqtk
 
 Seqtk is used for both the sub-sampling of reads and conversion of fasta files to fastq files in mikrokondo. The usage of seqtk to convert a fasta to a fastq is needed in certain typing tools requiring reads as input (this was a design decision to keep the pipeline generalizable).
@@ -140,14 +136,6 @@ Used for paired end read assembly
   - assembly_graphs_ext: the file extension of the assembly graphs. Do not alter this field unless doing pipeline development
   - log_ext: The file extension for the log files. Do not alter this field unless doing pipeline development
   - outdir: The name of the output directory for assemblies. Do not alter this field unless doing pipeline development
-
-### FastQC
-
-This is a default tool added to nf-core pipelines. This feature will likely be removed in the future but for those fond of it, the outputs of FastQC still remain.
-
-- fastqc
-  - html_ext: The file extension of the fastqc html file. Do not alter this field unless doing pipeline development
-  - zip_ext: The file extension of the zipped FastQC outputs. Do not alter this field unless doing pipeline development
 
 ### Quast
 
