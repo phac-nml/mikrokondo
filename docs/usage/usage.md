@@ -94,13 +94,14 @@ _The value of `my_sample` is repeated twice allowing sample to be merged on the 
 - `--nanopore_chemistry YOUR_MODEL_HERE`: a Medaka model must be specified for polishing. A list of allowed models can be found here: [Medaka models python script](https://github.com/nanoporetech/medaka/blob/master/medaka/options.py) or [Medaka models available for download](https://github.com/nanoporetech/medaka/tree/master/medaka/data)
 - `--run_kraken TRUE`: can be used to enable Kraken2 for speciation instead of Mash.
 - `--target_depth`: refers to the target bp depth for a set of reads. When sample read sets have an estimated depth higher than this target, it is downsampled to achieve the depth. No downsampling occurs when estimated depth is lower than this value (default 100).
+- `--fail_on_metagenomic`: Samples that are found to be contaminated or metagenomic are not processed past auto detection saving users computational resources by halting processes early.
 
 #### Skip Options
 
 Numerous steps within mikrokondo can be turned off without compromising the stability of the pipeline. This skip options can reduce run-time of the pipeline or allow for completion of the pipeline despite errors.
 **All of the above options can be turned on by entering `--{skip_option} true` in the command line arguments to the pipeline (where optional parameters can be added)**
 
-- `--skip_read_merging`: Do not merge reads, if duplicate sample names are present the names will be made unique.
+- `--skip_read_merging TRUE`: Do not merge reads, if duplicate sample names are present the names will be made unique.
 - `--skip_abricate`: turn off abricate AMR detection
 - `--skip_bakta`: turn off bakta annotation pipeline (generally a slow step, requiring a database to be specified).
 - `--skip_checkm`: used as part of the contamination detection within mikrokondo, its run time and resource usage can be quite lengthy.
@@ -119,7 +120,6 @@ Numerous steps within mikrokondo can be turned off without compromising the stab
 - `--skip_mlst`: Skip seven gene MLST.
 - `--skip_length_filtering_contigs`: Skip length filtering of contigs based on the `--qt_min_contig_length` parameter.
 - `--skip_allele_calling`: Skip allele calling with Locidex.
-- `--fail_on_metagenomic`: Samples that are found to be contaminated or metagenomic are not processed past auto detection saving users computational resources.
 - `--download_checkm2_db`: Download the specified CheckM2 database (see tool parameters). If this parameter is set to true and a and CheckM2 database is provided to the parameter `--checkm2_db` a runtime error will be raised.
 
 #### Datasets
@@ -183,7 +183,7 @@ Top level parameters to pass to ECTyper. Each argument corresponds to one within
 - `--ec_opid`: The minimum percent identity to determine an O antigens presence, It must be an integer.
 - `--ec_opcov`: The minimum percent coverage of O antigen, It must be an integer.
 - `--ec_hpid`: The minimum percent identity to determine an H antigens presence, It must be an integer.
-- `--ec_hcov`: The minimum percent coverage of the H antigen, It must be an integer.
+- `--ec_hpcov`: The minimum percent coverage of the H antigen, It must be an integer.
 - `--ec_enable_verification`: A boolean value to enable species verification in ECTyper.
 
 #### SISTR Parameters

@@ -1,6 +1,7 @@
 
 ![Pipeline](images/20230630_Mikrokondo-logo_v4.svg "Logo")
-# Welcome to mikrokondo!
+
+# Welcome to mikrokondo
 
 ## What is mikrokondo?
 
@@ -16,9 +17,22 @@ Mikrokondo is purpose built to provide sequencing and clinical laboratories with
 
 This workflow will detect what pathogen(s) is present and apply the applicable metrics and genotypic typing where appropriate, generating easy to read and understand reports. If your group is regularly sequencing or analyzing genomic sequences, implementation of this workflow will automate the hands-on time time usually required for these common bioinformatic tasks.
 
+## Orangisms with configured quality control thresholds
+
+Out of the box, Mikrokondo has quality control thresholds for the following Orangisms:
+
+- *Escherichia*
+- *Salmonella*
+- *Shigella*
+- *Listeria*
+- *Campylobacter jejuni* and *coli*
+- *Vibrio cholerae*
+- *Klebsiella*
+- *Staphylococcus*
+
 ## Whole genome and Metagenomic samples typical workflow differences
 
-This pipeline has been written to automatically detect if a sample contains more than one organism. Whether it is intentional (as in shotgun metagenomics) or contamination, a sample with more than one organism detected via Mash will be marked as `metagenomic`. 
+This pipeline has been written to automatically detect if a sample contains more than one organism. Whether it is intentional (as in shotgun metagenomics) or contamination, a sample with more than one organism detected via Mash will be marked as `metagenomic`.
 
 Typical workflow for **whole genome sample** (one organism):
 

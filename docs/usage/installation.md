@@ -41,6 +41,7 @@ Containers are not perfect, below is a list of some issues you may face using co
 - [Decontamination Index](https://zenodo.org/record/8408557): Required for decontamination of reads (this is a minimap2 index)
 - [Kraken2 std database](https://benlangmead.github.io/aws-indexes/k2): Required for binning of metagenomic data and is an alternative to using Mash for speciation
 - [Bakta database](https://zenodo.org/record/7669534): Running Bakta is optional and there is a light database option, however the full one is recommended. You will have to unzip and un-tar the database for usage.
+- [StarAMR database](https://github.com/phac-nml/staramr#database-build): Running StarAMR is optional. The container for StarAMR has a database included that Mikrokondo will default to using if a database is not specified, however one can also download a database and specify the location. Therefore this requirement is **optional**.
 - [CheckM2 database](https://zenodo.org/records/14897628/files/checkm2_database.tar.gz): The path to the downloaded and extracted CheckM2 database. This step is optional as the database can be downloaded automatically by setting the parameter `--download_checkm2_db` to true.
 
 ### Fields to update with resources
@@ -50,16 +51,11 @@ It is recommended to store the above resources within the `databases` folder in 
 Below shows where to update database resources in the `params` section of the `nextflow.config` file:
 
 ```
-// Bakta db path, note the quotation marks
+// Datasets, note the quotation marks
 bakta_db = "/PATH/TO/BAKTA/DB"
-
-// Decontamination minimap2 index, note the quotation marks
-dehosting_idx = "/PATH/TO/DECONTAMINATION/INDEX"
-
-// kraken db path, not the quotation marks
+dehosting_idx = "/PATH/TO/DECONTAMINATION/INDEX" // mm2 index
 kraken2_db = "/PATH/TO/KRAKEN/DATABASE/"
-
-// GTDB Mash sketch, note the quotation marks
 mash_sketch = "/PATH/TO/MASH/SKETCH/"
-
+staramr_db = "/PATH/TO/STARAMR/SKETCH" // recommended useage is to use default db in container
+checkm2_db = "/PATH/TO/CHECKM2/DB"
 ```
