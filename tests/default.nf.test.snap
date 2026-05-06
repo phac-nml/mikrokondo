@@ -76,7 +76,7 @@
                     "spades": "3.15.5"
                 },
                 "STARAMR": {
-                    "staramr": "0.12.2"
+                    "staramr": "0.12.1"
                 },
                 "Workflow": {
                     "phac-nml/mikrokondo": "0.10.1"
@@ -291,8 +291,8 @@
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "24.10.6"
+            "nextflow": "25.04.8"
         },
-        "timestamp": "2026-05-06T08:48:21.221951722"
+        "timestamp": "2026-03-11T09:39:12.929143381"
     }
 }
