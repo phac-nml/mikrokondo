@@ -33,7 +33,7 @@ process PARSE_FASTP{
         String data_json = data.text
         def json_data = jsonSlurper.parseText(data_json)
         def metric_used = 'after_filtering' 
-        if(params.use_unfiltered_reads){
+        if(params.skip_read_filtering){
             metric_used = 'before_filtering'
         }
         total_reads_post = json_data.summary[metric_used].total_reads.toLong()
