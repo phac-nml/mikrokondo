@@ -103,6 +103,7 @@ workflow MIKROKONDO {
         log.info paramsSummaryLog(workflow)
 
         ch_reports = Channel.empty()
+        ch_versions = channel.empty()
         prepped_data = INPUT_CHECK()
 
 
@@ -113,6 +114,7 @@ workflow MIKROKONDO {
 
         mk_out = CLEAN_ASSEMBLE_READS(split_data.read_data)
         
+        ch_versions = ch_versions.mix(mk_out.versions)
         if(!params.skip_assembly){
 
             assembly_data =  mk_out.final_assembly.mix(split_data.post_assembly.map{
@@ -127,11 +129,11 @@ workflow MIKROKONDO {
                 meta, reports, contigs -> tuple(meta, reports)
             }.join(mk_out.base_counts)
 
-            ch_versions = ps_out.versions
+            //ch_versions = ps_out.versions
+            ch_versions = ch_versions.mix(ps_out.versions)
             ch_reports = ch_reports.mix(ps_out.reports)
 
         }
-
         ch_reports = ch_reports.mix(mk_out.reports)
         ch_reports_all = ch_reports.collect()
 

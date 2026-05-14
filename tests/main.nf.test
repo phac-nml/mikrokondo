@@ -3,6 +3,102 @@ nextflow_pipeline {
     name "Full Integration Tests for MIKROKONDO"
     script "main.nf"
 
+    test("Skip assembly.") {
+        tag "skip_assembly"
+
+        when {
+            params {
+                input = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/samplesheets/samplesheet-campy-staph.csv"
+                outdir = "$outputDir"
+
+                platform = "illumina"
+
+                mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
+                mh_min_kmer = 1
+
+                dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+
+                kraken2_db = "$baseDir/tests/data/kraken2/test"
+
+                min_reads = 100
+                skip_assembly = true
+                skip_bakta = true
+                skip_staramr = true
+                skip_mobrecon = true
+                skip_checkm = true
+                skip_raw_read_metrics = false
+                skip_polishing = true
+                skip_allele_calling = true
+
+                max_memory = "2.GB"
+                max_cpus = 1
+            }
+        }
+
+        then {
+            assert workflow.success
+            assert path("$outputDir").exists()
+
+            // parse output json file
+            def json = path("$outputDir/FinalReports/Aggregated/Json/final_report.json").json
+
+            assert json.CSE.CSE.FastP.summary.sequencing.equals("paired end (150 cycles + 150 cycles)")
+            assert json.CSE.CSE.FastP.summary.before_filtering.total_reads.equals(248)
+            assert json.CSE.CSE.FastP.filtering_result.passed_filter_reads.equals(248)
+            assert json.CSE.CSE.FastP.insert_size.peak.equals(196)
+            assert json.CSE.CSE.FastP.filtering_result.low_quality_reads.equals(0)
+
+            //assert json.CSE.meta.metagenomic.equals(false)  // Currently, this is "null".
+            assert json.CSE.meta.assembly.equals(false)
+            assert json.CSE.meta.hybrid.equals(false)
+            assert json.CSE.meta.single_end.equals(false)
+            assert json.CSE.meta.merge.equals(false)
+            assert json.CSE.meta.downsampled.equals(false)
+
+            def assembly_path = "$outputDir/Assembly/FinalAssembly/CSE/CSE.final.filtered.assembly.fasta.gz"
+            assert path(assembly_path).exists().equals(false)
+
+            def contigs_path = "$outputDir/Assembly/FinalAssembly"
+            assert path(contigs_path).exists().equals(false)
+
+            // compare IRIDA Next JSON output
+            def iridanext_json = path("$outputDir/iridanext.output.json").json
+            def iridanext_global = iridanext_json.files.global
+            def iridanext_samples = iridanext_json.files.samples
+            def iridanext_metadata = iridanext_json.metadata.samples
+
+            // output files
+            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Json/final_report.json" }.size() == 1
+            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Tables/final_report.tsv" }.size() == 1
+            assert iridanext_samples.CSE.findAll { it.path.contains("Assembly/FinalAssembly") }.size() == 0
+            assert iridanext_samples.CSE.findAll { it.path.contains("Assembly/FinalReports/FlattenedReports/CSE.flat_sample.json.gz") }.size() == 0
+
+            // metadata
+            assert iridanext_metadata.CSE.containsKey("qc_status_overall")
+            assert iridanext_metadata.CSE."qc_status_overall" == "FAILED"
+            assert !iridanext_metadata.CSE.containsKey("qc_status_contamination")
+            assert !iridanext_metadata.CSE.containsKey("checkm_value")
+            assert !iridanext_metadata.CSE.containsKey("qc_status_read_depth_fixed")
+            assert !iridanext_metadata.CSE.containsKey("mean_read_depth_fixed")
+            assert !iridanext_metadata.CSE.containsKey("qc_status_assembly_n50")
+            assert !iridanext_metadata.CSE.containsKey("n50_value")
+            assert !iridanext_metadata.CSE.containsKey("Raw Average Quality Status")
+            assert iridanext_metadata.CSE.containsKey("raw_average_quality_value")
+            assert !iridanext_metadata.CSE.containsKey("qc_status_assembly_genome_size")
+            assert !iridanext_metadata.CSE.containsKey("assembly_length")
+            assert !iridanext_metadata.CSE.containsKey("qc_status_assembly_num_contigs")
+            assert !iridanext_metadata.CSE.containsKey("assembly_num_contigs")
+            assert iridanext_metadata.CSE."qc_summary" == "FAILED; Passed Tests: 2/8; Ignored checks 6: average_coverage, n50_value, nr_contigs, length, checkm2_contamination, wgmlst_loci_count; Species ID: No organism specific QC data available.; Organism QC Criteria: No organism specific QC data available."
+
+            assert iridanext_metadata.CSE."Downsampled" == false
+            assert !iridanext_metadata.CSE.containsKey("predicted_identification_name")
+            assert !iridanext_metadata.CSE.containsKey("predicted_identification_method")
+            assert !iridanext_metadata.CSE.containsKey("gc")
+            //assert iridanext_metadata.CSE."Mean Sequence Length Forward" == 150
+            // Base count after decontamination
+            assert iridanext_metadata.CSE.total_sequenced_bases == 787500
+        }
+    }
     test("Should fail to assembly due to too few reads.") {
         tag "fail_assembly"
 
