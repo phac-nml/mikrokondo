@@ -115,23 +115,21 @@ workflow CLEAN_ASSEMBLE_READS {
         // Create empty channel for assemblies to further process
         ch_final_assembly = Channel.empty()
         
-        if(!params.skip_assembly){
 
-             // Isolate workflow
-             ch_assembled_reads = ASSEMBLE_READS(ch_trimmed_reads)
-             ch_base_counts = ch_assembled_reads.base_counts
-             ch_reports = ch_reports.mix(ch_assembled_reads.reports)
-             ch_versions = ch_versions.mix(ch_assembled_reads.versions)
+        // Isolate workflow
+        ch_assembled_reads = ASSEMBLE_READS(ch_trimmed_reads)
+        ch_base_counts = ch_assembled_reads.base_counts
+        ch_reports = ch_reports.mix(ch_assembled_reads.reports)
+        ch_versions = ch_versions.mix(ch_assembled_reads.versions)
 
-             if(!params.skip_polishing){
-                 POLISH_ASSEMBLIES(ch_trimmed_reads, ch_assembled_reads.final_contigs)
-                 ch_final_assembly = POLISH_ASSEMBLIES.out.assemblies
-                 ch_versions = ch_versions.mix(POLISH_ASSEMBLIES.out.versions)
-             }else{
-                 log.info "Skipping Polishing"
-                 ch_final_assembly = ch_assembled_reads.final_contigs
-                 ch_final_assembly = ch_final_assembly.join(ch_trimmed_reads)
-             }
+        if(!params.skip_polishing && !params.skip_assembly){
+            POLISH_ASSEMBLIES(ch_trimmed_reads, ch_assembled_reads.final_contigs)
+            ch_final_assembly = POLISH_ASSEMBLIES.out.assemblies
+            ch_versions = ch_versions.mix(POLISH_ASSEMBLIES.out.versions)
+        }else if(params.skip_assembly){
+            log.info "Skipping Polishing"
+            ch_final_assembly = ch_assembled_reads.final_contigs
+            ch_final_assembly = ch_final_assembly.join(ch_trimmed_reads)
         }
 
     }
@@ -139,7 +137,7 @@ workflow CLEAN_ASSEMBLE_READS {
     emit:
         final_assembly = params.skip_assembly ? [] : ch_final_assembly
         base_counts = ch_base_counts
-        cleaned_reads = ch_trimmed_reads
+        cleaned_reads = ch_trimmed_reads // TODO missing basecounts from hybrid assembly
         versions = ch_versions
         reports = ch_reports
 }

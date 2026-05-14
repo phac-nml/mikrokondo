@@ -28,69 +28,72 @@ workflow ASSEMBLE_READS{
     versions = versions.mix(base_counts.versions)
 
 
-    def platform_comp = params.platform.replaceAll("\\s", "").toString() // strip whitespace from entries
-    if(platform_comp == params.opt_platforms.illumina){
-        ch_assembled = SPADES_ASSEMBLE(sample_data)
+    if(!params.skip_assembly){
 
-    }else if(platform_comp == params.opt_platforms.ont || platform_comp == params.opt_platforms.pacbio){
-        def options = ["hq", "corr", "raw"]
-        def read_type = "hq"
-        if(params.flye_read_type in options){
-            read_type = params.flye_read_type
-        }else{
-            log.warn "No read type quality type specified for flye. Defualting to reads as high-quality if Nanopre or hifi if pacbio."
+        def platform_comp = params.platform.replaceAll("\\s", "").toString() // strip whitespace from entries
+        if(platform_comp == params.opt_platforms.illumina){
+            ch_assembled = SPADES_ASSEMBLE(sample_data)
+
+        }else if(platform_comp == params.opt_platforms.ont || platform_comp == params.opt_platforms.pacbio){
+            def options = ["hq", "corr", "raw"]
+            def read_type = "hq"
+            if(params.flye_read_type in options){
+                read_type = params.flye_read_type
+            }else{
+                log.warn "No read type quality type specified for flye. Defualting to reads as high-quality if Nanopre or hifi if pacbio."
+            }
+            def def_mode = params.flye[params.platform][read_type]
+            ch_assembled = FLYE_ASSEMBLE(sample_data, Channel.value(def_mode))
+
+
         }
-        def def_mode = params.flye[params.platform][read_type]
-        ch_assembled = FLYE_ASSEMBLE(sample_data, Channel.value(def_mode))
+        else{
+            log.error "Platform not recognized in workflow ASSEMBLE_READS: $platform_comp"
+            exit(0)
+        }
+        versions = versions.mix(ch_assembled.versions)
 
+        // For determining what assemblies failed if failure is ignored
+        assembly_status = ch_assembled.contigs.join(sample_data, remainder: true).branch {
+            meta, contigs, reads -> failed: contigs == null
+                                    passed: true}
 
-    }
-    else{
-        log.error "Platform not recognized in workflow ASSEMBLE_READS: $platform_comp"
-        exit(0)
-    }
-    versions = versions.mix(ch_assembled.versions)
-
-    // For determining what assemblies failed if failure is ignored
-    assembly_status = ch_assembled.contigs.join(sample_data, remainder: true).branch {
-        meta, contigs, reads -> failed: contigs == null
-                                passed: true}
-
-    reports = reports.mix(assembly_status.failed.map{
-        meta, contigs, reads -> tuple(meta, params.assembly_status, false)
-    })
-    reports = reports.mix(assembly_status.passed.map{
-        meta, contigs, reads -> tuple(meta, params.assembly_status, true)
-    })
+        reports = reports.mix(assembly_status.failed.map{
+            meta, contigs, reads -> tuple(meta, params.assembly_status, false)
+        })
+        reports = reports.mix(assembly_status.passed.map{
+            meta, contigs, reads -> tuple(meta, params.assembly_status, true)
+        })
 
 
 
-    BANDAGE_IMAGE(ch_assembled.graphs)
-    versions = versions.mix(BANDAGE_IMAGE.out.versions)
+        BANDAGE_IMAGE(ch_assembled.graphs)
+        versions = versions.mix(BANDAGE_IMAGE.out.versions)
 
 
-    if(!params.skip_polishing){
-        // TODO move this too polishing
-        // RACON is next and is common in all steps
-        minimap2_idx = MINIMAP2_INDEX(ch_assembled.contigs)
-        versions = versions.mix(minimap2_idx.versions)
-        ch_mapping_data = sample_data.join(minimap2_idx.index)
+        if(!params.skip_polishing){
+            // TODO move this too polishing
+            // RACON is next and is common in all steps
+            minimap2_idx = MINIMAP2_INDEX(ch_assembled.contigs)
+            versions = versions.mix(minimap2_idx.versions)
+            ch_mapping_data = sample_data.join(minimap2_idx.index)
 
-        //Decided to leave Racon out of the polishing work flow but to wrap this in statement in a optional value in the future
-        output_paf = Channel.value(true)
-        mapped_data = MINIMAP2_MAP(ch_mapping_data.join(ch_assembled.contigs), output_paf)
-        versions = versions.mix(mapped_data.versions)
-        racon_out = RACON_POLISH(mapped_data.mapped_data)
-        final_contigs = racon_out.racon_polished
-        versions = versions.mix(racon_out.versions)
-    }else{
-        final_contigs = ch_assembled.contigs
+            //Decided to leave Racon out of the polishing work flow but to wrap this in statement in a optional value in the future
+            output_paf = Channel.value(true)
+            mapped_data = MINIMAP2_MAP(ch_mapping_data.join(ch_assembled.contigs), output_paf)
+            versions = versions.mix(mapped_data.versions)
+            racon_out = RACON_POLISH(mapped_data.mapped_data)
+            final_contigs = racon_out.racon_polished
+            versions = versions.mix(racon_out.versions)
+        }else{
+            final_contigs = ch_assembled.contigs
+        }
     }
 
     emit:
-    contigs = ch_assembled.contigs
-    graphs = ch_assembled.graphs
-    final_contigs = final_contigs
+    contigs = params.skip_assembly ? [] : ch_assembled.contigs
+    graphs = params.skip_assembly ? [] : ch_assembled.graphs
+    final_contigs = params.skip_assembly ? [] : final_contigs
     base_counts = base_counts.base_counts
     versions = versions
     reports = reports
