@@ -19,39 +19,6 @@ nextflow.enable.dsl = 2
 */
 
 
-
-process MAX_SAMPLES_CHECK {
-    tag "max_samples_error"
-    publishDir "${params.outdir}/error"
-
-    input:
-    val sample_count // number of samples provided to mikrokondo
-
-    output:
-    path output_file_path, emit: failure_report
-
-    exec:
-    def output_file =  "max_samples_exceeded.error.txt"
-    output_file_path = task.workDir.resolve(output_file)
-    file_out = file(output_file_path)
-    file_out.text = """
-    ${sample_count} samples were selected, which exceeds the maximum number of samples: ${params.max_samples}
-    Please reduce samples to ${params.max_samples}.
-
-    Pipeline maximum sample count threshold should only occur when running in IRIDA Next,
-    please submit an issue if you encounter it elsewhere.
-
-    This limit has been added for execution in IRIDA Next to prevent accidental generation of large compute bills.
-
-    If running from command-line make sure that --max_samples 0
-    """.stripIndent().trim()
-
-
-
-}
-
-
-
 println '\033[0;32m ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\033[0m'
 println '\033[0;32m 888b     d888 d8b 888                      888    d8P                         888\033[0m'
 println '\033[0;32m 8888b   d8888 Y8P 888                      888   d8P                          888\033[0m'
@@ -105,8 +72,6 @@ include { GZIP_FILES } from './modules/local/gzip_files.nf'
 include { CUSTOM_DUMPSOFTWAREVERSIONS } from './modules/nf-core/custom/dumpsoftwareversions/main'
 include { REPORT_PIPELINE_PARAMETERS } from './modules/local/report_pipeline_parameter'
 
-
-
 import org.slf4j.LoggerFactory;
 
 //
@@ -115,6 +80,13 @@ import org.slf4j.LoggerFactory;
 
 
 workflow MIKROKONDO {
+
+    def number_of_lines = 0
+    def input_file = file(params.input)
+    if(input_file.exists() && params.max_samples != 0){
+        def lines = input_file.readLines()
+        number_of_lines = lines.size()
+    }
 
     if(params.validate_params){
         //====Temporarily turn of logging for ScriptBinding process that throws warns
@@ -126,15 +98,8 @@ workflow MIKROKONDO {
         logger2.setLevel(ch.qos.logback.classic.Level.DEBUG)
     }
 
-    /*
-        Dont bother checking the number of lines in the samples if max_samples == 0
-        as we will not do anything with the limit.
-    */
 
-    def number_of_samples = file(params.input).readLines().size() - 1 // Remove 1 for header
-    def unlimited_samples = (params.max_samples == 0) ? true : false
-
-    if( unlimited_samples || number_of_samples <= params.max_samples){
+    if(number_of_lines <= params.max_samples){
         log.info paramsSummaryLog(workflow)
 
         ch_reports = Channel.empty()
@@ -147,23 +112,27 @@ workflow MIKROKONDO {
         }
 
         mk_out = CLEAN_ASSEMBLE_READS(split_data.read_data)
+        
+        if(!params.skip_assembly){
 
-        assembly_data =  mk_out.final_assembly.mix(split_data.post_assembly.map{
-            meta, contigs -> tuple(meta, contigs, []) // appending empty brackets to match cardinality of the first processes output
-        })
+            assembly_data =  mk_out.final_assembly.mix(split_data.post_assembly.map{
+                meta, contigs -> tuple(meta, contigs, []) // appending empty brackets to match cardinality of the first processes output
+            })
 
-        ps_out = POST_ASSEMBLY(assembly_data, mk_out.cleaned_reads, mk_out.versions)
+            ps_out = POST_ASSEMBLY(assembly_data, mk_out.cleaned_reads, mk_out.versions)
 
 
-        // Assemblies will be discared
-        base_count_data = ps_out.quast_table.map{
-            meta, reports, contigs -> tuple(meta, reports)
-        }.join(mk_out.base_counts)
+            // Assemblies will be discared
+            base_count_data = ps_out.quast_table.map{
+                meta, reports, contigs -> tuple(meta, reports)
+            }.join(mk_out.base_counts)
 
-        ch_versions = ps_out.versions
+            ch_versions = ps_out.versions
+            ch_reports = ch_reports.mix(ps_out.reports)
+
+        }
 
         ch_reports = ch_reports.mix(mk_out.reports)
-        ch_reports = ch_reports.mix(ps_out.reports)
         ch_reports_all = ch_reports.collect()
 
         if(!params.skip_report){
@@ -208,8 +177,7 @@ workflow MIKROKONDO {
             software_report_channel)
         }
     }else{
-        MAX_SAMPLES_CHECK(channel.value(number_of_samples))
-        log.info "Parameter --max_samples was set: See outdir/error/max_samples_exceeded.error.txt for more information."
+        MAX_SAMPLES_CHECK(channel.value(number_of_lines))
     }
 
 }

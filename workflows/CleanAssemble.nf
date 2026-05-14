@@ -87,17 +87,19 @@ workflow CLEAN_ASSEMBLE_READS {
         // Join cleaned reads back together
         ch_trimmed_reads = short_reads_trimmed.trimmed_reads.join(long_reads_trimmed.trimmed_reads)
 
+        if(!params.skip_assembly){
 
-        // Join long reads back in with the
-        ch_assembled_reads = HYBRID_ASSEMBLY(ch_trimmed_reads)
-        ch_base_counts = ch_assembled_reads.base_counts
-        ch_output_data_asm = ch_assembled_reads.fasta
-        ch_versions = ch_versions.mix(HYBRID_ASSEMBLY.out.versions)
-        ch_reports = ch_reports.mix(HYBRID_ASSEMBLY.out.reports)
-        // TODO should long reads be sub-sampled in hybrid assembly?
+            // Join long reads back in with the
+            ch_assembled_reads = HYBRID_ASSEMBLY(ch_trimmed_reads)
+            ch_base_counts = ch_assembled_reads.base_counts
+            ch_output_data_asm = ch_assembled_reads.fasta
+            ch_versions = ch_versions.mix(HYBRID_ASSEMBLY.out.versions)
+            ch_reports = ch_reports.mix(HYBRID_ASSEMBLY.out.reports)
+            // TODO should long reads be sub-sampled in hybrid assembly?
 
-        ch_final_assembly = ch_output_data_asm.map{
-            meta, contigs, sr, lr -> tuple(meta, contigs, [sr[0], sr[1], lr])
+            ch_final_assembly = ch_output_data_asm.map{
+                meta, contigs, sr, lr -> tuple(meta, contigs, [sr[0], sr[1], lr])
+            }
         }
 
 
@@ -112,27 +114,30 @@ workflow CLEAN_ASSEMBLE_READS {
 
         // Create empty channel for assemblies to further process
         ch_final_assembly = Channel.empty()
+        
+        if(!params.skip_assembly){
 
-        // Isolate workflow
-        ch_assembled_reads = ASSEMBLE_READS(ch_trimmed_reads)
-        ch_base_counts = ch_assembled_reads.base_counts
-        ch_reports = ch_reports.mix(ch_assembled_reads.reports)
-        ch_versions = ch_versions.mix(ch_assembled_reads.versions)
+             // Isolate workflow
+             ch_assembled_reads = ASSEMBLE_READS(ch_trimmed_reads)
+             ch_base_counts = ch_assembled_reads.base_counts
+             ch_reports = ch_reports.mix(ch_assembled_reads.reports)
+             ch_versions = ch_versions.mix(ch_assembled_reads.versions)
 
-        if(!params.skip_polishing){
-            POLISH_ASSEMBLIES(ch_trimmed_reads, ch_assembled_reads.final_contigs)
-            ch_final_assembly = POLISH_ASSEMBLIES.out.assemblies
-            ch_versions = ch_versions.mix(POLISH_ASSEMBLIES.out.versions)
-        }else{
-            log.info "Skipping Polishing"
-            ch_final_assembly = ch_assembled_reads.final_contigs
-            ch_final_assembly = ch_final_assembly.join(ch_trimmed_reads)
+             if(!params.skip_polishing){
+                 POLISH_ASSEMBLIES(ch_trimmed_reads, ch_assembled_reads.final_contigs)
+                 ch_final_assembly = POLISH_ASSEMBLIES.out.assemblies
+                 ch_versions = ch_versions.mix(POLISH_ASSEMBLIES.out.versions)
+             }else{
+                 log.info "Skipping Polishing"
+                 ch_final_assembly = ch_assembled_reads.final_contigs
+                 ch_final_assembly = ch_final_assembly.join(ch_trimmed_reads)
+             }
         }
 
     }
 
     emit:
-        final_assembly = ch_final_assembly
+        final_assembly = params.skip_assembly ? [] : ch_final_assembly
         base_counts = ch_base_counts
         cleaned_reads = ch_trimmed_reads
         versions = ch_versions
