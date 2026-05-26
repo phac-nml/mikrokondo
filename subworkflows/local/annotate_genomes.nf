@@ -72,16 +72,15 @@ workflow ANNOTATE_GENOMES {
                                                         tuple(meta, params.staramr.point_finder_db_default)
                                                     } // Add in default null value for StarAMR
         }else{
-            point_finder_organism = IDENTIFY_POINTDB(top_hit).pointfinder_db
+            point_finder_organism = IDENTIFY_POINTDB(top_hit)
         }
 
-
         // Report point finder databases used
-        reports = reports.mix(point_finder_organism.map{
+        reports = reports.mix(point_finder_organism.pointfinder_db.map{
             meta, organism -> tuple(meta, params.pointfinder_db_tag, organism)
         })
 
-        star_amr_data_merged = contig_data.join(point_finder_organism)
+        star_amr_data_merged = contig_data.join(point_finder_organism.pointfinder_db,).join(point_finder_organism.staramr_param_val).view()
         staramr_ = STARAMR(star_amr_data_merged, db_star) // pass nothing for database as it will use what is in the container
         versions = versions.mix(staramr_.versions)
         reports = reports.mix(staramr_.summary.map{

@@ -6,7 +6,7 @@ process STARAMR {
     container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.parameters.get('singularity') : task.ext.parameters.get('docker')}"
 
     input:
-    tuple val(meta), path(fasta), val(point_finder_db)
+    tuple val(meta), path(fasta), val(point_finder_db), val(staramr_param_val)
     path db
 
     output:
@@ -40,6 +40,9 @@ process STARAMR {
     }else{
         log.info "No relevant pointfinder database could be identified for $meta.id"
     }
+
+    // Some of staramr's parameters are species specific, so we need to pass these in as well
+    args = args + staramr_param_val
     """
     export TMPDIR=\$PWD # set env temp dir to in the folder
     if [ "$is_compressed" == "true" ]; then

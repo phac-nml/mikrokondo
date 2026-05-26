@@ -538,18 +538,6 @@
             "default": true,
             "description": "Run SISTR using the full set of cgMLST alleles which can include highly similar alleles."
         },
-        "genome_size_lower_bound": {
-            "type": "integer",
-            "description": "The lower bound for our genome size for the quality metrics [Default 4000000]",
-            "default": 4000000,
-            "minimum": 1
-        },
-        "genome_size_upper_bound": {
-            "type": "integer",
-            "description": "The upper bound for our genome size for the quality metrics [Default 6000000].",
-            "default": 6000000,
-            "minimum": 1
-        },
         "minimum_N50_value": {
             "type": "integer",
             "description": "The minimum N50 value for the quality metrics [Defaults 10000]",
@@ -579,20 +567,6 @@
             "type": "integer",
             "description": "The percent length overlap for plasmidfinder results [Default 60]",
             "default": 60,
-            "minimum": 1,
-            "maximum": 100
-        },
-        "percent_length_overlap_resfinder": {
-            "type": "integer",
-            "description": "The percent length overlap for resfinder results [Default 60]",
-            "default": 60,
-            "minimum": 1,
-            "maximum": 100
-        },
-        "percent_length_overlap_pointfinder": {
-            "type": "integer",
-            "description": "The percent length overlap for pointfinder results [Default 95]",
-            "default": 95,
             "minimum": 1,
             "maximum": 100
         },
