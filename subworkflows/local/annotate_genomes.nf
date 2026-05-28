@@ -68,19 +68,24 @@ workflow ANNOTATE_GENOMES {
 
         point_finder_organism = channel.empty()
         if(params.skip_species_classification){
-            point_finder_organism = contig_data.map{ meta, assembly ->
-                                                        tuple(meta, params.staramr.point_finder_db_default)
-                                                    } // Add in default null value for StarAMR
+            def default_db = params.staramr.point_finder_db_default
+            def default_params = " --genome-size-lower-bound ${params.QCReport.fallthrough.staramr_genome_size_lower_bound} --genome-size-upper-bound ${params.QCReport.fallthrough.staramr_genome_size_upper_bound} --percent-length-overlap-resfinder ${params.QCReport.fallthrough.staramr_percent_length_overlap_resfinder} --percent-length-overlap-pointfinder ${params.QCReport.fallthrough.staramr_percent_length_overlap_pointfinder}"
+    
+            point_finder_organism = [
+                pointfinder_db: contig_data.map{ meta, assembly -> tuple(meta, default_db) },
+                staramr_param_val: contig_data.map{ meta, assembly -> tuple(meta, default_params) }
+            ]
         }else{
             point_finder_organism = IDENTIFY_POINTDB(top_hit)
         }
-
+        
         // Report point finder databases used
         reports = reports.mix(point_finder_organism.pointfinder_db.map{
             meta, organism -> tuple(meta, params.pointfinder_db_tag, organism)
         })
 
         star_amr_data_merged = contig_data.join(point_finder_organism.pointfinder_db,).join(point_finder_organism.staramr_param_val)
+        star_amr_data_merged.view()
         staramr_ = STARAMR(star_amr_data_merged, db_star) // pass nothing for database as it will use what is in the container
         versions = versions.mix(staramr_.versions)
         reports = reports.mix(staramr_.summary.map{

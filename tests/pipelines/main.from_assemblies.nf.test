@@ -274,6 +274,10 @@ nextflow_pipeline {
                     staphylococcus{search = "Staphylococcus"}
                     fallthrough {
                         search = "No organism specific QC data available."
+                        staramr_genome_size_lower_bound = 4000000
+                        staramr_genome_size_upper_bound = 6000000
+                        staramr_percent_length_overlap_resfinder = 60
+                        staramr_percent_length_overlap_pointfinder = 95
                     }
                 }
             }
