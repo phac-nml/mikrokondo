@@ -76,7 +76,7 @@
                     "spades": "3.15.5"
                 },
                 "STARAMR": {
-                    "staramr": "0.12.1"
+                    "staramr": "0.12.2"
                 },
                 "Workflow": {
                     "phac-nml/mikrokondo": "0.10.1"
