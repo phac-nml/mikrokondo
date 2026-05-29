@@ -608,10 +608,9 @@ nextflow_pipeline {
 
     test("Test starting from assemblies salmonella") {
         tag "from_assemblies_salmonella"
-
         when {
             params {
-                input = "$projectDir/tests/data/samplesheets/samplesheet-test-from-assemblies-salmonella.csv"
+                input = "$outputDir/samplesheet.csv"
                 outdir = "$outputDir"
 
                 platform = "illumina"
