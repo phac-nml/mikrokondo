@@ -266,6 +266,10 @@ nextflow_pipeline {
                         PrimaryTypeIDMethod = "ectyper 2.0.0"
                         SecondaryTypeID = ["ECTyperSubtyping", 0, "sequence_type"]
                         SecondaryTypeIDMethod = ""
+                        staramr_genome_size_lower_bound = 4000000
+                        staramr_genome_size_upper_bound = 6700000
+                        staramr_percent_length_overlap_resfinder = 52
+                        staramr_percent_length_overlap_pointfinder = 95
                     }
                     salmonella{search = "Salmonella"}
                     listeria{search = "Listeria"}
