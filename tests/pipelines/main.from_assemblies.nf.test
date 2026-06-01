@@ -614,7 +614,7 @@ nextflow_pipeline {
         tag "from_assemblies_salmonella"
         when {
             params {
-                input = "$outputDir/samplesheet.csv"
+                input = "$projectDir/tests/data/samplesheets/samplesheet-test-from-assemblies-salmonella.csv"
                 outdir = "$outputDir"
 
                 platform = "illumina"
