@@ -581,11 +581,6 @@
         "exclude_resistance_phenotypes": {
             "type": "boolean",
             "description": "Exclude predicted antimicrobial resistances [Default False]."
-        },    
-        "species": {
-          "type": "string",
-          "default": "",
-          "description": "Species for pointfinder"
         }
       }  
     },
