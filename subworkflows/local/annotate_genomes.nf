@@ -78,7 +78,6 @@ workflow ANNOTATE_GENOMES {
         }else{
             point_finder_organism = IDENTIFY_POINTDB(top_hit)
         }
-        
         // Report point finder databases used
         reports = reports.mix(point_finder_organism.pointfinder_db.map{
             meta, organism -> tuple(meta, params.pointfinder_db_tag, organism)

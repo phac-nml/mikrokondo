@@ -54,21 +54,19 @@ process IDENTIFY_POINTDB {
         }
     }
     point_finder_val = db_opt
-    if(point_finder_val == "salmonella"){
-        staramr_param_val = " --genome-size-lower-bound ${params.QCReport.salmonella.staramr_genome_size_lower_bound} --genome-size-upper-bound ${params.QCReport.salmonella.staramr_genome_size_upper_bound} --percent-length-overlap-resfinder ${params.QCReport.salmonella.staramr_percent_length_overlap_resfinder} --percent-length-overlap-pointfinder ${params.QCReport.salmonella.staramr_percent_length_overlap_pointfinder}"
-    }
-    else if(point_finder_val == "escherichia_coli"){
-        staramr_param_val = " --genome-size-lower-bound ${params.QCReport.escherichia.staramr_genome_size_lower_bound} --genome-size-upper-bound ${params.QCReport.escherichia.staramr_genome_size_upper_bound} --percent-length-overlap-resfinder ${params.QCReport.escherichia.staramr_percent_length_overlap_resfinder} --percent-length-overlap-pointfinder ${params.QCReport.escherichia.staramr_percent_length_overlap_pointfinder}"
-    }
-    else if(species_data.contains("campylobacter")){
-        staramr_param_val = " --genome-size-lower-bound ${params.QCReport.campylobacter_jejuni.staramr_genome_size_lower_bound} --genome-size-upper-bound ${params.QCReport.campylobacter_jejuni.staramr_genome_size_upper_bound} --percent-length-overlap-resfinder ${params.QCReport.campylobacter_jejuni.staramr_percent_length_overlap_resfinder} --percent-length-overlap-pointfinder ${params.QCReport.campylobacter_jejuni.staramr_percent_length_overlap_pointfinder}"
-    }
-    else if(species_data.contains("shigella")){
-        staramr_param_val = " --genome-size-lower-bound ${params.QCReport.shigella.staramr_genome_size_lower_bound} --genome-size-upper-bound ${params.QCReport.shigella.staramr_genome_size_upper_bound} --percent-length-overlap-resfinder ${params.QCReport.shigella.staramr_percent_length_overlap_resfinder} --percent-length-overlap-pointfinder ${params.QCReport.shigella.staramr_percent_length_overlap_pointfinder}"
-    }
-    else{
-        staramr_param_val = " --genome-size-lower-bound ${params.QCReport.fallthrough.staramr_genome_size_lower_bound} --genome-size-upper-bound ${params.QCReport.fallthrough.staramr_genome_size_upper_bound} --percent-length-overlap-resfinder ${params.QCReport.fallthrough.staramr_percent_length_overlap_resfinder} --percent-length-overlap-pointfinder ${params.QCReport.fallthrough.staramr_percent_length_overlap_pointfinder}"
-    }
+
+    def QCREPORT_MAP = [
+    'salmonella'           : 'salmonella',
+    'escherichia_coli'     : 'escherichia',
+    'campylobacter'        : 'campylobacter_jejuni',
+    'enterococcus_faecalis': 'enterococcus',
+    'enterococcus_faecium' : 'enterococcus',
+    'helicobacter_pylori'  : 'helicobacter_pylori',
+    ]
+    
+    def qcreport_species = QCREPORT_MAP.getOrDefault(db_opt, 'fallthrough')
+    staramr_param_val = " --genome-size-lower-bound ${params.QCReport[qcreport_species].staramr_genome_size_lower_bound} --genome-size-upper-bound ${params.QCReport[qcreport_species].staramr_genome_size_upper_bound} --percent-length-overlap-resfinder ${params.QCReport[qcreport_species].staramr_percent_length_overlap_resfinder} --percent-length-overlap-pointfinder ${params.QCReport[qcreport_species].staramr_percent_length_overlap_pointfinder}"
+    
 }
 
 
