@@ -528,16 +528,11 @@
       }
     },
     "staramr": {
-      "title": "SISTR",
+      "title": "starAMR",
       "type": "object",
-      "description": "Options for SISTR (Salmonella serotyping)",
+      "description": "Options for starAMR",
       "default": "",
       "properties": {
-        "sr_full_cgmlst": {
-            "type": "boolean",
-            "default": true,
-            "description": "Run SISTR using the full set of cgMLST alleles which can include highly similar alleles."
-        },
         "minimum_N50_value": {
             "type": "integer",
             "description": "The minimum N50 value for the quality metrics [Defaults 10000]",
