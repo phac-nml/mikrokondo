@@ -1,6 +1,6 @@
 // Process for selecting the relevant pointfinder DB for StarAMR
 
-process IDENTIFY_POINTDB {
+process IDENTIFY_STARAMR_SPECIES {
     tag "$meta.id"
     label "process_single"
 
@@ -8,8 +8,7 @@ process IDENTIFY_POINTDB {
     tuple val(meta), val(species)
 
     output:
-    tuple val(meta), val(point_finder_val),  emit: pointfinder_db
-    tuple val(meta), val(staramr_param_val), emit: staramr_param_val
+    tuple val(meta), val(point_finder_val), val(staramr_param_val),  emit: staramr_param_val
 
     exec:
     if(workflow.stubRun){

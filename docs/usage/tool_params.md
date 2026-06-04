@@ -380,6 +380,14 @@ StarAMR provides annotation of antimicrobial resistance genes within your data. 
   - point_finder_dbs: A list containing the valid databases StarAMR supports for pointfinder. The way they are structured matches what StarAMR needs for input. Do not alter this field unless doing pipeline development.
   - report_tag: The field name of StarAMR in the final summary report. Do not alter this field unless doing pipeline development.
   - header_p: Indicates the final report from StarAMR contains a header line. Do not alter this field unless doing pipeline development.
+  - minimum_N50_value: The minimum N50 value for the quality metrics. Defaults to 10000.
+  - minimum_contig_length: The minimum contig length for the quality metrics. Defaults to 300 bp
+  - unacceptable_number_contigs: The minimum, unacceptable number of contigs which are equal to or above the minimum contig length for our quality metrics. Defaults to 1000
+  - pid_threshold: The percent identity threshold (default 98.0)
+  - percent_length_overlap_plasmidfinder: The percent length overlap for resfinder results (default 60.0)      
+  - no_exclude_genes: Disable the default exclusion of some genes from ResFinder/PointFinder/PlasmidFinder (default false)
+  - exclude_negatives: Exclude negative results (those susceptible to antimicrobials) (default false)
+  - exclude_resistance_phenotypes: Exclude predicted antimicrobial resistances (default false)
 
 ## Bakta
 

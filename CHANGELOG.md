@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added additional raw-read output field to the IRIDANext output table `total_sequenced_reads`. [PR 215](https://github.com/phac-nml/mikrokondo/pull/215)
 
+- Added starAMR parameters to module. Including species specific parameters. [PR 220](https://github.com/phac-nml/mikrokondo/pull/220) 
+
 ### Changed
 
 - Bumped `max_illumina_read_length` to 510bp. [PR 215](https://github.com/phac-nml/mikrokondo/pull/215)
@@ -18,6 +20,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated StarAMR to version 0.12.2 [PR 222](https://github.com/phac-nml/mikrokondo/pull/222)
 
 - Set nextflow version 25.10.4 to replace 'latest-everything' to confirm compatibility with next IRIDA-Next nextflow version in `.github/workflows` for nf-test. [PR 219](https://github.com/phac-nml/mikrokondo/pull/219)
+
+- Changed the name of process `IDENTIFY_POINTDB` to `IDENTIFY_STARAMR_SPECIES` and the script name `modules/local/select_pointfinder.nf -> modules/local/staramr_species_params.nf`. [PR 220](https://github.com/phac-nml/mikrokondo/pull/220)
 
 ## 0.10.1 - 2026-2-16
 

@@ -3,7 +3,7 @@ include { BAKTA_ANNOTATE } from '../../modules/local/bakta_annotate.nf'
 include { ABRICATE } from "../../modules/local/abricate.nf"
 include { MOBSUITE_RECON } from "../../modules/local/mob_recon.nf"
 include { STARAMR } from "../../modules/local/staramr.nf"
-include { IDENTIFY_POINTDB } from "../../modules/local/staramr_species_params.nf"
+include { IDENTIFY_STARAMR_SPECIES } from "../../modules/local/staramr_species_params.nf"
 
 workflow ANNOTATE_GENOMES {
     take:
@@ -75,7 +75,7 @@ workflow ANNOTATE_GENOMES {
                 staramr_param_val: contig_data.map{ meta, assembly -> tuple(meta, default_db, default_params) }
             ]
         }else{
-            point_finder_organism = IDENTIFY_POINTDB(top_hit)
+            point_finder_organism = IDENTIFY_STARAMR_SPECIES(top_hit)
         }
         // Report point finder databases used
         reports = reports.mix(point_finder_organism.staramr_param_val.map{
