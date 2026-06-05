@@ -389,6 +389,13 @@ StarAMR provides annotation of antimicrobial resistance genes within your data. 
   - exclude_negatives: Exclude negative results (those susceptible to antimicrobials) (default false)
   - exclude_resistance_phenotypes: Exclude predicted antimicrobial resistances (default false)
 
+  ### Species specific parameters: 
+  If `--skip_species_classification: false`parameters will be adjusted from default to match the QCReports staramr parameters:
+  - staramr_genome_size_lower_bound: The lower bound for our genome size for the quality metrics. Defaults to 4 Mbp
+  - staramr_genome_size_upper_bound : The upper bound for our genome size for the quality metrics. Defaults to 6 Mbp
+  - staramr_percent_length_overlap_resfinder: BLAST threshold, the percent length overlap for resfinder results (Default 60.0).
+  - staramr_percent_length_overlap_pointfinder: BLAST threshold, The percent length overlap for pointfinder results (Default 95.0).
+
 ## Bakta
 
 Bakta is used to provide annotation of genomes, it is very reliable but it can be slow.

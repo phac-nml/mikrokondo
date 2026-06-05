@@ -53,18 +53,25 @@ process IDENTIFY_STARAMR_SPECIES {
         }
     }
     point_finder_val = db_opt
+    // Define staramr parameters based on genus-level classification
+    // No species level classification for staramr specific parameters
 
     def QCREPORT_MAP = [
     'salmonella'           : 'salmonella',
-    'escherichia_coli'     : 'escherichia',
+    'escherichia'          : 'escherichia',
     'campylobacter'        : 'campylobacter_jejuni',
-    'enterococcus_faecalis': 'enterococcus',
-    'enterococcus_faecium' : 'enterococcus',
-    'helicobacter_pylori'  : 'helicobacter_pylori',
+    'enterococcus'         : 'enterococcus',
+    'helicobacter'         : 'helicobacter_pylori',
+    'shigella'             : 'shigella'
     ]
-    
-    def qcreport_species = QCREPORT_MAP.getOrDefault(db_opt, 'fallthrough')
-    staramr_param_val = " --genome-size-lower-bound ${params.QCReport[qcreport_species].staramr_genome_size_lower_bound} --genome-size-upper-bound ${params.QCReport[qcreport_species].staramr_genome_size_upper_bound} --percent-length-overlap-resfinder ${params.QCReport[qcreport_species].staramr_percent_length_overlap_resfinder} --percent-length-overlap-pointfinder ${params.QCReport[qcreport_species].staramr_percent_length_overlap_pointfinder}"
+    def qcreport_genus = QCREPORT_MAP.getOrDefault(species_data[0], 'fallthrough')
+
+    if(qcreport_genus == 'fallthrough'){
+        log.info "No specific starAMR parameters could be identified for ${meta.id} based on the genus classification. Default parameters will be used."
+    }else{
+        log.info "Sample ${meta.id} will use the starAMR custom parameters for ${qcreport_genus}"
+    }
+    staramr_param_val = " --genome-size-lower-bound ${params.QCReport[qcreport_genus].staramr_genome_size_lower_bound} --genome-size-upper-bound ${params.QCReport[qcreport_genus].staramr_genome_size_upper_bound} --percent-length-overlap-resfinder ${params.QCReport[qcreport_genus].staramr_percent_length_overlap_resfinder} --percent-length-overlap-pointfinder ${params.QCReport[qcreport_genus].staramr_percent_length_overlap_pointfinder}"
     
 }
 
