@@ -56,15 +56,7 @@ process IDENTIFY_STARAMR_SPECIES {
     // Define staramr parameters based on genus-level classification
     // No species level classification for staramr specific parameters
 
-    def QCREPORT_MAP = [
-    'salmonella'           : 'salmonella',
-    'escherichia'          : 'escherichia',
-    'campylobacter'        : 'campylobacter_jejuni',
-    'enterococcus'         : 'enterococcus',
-    'helicobacter'         : 'helicobacter_pylori',
-    'shigella'             : 'shigella'
-    ]
-    def qcreport_genus = QCREPORT_MAP.getOrDefault(species_data[0], 'fallthrough')
+    def qcreport_genus = params.staramr.qcreport_map.getOrDefault(species_data[0], 'fallthrough')
 
     if(qcreport_genus == 'fallthrough'){
         log.info "No specific starAMR parameters could be identified for ${meta.id} based on the genus classification. Default parameters will be used."
