@@ -7,8 +7,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Fixed bug found in the ECTYPER parameters in the nextflow.config file. [PR 225](https://github.com/phac-nml/mikrokondo/pull/225).
-
 - Added additional StarAMR fields to the IRIDANext output table. [PR 215](https://github.com/phac-nml/mikrokondo/pull/215)
 
 - Added additional raw-read output field to the IRIDANext output table `total_sequenced_reads`. [PR 215](https://github.com/phac-nml/mikrokondo/pull/215)
@@ -20,8 +18,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated StarAMR to version 0.12.2 [PR 222](https://github.com/phac-nml/mikrokondo/pull/222)
 
 - Set nextflow version 25.10.4 to replace 'latest-everything' to confirm compatibility with next IRIDA-Next nextflow version in `.github/workflows` for nf-test. [PR 219](https://github.com/phac-nml/mikrokondo/pull/219)
+
+### Fixed
   
-- Switched the ECTYPER argument in the nextflow.config to assign the correct parameter: `hpid`. [PR 225](https://github.com/phac-nml/mikrokondo/pull/225).
+- Corrected the ECTYPER parameter assignment in `nextflow.config`, switching the argument to properly assign `hpid`. [PR 225](https://github.com/phac-nml/mikrokondo/pull/225).
 
 ## 0.10.1 - 2026-2-16
 
