@@ -19,6 +19,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Set nextflow version 25.10.4 to replace 'latest-everything' to confirm compatibility with next IRIDA-Next nextflow version in `.github/workflows` for nf-test. [PR 219](https://github.com/phac-nml/mikrokondo/pull/219)
 
+### Fixed
+  
+- Corrected the ECTYPER parameter assignment in `nextflow.config`, switching the argument to properly assign `hpid`. [PR 225](https://github.com/phac-nml/mikrokondo/pull/225).
+
 ## 0.10.1 - 2026-2-16
 
 ### Added
