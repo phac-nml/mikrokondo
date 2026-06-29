@@ -69,8 +69,11 @@ workflow ANNOTATE_GENOMES {
         point_finder_organism = channel.empty()
         if(params.skip_species_classification){
             def default_db = params.staramr.point_finder_db_default
-            def default_params = " --genome-size-lower-bound ${params.QCReport.fallthrough.staramr_genome_size_lower_bound} --genome-size-upper-bound ${params.QCReport.fallthrough.staramr_genome_size_upper_bound} --percent-length-overlap-resfinder ${params.QCReport.fallthrough.staramr_percent_length_overlap_resfinder} --percent-length-overlap-pointfinder ${params.QCReport.fallthrough.staramr_percent_length_overlap_pointfinder}"
+            
+            def lower_bound = params.QCReport.fallthrough.min_length != null ? " --genome-size-lower-bound ${params.QCReport.fallthrough.min_length}" : ""
+            def upper_bound = params.QCReport.fallthrough.max_length != null ? " --genome-size-upper-bound ${params.QCReport.fallthrough.max_length}" : ""
     
+            def default_params = "${lower_bound}${upper_bound} --percent-length-overlap-resfinder ${params.QCReport.fallthrough.staramr_percent_length_overlap_resfinder} --percent-length-overlap-pointfinder ${params.QCReport.fallthrough.staramr_percent_length_overlap_pointfinder}"
             point_finder_organism = [
                 staramr_param_val: contig_data.map{ meta, assembly -> tuple(meta, default_db, default_params) }
             ]

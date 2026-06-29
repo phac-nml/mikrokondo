@@ -266,8 +266,8 @@ nextflow_pipeline {
                         PrimaryTypeIDMethod = "ectyper 2.0.0"
                         SecondaryTypeID = ["ECTyperSubtyping", 0, "sequence_type"]
                         SecondaryTypeIDMethod = ""
-                        staramr_genome_size_lower_bound = 4000000
-                        staramr_genome_size_upper_bound = 6700000
+                        min_length = 4000000
+                        max_length = 6700000
                         staramr_percent_length_overlap_resfinder = 52
                         staramr_percent_length_overlap_pointfinder = 95
                     }
@@ -278,8 +278,8 @@ nextflow_pipeline {
                     staphylococcus{search = "Staphylococcus"}
                     fallthrough {
                         search = "No organism specific QC data available."
-                        staramr_genome_size_lower_bound = 4000000
-                        staramr_genome_size_upper_bound = 6000000
+                        min_length = 4000000
+                        max_length = 6000000
                         staramr_percent_length_overlap_resfinder = 60
                         staramr_percent_length_overlap_pointfinder = 95
                     }
@@ -1830,13 +1830,13 @@ test("Test species specific staramr parameters") {
             assert path("$outputDir/Assembly/Annotation/StarAMR/ecoli_GCA_000947975/ecoli_GCA_000947975.settings.staramr.annotation.txt").exists()
             def escherichia_settings = new File("$outputDir/Assembly/Annotation/StarAMR/ecoli_GCA_000947975/ecoli_GCA_000947975.settings.staramr.annotation.txt")
             def escherichia_cmd = escherichia_settings.readLines().get(0)
-            assert escherichia_cmd == "command_line                  = /usr/local/bin/staramr search --minimum-contig-length 300 --minimum-N50-value 10000 --unacceptable-number-contigs 1000 --pid-threshold 98 --percent-length-overlap-plasmidfinder 60 --pointfinder-organism escherichia_coli --genome-size-lower-bound 4000000 --genome-size-upper-bound 6700000 --percent-length-overlap-resfinder 52 --percent-length-overlap-pointfinder 95 -o ecoli_GCA_000947975 ecoli_GCA_000947975.filtered.fasta"
+            assert escherichia_cmd == "command_line                  = /usr/local/bin/staramr search --minimum-contig-length 300 --minimum-N50-value 10000 --unacceptable-number-contigs 1000 --pid-threshold 98 --percent-length-overlap-plasmidfinder 60 --pointfinder-organism escherichia_coli --genome-size-lower-bound 4500000 --genome-size-upper-bound 6000000 --percent-length-overlap-resfinder 52 --percent-length-overlap-pointfinder 95 -o ecoli_GCA_000947975 ecoli_GCA_000947975.filtered.fasta"
             
             // listeria (has no species parameters and is a fallthrough example)
             assert path("$outputDir/Assembly/Annotation/StarAMR/listeria_GCF_000196035/listeria_GCF_000196035.settings.staramr.annotation.txt").exists()
             def listeria_settings = new File("$outputDir/Assembly/Annotation/StarAMR/listeria_GCF_000196035/listeria_GCF_000196035.settings.staramr.annotation.txt")
             def listeria_cmd = listeria_settings.readLines().get(0)
-            assert listeria_cmd == "command_line                  = /usr/local/bin/staramr search --minimum-contig-length 300 --minimum-N50-value 10000 --unacceptable-number-contigs 1000 --pid-threshold 98 --percent-length-overlap-plasmidfinder 60 --genome-size-lower-bound 4000000 --genome-size-upper-bound 6000000 --percent-length-overlap-resfinder 60 --percent-length-overlap-pointfinder 95 -o listeria_GCF_000196035 listeria_GCF_000196035.filtered.fasta"
+            assert listeria_cmd == "command_line                  = /usr/local/bin/staramr search --minimum-contig-length 300 --minimum-N50-value 10000 --unacceptable-number-contigs 1000 --pid-threshold 98 --percent-length-overlap-plasmidfinder 60 --percent-length-overlap-resfinder 60 --percent-length-overlap-pointfinder 95 -o listeria_GCF_000196035 listeria_GCF_000196035.filtered.fasta"
 
             // parse final report json file
             def final_report = path("$outputDir/FinalReports/Aggregated/Json/final_report.json").json
