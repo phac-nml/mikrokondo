@@ -59,6 +59,14 @@ workflow ANNOTATE_GENOMES {
 
     if(!params.skip_staramr){
         def db_star = [] // set default value for database
+        
+        // Confirm fallthrough parameters are set for staramr, if not use staramr defaults
+        def lower_bound = params.QCReport.fallthrough.min_length != null ? " --genome-size-lower-bound ${params.QCReport.fallthrough.min_length}" : ""
+        def upper_bound = params.QCReport.fallthrough.max_length != null ? "--genome-size-upper-bound ${params.QCReport.fallthrough.max_length}" : ""
+        def percent_resfinder = params.QCReport.fallthrough.staramr_percent_length_overlap_resfinder != null ? "--percent-length-overlap-resfinder ${params.QCReport.fallthrough.staramr_percent_length_overlap_resfinder}" : ""
+        def percent_pointfinder = params.QCReport.fallthrough.staramr_percent_length_overlap_pointfinder != null ? "--percent-length-overlap-pointfinder ${params.QCReport.fallthrough.staramr_percent_length_overlap_pointfinder}" : ""
+        def fallthrough_staramr_params = "${lower_bound} ${upper_bound} ${percent_resfinder} ${percent_pointfinder}"
+        
         if(params.staramr.db){
             db_star = Channel.value("${params.staramr.db}")
         }
@@ -69,17 +77,14 @@ workflow ANNOTATE_GENOMES {
         point_finder_organism = channel.empty()
         if(params.skip_species_classification){
             def default_db = params.staramr.point_finder_db_default
-            
-            def lower_bound = params.QCReport.fallthrough.min_length != null ? " --genome-size-lower-bound ${params.QCReport.fallthrough.min_length}" : ""
-            def upper_bound = params.QCReport.fallthrough.max_length != null ? " --genome-size-upper-bound ${params.QCReport.fallthrough.max_length}" : ""
-    
-            def default_params = "${lower_bound}${upper_bound} --percent-length-overlap-resfinder ${params.QCReport.fallthrough.staramr_percent_length_overlap_resfinder} --percent-length-overlap-pointfinder ${params.QCReport.fallthrough.staramr_percent_length_overlap_pointfinder}"
             point_finder_organism = [
-                staramr_param_val: contig_data.map{ meta, assembly -> tuple(meta, default_db, default_params) }
+                staramr_param_val: contig_data.map{ meta, assembly -> tuple(meta, default_db, fallthrough_staramr_params) }
             ]
         }else{
-            point_finder_organism = IDENTIFY_STARAMR_SPECIES(top_hit)
+            fallthrough_staramr_channel = Channel.value("${fallthrough_staramr_params}")
+            point_finder_organism = IDENTIFY_STARAMR_SPECIES(top_hit, fallthrough_staramr_channel)
         }
+
         // Report point finder databases used
         reports = reports.mix(point_finder_organism.staramr_param_val.map{
             meta, organism, staramr_params -> tuple(meta, params.pointfinder_db_tag, organism)

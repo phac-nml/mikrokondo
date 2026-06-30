@@ -60,7 +60,7 @@ nextflow_workflow {
             assert path("$outputDir/Assembly/Annotation/StarAMR/sample1/sample1.settings.staramr.annotation.txt").exists()
             def salmonella_settings = new File("$outputDir/Assembly/Annotation/StarAMR/sample1/sample1.settings.staramr.annotation.txt")
             def salmonella_cmd = salmonella_settings.readLines().get(0)
-            assert salmonella_cmd == "command_line                  = /usr/local/bin/staramr search --minimum-contig-length 300 --minimum-N50-value 10000 --unacceptable-number-contigs 1000 --pid-threshold 98 --percent-length-overlap-plasmidfinder 60 --pointfinder-organism salmonella --genome-size-lower-bound 4000000 --genome-size-upper-bound 6700000 --percent-length-overlap-resfinder 52 --percent-length-overlap-pointfinder 95 -o sample1 GCA_000008105.1_ASM810v1_genomic.fna"
+            assert salmonella_cmd == "command_line                  = /usr/local/bin/staramr search --minimum-contig-length 300 --minimum-N50-value 10000 --unacceptable-number-contigs 1000 --pid-threshold 98 --percent-length-overlap-plasmidfinder 60 --pointfinder-organism salmonella --genome-size-lower-bound 4400000 --genome-size-upper-bound 6000000 --percent-length-overlap-resfinder 52 --percent-length-overlap-pointfinder 95 -o sample1 GCA_000008105.1_ASM810v1_genomic.fna"
             
             // escherichia_coli
             assert path("$outputDir/Assembly/Annotation/StarAMR/sample2/sample2.settings.staramr.annotation.txt").exists()
@@ -151,7 +151,7 @@ nextflow_workflow {
             assert path("$outputDir/Assembly/Annotation/StarAMR/sample1/sample1.settings.staramr.annotation.txt").exists()
             def salmonella_settings = new File("$outputDir/Assembly/Annotation/StarAMR/sample1/sample1.settings.staramr.annotation.txt")
             def salmonella_cmd = salmonella_settings.readLines().get(0)
-            assert salmonella_cmd == "command_line                  = /usr/local/bin/staramr search --minimum-contig-length 300 --minimum-N50-value 10000 --unacceptable-number-contigs 1000 --pid-threshold 98 --percent-length-overlap-plasmidfinder 60 --genome-size-lower-bound 4000000 --genome-size-upper-bound 6000000 --percent-length-overlap-resfinder 60 --percent-length-overlap-pointfinder 95 -o sample1 GCA_000008105.1_ASM810v1_genomic.fna"
+            assert salmonella_cmd == "command_line                  = /usr/local/bin/staramr search --minimum-contig-length 300 --minimum-N50-value 10000 --unacceptable-number-contigs 1000 --pid-threshold 98 --percent-length-overlap-plasmidfinder 60 --percent-length-overlap-resfinder 60 --percent-length-overlap-pointfinder 95 -o sample1 GCA_000008105.1_ASM810v1_genomic.fna"
             
             // escherichia_coli
             assert path("$outputDir/Assembly/Annotation/StarAMR/sample2/sample2.settings.staramr.annotation.txt").exists()

@@ -6,6 +6,7 @@ process IDENTIFY_STARAMR_SPECIES {
 
     input:
     tuple val(meta), val(species)
+    val(fallthrough_staramr_params)
 
     output:
     tuple val(meta), val(point_finder_val), val(staramr_param_val),  emit: staramr_param_val
@@ -60,11 +61,7 @@ process IDENTIFY_STARAMR_SPECIES {
 
     if(qcreport_genus == 'fallthrough'){
         log.info "No specific starAMR parameters could be identified for ${meta.id} based on the genus classification. Default parameters will be used."
-        
-        def lower_bound = params.QCReport.fallthrough.min_length != null ? " --genome-size-lower-bound ${params.QCReport.fallthrough.min_length}" : ""
-        def upper_bound = params.QCReport.fallthrough.max_length != null ? " --genome-size-upper-bound ${params.QCReport.fallthrough.max_length}" : ""
-    
-        staramr_param_val = "${lower_bound}${upper_bound} --percent-length-overlap-resfinder ${params.QCReport.fallthrough.staramr_percent_length_overlap_resfinder} --percent-length-overlap-pointfinder ${params.QCReport.fallthrough.staramr_percent_length_overlap_pointfinder}"
+        staramr_param_val = "${fallthrough_staramr_params}"
     }else{
         log.info "Sample ${meta.id} will use the starAMR custom parameters for ${qcreport_genus}"
         staramr_param_val = " --genome-size-lower-bound ${params.QCReport[qcreport_genus].min_length} --genome-size-upper-bound ${params.QCReport[qcreport_genus].max_length} --percent-length-overlap-resfinder ${params.QCReport[qcreport_genus].staramr_percent_length_overlap_resfinder} --percent-length-overlap-pointfinder ${params.QCReport[qcreport_genus].staramr_percent_length_overlap_pointfinder}"
