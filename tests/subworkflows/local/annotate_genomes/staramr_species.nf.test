@@ -66,32 +66,32 @@ nextflow_workflow {
             assert path("$outputDir/Assembly/Annotation/StarAMR/sample2/sample2.settings.staramr.annotation.txt").exists()
             def escherichia_settings = new File("$outputDir/Assembly/Annotation/StarAMR/sample2/sample2.settings.staramr.annotation.txt")
             def escherichia_cmd = escherichia_settings.readLines().get(0)
-            assert escherichia_cmd == "command_line                  = /usr/local/bin/staramr search --minimum-contig-length 300 --minimum-N50-value 10000 --unacceptable-number-contigs 1000 --pid-threshold 98 --percent-length-overlap-plasmidfinder 60 --pointfinder-organism escherichia_coli --genome-size-lower-bound 4000000 --genome-size-upper-bound 6700000 --percent-length-overlap-resfinder 52 --percent-length-overlap-pointfinder 95 -o sample2 GCA_000947975.1_ASM94797v1_genomic.fna"
+            assert escherichia_cmd == "command_line                  = /usr/local/bin/staramr search --minimum-contig-length 300 --minimum-N50-value 10000 --unacceptable-number-contigs 1000 --pid-threshold 98 --percent-length-overlap-plasmidfinder 60 --pointfinder-organism escherichia_coli --genome-size-lower-bound 4500000 --genome-size-upper-bound 6000000 --percent-length-overlap-resfinder 52 --percent-length-overlap-pointfinder 95 -o sample2 GCA_000947975.1_ASM94797v1_genomic.fna"
             
             // shigella
             assert path("$outputDir/Assembly/Annotation/StarAMR/sample3/sample3.settings.staramr.annotation.txt").exists()
             def shigella_settings = new File("$outputDir/Assembly/Annotation/StarAMR/sample3/sample3.settings.staramr.annotation.txt")
             def shigella_cmd = shigella_settings.readLines().get(0)
-            assert shigella_cmd == "command_line                  = /usr/local/bin/staramr search --minimum-contig-length 300 --minimum-N50-value 10000 --unacceptable-number-contigs 1000 --pid-threshold 98 --percent-length-overlap-plasmidfinder 60 --genome-size-lower-bound 4000000 --genome-size-upper-bound 6700000 --percent-length-overlap-resfinder 52 --percent-length-overlap-pointfinder 95 -o sample3 GCA_000947975.1_ASM94797v1_genomic.fna"
+            assert shigella_cmd == "command_line                  = /usr/local/bin/staramr search --minimum-contig-length 300 --minimum-N50-value 10000 --unacceptable-number-contigs 1000 --pid-threshold 98 --percent-length-overlap-plasmidfinder 60 --genome-size-lower-bound 4300000 --genome-size-upper-bound 5000000 --percent-length-overlap-resfinder 52 --percent-length-overlap-pointfinder 95 -o sample3 GCA_000947975.1_ASM94797v1_genomic.fna"
             
             // campylobacter
             assert path("$outputDir/Assembly/Annotation/StarAMR/sample4/sample4.settings.staramr.annotation.txt").exists()
             def campylobacter_settings = new File("$outputDir/Assembly/Annotation/StarAMR/sample4/sample4.settings.staramr.annotation.txt")
             def campylobacter_cmd = campylobacter_settings.readLines().get(0)
-            assert campylobacter_cmd == "command_line                  = /usr/local/bin/staramr search --minimum-contig-length 300 --minimum-N50-value 10000 --unacceptable-number-contigs 1000 --pid-threshold 98 --percent-length-overlap-plasmidfinder 60 --pointfinder-organism campylobacter --genome-size-lower-bound 1250000 --genome-size-upper-bound 2500000 --percent-length-overlap-resfinder 52 --percent-length-overlap-pointfinder 58 -o sample4 GCA_000947975.1_ASM94797v1_genomic.fna"
+            assert campylobacter_cmd == "command_line                  = /usr/local/bin/staramr search --minimum-contig-length 300 --minimum-N50-value 10000 --unacceptable-number-contigs 1000 --pid-threshold 98 --percent-length-overlap-plasmidfinder 60 --pointfinder-organism campylobacter --genome-size-lower-bound 1400000 --genome-size-upper-bound 2000000 --percent-length-overlap-resfinder 52 --percent-length-overlap-pointfinder 58 -o sample4 GCA_000947975.1_ASM94797v1_genomic.fna"
             
             // not a genus
             assert path("$outputDir/Assembly/Annotation/StarAMR/sample5/sample5.settings.staramr.annotation.txt").exists()
             def not_a_genus_settings = new File("$outputDir/Assembly/Annotation/StarAMR/sample5/sample5.settings.staramr.annotation.txt")
             def not_a_genus_cmd = not_a_genus_settings.readLines().get(0)
-            assert not_a_genus_cmd == "command_line                  = /usr/local/bin/staramr search --minimum-contig-length 300 --minimum-N50-value 10000 --unacceptable-number-contigs 1000 --pid-threshold 98 --percent-length-overlap-plasmidfinder 60 --genome-size-lower-bound 4000000 --genome-size-upper-bound 6000000 --percent-length-overlap-resfinder 60 --percent-length-overlap-pointfinder 95 -o sample5 GCA_000947975.1_ASM94797v1_genomic.fna"
+            assert not_a_genus_cmd == "command_line                  = /usr/local/bin/staramr search --minimum-contig-length 300 --minimum-N50-value 10000 --unacceptable-number-contigs 1000 --pid-threshold 98 --percent-length-overlap-plasmidfinder 60 --percent-length-overlap-resfinder 60 --percent-length-overlap-pointfinder 95 -o sample5 GCA_000947975.1_ASM94797v1_genomic.fna"
 
             // listeria
             // not a genus
             assert path("$outputDir/Assembly/Annotation/StarAMR/sample6/sample6.settings.staramr.annotation.txt").exists()
             def listeria_settings = new File("$outputDir/Assembly/Annotation/StarAMR/sample6/sample6.settings.staramr.annotation.txt")
             def listeria_cmd = listeria_settings.readLines().get(0)
-            assert listeria_cmd == "command_line                  = /usr/local/bin/staramr search --minimum-contig-length 300 --minimum-N50-value 10000 --unacceptable-number-contigs 1000 --pid-threshold 98 --percent-length-overlap-plasmidfinder 60 --genome-size-lower-bound 4000000 --genome-size-upper-bound 6000000 --percent-length-overlap-resfinder 60 --percent-length-overlap-pointfinder 95 -o sample6 GCF_000196035.1_ASM19603v1_genomic.fna"
+            assert listeria_cmd == "command_line                  = /usr/local/bin/staramr search --minimum-contig-length 300 --minimum-N50-value 10000 --unacceptable-number-contigs 1000 --pid-threshold 98 --percent-length-overlap-plasmidfinder 60 --percent-length-overlap-resfinder 60 --percent-length-overlap-pointfinder 95 -o sample6 GCF_000196035.1_ASM19603v1_genomic.fna"
 
         }
     }
@@ -157,32 +157,32 @@ nextflow_workflow {
             assert path("$outputDir/Assembly/Annotation/StarAMR/sample2/sample2.settings.staramr.annotation.txt").exists()
             def escherichia_settings = new File("$outputDir/Assembly/Annotation/StarAMR/sample2/sample2.settings.staramr.annotation.txt")
             def escherichia_cmd = escherichia_settings.readLines().get(0)
-            assert escherichia_cmd == "command_line                  = /usr/local/bin/staramr search --minimum-contig-length 300 --minimum-N50-value 10000 --unacceptable-number-contigs 1000 --pid-threshold 98 --percent-length-overlap-plasmidfinder 60 --genome-size-lower-bound 4000000 --genome-size-upper-bound 6000000 --percent-length-overlap-resfinder 60 --percent-length-overlap-pointfinder 95 -o sample2 GCA_000947975.1_ASM94797v1_genomic.fna"
+            assert escherichia_cmd == "command_line                  = /usr/local/bin/staramr search --minimum-contig-length 300 --minimum-N50-value 10000 --unacceptable-number-contigs 1000 --pid-threshold 98 --percent-length-overlap-plasmidfinder 60 --percent-length-overlap-resfinder 60 --percent-length-overlap-pointfinder 95 -o sample2 GCA_000947975.1_ASM94797v1_genomic.fna"
             
             // shigella
             assert path("$outputDir/Assembly/Annotation/StarAMR/sample3/sample3.settings.staramr.annotation.txt").exists()
             def shigella_settings = new File("$outputDir/Assembly/Annotation/StarAMR/sample3/sample3.settings.staramr.annotation.txt")
             def shigella_cmd = shigella_settings.readLines().get(0)
-            assert shigella_cmd == "command_line                  = /usr/local/bin/staramr search --minimum-contig-length 300 --minimum-N50-value 10000 --unacceptable-number-contigs 1000 --pid-threshold 98 --percent-length-overlap-plasmidfinder 60 --genome-size-lower-bound 4000000 --genome-size-upper-bound 6000000 --percent-length-overlap-resfinder 60 --percent-length-overlap-pointfinder 95 -o sample3 GCA_000947975.1_ASM94797v1_genomic.fna"
+            assert shigella_cmd == "command_line                  = /usr/local/bin/staramr search --minimum-contig-length 300 --minimum-N50-value 10000 --unacceptable-number-contigs 1000 --pid-threshold 98 --percent-length-overlap-plasmidfinder 60 --percent-length-overlap-resfinder 60 --percent-length-overlap-pointfinder 95 -o sample3 GCA_000947975.1_ASM94797v1_genomic.fna"
             
             // campylobacter
             assert path("$outputDir/Assembly/Annotation/StarAMR/sample4/sample4.settings.staramr.annotation.txt").exists()
             def campylobacter_settings = new File("$outputDir/Assembly/Annotation/StarAMR/sample4/sample4.settings.staramr.annotation.txt")
             def campylobacter_cmd = campylobacter_settings.readLines().get(0)
-            assert campylobacter_cmd == "command_line                  = /usr/local/bin/staramr search --minimum-contig-length 300 --minimum-N50-value 10000 --unacceptable-number-contigs 1000 --pid-threshold 98 --percent-length-overlap-plasmidfinder 60 --genome-size-lower-bound 4000000 --genome-size-upper-bound 6000000 --percent-length-overlap-resfinder 60 --percent-length-overlap-pointfinder 95 -o sample4 GCA_000947975.1_ASM94797v1_genomic.fna"
+            assert campylobacter_cmd == "command_line                  = /usr/local/bin/staramr search --minimum-contig-length 300 --minimum-N50-value 10000 --unacceptable-number-contigs 1000 --pid-threshold 98 --percent-length-overlap-plasmidfinder 60 --percent-length-overlap-resfinder 60 --percent-length-overlap-pointfinder 95 -o sample4 GCA_000947975.1_ASM94797v1_genomic.fna"
             
             // not a genus
             assert path("$outputDir/Assembly/Annotation/StarAMR/sample5/sample5.settings.staramr.annotation.txt").exists()
             def not_a_genus_settings = new File("$outputDir/Assembly/Annotation/StarAMR/sample5/sample5.settings.staramr.annotation.txt")
             def not_a_genus_cmd = not_a_genus_settings.readLines().get(0)
-            assert not_a_genus_cmd == "command_line                  = /usr/local/bin/staramr search --minimum-contig-length 300 --minimum-N50-value 10000 --unacceptable-number-contigs 1000 --pid-threshold 98 --percent-length-overlap-plasmidfinder 60 --genome-size-lower-bound 4000000 --genome-size-upper-bound 6000000 --percent-length-overlap-resfinder 60 --percent-length-overlap-pointfinder 95 -o sample5 GCA_000947975.1_ASM94797v1_genomic.fna"
+            assert not_a_genus_cmd == "command_line                  = /usr/local/bin/staramr search --minimum-contig-length 300 --minimum-N50-value 10000 --unacceptable-number-contigs 1000 --pid-threshold 98 --percent-length-overlap-plasmidfinder 60 --percent-length-overlap-resfinder 60 --percent-length-overlap-pointfinder 95 -o sample5 GCA_000947975.1_ASM94797v1_genomic.fna"
 
             // listeria
             // not a genus
             assert path("$outputDir/Assembly/Annotation/StarAMR/sample6/sample6.settings.staramr.annotation.txt").exists()
             def listeria_settings = new File("$outputDir/Assembly/Annotation/StarAMR/sample6/sample6.settings.staramr.annotation.txt")
             def listeria_cmd = listeria_settings.readLines().get(0)
-            assert listeria_cmd == "command_line                  = /usr/local/bin/staramr search --minimum-contig-length 300 --minimum-N50-value 10000 --unacceptable-number-contigs 1000 --pid-threshold 98 --percent-length-overlap-plasmidfinder 60 --genome-size-lower-bound 4000000 --genome-size-upper-bound 6000000 --percent-length-overlap-resfinder 60 --percent-length-overlap-pointfinder 95 -o sample6 GCF_000196035.1_ASM19603v1_genomic.fna"
+            assert listeria_cmd == "command_line                  = /usr/local/bin/staramr search --minimum-contig-length 300 --minimum-N50-value 10000 --unacceptable-number-contigs 1000 --pid-threshold 98 --percent-length-overlap-plasmidfinder 60 --percent-length-overlap-resfinder 60 --percent-length-overlap-pointfinder 95 -o sample6 GCF_000196035.1_ASM19603v1_genomic.fna"
 
         }
     }

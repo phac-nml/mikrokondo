@@ -1,6 +1,6 @@
 // Process for selecting the relevant pointfinder DB for StarAMR
 
-process IDENTIFY_STARAMR_SPECIES {
+process IDENTIFY_STARAMR_SPECIES_PARAMS {
     tag "$meta.id"
     label "process_single"
 
@@ -64,7 +64,7 @@ process IDENTIFY_STARAMR_SPECIES {
         staramr_param_val = "${fallthrough_staramr_params}"
     }else{
         log.info "Sample ${meta.id} will use the starAMR custom parameters for ${qcreport_genus}"
-        staramr_param_val = " --genome-size-lower-bound ${params.QCReport[qcreport_genus].min_length} --genome-size-upper-bound ${params.QCReport[qcreport_genus].max_length} --percent-length-overlap-resfinder ${params.QCReport[qcreport_genus].staramr_percent_length_overlap_resfinder} --percent-length-overlap-pointfinder ${params.QCReport[qcreport_genus].staramr_percent_length_overlap_pointfinder}"
+        staramr_param_val = " --genome-size-lower-bound ${params.QCReport[qcreport_genus].staramr_genome_size_lower_bound} --genome-size-upper-bound ${params.QCReport[qcreport_genus].staramr_genome_size_upper_bound} --percent-length-overlap-resfinder ${params.QCReport[qcreport_genus].staramr_percent_length_overlap_resfinder} --percent-length-overlap-pointfinder ${params.QCReport[qcreport_genus].staramr_percent_length_overlap_pointfinder}"
     }
     
 }

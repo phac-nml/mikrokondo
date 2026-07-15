@@ -3,7 +3,7 @@ include { BAKTA_ANNOTATE } from '../../modules/local/bakta_annotate.nf'
 include { ABRICATE } from "../../modules/local/abricate.nf"
 include { MOBSUITE_RECON } from "../../modules/local/mob_recon.nf"
 include { STARAMR } from "../../modules/local/staramr.nf"
-include { IDENTIFY_STARAMR_SPECIES } from "../../modules/local/staramr_species_params.nf"
+include { IDENTIFY_STARAMR_SPECIES_PARAMS } from "../../modules/local/staramr_species_params.nf"
 
 workflow ANNOTATE_GENOMES {
     take:
@@ -61,8 +61,8 @@ workflow ANNOTATE_GENOMES {
         def db_star = [] // set default value for database
         
         // Confirm fallthrough parameters are set for staramr, if not use staramr defaults
-        def lower_bound = params.QCReport.fallthrough.min_length != null ? " --genome-size-lower-bound ${params.QCReport.fallthrough.min_length}" : ""
-        def upper_bound = params.QCReport.fallthrough.max_length != null ? "--genome-size-upper-bound ${params.QCReport.fallthrough.max_length}" : ""
+        def lower_bound = params.QCReport.fallthrough.staramr_genome_size_lower_bound != null ? " --genome-size-lower-bound ${params.QCReport.fallthrough.staramr_genome_size_lower_bound}" : ""
+        def upper_bound = params.QCReport.fallthrough.staramr_genome_size_upper_bound != null ? "--genome-size-upper-bound ${params.QCReport.fallthrough.staramr_genome_size_upper_bound}" : ""
         def percent_resfinder = params.QCReport.fallthrough.staramr_percent_length_overlap_resfinder != null ? "--percent-length-overlap-resfinder ${params.QCReport.fallthrough.staramr_percent_length_overlap_resfinder}" : ""
         def percent_pointfinder = params.QCReport.fallthrough.staramr_percent_length_overlap_pointfinder != null ? "--percent-length-overlap-pointfinder ${params.QCReport.fallthrough.staramr_percent_length_overlap_pointfinder}" : ""
         def fallthrough_staramr_params = "${lower_bound} ${upper_bound} ${percent_resfinder} ${percent_pointfinder}"
@@ -82,7 +82,7 @@ workflow ANNOTATE_GENOMES {
             ]
         }else{
             fallthrough_staramr_channel = Channel.value("${fallthrough_staramr_params}")
-            point_finder_organism = IDENTIFY_STARAMR_SPECIES(top_hit, fallthrough_staramr_channel)
+            point_finder_organism = IDENTIFY_STARAMR_SPECIES_PARAMS(top_hit, fallthrough_staramr_channel)
         }
 
         // Report point finder databases used

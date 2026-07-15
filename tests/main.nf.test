@@ -190,9 +190,9 @@ nextflow_pipeline {
             assert json.short.short.QUAST."0"."Avg. coverage depth".equals("47")
 
             // Below two values should be empty
-            //assert json.short.short.StarAMR."0"."Genotype".equals("None")
-            //assert json.short.short.StarAMR."0"."Predicted Phenotype".equals("Susceptible")
-            //assert json.short.short.StarAMR."0"."Genome Length".equals("4949")
+            assert json.short.short.StarAMR."0"."Genotype".equals("None")
+            assert json.short.short.StarAMR."0"."Predicted Phenotype".equals("Susceptible")
+            assert json.short.short.StarAMR."0"."Genome Length".equals("4949")
 
             
             assert json.short.short.SevenGeneMLSTReport[0].filename.equals("short.filtered.fasta.gz")

@@ -270,6 +270,8 @@ nextflow_pipeline {
                         max_length = 6700000
                         staramr_percent_length_overlap_resfinder = 52
                         staramr_percent_length_overlap_pointfinder = 95
+                        staramr_genome_size_lower_bound = min_length
+                        staramr_genome_size_upper_bound = max_length
                     }
                     salmonella{search = "Salmonella"}
                     listeria{search = "Listeria"}
@@ -282,6 +284,9 @@ nextflow_pipeline {
                         max_length = 6000000
                         staramr_percent_length_overlap_resfinder = 60
                         staramr_percent_length_overlap_pointfinder = 95
+                        staramr_genome_size_lower_bound = params.QCReport.fallthrough.min_length
+                        staramr_genome_size_upper_bound = params.QCReport.fallthrough.max_length
+
                     }
                 }
             }
@@ -638,6 +643,41 @@ nextflow_pipeline {
 
                 max_memory = "2.GB"
                 max_cpus = 1
+
+                QCReport {
+                    salmonella {
+                        search = "Salmonella"
+                        staramr_genome_size_lower_bound = min_length
+                        staramr_genome_size_upper_bound = max_length
+                    }
+                    fallthrough {
+                        search = "No organism specific QC data available."
+                        raw_average_quality = 30
+                        min_n50 = null
+                        max_n50 = null
+                        min_nr_contigs = null
+                        max_nr_contigs = null
+                        fixed_genome_size = null
+                        min_length = null
+                        max_length = null
+                        max_checkm2_contamination = 5.0
+                        min_average_coverage = 30
+                        min_wgmlst_loci = null
+                        min_illumina_read_length = 120
+                        max_illumina_read_length = 510
+                        min_long_read_length = 300
+                        IDField = null
+                        IDTool = null
+                        PrimaryTypeID = null
+                        PrimaryTypeIDMethod = null
+                        SecondaryTypeID = null
+                        SecondaryTypeIDMethod = null
+                        staramr_percent_length_overlap_resfinder = 60
+                        staramr_percent_length_overlap_pointfinder = 95
+                        staramr_genome_size_lower_bound = min_length
+                        staramr_genome_size_upper_bound = max_length
+                    }
+                }
             }
         }
 
