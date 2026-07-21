@@ -11,12 +11,13 @@ class StarAMRFunctions{
     ]
     def output_args = []
     for(i in staramr_arguments){
-            def identified_value = qc_params[i[0]] // returns null if does not exist
+            def identified_value = qc_params[i[1]] // returns null if does not exist
             if(identified_value){
                 output_args << i[0]
                 output_args << identified_value
             }
         }
+
     return output_args.join(' ')
 
   }

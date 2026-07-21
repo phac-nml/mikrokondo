@@ -101,32 +101,9 @@ process IDENTIFY_STARAMR_SPECIES_PARAMS {
         // qcreport_genus is already declared above, as groovy scopes lexically it seems
         def qcreport_genus = selected_species[1] // will either be species specific or the fallthrough categories
         staramr_param_val = StarAMRFunctions.staramr_arg_builder(qcreport_genus)
-
     }
 
 }
-
-//def staramr_arg_builder(qc_params){
-//    /*
-//     * qc_params: The map of the qc report parameters for the selected organism.
-//     * */
-//
-//    def staramr_arguments = [
-//        ["--genome-size-lower-bound", "staramr_genome_size_lower_bound"],
-//        ["--genome-size-upper-bound", "staramr_genome_size_upper_bound"],
-//        ["--percent-length-overlap-resfinder", "staramr_percent_length_overlap_resfinder"],
-//        ["--percent-length-overlap-pointfinder", "staramr_percent_length_overlap_pointfinder"]
-//    ]
-//    def output_args = []
-//    for(i in staramr_arguments){
-//            def identified_value = qc_params[i[0]]
-//            if(identified_value){
-//                output_args << i[0]
-//                output_args << identified_value
-//            }
-//        }
-//    return output_args.join(' ')
-//}
 
 
 def tokenize_values(species, match_size){

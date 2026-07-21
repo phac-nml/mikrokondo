@@ -369,14 +369,14 @@ nextflow_pipeline {
             assert iridanext_metadata.short."n50_value" == 4949
             assert iridanext_metadata.short."qc_status_read_qual" == "PASSED"
             assert iridanext_metadata.short."raw_average_quality_value" == 40.0
-            assert iridanext_metadata.short."qc_status_assembly_genome_size" == "FAILED"
+            assert iridanext_metadata.short."qc_status_assembly_genome_size" == "PASSED"
             assert iridanext_metadata.short."assembly_length" == 4949
             assert iridanext_metadata.short."qc_status_assembly_num_contigs" == "PASSED"
             assert iridanext_metadata.short."assembly_num_contigs" == 1
             assert iridanext_metadata.short."qc_status_read_length" == "FAILED"
             assert iridanext_metadata.short."mean_illumina_read_length" == 250
 
-            assert iridanext_metadata.short."qc_summary" == "FAILED; Passed Tests: 4/8; Ignored checks 2: checkm2_contamination, wgmlst_loci_count; Species ID: No Species Identified; Organism QC Criteria: No organism specific QC data available."
+            assert iridanext_metadata.short."qc_summary" == "FAILED; Passed Tests: 5/8; Ignored checks 2: checkm2_contamination, wgmlst_loci_count; Species ID: No Species Identified; Organism QC Criteria: No organism specific QC data available."
 
             assert iridanext_metadata.short."Downsampled" == false
             assert iridanext_metadata.short."predicted_identification_name" == "No Species Identified"
@@ -615,8 +615,8 @@ nextflow_pipeline {
                         min_nr_contigs = null
                         max_nr_contigs = null
                         fixed_genome_size = 1000000
-                        min_length = null
-                        max_length = null
+                        min_length = 4000000
+                        max_length = 6000000
                         max_checkm_contamination = 3.0
                         min_average_coverage = 30
                         staramr_genome_size_lower_bound = 4000000

@@ -61,11 +61,6 @@ workflow ANNOTATE_GENOMES {
         def db_star = [] // set default value for database
         
         // Confirm fallthrough parameters are set for staramr, if not use staramr defaults
-        //def lower_bound = params.QCReport.fallthrough.staramr_genome_size_lower_bound != null ? " --genome-size-lower-bound ${params.QCReport.fallthrough.staramr_genome_size_lower_bound}" : ""
-        //def upper_bound = params.QCReport.fallthrough.staramr_genome_size_upper_bound != null ? "--genome-size-upper-bound ${params.QCReport.fallthrough.staramr_genome_size_upper_bound}" : ""
-        //def percent_resfinder = params.QCReport.fallthrough.staramr_percent_length_overlap_resfinder != null ? "--percent-length-overlap-resfinder ${params.QCReport.fallthrough.staramr_percent_length_overlap_resfinder}" : ""
-        //def percent_pointfinder = params.QCReport.fallthrough.staramr_percent_length_overlap_pointfinder != null ? "--percent-length-overlap-pointfinder ${params.QCReport.fallthrough.staramr_percent_length_overlap_pointfinder}" : ""
-        //def fallthrough_staramr_params = "${lower_bound} ${upper_bound} ${percent_resfinder} ${percent_pointfinder}"
         def fallthrough_staramr_params = StarAMRFunctions.staramr_arg_builder(params.QCReport.fallthrough)
         
         
