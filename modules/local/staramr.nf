@@ -35,6 +35,7 @@ process STARAMR {
         log.info "Using default database in StarAMR for ${meta.id}"
     }
 
+
     if(params.staramr.no_exclude_genes){
         args << "--no-exclude-genes"
     }

@@ -134,12 +134,12 @@ nextflow_pipeline {
                         min_nr_contigs = null
                         max_nr_contigs = null
                         fixed_genome_size = 1000
-                        min_length = null
-                        max_length = null
                         max_checkm_contamination = 3.0
                         min_average_coverage = 30
                         min_length = 4000000
                         max_length = 6000000
+                        staramr_genome_size_lower_bound = 4000000
+                        staramr_genome_size_upper_bound = 6000000
                         staramr_percent_length_overlap_resfinder = 60
                         staramr_percent_length_overlap_pointfinder = 95
                     }
@@ -273,8 +273,8 @@ nextflow_pipeline {
                         min_illumina_read_length = 10000
                         max_illumina_read_length = 100000
                         min_average_coverage = 30
-                        min_length = 4000000
-                        max_length = 6000000
+                        staramr_genome_size_lower_bound = 4000000
+                        staramr_genome_size_upper_bound = 6000000
                         staramr_percent_length_overlap_resfinder = 60
                         staramr_percent_length_overlap_pointfinder = 95
                     }
@@ -448,6 +448,8 @@ nextflow_pipeline {
                         min_average_coverage = 30
                         min_length = 4000000
                         max_length = 6000000
+                        staramr_genome_size_lower_bound = 4000000
+                        staramr_genome_size_upper_bound = 6000000
                         staramr_percent_length_overlap_resfinder = 60
                         staramr_percent_length_overlap_pointfinder = 95
                     }
@@ -617,8 +619,8 @@ nextflow_pipeline {
                         max_length = null
                         max_checkm_contamination = 3.0
                         min_average_coverage = 30
-                        min_length = 4000000
-                        max_length = 6000000
+                        staramr_genome_size_lower_bound = 4000000
+                        staramr_genome_size_upper_bound = 6000000
                         staramr_percent_length_overlap_resfinder = 60
                         staramr_percent_length_overlap_pointfinder = 95
                     }
