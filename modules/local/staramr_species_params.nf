@@ -59,7 +59,9 @@ process IDENTIFY_STARAMR_SPECIES_PARAMS {
     // No species level classification for staramr specific parameters
     // Using db_opt instead of point_finder_val directly in the getOrDefault statement as nextflow version 24 throws an error as it
     // thinks that using the value again is a redecleration of the variable leading to an error.
-    def qc_report_options = params.staramr.point_finder_dbs.getOrDefault(db_opt, [params.QCReport.fallthrough])
+    // Default is is all params.QCReport as the else clause in the logic below will be entered and if no good value is found
+    // the fallthrough value will be returned
+    def qc_report_options = params.staramr.point_finder_dbs.getOrDefault(db_opt, params.QCReport.values())
     def qc_report_options_size = qc_report_options.size()
 
     if(qc_report_options_size == 0){

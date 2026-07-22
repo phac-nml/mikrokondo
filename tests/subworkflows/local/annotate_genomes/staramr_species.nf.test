@@ -16,11 +16,6 @@ nextflow_workflow {
                 skip_staramr    = false
                 skip_species_classification = false
 
-                staramr {
-                    db = null
-                }
-                pointfinder_db_tag = "pointfinder"
-
                 max_memory = "2.GB"
                 max_cpus = 1
             }
@@ -91,8 +86,7 @@ nextflow_workflow {
             assert path("$outputDir/Assembly/Annotation/StarAMR/sample6/sample6.settings.staramr.annotation.txt").exists()
             def listeria_settings = new File("$outputDir/Assembly/Annotation/StarAMR/sample6/sample6.settings.staramr.annotation.txt")
             def listeria_cmd = listeria_settings.readLines().get(0)
-            assert listeria_cmd == "command_line                  = /usr/local/bin/staramr search --minimum-contig-length 300 --minimum-N50-value 10000 --unacceptable-number-contigs 1000 --pid-threshold 98 --percent-length-overlap-plasmidfinder 60 --percent-length-overlap-resfinder 60 --percent-length-overlap-pointfinder 95 -o sample6 GCF_000196035.1_ASM19603v1_genomic.fna"
-
+            assert listeria_cmd == "command_line                  = /usr/local/bin/staramr search --minimum-contig-length 300 --minimum-N50-value 10000 --unacceptable-number-contigs 1000 --pid-threshold 98 --percent-length-overlap-plasmidfinder 60 --genome-size-lower-bound 2700000 --genome-size-upper-bound 3200000 --percent-length-overlap-resfinder 60 --percent-length-overlap-pointfinder 95 -o sample6 GCF_000196035.1_ASM19603v1_genomic.fna"
         }
     }
 
