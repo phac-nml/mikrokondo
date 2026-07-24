@@ -1,0 +1,85 @@
+nextflow_process {
+    name "Test Process IDENTIFY_STARAMR_SPECIES_PARAMS"
+    script "modules/local/staramr_species_params.nf"
+    process "IDENTIFY_STARAMR_SPECIES_PARAMS"
+
+    test("campylobacter_jejuni returns point_finder_val as 'campylobacter'") {
+        when {
+            process {
+                """
+                input[0] = [ ["id": "campylobacter_jejuni"], 'campylobacter_jejuni' ]
+                input[1] = '--default-params'
+                """
+            }
+
+            params {
+                outdir = "$outputDir"
+                max_cpus = 4
+                max_memory = '6.GB'
+            }
+        }
+        then {
+            assert process.out.staramr_param_val[0][1] == 'campylobacter'
+        }
+    }
+
+    test("campylobacter_coli returns point_finder_val as 'campylobacter'") {
+        when {
+            process {
+                """
+                input[0] = [ ["id": "campylobacter_coli"], 'campylobacter_coli' ]
+                input[1] = '--default-params'
+                """
+            }
+
+            params {
+                outdir = "$outputDir"
+                max_cpus = 4
+                max_memory = '6.GB'
+            }
+        }
+        then {
+            assert process.out.staramr_param_val[0][1] == 'campylobacter'
+        }
+    }
+
+    test("salmonella_enterica returns point_finder_val as 'salmonella'") {
+        when {
+            process {
+                """
+                input[0] = [ ["id": "salmonella_enterica"], 'salmonella_enterica' ]
+                input[1] = '--default-params'
+                """
+            }
+
+            params {
+                outdir = "$outputDir"
+                max_cpus = 4
+                max_memory = '6.GB'
+            }
+        }
+        then {
+            assert process.out.staramr_param_val[0][1] == 'salmonella'
+        }
+    }
+
+    test("Magnus_flatulentia returns point_finder_val as null") {
+        when {
+            process {
+                """
+                input[0] = [ ["id": "Magnus_flatulentia"], 'Magnus_flatulentia' ]
+                input[1] = '--default-params'
+                """
+            }
+
+            params {
+                outdir = "$outputDir"
+                max_cpus = 4
+                max_memory = '6.GB'
+            }
+        }
+        then {
+            assert process.out.staramr_param_val[0][1] == null
+        }
+    }         
+}
