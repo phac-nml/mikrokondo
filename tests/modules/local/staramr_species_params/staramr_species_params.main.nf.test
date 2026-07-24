@@ -8,7 +8,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [ ["id": "campylobacter_jejuni"], 'campylobacter_jejuni' ]
-                input[1] = '--default-params'
+                input[1] = '--percent-length-overlap-resfinder 60 --percent-length-overlap-pointfinder 90'
                 """
             }
 
@@ -20,6 +20,7 @@ nextflow_process {
         }
         then {
             assert process.out.staramr_param_val[0][1] == 'campylobacter'
+            assert process.out.staramr_param_val[0][2] == '--genome-size-lower-bound 1400000 --genome-size-upper-bound 2000000 --percent-length-overlap-resfinder 52 --percent-length-overlap-pointfinder 58'
         }
     }
 
@@ -28,7 +29,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [ ["id": "campylobacter_coli"], 'campylobacter_coli' ]
-                input[1] = '--default-params'
+                input[1] = '--percent-length-overlap-resfinder 60 --percent-length-overlap-pointfinder 90'
                 """
             }
 
@@ -40,6 +41,28 @@ nextflow_process {
         }
         then {
             assert process.out.staramr_param_val[0][1] == 'campylobacter'
+            assert process.out.staramr_param_val[0][2] == '--genome-size-lower-bound 1400000 --genome-size-upper-bound 2000000 --percent-length-overlap-resfinder 52 --percent-length-overlap-pointfinder 58'
+        }
+    }
+
+    test("campylobacter genus returns point_finder_val as 'campylobacter'") {
+        when {
+            process {
+                """
+                input[0] = [ ["id": "campylobacter"], 'campylobacter' ]
+                input[1] = '--percent-length-overlap-resfinder 60 --percent-length-overlap-pointfinder 90'
+                """
+            }
+
+            params {
+                outdir = "$outputDir"
+                max_cpus = 4
+                max_memory = '6.GB'
+            }
+        }
+        then {
+            assert process.out.staramr_param_val[0][1] == 'campylobacter'
+            assert process.out.staramr_param_val[0][2] == '--genome-size-lower-bound 1400000 --genome-size-upper-bound 2000000 --percent-length-overlap-resfinder 52 --percent-length-overlap-pointfinder 58'
         }
     }
 
@@ -48,7 +71,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [ ["id": "salmonella_enterica"], 'salmonella_enterica' ]
-                input[1] = '--default-params'
+                input[1] = '--percent-length-overlap-resfinder 60 --percent-length-overlap-pointfinder 90'
                 """
             }
 
@@ -60,6 +83,7 @@ nextflow_process {
         }
         then {
             assert process.out.staramr_param_val[0][1] == 'salmonella'
+            assert process.out.staramr_param_val[0][2] == '--genome-size-lower-bound 4400000 --genome-size-upper-bound 6000000 --percent-length-overlap-resfinder 52 --percent-length-overlap-pointfinder 95'
         }
     }
 
@@ -68,7 +92,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [ ["id": "Magnus_flatulentia"], 'Magnus_flatulentia' ]
-                input[1] = '--default-params'
+                input[1] = '--percent-length-overlap-resfinder 60 --percent-length-overlap-pointfinder 90'
                 """
             }
 
@@ -80,6 +104,29 @@ nextflow_process {
         }
         then {
             assert process.out.staramr_param_val[0][1] == null
+            assert process.out.staramr_param_val[0][2] == '--percent-length-overlap-resfinder 60 --percent-length-overlap-pointfinder 95' // It only overrides if an empty species is passed
         }
-    }         
+    }
+
+    test("helicobacter_pylori returns point_finder_val as 'helicobacter_pylori' and uses fallthrough params (qc_report_options_size == 0)") {
+        when {
+            process {
+                """
+                input[0] = [ ["id": "helicobacter_pylori"], 'helicobacter_pylori' ]
+                input[1] = '--percent-length-overlap-resfinder 60 --percent-length-overlap-pointfinder 90'
+                """
+            }
+
+            params {
+                outdir = "$outputDir"
+                max_cpus = 4
+                max_memory = '6.GB'
+            }
+        }
+        then {
+            assert process.out.staramr_param_val[0][1] == 'helicobacter_pylori'
+            // When qc_report_options_size == 0, staramr_param_val should be the fallthrough params
+            assert process.out.staramr_param_val[0][2] == '--percent-length-overlap-resfinder 60 --percent-length-overlap-pointfinder 90'
+        }
+    }
 }
