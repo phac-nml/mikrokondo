@@ -389,10 +389,11 @@ To have a new configuration included within a pointfinder database use the logic
 
   Pointfinder database is selected **AND**
   - **No value exists in with the pointfinder key:** For example with `helicobacter_pylori` the the `params.QCReport.fallthrough`staramr parameters are used always. Even if a `QCReport.helicobacter_pylori.search = Helicobacter pylori` exists, if it is not included in the `starmar.point_finder_dbs` parameter it will be missed. 
-  - **A single value exists: in the pointfinder key** For example if the `starmar.point_finder_dbs` parameter is `salmonella ` then `params.QCReport.salmonella` will always be used.
-  - **Multiple values exist in the pointfinder key** For example with `campylobacter`, it will look for a match all the `params.QCReport` parameters, and if none is found then it will use `params.QCReport.fallthrough`.
+  - **A single value exists in the pointfinder key:** For example if the `starmar.point_finder_dbs` parameter is `salmonella ` then `params.QCReport.salmonella` staramr parameters will always be used.
+  - **Multiple values exist in the pointfinder key:** For example with `campylobacter`, it will look for a match all the `params.QCReport` parameters, and if none is found then it will use `params.QCReport.fallthrough`. **Note:** It searches for best match in order so if a match for `campylobacter_jejuni` is found it won't look for `campylobacter` or `campylobacter_coli`.
   
 If no pointfinder database is matched (e.g, `vibrio_cholerae`), then all `params.QCReport` are looked for a match and the best match (`params.QCReport.vibrio_cholerae`) is passed. If no match is found (e.g., `Magnus_flatulentia`or `vibrio_adaptatus`) then fallthrough is passed.
 
 **genus vs species matching**
+
 For the `starmar.point_finder_dbs` we have created genus level matching (e.g., `params.QCReport.enterococcus` and `params.QCReport.campylobacter`). Genus-level configurations work for all matching, if you would like to have only species level matching for staramr parameters then you would need to remove genus level configurations. Example to replace `params.QCReport.enterococcus` with `params.QCReport.enterococcus_faecalis` and `params.QCReport.enterococcus_faecium`. 
