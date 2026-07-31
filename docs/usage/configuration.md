@@ -93,10 +93,10 @@ QCReport {
         SecondaryTypeIDMethod: null|String, method used for secondary type information e.g. 7 Gene
         
         // staramr genus specifc params
-        staramr_percent_length_overlap_resfinder = 52 // The staramr percent length overlap for resfinder results
-        staramr_percent_length_overlap_pointfinder = 95 // The staramr percent length overlap for pointfinder results
-        staramr_genome_size_lower_bound = min_length // The staramr lower bound for our genome size for the quality metrics.
-        staramr_genome_size_upper_bound = max_length // The staramr upper bound for our genome size for the quality metrics.
+        staramr_percent_length_overlap_resfinder = 52.0|null // The staramr percent length overlap for resfinder results (float)
+        staramr_percent_length_overlap_pointfinder = 95.0|null // The staramr percent length overlap for pointfinder results (float)
+        staramr_genome_size_lower_bound = min_length|null // The staramr lower bound for our genome size for the quality metrics. (integer)
+        staramr_genome_size_upper_bound = max_length|null // The staramr upper bound for our genome size for the quality metrics. (integer)
     }
     // DO NOT REMOVE THE FALLTRHOUGH FIELD AS IT IS NEEDED TO CAPTURE OTHER ORGANISMS
     fallthrough // The fallthrough field exist as a default value to capture organisms where no quality control data has been specified
@@ -343,6 +343,11 @@ Internally the `manifest.json` contains the following structure. Modifications t
 
 Mikrokondo is able to identify the species that a sample represents internally, but in order to identify the correct WgMLST scheme to use for allele calling the top-level key in the `manifest.json` file must be a name that can be parsed from the speciation output of Mash or Kraken2 e.g. _Salmonella enterica_, _Campylobacter_A anatolicus_, _Escherichia_ etc.
 
+**genus vs species matching**
+
+Automated selection works with genus level matching (e.g., `params.QCReport.enterococcus` and `params.QCReport.campylobacter`). Genus-level configurations work for all matching, if you would like to have only species level matching for staramr parameters then you would need to remove genus level configurations. Example to replace `params.QCReport.enterococcus` with `params.QCReport.enterococcus_faecalis` and `params.QCReport.enterococcus_faecium`. 
+
+
 > **Note:** The database and organism names are not case sensitive.
 
 Mikrokondo will then be able to match the bacterial name outputs to what is in the `manifest.json`. In the following example below the three bacteria (_Salmonella enterica_, _Campylobacter_A anatolicus_, _Escherichia coli_) would all be matched to the correct scheme:
@@ -392,7 +397,7 @@ To have a new configuration included within a pointfinder database use the logic
   - **A single value exists in the pointfinder key:** For example if the `starmar.point_finder_dbs` parameter is `salmonella ` then `params.QCReport.salmonella` staramr parameters will always be used.
   - **Multiple values exist in the pointfinder key:** For example with `campylobacter`, it will look for a match all the `params.QCReport` parameters, and if none is found then it will use `params.QCReport.fallthrough`. **Note:** It searches for best match in order so if a match for `campylobacter_jejuni` is found it won't look for `campylobacter` or `campylobacter_coli`.
   
-If no pointfinder database is matched (e.g, `vibrio_cholerae`), then all `params.QCReport` are looked for a match and the best match (`params.QCReport.vibrio_cholerae`) is passed. If no match is found (e.g., `Magnus_flatulentia`or `vibrio_adaptatus`) then fallthrough is passed.
+If no pointfinder database is matched (e.g, `vibrio_cholerae`), then all `params.QCReport` are looked for a match and the best match (`params.QCReport.vibrio_cholerae`) is passed. If no match is found (e.g., `vibrio_adaptatus`) then fallthrough is passed.
 
 **genus vs species matching**
 
