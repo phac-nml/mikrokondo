@@ -202,8 +202,8 @@ workflow QC_READS {
             }
         }
         else{
-            def taxa_file = file([projectDir, "conf", "equivalent_taxa.json"].join(File.separator))
-            parsed_mash = PARSE_MASH(mash_screen_out.mash_data, taxa_file, Channel.value("classify")) // Classify is passed to tell the script to determine if the sample is metagenomic or not
+            def taxa_file_ch = channel.value(file([projectDir, "conf", "equivalent_taxa.json"].join(File.separator)))
+            parsed_mash = PARSE_MASH(mash_screen_out.mash_data, taxa_file_ch, Channel.value("classify")) // Classify is passed to tell the script to determine if the sample is metagenomic or not
 
             // Update file metadata
             ch_cleaned_temp = ch_prepped_reads.join(parsed_mash.mash_out, remainder: true).map {
