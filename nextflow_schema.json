@@ -123,7 +123,7 @@
           "description": "Path to CheckM2 database, alternatively this can be downloaded by the pipeline.",
           "pattern": "^\\S+.dmnd$",
           "format": "file-path"
-        }
+        }           
       },
       "required": [
         "dehosting_idx",
@@ -526,6 +526,58 @@
           "description": "Run SISTR using the full set of cgMLST alleles which can include highly similar alleles."
         }
       }
+    },
+    "staramr": {
+      "title": "starAMR",
+      "type": "object",
+      "description": "Options for starAMR",
+      "default": "",
+      "properties": {
+        "minimum_N50_value": {
+            "type": "integer",
+            "description": "The minimum N50 value for the quality metrics [Defaults 10000]",
+            "default": 10000,
+            "minimum": 1
+        },
+        "minimum_contig_length": {
+            "type": "integer",
+            "description": "The minimum contig length for the quality metrics [Default 300 bp]",
+            "default": 300,
+            "minimum": 1
+        },
+        "unacceptable_number_contigs": {
+            "type": "integer",
+            "description": "The minimum, unacceptable number of contigs which are equal to or above the minimum contig length for our quality metrics [Default 1000]",
+            "default": 1000,
+            "minimum": 1
+        },
+        "pid_threshold": {
+            "type": "integer",
+            "description": "BLAST percent identity threshold [Default 98]",
+            "default": 98,
+            "minimum": 1,
+            "maximum": 100
+        },
+        "percent_length_overlap_plasmidfinder": {
+            "type": "integer",
+            "description": "The percent length overlap for plasmidfinder results [Default 60]",
+            "default": 60,
+            "minimum": 1,
+            "maximum": 100
+        },
+        "no_exclude_genes": {
+            "type": "boolean",
+            "description": "Disable the default exclusion of some genes from ResFinder/PointFinder/PlasmidFinder [Default False]"
+        },
+        "exclude_negatives": {
+            "type": "boolean",
+            "description": "Exclude negative results (those susceptible to antimicrobials) [Default False]"
+        },
+        "exclude_resistance_phenotypes": {
+            "type": "boolean",
+            "description": "Exclude predicted antimicrobial resistances [Default False]."
+        }
+      }  
     },
     "fastp_options": {
       "title": "Fastp options",

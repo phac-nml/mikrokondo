@@ -1,4 +1,5 @@
 
+
 class ReportFunctions {
 
     enum FuncType {
@@ -172,5 +173,58 @@ class ReportFunctions {
         checks += 1
         return [checks, reisolate, resequence, failed_p, checks_failed, checks_ignored]
     }
+
+
+    static def get_species(java.lang.String value, java.util.ArrayList search_phrases, int shortest_token, java.util.Map params){
+
+      def qc_data = [params.QCReport.fallthrough.search, params.QCReport.fallthrough];
+      if(value == null){
+          return qc_data
+      }
+      // search_term_val used to be 0...
+      def search_term_val = 0 // location of where the search key is in the search phrases array
+
+      // matching here can likely be enhanced. wait for issue perhaps
+      def comp_val_tokens = value.toLowerCase().split('_|\s').findAll{it.size() >= shortest_token};
+      def comp_val = comp_val_tokens.join(" ")
+      for(item in search_phrases){
+          if(comp_val.contains(item[search_term_val].toLowerCase())){
+              qc_data = item;
+              break;
+          }
+      }
+      return qc_data;
+    }
+
+    static def qc_params_species(java.util.Map qc_params){
+      /*Retrieve all species QC data.*/
+      def search_phrases = [];
+      qc_params.each{k, v ->
+          if(v.search in search_phrases){
+              log.error "Duplicate search phrase ${v.search} included in your QCReport parameters. Bailing out as erroneous results could be included by accident. If you have fixed the issue re-run the pipeline with -resume to pick up where you left off."
+              exit 1
+          }
+          search_phrases.add([v.search, v])
+      }
+
+      return search_phrases;
+    }
+
+
+  static def get_shortest_token(java.util.ArrayList search_params){
+
+    def overly_large_number = Integer.MAX_VALUE;
+    def shortest_entry = overly_large_number;
+    for(i in search_params){
+        def i_toks = i[0].split('_|\s')
+        for(g in i_toks){
+            def tok_size = g.size()
+            if(tok_size < shortest_entry){
+                shortest_entry = tok_size
+            }
+        }
+    }
+    return shortest_entry
+  }
 
 }
