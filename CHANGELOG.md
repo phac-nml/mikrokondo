@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Update StarAMR to version 0.12.3 [PR 227](https://github.com/phac-nml/mikrokondo/pull/227/)
 
-- Added CLI StarAMR parameters as nextflow parameters, including species specific parameter settings. [PR 220](https://github.com/phac-nml/mikrokondo/pull/220)
+- Added StarAMR command-line parameters as nextflow parameters, including species specific parameter settings. [PR 220](https://github.com/phac-nml/mikrokondo/pull/220)
 
 ## 0.10.2
 
