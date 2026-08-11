@@ -74,7 +74,7 @@ process REPORT{
     }
 
 
-    def search_phrases = qc_params_species()
+    def search_phrases = ReportFunctions.qc_params_species(params.QCReport)
 
     // Add in quality information in place
     generate_qc_data(sample_data, search_phrases, qc_species_tag)
@@ -351,19 +351,6 @@ def add_secondary_message(report_tag, message, data){
     }
 }
 
-def qc_params_species(){
-    // TODO make sure these are all unique
-    def search_phrases = [];
-    params.QCReport.each{k, v ->
-        if(v.search in search_phrases){
-            log.error "Duplicate search phrase ${v.search} included in your QCReport parameters. Bailing out as erroneous results could be included by accident. If you have fixed the issue re-run the pipeline with -resume to pick up where you left off."
-            exit 1
-        }
-        search_phrases.add([v.search, v])
-    }
-
-    return search_phrases;
-}
 
 def convert_type(type, val){
     def val_
@@ -578,48 +565,6 @@ def prep_qc_vals(qc_vals, qc_data, comp_val, field_val){
 }
 
 
-def get_shortest_token(search_params){
-
-    def overly_large_number = 1000000000000;
-    def shortest_entry = overly_large_number;
-    for(i in search_params){
-        def i_toks = i[0].split('_|\s')
-        for(g in i_toks){
-            def tok_size = g.size()
-            if(tok_size < shortest_entry){
-                shortest_entry = tok_size
-            }
-        }
-    }
-    return shortest_entry
-}
-
-def get_species(value, search_phrases, shortest_token){
-    /*
-        Get species data for the sample
-        shortest_token: contains values to scrub from value to be searched for
-    */
-
-
-    def qc_data = [params.QCReport.fallthrough.search, params.QCReport.fallthrough];
-    if(value == null){
-        return qc_data
-    }
-    // search_term_val used to be 0...
-    def search_term_val = 0 // location of where the search key is in the search phrases array
-
-    // TODO matching here can likely be enhanced. wait for issue perhaps
-    def comp_val_tokens = value.toLowerCase().split('_|\s').findAll{it.size() >= shortest_token};
-    def comp_val = comp_val_tokens.join(" ")
-    for(item in search_phrases){
-        if(comp_val.contains(item[search_term_val].toLowerCase())){
-            qc_data = item;
-            break;
-        }
-    }
-    return qc_data;
-}
-
 def get_qc_data_species(value_data, qc_data){
     def quality_messages = [:]
 
@@ -657,12 +602,12 @@ def generate_qc_data(data, search_phrases, qc_species_tag){
 
     def top_hit_tag = params.top_hit_species.report_tag;
     def quality_analysis = "QualityAnalysis"
-    def shortest_token = get_shortest_token(search_phrases)
+    def shortest_token = ReportFunctions.get_shortest_token(search_phrases)
     def species_tag_location = 0
     def species_qc_params_location = 1
     for(k in data){
         if(!k.value.meta.metagenomic){
-            def species = get_species(k.value[k.key][top_hit_tag], search_phrases, shortest_token)
+            def species = ReportFunctions.get_species(k.value[k.key][top_hit_tag], search_phrases, shortest_token, params)
             // update coverage first so its values can be used in generating qc messages
             generate_coverage_data(data[k.key], params.coverage_calc_fields.bp_field, species)
             data[k.key][quality_analysis] = get_qc_data_species(k.value[k.key], species)

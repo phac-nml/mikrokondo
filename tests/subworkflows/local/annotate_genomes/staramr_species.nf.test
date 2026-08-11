@@ -1,0 +1,184 @@
+nextflow_workflow {
+
+    name "Test ANNOTATE_GENOMES - StarAMR section"
+    script "subworkflows/local/annotate_genomes.nf"
+    workflow "ANNOTATE_GENOMES"
+
+    // Disable everything except StarAMR
+    test("StarAMR runs with species classification") {
+        tag "staramr_species_selection"
+        when {
+            params {
+                outdir = "$outputDir"
+                skip_bakta      = true
+                skip_abricate   = true
+                skip_mobrecon   = true
+                skip_staramr    = false
+                skip_species_classification = false
+
+                max_memory = "2.GB"
+                max_cpus = 1
+            }
+
+            workflow {
+                """
+                contig_data = Channel.of(
+                    [ [id: 'sample1'], file('$baseDir/tests/data/genomes/salmonella/GCA_000008105.1_ASM810v1_genomic.fna.gz') ],
+                    [ [id: 'sample2'], file('$baseDir/tests/data/genomes/ecoli/GCA_000947975.1_ASM94797v1_genomic.fna.gz') ],
+                    [ [id: 'sample3'], file('$baseDir/tests/data/genomes/ecoli/GCA_000947975.1_ASM94797v1_genomic.fna.gz') ],
+                    [ [id: 'sample4'], file('$baseDir/tests/data/genomes/ecoli/GCA_000947975.1_ASM94797v1_genomic.fna.gz') ],
+                    [ [id: 'sample5'], file('$baseDir/tests/data/genomes/ecoli/GCA_000947975.1_ASM94797v1_genomic.fna.gz') ],
+                    [ [id: 'sample6'], file('$baseDir/tests/data/genomes/listeria/GCF_000196035.1_ASM19603v1_genomic.fna.gz') ]
+
+                )
+                top_hit = Channel.of(
+                    [ [id: 'sample1'], 'Salmonella enterica' ],
+                    [ [id: 'sample2'], 'Escherichia_coli_' ],
+                    [ [id: 'sample3'], 'Shigella' ],
+                    [ [id: 'sample4'], 'campylobacter_jejuni' ],
+                    [ [id: 'sample5'], 'not_a_genus' ],
+                    [ [id: 'sample6'], 'Listeria monocytogenes' ]                
+    )
+
+                input[0] = contig_data
+                input[1] = top_hit
+                """
+            }
+        }
+
+        then {
+            assert workflow.success
+
+            // Check the commandline parameters
+            
+            // salmonella
+            assert path("$outputDir/Assembly/Annotation/StarAMR/sample1/sample1.settings.staramr.annotation.txt").exists()
+            def salmonella_settings = new File("$outputDir/Assembly/Annotation/StarAMR/sample1/sample1.settings.staramr.annotation.txt")
+            def salmonella_cmd = salmonella_settings.readLines().get(0)
+            assert salmonella_cmd == "command_line                  = /usr/local/bin/staramr search --minimum-contig-length 300 --minimum-N50-value 10000 --unacceptable-number-contigs 1000 --pid-threshold 98 --percent-length-overlap-plasmidfinder 60 --pointfinder-organism salmonella --genome-size-lower-bound 4400000 --genome-size-upper-bound 6000000 --percent-length-overlap-resfinder 52 --percent-length-overlap-pointfinder 95 -o sample1 GCA_000008105.1_ASM810v1_genomic.fna"
+            
+            // escherichia_coli
+            assert path("$outputDir/Assembly/Annotation/StarAMR/sample2/sample2.settings.staramr.annotation.txt").exists()
+            def escherichia_settings = new File("$outputDir/Assembly/Annotation/StarAMR/sample2/sample2.settings.staramr.annotation.txt")
+            def escherichia_cmd = escherichia_settings.readLines().get(0)
+            assert escherichia_cmd == "command_line                  = /usr/local/bin/staramr search --minimum-contig-length 300 --minimum-N50-value 10000 --unacceptable-number-contigs 1000 --pid-threshold 98 --percent-length-overlap-plasmidfinder 60 --pointfinder-organism escherichia_coli --genome-size-lower-bound 4500000 --genome-size-upper-bound 6000000 --percent-length-overlap-resfinder 52 --percent-length-overlap-pointfinder 95 -o sample2 GCA_000947975.1_ASM94797v1_genomic.fna"
+            
+            // shigella
+            assert path("$outputDir/Assembly/Annotation/StarAMR/sample3/sample3.settings.staramr.annotation.txt").exists()
+            def shigella_settings = new File("$outputDir/Assembly/Annotation/StarAMR/sample3/sample3.settings.staramr.annotation.txt")
+            def shigella_cmd = shigella_settings.readLines().get(0)
+            assert shigella_cmd == "command_line                  = /usr/local/bin/staramr search --minimum-contig-length 300 --minimum-N50-value 10000 --unacceptable-number-contigs 1000 --pid-threshold 98 --percent-length-overlap-plasmidfinder 60 --genome-size-lower-bound 4300000 --genome-size-upper-bound 5000000 --percent-length-overlap-resfinder 52 --percent-length-overlap-pointfinder 95 -o sample3 GCA_000947975.1_ASM94797v1_genomic.fna"
+            
+            // campylobacter
+            assert path("$outputDir/Assembly/Annotation/StarAMR/sample4/sample4.settings.staramr.annotation.txt").exists()
+            def campylobacter_settings = new File("$outputDir/Assembly/Annotation/StarAMR/sample4/sample4.settings.staramr.annotation.txt")
+            def campylobacter_cmd = campylobacter_settings.readLines().get(0)
+            assert campylobacter_cmd == "command_line                  = /usr/local/bin/staramr search --minimum-contig-length 300 --minimum-N50-value 10000 --unacceptable-number-contigs 1000 --pid-threshold 98 --percent-length-overlap-plasmidfinder 60 --pointfinder-organism campylobacter --genome-size-lower-bound 1400000 --genome-size-upper-bound 2000000 --percent-length-overlap-resfinder 52 --percent-length-overlap-pointfinder 58 -o sample4 GCA_000947975.1_ASM94797v1_genomic.fna"
+            
+            // not a genus
+            assert path("$outputDir/Assembly/Annotation/StarAMR/sample5/sample5.settings.staramr.annotation.txt").exists()
+            def not_a_genus_settings = new File("$outputDir/Assembly/Annotation/StarAMR/sample5/sample5.settings.staramr.annotation.txt")
+            def not_a_genus_cmd = not_a_genus_settings.readLines().get(0)
+            assert not_a_genus_cmd == "command_line                  = /usr/local/bin/staramr search --minimum-contig-length 300 --minimum-N50-value 10000 --unacceptable-number-contigs 1000 --pid-threshold 98 --percent-length-overlap-plasmidfinder 60 --percent-length-overlap-resfinder 60 --percent-length-overlap-pointfinder 95 -o sample5 GCA_000947975.1_ASM94797v1_genomic.fna"
+
+            // listeria
+            // not a genus
+            assert path("$outputDir/Assembly/Annotation/StarAMR/sample6/sample6.settings.staramr.annotation.txt").exists()
+            def listeria_settings = new File("$outputDir/Assembly/Annotation/StarAMR/sample6/sample6.settings.staramr.annotation.txt")
+            def listeria_cmd = listeria_settings.readLines().get(0)
+            assert listeria_cmd == "command_line                  = /usr/local/bin/staramr search --minimum-contig-length 300 --minimum-N50-value 10000 --unacceptable-number-contigs 1000 --pid-threshold 98 --percent-length-overlap-plasmidfinder 60 --genome-size-lower-bound 2700000 --genome-size-upper-bound 3200000 --percent-length-overlap-resfinder 60 --percent-length-overlap-pointfinder 95 -o sample6 GCF_000196035.1_ASM19603v1_genomic.fna"
+        }
+    }
+
+    test("StarAMR runs without species classification") {
+        tag "staramr_without_species_selection"
+        when {
+            params {
+                outdir = "$outputDir"
+                skip_bakta      = true
+                skip_abricate   = true
+                skip_mobrecon   = true
+                skip_staramr    = false
+                skip_species_classification = true
+
+                staramr {
+                    db = null
+                }
+                pointfinder_db_tag = "pointfinder"
+
+                max_memory = "2.GB"
+                max_cpus = 1
+            }
+
+            workflow {
+                """
+                contig_data = Channel.of(
+                    [ [id: 'sample1'], file('$baseDir/tests/data/genomes/salmonella/GCA_000008105.1_ASM810v1_genomic.fna.gz') ],
+                    [ [id: 'sample2'], file('$baseDir/tests/data/genomes/ecoli/GCA_000947975.1_ASM94797v1_genomic.fna.gz') ],
+                    [ [id: 'sample3'], file('$baseDir/tests/data/genomes/ecoli/GCA_000947975.1_ASM94797v1_genomic.fna.gz') ],
+                    [ [id: 'sample4'], file('$baseDir/tests/data/genomes/ecoli/GCA_000947975.1_ASM94797v1_genomic.fna.gz') ],
+                    [ [id: 'sample5'], file('$baseDir/tests/data/genomes/ecoli/GCA_000947975.1_ASM94797v1_genomic.fna.gz') ],
+                    [ [id: 'sample6'], file('$baseDir/tests/data/genomes/listeria/GCF_000196035.1_ASM19603v1_genomic.fna.gz') ]
+
+                )
+                top_hit = Channel.of(
+                    [ [id: 'sample1'], 'Salmonella enterica' ],
+                    [ [id: 'sample2'], 'Escherichia_coli_' ],
+                    [ [id: 'sample3'], 'Shigella' ],
+                    [ [id: 'sample4'], 'campylobacter_jejuni' ],
+                    [ [id: 'sample5'], 'not_a_genus' ],
+                    [ [id: 'sample6'], 'Listeria monocytogenes' ]                
+    )
+
+                input[0] = contig_data
+                input[1] = top_hit
+                """
+            }
+        }
+
+        then {
+            assert workflow.success
+
+            // Check the commandline parameters
+            
+            // salmonella
+            assert path("$outputDir/Assembly/Annotation/StarAMR/sample1/sample1.settings.staramr.annotation.txt").exists()
+            def salmonella_settings = new File("$outputDir/Assembly/Annotation/StarAMR/sample1/sample1.settings.staramr.annotation.txt")
+            def salmonella_cmd = salmonella_settings.readLines().get(0)
+            assert salmonella_cmd == "command_line                  = /usr/local/bin/staramr search --minimum-contig-length 300 --minimum-N50-value 10000 --unacceptable-number-contigs 1000 --pid-threshold 98 --percent-length-overlap-plasmidfinder 60 --percent-length-overlap-resfinder 60 --percent-length-overlap-pointfinder 95 -o sample1 GCA_000008105.1_ASM810v1_genomic.fna"
+            
+            // escherichia_coli
+            assert path("$outputDir/Assembly/Annotation/StarAMR/sample2/sample2.settings.staramr.annotation.txt").exists()
+            def escherichia_settings = new File("$outputDir/Assembly/Annotation/StarAMR/sample2/sample2.settings.staramr.annotation.txt")
+            def escherichia_cmd = escherichia_settings.readLines().get(0)
+            assert escherichia_cmd == "command_line                  = /usr/local/bin/staramr search --minimum-contig-length 300 --minimum-N50-value 10000 --unacceptable-number-contigs 1000 --pid-threshold 98 --percent-length-overlap-plasmidfinder 60 --percent-length-overlap-resfinder 60 --percent-length-overlap-pointfinder 95 -o sample2 GCA_000947975.1_ASM94797v1_genomic.fna"
+            
+            // shigella
+            assert path("$outputDir/Assembly/Annotation/StarAMR/sample3/sample3.settings.staramr.annotation.txt").exists()
+            def shigella_settings = new File("$outputDir/Assembly/Annotation/StarAMR/sample3/sample3.settings.staramr.annotation.txt")
+            def shigella_cmd = shigella_settings.readLines().get(0)
+            assert shigella_cmd == "command_line                  = /usr/local/bin/staramr search --minimum-contig-length 300 --minimum-N50-value 10000 --unacceptable-number-contigs 1000 --pid-threshold 98 --percent-length-overlap-plasmidfinder 60 --percent-length-overlap-resfinder 60 --percent-length-overlap-pointfinder 95 -o sample3 GCA_000947975.1_ASM94797v1_genomic.fna"
+            
+            // campylobacter
+            assert path("$outputDir/Assembly/Annotation/StarAMR/sample4/sample4.settings.staramr.annotation.txt").exists()
+            def campylobacter_settings = new File("$outputDir/Assembly/Annotation/StarAMR/sample4/sample4.settings.staramr.annotation.txt")
+            def campylobacter_cmd = campylobacter_settings.readLines().get(0)
+            assert campylobacter_cmd == "command_line                  = /usr/local/bin/staramr search --minimum-contig-length 300 --minimum-N50-value 10000 --unacceptable-number-contigs 1000 --pid-threshold 98 --percent-length-overlap-plasmidfinder 60 --percent-length-overlap-resfinder 60 --percent-length-overlap-pointfinder 95 -o sample4 GCA_000947975.1_ASM94797v1_genomic.fna"
+            
+            // not a genus
+            assert path("$outputDir/Assembly/Annotation/StarAMR/sample5/sample5.settings.staramr.annotation.txt").exists()
+            def not_a_genus_settings = new File("$outputDir/Assembly/Annotation/StarAMR/sample5/sample5.settings.staramr.annotation.txt")
+            def not_a_genus_cmd = not_a_genus_settings.readLines().get(0)
+            assert not_a_genus_cmd == "command_line                  = /usr/local/bin/staramr search --minimum-contig-length 300 --minimum-N50-value 10000 --unacceptable-number-contigs 1000 --pid-threshold 98 --percent-length-overlap-plasmidfinder 60 --percent-length-overlap-resfinder 60 --percent-length-overlap-pointfinder 95 -o sample5 GCA_000947975.1_ASM94797v1_genomic.fna"
+
+            // listeria
+            // not a genus
+            assert path("$outputDir/Assembly/Annotation/StarAMR/sample6/sample6.settings.staramr.annotation.txt").exists()
+            def listeria_settings = new File("$outputDir/Assembly/Annotation/StarAMR/sample6/sample6.settings.staramr.annotation.txt")
+            def listeria_cmd = listeria_settings.readLines().get(0)
+            assert listeria_cmd == "command_line                  = /usr/local/bin/staramr search --minimum-contig-length 300 --minimum-N50-value 10000 --unacceptable-number-contigs 1000 --pid-threshold 98 --percent-length-overlap-plasmidfinder 60 --percent-length-overlap-resfinder 60 --percent-length-overlap-pointfinder 95 -o sample6 GCF_000196035.1_ASM19603v1_genomic.fna"
+
+        }
+    }
+
+}
