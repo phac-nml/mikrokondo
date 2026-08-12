@@ -10,7 +10,7 @@ nextflow_pipeline {
 
         when {
             params {
-                input = "$baseDir/tests/data/samplesheets/samplesheet-test-from-assemblies.csv"
+                input = "$baseDir/tests/data/samplesheets/samplesheet-test-from-assemblies-ecoli.csv"
                 outdir = "$outputDir"
 
                 platform = "illumina"
@@ -222,7 +222,7 @@ nextflow_pipeline {
 
         when {
             params {
-                input = "$baseDir/tests/data/samplesheets/samplesheet-test-from-assemblies.csv"
+                input = "$baseDir/tests/data/samplesheets/samplesheet-test-from-assemblies-ecoli.csv"
                 outdir = "$outputDir"
 
                 platform = "illumina"
@@ -266,6 +266,12 @@ nextflow_pipeline {
                         PrimaryTypeIDMethod = "ectyper 2.0.0"
                         SecondaryTypeID = ["ECTyperSubtyping", 0, "sequence_type"]
                         SecondaryTypeIDMethod = ""
+                        min_length = 4000000
+                        max_length = 6700000
+                        staramr_percent_length_overlap_resfinder = 52
+                        staramr_percent_length_overlap_pointfinder = 95
+                        staramr_genome_size_lower_bound = min_length
+                        staramr_genome_size_upper_bound = max_length
                     }
                     salmonella{search = "Salmonella"}
                     listeria{search = "Listeria"}
@@ -274,6 +280,13 @@ nextflow_pipeline {
                     staphylococcus{search = "Staphylococcus"}
                     fallthrough {
                         search = "No organism specific QC data available."
+                        min_length = 4000000
+                        max_length = 6000000
+                        staramr_percent_length_overlap_resfinder = 60
+                        staramr_percent_length_overlap_pointfinder = 95
+                        staramr_genome_size_lower_bound = params.QCReport.fallthrough.min_length
+                        staramr_genome_size_upper_bound = params.QCReport.fallthrough.max_length
+
                     }
                 }
             }
@@ -457,7 +470,7 @@ nextflow_pipeline {
 
         when {
             params {
-                input = "$baseDir/tests/data/samplesheets/samplesheet-test-from-assemblies.csv"
+                input = "$baseDir/tests/data/samplesheets/samplesheet-test-from-assemblies-ecoli.csv"
                 outdir = "$outputDir"
 
                 platform = "illumina"
@@ -525,7 +538,7 @@ nextflow_pipeline {
 
         when {
             params {
-                input = "$baseDir/tests/data/samplesheets/samplesheet-test-from-assemblies.csv"
+                input = "$baseDir/tests/data/samplesheets/samplesheet-test-from-assemblies-ecoli.csv"
                 outdir = "$outputDir"
 
                 platform = "illumina"
@@ -604,7 +617,6 @@ nextflow_pipeline {
 
     test("Test starting from assemblies salmonella") {
         tag "from_assemblies_salmonella"
-
         when {
             params {
                 input = "$projectDir/tests/data/samplesheets/samplesheet-test-from-assemblies-salmonella.csv"
@@ -631,6 +643,91 @@ nextflow_pipeline {
 
                 max_memory = "2.GB"
                 max_cpus = 1
+                subtyping_report {
+                    report_tag = "Subtyping"
+                }
+
+                sistr {
+                    version = "1.1.3"
+                    singularity = "https://depot.galaxyproject.org/singularity/sistr_cmd:${version}--pyhdc42f0e_2"
+                    docker = "biocontainers/sistr_cmd:${version}--pyhdc42f0e_2"
+                    tsv_ext = ".tab"
+                    allele_fasta_ext = ".allele.fasta"
+                    allele_json_ext = ".allele.json"
+                    cgmlst_ext = ".cgmlst.csv"
+                    full_cgmlst = params.sr_full_cgmlst
+                    report_tag = "SISTR${params.subtyping_report.report_tag}"
+                    name_version = "sistr ${version}"
+                    header_p = true
+                }
+
+                mlst {
+                    version = "2.23.0"
+                    singularity = "https://depot.galaxyproject.org/singularity/mlst%3A${version}--hdfd78af_1"
+                    docker = "biocontainers/mlst:${version}--hdfd78af_1"
+                    args = ""
+                    tsv_ext = ".tsv"
+                    json_ext = ".json"
+                    report_tag = "SevenGeneMLSTReport"
+                    name_version = "mlst ${version}"
+                }
+
+                QCReport {
+                    salmonella {
+                        search = "Salmonella"
+                        raw_average_quality = 30
+                        min_n50 = 90000
+                        max_n50 = 6000000
+                        min_nr_contigs = 1
+                        max_nr_contigs = 200
+                        fixed_genome_size = 5000000
+                        min_length = 4400000
+                        max_length = 6000000
+                        max_checkm2_contamination = 5.0
+                        min_average_coverage = 40
+                        min_wgmlst_loci = 3800
+                        min_illumina_read_length = 120
+                        max_illumina_read_length = 510
+                        min_long_read_length = 300
+                        IDField = null
+                        IDTool = null
+                        PrimaryTypeID = [params.sistr.report_tag, "0", "serovar"]
+                        PrimaryTypeIDMethod = params.sistr.name_version
+                        SecondaryTypeID = [params.mlst.report_tag, 0, "sequence_type"]
+                        SecondaryTypeIDMethod = params.mlst.name_version
+                        staramr_percent_length_overlap_resfinder = 52
+                        staramr_percent_length_overlap_pointfinder = 95
+                        staramr_genome_size_lower_bound = min_length
+                        staramr_genome_size_upper_bound = max_length
+                    }
+                    fallthrough {
+                        search = "No organism specific QC data available."
+                        raw_average_quality = 30
+                        min_n50 = null
+                        max_n50 = null
+                        min_nr_contigs = null
+                        max_nr_contigs = null
+                        fixed_genome_size = null
+                        min_length = null
+                        max_length = null
+                        max_checkm2_contamination = 5.0
+                        min_average_coverage = 30
+                        min_wgmlst_loci = null
+                        min_illumina_read_length = 120
+                        max_illumina_read_length = 510
+                        min_long_read_length = 300
+                        IDField = null
+                        IDTool = null
+                        PrimaryTypeID = null
+                        PrimaryTypeIDMethod = null
+                        SecondaryTypeID = null
+                        SecondaryTypeIDMethod = null
+                        staramr_percent_length_overlap_resfinder = 60
+                        staramr_percent_length_overlap_pointfinder = 95
+                        staramr_genome_size_lower_bound = params.QCReport.fallthrough.min_length
+                        staramr_genome_size_upper_bound = params.QCReport.fallthrough.max_length
+                    }
+                }
             }
         }
 
@@ -753,9 +850,9 @@ nextflow_pipeline {
             assert iridanext_metadata.salmonella_GCA_000008105."StarAMR Genotype" == "aadA1, aadA2, aadA2, aph(3\'\')-Ib, aph(3\')-Ia, blaCMY-2, blaTEM-1B, CmlA7, dfrA12, gyrA (D87N), gyrA (S83F), sul1, sul3, tet(A)"
             assert final_report_tmap."StarAMR.0.Genotype" == "aadA1, aadA2, aadA2, aph(3\'\')-Ib, aph(3\')-Ia, blaCMY-2, blaTEM-1B, CmlA7, dfrA12, gyrA (D87N), gyrA (S83F), sul1, sul3, tet(A)"
 
-            assert salmonella_json.StarAMR."0"."Predicted Phenotype" == "streptomycin, kanamycin, ampicillin, amoxicillin/clavulanic acid, cefoxitin, ceftriaxone, unknown[CmlA7_1_JQ639792], trimethoprim, ciprofloxacin I/R, nalidixic acid, sulfisoxazole, tetracycline"
-            assert iridanext_metadata.salmonella_GCA_000008105."StarAMR Predicted Phenotype" == "streptomycin, kanamycin, ampicillin, amoxicillin/clavulanic acid, cefoxitin, ceftriaxone, unknown[CmlA7_1_JQ639792], trimethoprim, ciprofloxacin I/R, nalidixic acid, sulfisoxazole, tetracycline"
-            assert final_report_tmap."StarAMR.0.Predicted Phenotype" == "streptomycin, kanamycin, ampicillin, amoxicillin/clavulanic acid, cefoxitin, ceftriaxone, unknown[CmlA7_1_JQ639792], trimethoprim, ciprofloxacin I/R, nalidixic acid, sulfisoxazole, tetracycline"
+            assert salmonella_json.StarAMR."0"."Predicted Phenotype" == "streptomycin, kanamycin, ampicillin, amoxicillin/clavulanic acid, cefoxitin, ceftriaxone, chloramphenicol, trimethoprim, ciprofloxacin I/R, nalidixic acid, sulfisoxazole, tetracycline"
+            assert iridanext_metadata.salmonella_GCA_000008105."StarAMR Predicted Phenotype" == "streptomycin, kanamycin, ampicillin, amoxicillin/clavulanic acid, cefoxitin, ceftriaxone, chloramphenicol, trimethoprim, ciprofloxacin I/R, nalidixic acid, sulfisoxazole, tetracycline"
+            assert final_report_tmap."StarAMR.0.Predicted Phenotype" == "streptomycin, kanamycin, ampicillin, amoxicillin/clavulanic acid, cefoxitin, ceftriaxone, chloramphenicol, trimethoprim, ciprofloxacin I/R, nalidixic acid, sulfisoxazole, tetracycline"
 
             assert salmonella_json.StarAMR."0"."CGE Predicted Phenotype" == "Spectinomycin, Streptomycin, Neomycin, Kanamycin, Lividomycin, Paromomycin, Ribostamycin, Amoxicillin, Amoxicillin+Clavulanic acid, Ampicillin, Ampicillin+Clavulanic acid, Cefotaxime, Cefoxitin, Ceftazidime, Piperacillin, Piperacillin+Tazobactam, Ticarcillin, Ticarcillin+Clavulanic acid, Cephalothin, Chloramphenicol, Trimethoprim, Nalidixic acid, Ciprofloxacin, Sulfamethoxazole, Doxycycline, Tetracycline"
             assert iridanext_metadata.salmonella_GCA_000008105."StarAMR CGE Predicted Phenotype" == "Spectinomycin, Streptomycin, Neomycin, Kanamycin, Lividomycin, Paromomycin, Ribostamycin, Amoxicillin, Amoxicillin+Clavulanic acid, Ampicillin, Ampicillin+Clavulanic acid, Cefotaxime, Cefoxitin, Ceftazidime, Piperacillin, Piperacillin+Tazobactam, Ticarcillin, Ticarcillin+Clavulanic acid, Cephalothin, Chloramphenicol, Trimethoprim, Nalidixic acid, Ciprofloxacin, Sulfamethoxazole, Doxycycline, Tetracycline"
@@ -1777,4 +1874,193 @@ nextflow_pipeline {
             assert iridanext_global.findAll { it.path == "error/max_samples_exceeded.error.txt" }.size() == 0
         }
     }
+
+    
+test("Test species specific staramr parameters") {
+        tag "staramr_species_params"
+
+        when {
+            params {
+                input = "$baseDir/tests/data/samplesheets/samplesheet-test-from-assemblies.csv"
+                outdir = "$outputDir"
+
+                platform = "illumina"
+
+                mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
+                dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+                kraken2_db = "$baseDir/tests/data/kraken2/test"
+                qt_min_contig_length = 1
+
+                skip_bakta = true
+                skip_mobrecon = true
+                skip_checkm = false
+                skip_raw_read_metrics = true
+                skip_polishing = true
+
+                skip_staramr = false
+                skip_species_classification = false
+                skip_subtyping = true
+
+                skip_allele_calling = true
+                download_checkm2_db = false
+                checkm2_db = "$baseDir/tests/data/databases/TestCheckm2DB.dmnd"
+
+                max_memory = "2.GB"
+                max_cpus = 1
+                QCReport {
+                    escherichia {
+                        search = "Escherichia"
+                        raw_average_quality = 30
+                        min_n50 = 50000
+                        max_n50 = 6000000
+                        min_nr_contigs = 1
+                        max_nr_contigs = 500
+                        fixed_genome_size = 5000000
+                        min_length = 4500000
+                        max_length = 6000000
+                        max_checkm2_contamination = 5.0
+                        min_average_coverage = 40
+                        min_wgmlst_loci = 3800
+                        min_illumina_read_length = 120
+                        max_illumina_read_length = 510
+                        min_long_read_length = 300
+                        staramr_percent_length_overlap_resfinder = 52
+                        staramr_percent_length_overlap_pointfinder = 95
+                        staramr_genome_size_lower_bound = 4500000
+                        staramr_genome_size_upper_bound = 6000000
+                    }
+                    listeria {
+                        search = "Listeria monocytogenes"
+                        raw_average_quality = 30
+                        min_n50 = 50000
+                        max_n50 = 3200000
+                        min_nr_contigs = 1
+                        max_nr_contigs = 200
+                        fixed_genome_size = 3000000
+                        min_length = 2700000
+                        max_length = 3200000
+                        max_checkm2_contamination = 5.0
+                        min_average_coverage = 30
+                        min_wgmlst_loci = 2500
+                        min_illumina_read_length = 120
+                        max_illumina_read_length = 510
+                        min_long_read_length = 300
+                        IDField = null
+                        IDTool = null
+                        staramr_percent_length_overlap_resfinder = 60
+                        staramr_percent_length_overlap_pointfinder = 95
+                        staramr_genome_size_lower_bound = 2700000
+                        staramr_genome_size_upper_bound = 3200000
+                    }
+                    fallthrough {
+                        search = "No organism specific QC data available."
+                        raw_average_quality = 30
+                        min_n50 = null
+                        max_n50 = null
+                        min_nr_contigs = null
+                        max_nr_contigs = null
+                        fixed_genome_size = null
+                        min_length = null
+                        max_length = null
+                        max_checkm2_contamination = 5.0
+                        min_average_coverage = 30
+                        min_wgmlst_loci = null
+                        min_illumina_read_length = 120
+                        max_illumina_read_length = 510
+                        min_long_read_length = 300
+                        IDField = null
+                        IDTool = null
+                        PrimaryTypeID = null
+                        PrimaryTypeIDMethod = null
+                        SecondaryTypeID = null
+                        SecondaryTypeIDMethod = null
+                        staramr_percent_length_overlap_resfinder = 60
+                        staramr_percent_length_overlap_pointfinder = 95
+                        staramr_genome_size_lower_bound = null
+                        staramr_genome_size_upper_bound = null
+                    }
+                }
+
+            }
+        }
+
+        then {
+            assert workflow.success
+            assert path("$outputDir").exists()
+
+            // Check the commandline parameters for starAMR
+            
+            // escherichia_coli
+            assert path("$outputDir/Assembly/Annotation/StarAMR/ecoli_GCA_000947975/ecoli_GCA_000947975.settings.staramr.annotation.txt").exists()
+            def escherichia_settings = new File("$outputDir/Assembly/Annotation/StarAMR/ecoli_GCA_000947975/ecoli_GCA_000947975.settings.staramr.annotation.txt")
+            def escherichia_cmd = escherichia_settings.readLines().get(0)
+            assert escherichia_cmd == "command_line                  = /usr/local/bin/staramr search --minimum-contig-length 300 --minimum-N50-value 10000 --unacceptable-number-contigs 1000 --pid-threshold 98 --percent-length-overlap-plasmidfinder 60 --pointfinder-organism escherichia_coli --genome-size-lower-bound 4500000 --genome-size-upper-bound 6000000 --percent-length-overlap-resfinder 52 --percent-length-overlap-pointfinder 95 -o ecoli_GCA_000947975 ecoli_GCA_000947975.filtered.fasta"
+            
+            // listeria (has no species parameters and is a fallthrough example)
+            assert path("$outputDir/Assembly/Annotation/StarAMR/listeria_GCF_000196035/listeria_GCF_000196035.settings.staramr.annotation.txt").exists()
+            def listeria_settings = new File("$outputDir/Assembly/Annotation/StarAMR/listeria_GCF_000196035/listeria_GCF_000196035.settings.staramr.annotation.txt")
+            def listeria_cmd = listeria_settings.readLines().get(0)
+            assert listeria_cmd == "command_line                  = /usr/local/bin/staramr search --minimum-contig-length 300 --minimum-N50-value 10000 --unacceptable-number-contigs 1000 --pid-threshold 98 --percent-length-overlap-plasmidfinder 60 --percent-length-overlap-resfinder 60 --percent-length-overlap-pointfinder 95 -o listeria_GCF_000196035 listeria_GCF_000196035.filtered.fasta"
+
+            // parse final report json file
+            def final_report = path("$outputDir/FinalReports/Aggregated/Json/final_report.json").json
+            def ecoli_json = final_report.ecoli_GCA_000947975.ecoli_GCA_000947975
+            assert ecoli_json.SpeciesTopHit.equals("Escherichia coli")
+            assert ecoli_json.StarAMR."0".Genotype.equals("aph(3'')-Ib, aph(6)-Id, blaCTX-M-15, blaTEM-1B, dfrA7, gyrA (S83A), sul1, sul2, tet(A)")
+            assert ecoli_json.StarAMR."0"."Predicted Phenotype".equals("streptomycin, kanamycin, ampicillin, ceftriaxone, trimethoprim, ciprofloxacin I/R, nalidixic acid, sulfisoxazole, tetracycline")
+            assert ecoli_json.StarAMR."0"."CGE Predicted Phenotype".equals("Streptomycin, Amoxicillin, Ampicillin, Aztreonam, Cefepime, Cefotaxime, Ceftazidime, Ceftriaxone, Piperacillin, Ticarcillin, Cephalothin, Trimethoprim, Nalidixic acid, Ciprofloxacin, Sulfamethoxazole, Doxycycline, Tetracycline")
+            assert ecoli_json.StarAMR."0".Plasmid.equals("IncQ1")
+            assert ecoli_json.StarAMR."0".Scheme.equals("ecoli_achtman_4")
+            assert ecoli_json.StarAMR."0"."Sequence Type".equals("678")
+            assert ecoli_json.PointfinderDB.equals("escherichia_coli")
+
+            def listeria_json = final_report.listeria_GCF_000196035.listeria_GCF_000196035
+            assert listeria_json.SpeciesTopHit.equals("No Species Identified") // We are using a mash_sketch without listeria
+            assert listeria_json.StarAMR."0".Genotype.equals("fosX")
+            assert listeria_json.StarAMR."0"."Predicted Phenotype".equals("fosfomycin")
+            assert listeria_json.StarAMR."0"."CGE Predicted Phenotype".equals("Fosfomycin")
+            assert listeria_json.StarAMR."0".Plasmid.equals("None")
+            assert listeria_json.StarAMR."0".Scheme.equals("listeria_2")
+            assert listeria_json.StarAMR."0"."Sequence Type".equals("35")
+            assert listeria_json.PointfinderDB.equals(null)
+
+
+            // compare IRIDA Next JSON output
+            def iridanext_json = path("$outputDir/iridanext.output.json").json
+            def iridanext_global = iridanext_json.files.global
+            def iridanext_samples = iridanext_json.files.samples
+            def iridanext_metadata = iridanext_json.metadata.samples
+
+            // output files
+            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Json/final_report.json" }.size() == 1
+            assert iridanext_global.findAll { it.path == "FinalReports/Aggregated/Tables/final_report.tsv" }.size() == 1
+
+            // output metadata
+            def ecoli_metadata = iridanext_metadata.ecoli_GCA_000947975
+            def listeria_metadata = iridanext_metadata.listeria_GCF_000196035
+
+            assert ecoli_metadata."StarAMR Genotype" == "aph(3'')-Ib, aph(6)-Id, blaCTX-M-15, blaTEM-1B, dfrA7, gyrA (S83A), sul1, sul2, tet(A)"
+            assert ecoli_metadata."StarAMR Predicted Phenotype" == "streptomycin, kanamycin, ampicillin, ceftriaxone, trimethoprim, ciprofloxacin I/R, nalidixic acid, sulfisoxazole, tetracycline"
+            assert ecoli_metadata."StarAMR CGE Predicted Phenotype" == "Streptomycin, Amoxicillin, Ampicillin, Aztreonam, Cefepime, Cefotaxime, Ceftazidime, Ceftriaxone, Piperacillin, Ticarcillin, Cephalothin, Trimethoprim, Nalidixic acid, Ciprofloxacin, Sulfamethoxazole, Doxycycline, Tetracycline"
+            assert ecoli_metadata."StarAMR Plasmid" == "IncQ1"
+            assert ecoli_metadata."StarAMR Quality Module" == "Passed"
+            assert ecoli_metadata."StarAMR Sequence Type" == "678"
+            assert ecoli_metadata."StarAMR Genome Length" == "5333525"
+            assert ecoli_metadata."StarAMR N50 Value" == "122025"
+            assert ecoli_metadata."StarAMR Number of Contigs Greater Than Or Equal To 300 bp" == "177"
+            assert ecoli_metadata."StarAMR Quality Module Feedback" == "NoData"
+
+            assert listeria_metadata."StarAMR Genotype" == "fosX"
+            assert listeria_metadata."StarAMR Predicted Phenotype" == "fosfomycin"
+            assert listeria_metadata."StarAMR CGE Predicted Phenotype" == "Fosfomycin"
+            assert listeria_metadata."StarAMR Plasmid" == "None"
+            assert listeria_metadata."StarAMR Quality Module" == "Failed"
+            assert listeria_metadata."StarAMR Sequence Type" == "35"
+            assert listeria_metadata."StarAMR Genome Length" == "2944528"
+            assert listeria_metadata."StarAMR N50 Value" == "2944528"
+            assert listeria_metadata."StarAMR Number of Contigs Greater Than Or Equal To 300 bp" == "1"
+            assert listeria_metadata."StarAMR Quality Module Feedback" == "Genome length is not within the acceptable length range [4000000,6000000]"
+        }
+    }    
+
 }
