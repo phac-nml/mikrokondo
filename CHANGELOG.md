@@ -3,7 +3,13 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## 0.10.3
+
+- Update StarAMR to version 0.12.3 [PR 227](https://github.com/phac-nml/mikrokondo/pull/227/)
+
+- Added StarAMR command-line parameters as nextflow parameters, including species specific parameter settings. [PR 220](https://github.com/phac-nml/mikrokondo/pull/220)
+
+## 0.10.2
 
 ### Added
 
