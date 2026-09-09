@@ -18,9 +18,9 @@ process PARSE_MASH{
     path "versions.yml", emit: versions
 
     script:
-    def taxa_path = (equivalent_taxa != null) && equivalent_taxa.exists() ? "-e $equivalent_taxa" : ""
+    //def taxa_path = (equivalent_taxa != null) && equivalent_taxa.exists() ? "-e $equivalent_taxa" : ""
     """
-    mash_parse.py -r $run_mode -i $mash_screen $taxa_path
+    mash_parse.py -r $run_mode -i $mash_screen -e $equivalent_taxa
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
