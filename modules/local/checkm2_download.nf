@@ -4,7 +4,8 @@ process CHECKM2_DOWNLOAD{
   tag "CheckM2 Database Download"
   label 'process_medium'
   container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.parameters.get('singularity') : task.ext.parameters.get('docker')}"
-
+  maxForks 1
+  
   output:
   path("**.dmnd"), emit: database
   path("versions.yml"), emit: versions

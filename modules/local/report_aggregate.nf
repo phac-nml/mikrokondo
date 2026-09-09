@@ -6,7 +6,8 @@ process REPORT_AGGREGATE{
     tag "Creating alternate output formats"
     label 'process_medium'
     container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.parameters.get('singularity') : task.ext.parameters.get('docker')}"
-
+    maxForks 1
+    
     input:
     path summary_report
 

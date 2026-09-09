@@ -4,6 +4,7 @@ process STARAMR {
     tag "${meta.id}"
     label "process_medium"
     container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.parameters.get('singularity') : task.ext.parameters.get('docker')}"
+    maxForks 1
 
     input:
     tuple val(meta), path(fasta), val(point_finder_db), val(staramr_param_val)
