@@ -20,7 +20,7 @@ process PARSE_MASH{
     script:
     //def taxa_path = (equivalent_taxa != null) && equivalent_taxa.exists() ? "-e $equivalent_taxa" : ""
     """
-    mash_parse.py -r $run_mode -i $mash_screen -e $equivalent_taxa
+    mash_parse.py -r $run_mode -i $mash_screen
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
