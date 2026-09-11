@@ -299,8 +299,12 @@ def add_meta_tag(meta_map, meta_flag){
         log.info "Forcing ${meta_map.id} to be analysed as an isolate as 'skip_metagenomic_detection' is set to true."
     }
 
-
-    meta.metagenomic = meta_flag.toBoolean()
+    if (meta_flag != null) {
+        meta.metagenomic = meta_flag.toBoolean()
+    }
+    else {
+        meta.metagenomic = false
+    }
 
     return meta
 
