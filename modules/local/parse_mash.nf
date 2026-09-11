@@ -14,13 +14,13 @@ process PARSE_MASH{
     val run_mode
 
     output:
-    tuple val(meta), stdout, emit: mash_out
+    tuple val(meta), path("*.mash.out"), emit: mash_out
     path "versions.yml", emit: versions
 
     script:
     //def taxa_path = (equivalent_taxa != null) && equivalent_taxa.exists() ? "-e $equivalent_taxa" : ""
     """
-    mash_parse.py -r $run_mode -i $mash_screen
+    mash_parse.py -r $run_mode -i $mash_screen > ${meta.id}.mash.out
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
