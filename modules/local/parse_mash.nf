@@ -18,7 +18,7 @@ process PARSE_MASH{
     path "versions.yml", emit: versions
 
     script:
-    def taxa_path = (equivalent_taxa != null) ? "-e $equivalent_taxa" : ""
+    def taxa_path = equivalent_taxa ? "-e $equivalent_taxa" : "" // null AND empty strings are false in Groovy
     """
     mash_parse.py -r $run_mode -i $mash_screen $taxa_path
 
