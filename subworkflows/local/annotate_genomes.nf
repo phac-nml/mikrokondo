@@ -3,7 +3,7 @@ include { BAKTA_ANNOTATE } from '../../modules/local/bakta_annotate.nf'
 include { ABRICATE } from "../../modules/local/abricate.nf"
 include { MOBSUITE_RECON } from "../../modules/local/mob_recon.nf"
 include { STARAMR } from "../../modules/local/staramr.nf"
-include { IDENTIFY_POINTDB } from "../../modules/local/select_pointfinder.nf"
+include { IDENTIFY_STARAMR_SPECIES_PARAMS } from "../../modules/local/staramr_species_params.nf"
 
 workflow ANNOTATE_GENOMES {
     take:
@@ -58,8 +58,12 @@ workflow ANNOTATE_GENOMES {
     }
 
     if(!params.skip_staramr){
-
         def db_star = [] // set default value for database
+        
+        // Confirm fallthrough parameters are set for staramr, if not use staramr defaults
+        def fallthrough_staramr_params = StarAMRFunctions.staramr_arg_builder(params.QCReport.fallthrough)
+        
+        
         if(params.staramr.db){
             db_star = Channel.value("${params.staramr.db}")
         }
@@ -69,20 +73,20 @@ workflow ANNOTATE_GENOMES {
 
         point_finder_organism = channel.empty()
         if(params.skip_species_classification){
-            point_finder_organism = contig_data.map{ meta, assembly ->
-                                                        tuple(meta, params.staramr.point_finder_db_default)
-                                                    } // Add in default null value for StarAMR
+            def default_db = params.staramr.point_finder_db_default
+            point_finder_organism = [
+                staramr_param_val: contig_data.map{ meta, assembly -> tuple(meta, default_db, fallthrough_staramr_params) }
+            ]
         }else{
-            point_finder_organism = IDENTIFY_POINTDB(top_hit).pointfinder_db
+            fallthrough_staramr_channel = Channel.value("${fallthrough_staramr_params}")
+            point_finder_organism = IDENTIFY_STARAMR_SPECIES_PARAMS(top_hit, fallthrough_staramr_channel)
         }
 
-
         // Report point finder databases used
-        reports = reports.mix(point_finder_organism.map{
-            meta, organism -> tuple(meta, params.pointfinder_db_tag, organism)
+        reports = reports.mix(point_finder_organism.staramr_param_val.map{
+            meta, organism, staramr_params -> tuple(meta, params.pointfinder_db_tag, organism)
         })
-
-        star_amr_data_merged = contig_data.join(point_finder_organism)
+        star_amr_data_merged = contig_data.join(point_finder_organism.staramr_param_val)
         staramr_ = STARAMR(star_amr_data_merged, db_star) // pass nothing for database as it will use what is in the container
         versions = versions.mix(staramr_.versions)
         reports = reports.mix(staramr_.summary.map{

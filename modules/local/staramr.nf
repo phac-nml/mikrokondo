@@ -6,7 +6,7 @@ process STARAMR {
     container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.parameters.get('singularity') : task.ext.parameters.get('docker')}"
 
     input:
-    tuple val(meta), path(fasta), val(point_finder_db)
+    tuple val(meta), path(fasta), val(point_finder_db), val(staramr_param_val)
     path db
 
     output:
@@ -22,11 +22,13 @@ process STARAMR {
     path "versions.yml", emit: versions
 
     script:
-    def args = task.ext.args ?: ""
+
     def db_ = ""
     prefix = task.ext.prefix ?: "${meta.id}"
     def is_compressed = fasta.getName().endsWith(".gz") ? true : false
     def fasta_name = fasta.getName().replace(".gz", "")
+    def args = []
+    
     if(db){
         db_ = "-d $db"
     }else{
@@ -34,19 +36,46 @@ process STARAMR {
     }
 
 
+    if(params.staramr.no_exclude_genes){
+        args << "--no-exclude-genes"
+    }
+
+    if(params.staramr.exclude_negatives){
+        args << "--exclude-negatives"
+    }
+
+    if(params.staramr.exclude_resistance_phenotypes){
+        args << "--exclude-resistance-phenotypes"
+    }
+
+    // Species specific staramr's parameters: 
+    // Defined in the subworkflow process select_pointfinder (modules/local/select_pointfinder.nf)
+
     if(point_finder_db){
         log.info "Using ${point_finder_db} pointfinder database for ${meta.id} in StarAMR."
-        args = args + "--pointfinder-organism $point_finder_db"
+        args << "--pointfinder-organism $point_finder_db"
     }else{
         log.info "No relevant pointfinder database could be identified for $meta.id"
     }
+    if(staramr_param_val instanceof Collection) {
+        args.addAll(staramr_param_val)
+    } else if(staramr_param_val) {
+        args << staramr_param_val
+    }
+    
     """
     export TMPDIR=\$PWD # set env temp dir to in the folder
     if [ "$is_compressed" == "true" ]; then
         gzip -c -d $fasta > $fasta_name
     fi
 
-    staramr search $args -o $prefix $db_ $fasta_name
+    staramr search \\
+        --minimum-contig-length ${params.staramr.minimum_contig_length} \\
+        --minimum-N50-value ${params.staramr.minimum_N50_value} \\
+        --unacceptable-number-contigs ${params.staramr.unacceptable_number_contigs} \\
+        --pid-threshold ${params.staramr.pid_threshold} \\
+        --percent-length-overlap-plasmidfinder ${params.staramr.percent_length_overlap_plasmidfinder} \\
+        ${args.join(' ')} -o $prefix $db_ $fasta_name
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         staramr: \$(echo \$(staramr -V 2>&1) | sed 's/^.*staramr //; s/ .*\$//')
