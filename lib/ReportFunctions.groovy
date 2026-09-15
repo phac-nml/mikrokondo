@@ -211,20 +211,22 @@ class ReportFunctions {
     }
 
 
-  static def get_shortest_token(java.util.ArrayList search_params){
+  static def get_shortest_token(search_params){
 
     def overly_large_number = Integer.MAX_VALUE;
     def shortest_entry = overly_large_number;
     for(i in search_params){
-        def i_toks = i[0].split('_|\s')
-        for(g in i_toks){
-            def tok_size = g.size()
-            if(tok_size < shortest_entry){
-                shortest_entry = tok_size
+        if(i[0] != null) {
+            def i_toks = i[0].split('_|\s')
+            for(g in i_toks){
+                def tok_size = g.size()
+                if(tok_size < shortest_entry){
+                    shortest_entry = tok_size
+                }
             }
         }
     }
     return shortest_entry
-  }
+}
 
 }
