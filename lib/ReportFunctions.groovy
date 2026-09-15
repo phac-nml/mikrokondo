@@ -211,7 +211,7 @@ class ReportFunctions {
     }
 
 
-  static def get_shortest_token(search_params){
+  static def get_shortest_token(java.util.ArrayList search_params){
 
     def overly_large_number = Integer.MAX_VALUE;
     def shortest_entry = overly_large_number;
@@ -227,6 +227,6 @@ class ReportFunctions {
         }
     }
     return shortest_entry
-}
+  }
 
 }
