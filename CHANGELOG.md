@@ -3,6 +3,12 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+### Fixed
+
+- Added a workaround to prevent a crash when running on Nextflow version 25 in Azure environments.
+
 ## 0.10.3
 
 - Update StarAMR to version 0.12.3 [PR 227](https://github.com/phac-nml/mikrokondo/pull/227/)
