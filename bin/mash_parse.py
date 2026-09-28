@@ -239,7 +239,7 @@ if __name__ == "__main__":
                         default=None)
 
     args = parser.parse_args()
-    if args.run_mode == __META_GENOME_PROG__ :
+    if args.run_mode == __META_GENOME_PROG__ and args.equivalent_taxa:
         MashScreen(args.run_mode, args.input, args.equivalent_taxa)
     else:
         MashScreen(args.run_mode, args.input, None)
