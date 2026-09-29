@@ -59,9 +59,12 @@ class MashScreen:
     taxonomic_classification_level = "g"  # the level at which to check for if sample is metagenomic
     alternate_taxa_allowed = 1  # The number of unique elements allowed in a set before the sample is classified as metagenomic, works with the taxonomic_classification_level constant
 
-    def __init__(self, prog, mash_input, equivalent_taxa: typing.Optional[pathlib.Path]):
-        if equivalent_taxa is not None:
-            self.equivalent_taxa = self.parse_equivalent_taxa(pathlib.Path(equivalent_taxa))
+    def __init__(self, prog, mash_input, equivalent_taxa_path: typing.Optional[pathlib.Path]):
+        self.equivalent_taxa_path = equivalent_taxa_path
+
+        if self.equivalent_taxa_path is not None:
+            self.equivalent_taxa = self.parse_equivalent_taxa(pathlib.Path(equivalent_taxa_path))
+
         self.mash_input = mash_input
         self._mash_data = self.parse_mash_screen()
         if self.meta_genome_prog == prog:
@@ -187,9 +190,13 @@ class MashScreen:
         """
         data = filter(lambda x: x.identity > self.percent_identity_cutoff, mash_data)
         taxa_levels = self.parse_flatten_queries(data)
-        self.normalize_taxa(taxa_levels)
+
+        if self.equivalent_taxa_path is not None:
+            self.normalize_taxa(taxa_levels)
+
         if len(taxa_levels[self.taxonomic_classification_level]) > self.alternate_taxa_allowed:
             return True
+
         return False
 
     def top_hit(self, mash_data):
