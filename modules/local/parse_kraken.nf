@@ -9,16 +9,16 @@ process PARSE_KRAKEN {
     tuple val(meta), path(kraken_report)
 
     output:
-    tuple val(meta), stdout, emit: kraken_top
+    tuple val(meta), env('RESULT'), emit: kraken_top
     path "versions.yml", emit: versions
 
     script:
     """
-    kraken2_tophit.py $kraken_report $params.kraken.tophit_level
+    RESULT=\$(kraken2_tophit.py $kraken_report $params.kraken.tophit_level)
     # If no species identified or there is an error, emit that from the pipeline
-    # if [ \$? -ne 0 ]
+    # if [ RESULT -ne 0 ]
     # then
-    #     echo "No Species Identified"
+    #     RESULT="No Species Identified"
     # fi
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
