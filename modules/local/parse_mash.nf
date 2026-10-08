@@ -3,6 +3,8 @@
 
 // TODO need to add better 'top-hit' handling to the mash parsing script as sometimes the top hit is actually ambiguous e.g. proportions are equal
 
+import groovy.json.JsonOutput
+
 process PARSE_MASH{
     tag "$meta.id"
     label "process_low"
@@ -18,9 +20,13 @@ process PARSE_MASH{
     path "versions.yml", emit: versions
 
     script:
-    def taxa_path = equivalent_taxa && equivalent_taxa.exists() ? "-e $equivalent_taxa" : "" // null AND empty strings are false in Groovy
+    //def taxa_path = equivalent_taxa && equivalent_taxa.exists() ? "-e $equivalent_taxa" : "" // null AND empty strings are false in Groovy
+    def json = JsonOutput.prettyPrint(JsonOutput.toJson(params.equivalent_taxa))
+    new File("equivalent_taxa.json").write(json)
+
     """
-    RESULT=\$(mash_parse.py -r $run_mode -i $mash_screen $taxa_path)
+
+    RESULT=\$(mash_parse.py -r $run_mode -i $mash_screen equivalent_taxa.json)
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
