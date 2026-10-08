@@ -24,7 +24,7 @@ process PARSE_MASH{
     new File("equivalent_taxa.json").write(json)
     """
 
-    RESULT=\$(mash_parse.py -r $run_mode -i $mash_screen equivalent_taxa.json)
+    RESULT=\$(mash_parse.py -r $run_mode -i $mash_screen -e equivalent_taxa.json)
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
