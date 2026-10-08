@@ -4,9 +4,11 @@ include { FASTP_TRIM } from '../../modules/local/fastp_trim.nf'
 include { PARSE_FASTP } from '../../modules/local/parse_fastp.nf'
 include { CHOPPER_TRIM } from '../../modules/local/chopper_trim.nf'
 include { MASH_SCREEN } from '../../modules/local/mash_screen.nf'
+include { MASH_SCREEN as EARLY_QUITTER } from '../../modules/local/mash_screen.nf'
 include { MASH_ESTIMATE } from '../../modules/local/mash_estimate.nf'
 include { REMOVE_CONTAMINANTS } from '../../modules/local/remove_contaminants.nf'
 include { PARSE_MASH } from '../../modules/local/parse_mash.nf'
+include { PARSE_MASH as EARLY_QUITTER_PARSE } from '../../modules/local/parse_mash.nf'
 include { CHECK_ONT } from '../../modules/local/check_ont.nf'
 include { FASTQC } from '../../modules/nf-core/fastqc/main.nf'
 include { SEQTK_SAMPLE } from '../../modules/local/seqtk_sample.nf'
@@ -54,8 +56,23 @@ workflow QC_READS {
     reports = Channel.empty()
     versions = Channel.empty()
     def platform_comp = platform.toString()
+    
+    early_quit_mash = EARLY_QUITTER(reads, params.mash.mash_sketch ? file(params.mash.mash_sketch) : error("--mash_sketch ${params.mash_sketch} is invalid"))
+    parsed_mash_eq = EARLY_QUITTER_PARSE(early_quit_mash.mash_data, Channel.fromPath("${projectDir}/assets/equivalent_taxa.json"), Channel.value(true), Channel.value("classify")) // Classify is passed to tell the script to determine if the sample is metagenomic or not
 
-    deconned_reads = REMOVE_CONTAMINANTS(reads, params.r_contaminants.mega_mm2_idx ? file(params.r_contaminants.mega_mm2_idx) : error("--dehosting_idx ${params.dehosting_idx} is invalid"), Channel.value(platform_comp))
+
+    // Need to recreate the channel to produce a side effect focing this process to run first
+    ch_cleaned_temp_eq = ch_prepped_reads.join(parsed_mash_eq.mash_out, remainder: true).map {
+                meta, fastq, m_gen -> tuple(add_meta_tag(meta, m_gen), m_gen, fastq)
+            }
+    new_reads = ch_cleaned_temp_eq.map{
+      meta, m_gen, reads -> tuple(meta, reads)
+    }
+
+    //TODO  Replace this after
+    //deconned_reads = REMOVE_CONTAMINANTS(reads, params.r_contaminants.mega_mm2_idx ? file(params.r_contaminants.mega_mm2_idx) : error("--dehosting_idx ${params.dehosting_idx} is invalid"), Channel.value(platform_comp))
+    
+    deconned_reads = REMOVE_CONTAMINANTS(new_reads, params.r_contaminants.mega_mm2_idx ? file(params.r_contaminants.mega_mm2_idx) : error("--dehosting_idx ${params.dehosting_idx} is invalid"), Channel.value(platform_comp))
     versions = versions.mix(REMOVE_CONTAMINANTS.out.versions)
 
     ch_meta_cleaned_reads = FASTP_TRIM(deconned_reads.reads) // can use the json output of this to decide if chopper should be run
@@ -202,8 +219,9 @@ workflow QC_READS {
             }
         }
         else{
-            def taxa_file = file([projectDir, "conf", "equivalent_taxa.json"].join(File.separator))
-            parsed_mash = PARSE_MASH(mash_screen_out.mash_data, taxa_file, Channel.value("classify")) // Classify is passed to tell the script to determine if the sample is metagenomic or not
+            //def taxa_file = file([projectDir, "assets", "equivalent_taxa.json"].join(File.separator))
+            //parsed_mash = PARSE_MASH(mash_screen_out.mash_data, taxa_file, Channel.value("classify")) // Classify is passed to tell the script to determine if the sample is metagenomic or not
+            parsed_mash = PARSE_MASH(mash_screen_out.mash_data, [], Channel.value("classify")) // Classify is passed to tell the script to determine if the sample is metagenomic or not
 
             // Update file metadata
             ch_cleaned_temp = ch_prepped_reads.join(parsed_mash.mash_out, remainder: true).map {
