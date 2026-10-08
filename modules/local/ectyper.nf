@@ -7,7 +7,6 @@ process ECTYPER{
     tag "$meta.id"
     label 'process_high'
     container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.parameters.get('singularity') : task.ext.parameters.get('docker')}"
-    maxForks 1
     
     input:
     tuple val(meta), path(fasta)
