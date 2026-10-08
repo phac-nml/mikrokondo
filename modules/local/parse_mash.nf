@@ -11,6 +11,7 @@ process PARSE_MASH{
     input:
     tuple val(meta), path(mash_screen)
     path equivalent_taxa
+    val use_equivalent_taxa
     val run_mode
 
     output:
@@ -18,7 +19,7 @@ process PARSE_MASH{
     path "versions.yml", emit: versions
 
     script:
-    def taxa_path = (equivalent_taxa != null) && (equivalent_taxa.exists()) ? "-e $equivalent_taxa" : ""
+    def taxa_path = use_equivalent_taxa ? "-e $equivalent_taxa" : ""
     """
     RESULT=\$(mash_parse.py -r $run_mode -i $mash_screen $taxa_path)
 
