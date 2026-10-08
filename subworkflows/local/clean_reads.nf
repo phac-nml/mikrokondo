@@ -202,8 +202,7 @@ workflow QC_READS {
             }
         }
         else{
-            parsed_mash = PARSE_MASH(mash_screen_out.mash_data, Channel.fromPath("${projectDir}/assets/equivalent_taxa.json"), Channel.value(true), Channel.value("classify")) // Classify is passed to tell the script to determine if the sample is metagenomic or not
-
+            parsed_mash = PARSE_MASH(mash_screen_out.mash_data, channel.value(file("${projectDir}/assets/equivalent_taxa.json")), channel.value(true), channel.value("classify")) // Classify is passed to tell the script to determine if the sample is metagenomic or not
             // Update file metadata
             ch_cleaned_temp = ch_prepped_reads.join(parsed_mash.mash_out, remainder: true).map {
                 meta, fastq, m_gen -> tuple(add_meta_tag(meta, m_gen), m_gen, fastq)

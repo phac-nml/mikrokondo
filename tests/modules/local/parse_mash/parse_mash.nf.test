@@ -41,8 +41,8 @@ nextflow_process {
                         [["id": "iso"], file("$baseDir/tests/data/isolate_mash.screen")]
                     )
                     input[1] = Channel.of(file("$baseDir/assets/equivalent_taxa.json"))
-
-                    input[2] = channel.of("classify")
+                    input[2] = Channel.value(true)
+                    input[3] = channel.of("classify")
                 """
             }
 
@@ -66,8 +66,8 @@ nextflow_process {
                         [["id": "iso"], file("$baseDir/tests/data/contaminated_mash.screen")]
                     )
                     input[1] = Channel.of(file("$baseDir/assets/equivalent_taxa.json"))
-
-                    input[2] = channel.of("classify")
+                    input[2] = Channel.value(true)
+                    input[3] = channel.of("classify")
                 """
             }
 
@@ -91,8 +91,8 @@ nextflow_process {
                         [["id": "iso"], file("$baseDir/tests/data/contaminated_mash.screen")]
                     )
                     input[1] = Channel.of([])
-
-                    input[2] = channel.of("top")
+                    input[2] = Channel.value(false)
+                    input[3] = channel.of("top")
                 """
             }
 
