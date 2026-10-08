@@ -13,6 +13,7 @@ process PARSE_MASH{
     input:
     tuple val(meta), path(mash_screen)
     path equivalent_taxa
+    val use_equivalent_taxa
     val run_mode
 
     output:
@@ -23,7 +24,6 @@ process PARSE_MASH{
     //def taxa_path = equivalent_taxa && equivalent_taxa.exists() ? "-e $equivalent_taxa" : "" // null AND empty strings are false in Groovy
     def json = JsonOutput.prettyPrint(JsonOutput.toJson(params.equivalent_taxa))
     new File("equivalent_taxa.json").write(json)
-
     """
 
     RESULT=\$(mash_parse.py -r $run_mode -i $mash_screen equivalent_taxa.json)
