@@ -15,8 +15,8 @@ nextflow_process {
                         [["id": "ECSH"], file("$baseDir/tests/data/test_equivalent_taxa.screen")]
                     )
                     input[1] = Channel.of(file("$baseDir/assets/equivalent_taxa.json"))
-
-                    input[2] = channel.of("classify")
+                    input[2] = Channel.value(true)
+                    input[3] = channel.of("classify")
                 """
             }
 
