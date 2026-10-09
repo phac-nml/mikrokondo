@@ -6,7 +6,7 @@ include { CHOPPER_TRIM } from '../../modules/local/chopper_trim.nf'
 include { MASH_SCREEN } from '../../modules/local/mash_screen.nf'
 include { MASH_ESTIMATE } from '../../modules/local/mash_estimate.nf'
 include { REMOVE_CONTAMINANTS } from '../../modules/local/remove_contaminants.nf'
-include { PARSE_MASH } from '../../modules/local/parse_mash.nf'
+include { PARSE_MASH_CLASSIFY } from '../../modules/local/parse_mash_classify.nf'
 include { CHECK_ONT } from '../../modules/local/check_ont.nf'
 include { FASTQC } from '../../modules/nf-core/fastqc/main.nf'
 include { SEQTK_SAMPLE } from '../../modules/local/seqtk_sample.nf'
@@ -202,7 +202,7 @@ workflow QC_READS {
             }
         }
         else{
-            parsed_mash = PARSE_MASH(mash_screen_out.mash_data, channel.value(file("${projectDir}/assets/equivalent_taxa.json")), channel.value(true), channel.value("classify")) // Classify is passed to tell the script to determine if the sample is metagenomic or not
+            parsed_mash = PARSE_MASH_CLASSIFY(mash_screen_out.mash_data, channel.value(file("${projectDir}/assets/equivalent_taxa.json"))) // Classify is passed to tell the script to determine if the sample is metagenomic or not
             // Update file metadata
             ch_cleaned_temp = ch_prepped_reads.join(parsed_mash.mash_out, remainder: true).map {
                 meta, fastq, m_gen -> tuple(add_meta_tag(meta, m_gen), m_gen, fastq)
