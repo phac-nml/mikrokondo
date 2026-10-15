@@ -225,9 +225,6 @@
                                 "mean_illumina_read_length": {
                                     "description": ""
                                 },
-                                "qc_status_read_length": {
-                                    "description": ""
-                                },
                                 "mean_long_read_length": {
                                     "description": ""
                                 },
