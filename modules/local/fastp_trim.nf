@@ -32,13 +32,15 @@ process FASTP_TRIM{
     if(params.fastp.dedup_reads){
         args = args + "-D "
     }
+    output_name = meta.id
     if(meta.single_end || reads instanceof nextflow.processor.TaskPath) {
         args = args + "${params.fastp.args.single_end} -i ${reads[0]} -o ${reads[0].simpleName}${params.fastp.fastq_ext}"
+        output_name = "${meta.id}.longreads"
     }else{
         args = args + "${params.fastp.args.illumina} -i ${reads[0]} -I ${reads[1]} -o ${reads[0].simpleName}.R1${params.fastp.fastq_ext} -O ${reads[1].simpleName}.R2${params.fastp.fastq_ext}"
     }
     """
-    fastp ${args} --json ${meta.id}.json --html ${meta.id}.html
+    fastp ${args} --json ${output_name}.json --html ${output_name}.html
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         fastp: \$(fastp --version 2>&1 | sed -e "s/fastp //g")
