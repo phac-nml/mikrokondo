@@ -35,7 +35,7 @@ process FASTP_TRIM{
     output_name = meta.id
     if(meta.single_end || reads instanceof nextflow.processor.TaskPath) {
         args = args + "${params.fastp.args.single_end} -i ${reads[0]} -o ${reads[0].simpleName}${params.fastp.fastq_ext}"
-        output_name = "${meta.id}.longreads"
+        output_name = params.opt_platforms.hybrid ? "${meta.id}.longreads" : meta.id
     }else{
         args = args + "${params.fastp.args.illumina} -i ${reads[0]} -I ${reads[1]} -o ${reads[0].simpleName}.R1${params.fastp.fastq_ext} -O ${reads[1].simpleName}.R2${params.fastp.fastq_ext}"
     }
