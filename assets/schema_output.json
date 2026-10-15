@@ -1,0 +1,506 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://raw.githubusercontent.com/phac-nml/mikrokondo/main/assets/schema_output.json",
+    "title": "Mikrokondo Output Schema",
+    "description": "The Mikrokondo-specific schema used for validating IRIDA Next JSON output data",
+    "type": "object",
+    "properties": {
+        "files": {
+            "type": "object",
+            "properties": {
+                "global": {
+                    "type": "array",
+                    "items": {
+                        "properties": {
+                            "path": {
+                                "anyOf": [
+                                    {
+                                        "pattern": "^.*FinalReports/.*Aggregated/.*Json/.*final_report.json$",
+                                        "description": ""
+                                    },
+                                    {
+                                        "pattern": "^.*FinalReports/.*Aggregated/.*Tables/.*final_report.tsv$",
+                                        "description": ""
+                                    },
+                                    {
+                                        "pattern": "^.*error/.*max_samples_exceeded.error.txt$",
+                                        "description": ""
+                                    }
+                                ]
+                            }
+                        },
+                        "additionalProperties": false
+                    },
+                    "uniqueItems": true
+                },
+                "samples": {
+                    "type": "object",
+                    "patternProperties": {
+                        "^.*$": {
+                            "type": "array",
+                            "items": {
+                                "properties": {
+                                    "path": {
+                                        "anyOf": [
+                                            {
+                                                "pattern": "^.*Assembly/.*FinalAssembly/.*/.*.filtered.assembly.fasta.gz$",
+                                                "description": ""
+                                            },
+                                            {
+                                                "pattern": "^.*Assembly/.*Quality/.*QUAST/.*/.*.transposed.*.quast.quality.tsv$",
+                                                "description": ""
+                                            },
+                                            {
+                                                "pattern": "^.*Assembly/.*Quality/.*CheckM2/.*/.*.quality_report.checkm2.quality.tsv$",
+                                                "description": ""
+                                            },
+                                            {
+                                                "pattern": "^.*Assembly/.*Quality/.*SeqKitStats/.*.seqkit.stats.summary.tsv$",
+                                                "description": ""
+                                            },
+                                            {
+                                                "pattern": "^.*Assembly/.*PostProcessing/.*Speciation/.*MashScreen/.*.taxa.screen.screen$",
+                                                "description": ""
+                                            },
+                                            {
+                                                "pattern": "^.*Reads/.*Quality/.*Trimmed/.*MashScreen/.*.reads.screen.screen$",
+                                                "description": ""
+                                            },
+                                            {
+                                                "pattern": "^.*Reads/.*Quality/.*Trimmed/.*FastP/.*.fastp.summary.json$",
+                                                "description": ""
+                                            },
+                                            {
+                                                "pattern": "^.*Reads/.*Quality/.*RawReadQuality/.*.scan.summary.json$",
+                                                "description": ""
+                                            },
+                                            {
+                                                "pattern": "^.*Assembly/.*Subtyping/.*ECTyper/.*/.*.blastn_output_alleles.ectyper.subtyping.txt$",
+                                                "description": ""
+                                            },
+                                            {
+                                                "pattern": "^.*Assembly/.*Subtyping/.*ECTyper/.*/.*.ectyper.subtyping.log$",
+                                                "description": ""
+                                            },
+                                            {
+                                                "pattern": "^.*Assembly/.*Subtyping/.*ECTyper/.*/.*.output.ectyper.subtyping.tsv$",
+                                                "description": ""
+                                            },
+                                            {
+                                                "pattern": "^.*Assembly/.*Subtyping/.*Lissero/.*.lissero.subtyping.tsv$",
+                                                "description": ""
+                                            },
+                                            {
+                                                "pattern": "^.*Assembly/.*Subtyping/.*SISTR/.*.sistr.subtyping.tab$",
+                                                "description": ""
+                                            },
+                                            {
+                                                "pattern": "^.*Assembly/.*Subtyping/.*SISTR/.*.sistr.allele.subtyping.fasta$",
+                                                "description": ""
+                                            },
+                                            {
+                                                "pattern": "^.*Assembly/.*Subtyping/.*SISTR/.*.sistr.allele.subtyping.json$",
+                                                "description": ""
+                                            },
+                                            {
+                                                "pattern": "^.*Assembly/.*Subtyping/.*SISTR/.*.sistr.cgmlst.subtyping.csv$",
+                                                "description": ""
+                                            },
+                                            {
+                                                "pattern": "^.*Assembly/.*Subtyping/.*Locidex/.*Report/.*.mlst.subtyping.json.gz$",
+                                                "description": ""
+                                            },
+                                            {
+                                                "pattern": "^.*Assembly/.*Subtyping/.*Locidex/.*Summary/.*.locidex.summary.json$",
+                                                "description": ""
+                                            },
+                                            {
+                                                "pattern": "^.*FinalReports/.*FlattenedReports/.*.flat_sample.json.gz$",
+                                                "description": ""
+                                            },
+                                            {
+                                                "pattern": "^.*Assembly/.*Annotation/.*Abricate/.*abricate.annotation.txt$",
+                                                "description": ""
+                                            },
+                                            {
+                                                "pattern": "^.*Assembly/.*Annotation/.*Mobsuite/.*Recon/.*/.*mobtyper_results.*.txt$",
+                                                "description": ""
+                                            },
+                                            {
+                                                "pattern": "^.*Assembly/.*Annotation/.*Bakta/.*.gbff$",
+                                                "description": ""
+                                            },
+                                            {
+                                                "pattern": "^.*Assembly/.*Annotation/.*Bakta/.*.txt$",
+                                                "description": ""
+                                            },
+                                            {
+                                                "pattern": "^.*Assembly/.*Annotation/.*StarAMR/.*/.*summary.*.tsv$",
+                                                "description": ""
+                                            },
+                                            {
+                                                "pattern": "^.*Assembly/.*Annotation/.*StarAMR/.*/.*detailed_summary.*.tsv$",
+                                                "description": ""
+                                            },
+                                            {
+                                                "pattern": "^.*Assembly/.*Annotation/.*StarAMR/.*/.*results.*.xlsx$",
+                                                "description": ""
+                                            },
+                                            {
+                                                "pattern": "^.*pipeline_info/.*.mikrokondo.parameters.json$",
+                                                "description": ""
+                                            },
+                                            {
+                                                "pattern": "^.*pipeline_info/.*.mikrokondo.software.version.yml$",
+                                                "description": ""
+                                            }
+                                        ]
+                                    }
+                                },
+                                "additionalProperties": false
+                            },
+                            "uniqueItems": true
+                        }
+                    }
+                }
+            }
+        },
+        "metadata": {
+            "type": "object",
+            "properties": {
+                "samples": {
+                    "type": "object",
+                    "patternProperties": {
+                        "^.*$": {
+                            "type": "object",
+                            "properties": {
+                                "qc_status_overall": {
+                                    "description": ""
+                                },
+                                "qc_status_contamination": {
+                                    "description": ""
+                                },
+                                "checkm_value": {
+                                    "description": ""
+                                },
+                                "qc_status_read_depth_fixed": {
+                                    "description": ""
+                                },
+                                "mean_read_depth_fixed": {
+                                    "description": ""
+                                },
+                                "qc_status_assembly_n50": {
+                                    "description": ""
+                                },
+                                "n50_value": {
+                                    "description": ""
+                                },
+                                "qc_status_read_qual": {
+                                    "description": ""
+                                },
+                                "raw_average_quality_value": {
+                                    "description": ""
+                                },
+                                "qc_status_assembly_genome_size": {
+                                    "description": ""
+                                },
+                                "assembly_length": {
+                                    "description": ""
+                                },
+                                "qc_status_assembly_num_contigs": {
+                                    "description": ""
+                                },
+                                "assembly_num_contigs": {
+                                    "description": ""
+                                },
+                                "qc_status_wgmlst_loci": {
+                                    "description": ""
+                                },
+                                "wgmlst_loci_count": {
+                                    "description": ""
+                                },
+                                "qc_status_read_length": {
+                                    "description": ""
+                                },
+                                "mean_illumina_read_length": {
+                                    "description": ""
+                                },
+                                "qc_status_read_length": {
+                                    "description": ""
+                                },
+                                "mean_long_read_length": {
+                                    "description": ""
+                                },
+                                "qc_summary": {
+                                    "description": ""
+                                },
+                                "Downsampled": {
+                                    "description": ""
+                                },
+                                "locidex_db_name": {
+                                    "description": ""
+                                },
+                                "locidex_db_date": {
+                                    "description": ""
+                                },
+                                "locidex_db_version": {
+                                    "description": ""
+                                },
+                                "locidex_db_total_loci_count": {
+                                    "description": ""
+                                },
+                                "locidex_count_loci_found": {
+                                    "description": ""
+                                },
+                                "locidex_count_loci_missing": {
+                                    "description": ""
+                                },
+                                "locidex_loci_no_blast_hit": {
+                                    "description": ""
+                                },
+                                "locidex_loci_single_blast_hit": {
+                                    "description": ""
+                                },
+                                "locidex_loci_with_multiple_values": {
+                                    "description": ""
+                                },
+                                "locidex_loci_no_nucleotide_hits": {
+                                    "description": ""
+                                },
+                                "locidex_loci_no_protein_hits": {
+                                    "description": ""
+                                },
+                                "ECTyper Database": {
+                                    "description": ""
+                                },
+                                "ECTyper Evidence": {
+                                    "description": ""
+                                },
+                                "ECTyper GeneCoverages (%)": {
+                                    "description": ""
+                                },
+                                "ECTyper GeneIdentities (%)": {
+                                    "description": ""
+                                },
+                                "ECTyper GeneScores": {
+                                    "description": ""
+                                },
+                                "ECTyper H-Antigen": {
+                                    "description": ""
+                                },
+                                "ECTyper O-Antigen": {
+                                    "description": ""
+                                },
+                                "ECTyper QCFlag": {
+                                    "description": ""
+                                },
+                                "ECTyper Serotype": {
+                                    "description": ""
+                                },
+                                "ECTyper Subtyping": {
+                                    "description": ""
+                                },
+                                "ECTyper Warnings": {
+                                    "description": ""
+                                },
+                                "ECTyper Pathotype": {
+                                    "description": ""
+                                },
+                                "ECTyper Pathotype Counts": {
+                                    "description": ""
+                                },
+                                "ECTyper Pathotype Genes": {
+                                    "description": ""
+                                },
+                                "ECTyper Pathotype Gene Names": {
+                                    "description": ""
+                                },
+                                "ECTyper Pathotype Accessions": {
+                                    "description": ""
+                                },
+                                "ECTyper Pathotype Allele IDs": {
+                                    "description": ""
+                                },
+                                "ECTyper Pathotype Identities (%)": {
+                                    "description": ""
+                                },
+                                "ECTyper Pathotype Coverages (%)": {
+                                    "description": ""
+                                },
+                                "ECTyper Pathotype Gene Length Ratios": {
+                                    "description": ""
+                                },
+                                "ECTyper Pathotype Rule IDs": {
+                                    "description": ""
+                                },
+                                "ECTyper Pathotype Gene Counts": {
+                                    "description": ""
+                                },
+                                "ECTyper PathoDBVer": {
+                                    "description": ""
+                                },
+                                "ECTyper Stx Subtypes": {
+                                    "description": ""
+                                },
+                                "ECTyper Stx Accessions": {
+                                    "description": ""
+                                },
+                                "ECTyper Stx Allele IDs": {
+                                    "description": ""
+                                },
+                                "ECTyper Stx Allele Names": {
+                                    "description": ""
+                                },
+                                "ECTyper Stx Identities (%)": {
+                                    "description": ""
+                                },
+                                "ECTyper Stx Coverages (%)": {
+                                    "description": ""
+                                },
+                                "ECTyper Stx Lengths": {
+                                    "description": ""
+                                },
+                                "ECTyper Stx Contig Names": {
+                                    "description": ""
+                                },
+                                "ECTyper Stx Coordinates": {
+                                    "description": ""
+                                },
+                                "LISSERO Serotype": {
+                                    "description": ""
+                                },
+                                "gc": {
+                                    "description": ""
+                                },
+                                "Mean Sequence Length Forward": {
+                                    "description": ""
+                                },
+                                "Mean Sequence Length Reverse": {
+                                    "description": ""
+                                },
+                                "SISTR cgMLST ST": {
+                                    "description": ""
+                                },
+                                "SISTR cgMLST Found Loci": {
+                                    "description": ""
+                                },
+                                "SISTR cgMLST Genome Match": {
+                                    "description": ""
+                                },
+                                "SISTR cgMLST Matching Alleles": {
+                                    "description": ""
+                                },
+                                "SISTR cgMLST Subspecies": {
+                                    "description": ""
+                                },
+                                "SISTR H1": {
+                                    "description": ""
+                                },
+                                "SISTR H2": {
+                                    "description": ""
+                                },
+                                "SISTR Antigen": {
+                                    "description": ""
+                                },
+                                "SISTR QC Message": {
+                                    "description": ""
+                                },
+                                "SISTR QC Status": {
+                                    "description": ""
+                                },
+                                "SISTR Serogroup": {
+                                    "description": ""
+                                },
+                                "SISTR Serovar": {
+                                    "description": ""
+                                },
+                                "SISTR Serovar Antigen": {
+                                    "description": ""
+                                },
+                                "SISTR Serovar cgMLST": {
+                                    "description": ""
+                                },
+                                "7 Gene ST": {
+                                    "description": ""
+                                },
+                                "7 Gene Scheme": {
+                                    "description": ""
+                                },
+                                "StarAMR Genotype": {
+                                    "description": ""
+                                },
+                                "StarAMR Predicted Phenotype": {
+                                    "description": ""
+                                },
+                                "StarAMR CGE Predicted Phenotype": {
+                                    "description": ""
+                                },
+                                "StarAMR Plasmid": {
+                                    "description": ""
+                                },
+                                "StarAMR Quality Module": {
+                                    "description": ""
+                                },
+                                "StarAMR Sequence Type": {
+                                    "description": ""
+                                },
+                                "StarAMR Genome Length": {
+                                    "description": ""
+                                },
+                                "StarAMR N50 Value": {
+                                    "description": ""
+                                },
+                                "StarAMR Number of Contigs Greater Than Or Equal To 300 bp": {
+                                    "description": ""
+                                },
+                                "StarAMR Quality Module Feedback": {
+                                    "description": ""
+                                },
+                                "predicted_identification_name": {
+                                    "description": ""
+                                },
+                                "predicted_identification_method": {
+                                    "description": ""
+                                },
+                                "total_sequenced_bases": {
+                                    "description": ""
+                                },
+                                "total_sequenced_reads": {
+                                    "description": ""
+                                },
+                                "mikrokondo_version": {
+                                    "description": ""
+                                },
+                                "predicted_primary_type_name": {
+                                    "description": ""
+                                },
+                                "predicted_primary_type_method": {
+                                    "description": ""
+                                },
+                                "predicted_secondary_type_name": {
+                                    "description": ""
+                                },
+                                "predicted_secondary_type_method": {
+                                    "description": ""
+                                },
+                                "QUAST_Average_Coverage_Depth": {
+                                    "description": ""
+                                },
+                                "SeqtkBaseCount": {
+                                    "description": ""
+                                },
+                                "IdentificationMethod": {
+                                    "description": ""
+                                },
+                                "SpeciesTopHit": {
+                                    "description": ""
+                                }
+                            },
+                            "additionalProperties": false
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
