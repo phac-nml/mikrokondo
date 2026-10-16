@@ -370,127 +370,127 @@
                                     "description": ""
                                 },
                                 "Mean Sequence Length Forward": {
-                                    "description": ""
+                                    "description": "The mean sequence length of forward reads."
                                 },
                                 "Mean Sequence Length Reverse": {
-                                    "description": ""
+                                    "description": "The mean sequence length of reverse reads."
                                 },
                                 "SISTR cgMLST ST": {
-                                    "description": ""
+                                    "description": "SISTR-reported core genome MLST Salmonella serotype."
                                 },
                                 "SISTR cgMLST Found Loci": {
-                                    "description": ""
+                                    "description": "The number of cgMLST loci found by SISTR."
                                 },
                                 "SISTR cgMLST Genome Match": {
-                                    "description": ""
+                                    "description": "The genome match reported by SISTR."
                                 },
                                 "SISTR cgMLST Matching Alleles": {
-                                    "description": ""
+                                    "description": "The number of matching alleles found by SISTR."
                                 },
                                 "SISTR cgMLST Subspecies": {
-                                    "description": ""
+                                    "description": "The cgMLST subspecies reported by SISTR."
                                 },
                                 "SISTR H1": {
-                                    "description": ""
+                                    "description": "The H1 antigen reported by SISTR."
                                 },
                                 "SISTR H2": {
-                                    "description": ""
+                                    "description": "The H2 antigen reported by SISTR."
                                 },
                                 "SISTR Antigen": {
-                                    "description": ""
+                                    "description": "The O antigen reported by SISTR."
                                 },
                                 "SISTR QC Message": {
-                                    "description": ""
+                                    "description": "The quality control message reported by SISTR."
                                 },
                                 "SISTR QC Status": {
-                                    "description": ""
+                                    "description": "The quality control status reported by SISTR."
                                 },
                                 "SISTR Serogroup": {
-                                    "description": ""
+                                    "description": "The Salmonella serogroup reported by SISTR."
                                 },
                                 "SISTR Serovar": {
-                                    "description": ""
+                                    "description": "The Salmonella serovar reported by SISTR."
                                 },
                                 "SISTR Serovar Antigen": {
-                                    "description": ""
+                                    "description": "The Salmonella serovar antigen reported by SISTR."
                                 },
                                 "SISTR Serovar cgMLST": {
-                                    "description": ""
+                                    "description": "The serovar cgMLST reported by SISTR."
                                 },
                                 "7 Gene ST": {
-                                    "description": ""
+                                    "description": "The seven gene MLST sequence type reported by MLST (the software)."
                                 },
                                 "7 Gene Scheme": {
-                                    "description": ""
+                                    "description": "The seven gene MLST scheme reported by MLST (the software)."
                                 },
                                 "StarAMR Genotype": {
-                                    "description": ""
+                                    "description": "The genotype reported by StarAMR."
                                 },
                                 "StarAMR Predicted Phenotype": {
-                                    "description": ""
+                                    "description": "The antimicrobial resistance phenotype reported by StarAMR."
                                 },
                                 "StarAMR CGE Predicted Phenotype": {
-                                    "description": ""
+                                    "description": "The CGE-predicted antimicrobial resistance phenotype reported by StarAMR."
                                 },
                                 "StarAMR Plasmid": {
-                                    "description": ""
+                                    "description": "Antimicrobial resistance plasmid information reported by StarAMR."
                                 },
                                 "StarAMR Quality Module": {
-                                    "description": ""
+                                    "description": "Quality information reported by StarAMR."
                                 },
                                 "StarAMR Sequence Type": {
-                                    "description": ""
+                                    "description": "The sequence type reported by StarAMR."
                                 },
                                 "StarAMR Genome Length": {
-                                    "description": ""
+                                    "description": "The genome length reported by StarAMR."
                                 },
                                 "StarAMR N50 Value": {
-                                    "description": ""
+                                    "description": "The assembly N50 value reported by StarAMR."
                                 },
                                 "StarAMR Number of Contigs Greater Than Or Equal To 300 bp": {
-                                    "description": ""
+                                    "description": "The number of contigs greater than or equal to 300 base pairs as reported by StarAMR."
                                 },
                                 "StarAMR Quality Module Feedback": {
-                                    "description": ""
+                                    "description": "Quality module feedback as reported by StarAMR."
                                 },
                                 "predicted_identification_name": {
-                                    "description": ""
+                                    "description": "The species name predicted by Mikrokondo."
                                 },
                                 "predicted_identification_method": {
-                                    "description": ""
+                                    "description": "The method used by Mikrokondo to predict the species."
                                 },
                                 "total_sequenced_bases": {
-                                    "description": ""
+                                    "description": "The total number of sequenced bases."
                                 },
                                 "total_sequenced_reads": {
-                                    "description": ""
+                                    "description": "The total number of sequenced reads."
                                 },
                                 "mikrokondo_version": {
-                                    "description": ""
+                                    "description": "The version of Mikrokondo."
                                 },
                                 "predicted_primary_type_name": {
-                                    "description": ""
+                                    "description": "The predicted primary type as determined by Mikrokondo. This can vary according to the species (ex: serovar, serotype, etc.)."
                                 },
                                 "predicted_primary_type_method": {
-                                    "description": ""
+                                    "description": "The method used to predict the primary type. This can vary according to the species."
                                 },
                                 "predicted_secondary_type_name": {
-                                    "description": ""
+                                    "description": "The predicted secondary type as determined by Mikrokondo. This can vary according to the species (ex: serovar, serotype, etc.). This uses an alternative method from the primary method to determine the type."
                                 },
                                 "predicted_secondary_type_method": {
-                                    "description": ""
+                                    "description": "The method used to predict the secondary type. This can vary according to the species."
                                 },
                                 "QUAST_Average_Coverage_Depth": {
-                                    "description": ""
+                                    "description": "The average coverage depth as reported by QUAST."
                                 },
                                 "SeqtkBaseCount": {
-                                    "description": ""
+                                    "description": "The base count as reported by Seqtk."
                                 },
                                 "IdentificationMethod": {
-                                    "description": ""
+                                    "description": "The method used to identify the species."
                                 },
                                 "SpeciesTopHit": {
-                                    "description": ""
+                                    "description": "The top species hit."
                                 }
                             },
                             "additionalProperties": false
