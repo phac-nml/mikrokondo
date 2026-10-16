@@ -175,196 +175,196 @@
                             "type": "object",
                             "properties": {
                                 "qc_status_overall": {
-                                    "description": ""
+                                    "description": "Overall Mikrokondo QC status."
                                 },
                                 "qc_status_contamination": {
-                                    "description": ""
+                                    "description": "CheckM2-derived contamination status."
                                 },
                                 "checkm_value": {
-                                    "description": ""
+                                    "description": "The CheckM2-reported amount of contamination identified."
                                 },
                                 "qc_status_read_depth_fixed": {
-                                    "description": ""
+                                    "description": "The QC status of the average read coverage depth."
                                 },
                                 "mean_read_depth_fixed": {
-                                    "description": ""
+                                    "description": "The average read coverage depth."
                                 },
                                 "qc_status_assembly_n50": {
-                                    "description": ""
+                                    "description": "The QC status of the assembly N50 value."
                                 },
                                 "n50_value": {
-                                    "description": ""
+                                    "description": "The assembly N50 value."
                                 },
                                 "qc_status_read_qual": {
-                                    "description": ""
+                                    "description": "The QC status of the raw read average quality score."
                                 },
                                 "raw_average_quality_value": {
-                                    "description": ""
+                                    "description": "The raw read average quality score."
                                 },
                                 "qc_status_assembly_genome_size": {
-                                    "description": ""
+                                    "description": "The QC status of the assembly length."
                                 },
                                 "assembly_length": {
-                                    "description": ""
+                                    "description": "The assembly length."
                                 },
                                 "qc_status_assembly_num_contigs": {
-                                    "description": ""
+                                    "description": "The QC status of the number of assembly contigs."
                                 },
                                 "assembly_num_contigs": {
-                                    "description": ""
+                                    "description": "The number of assembly contigs."
                                 },
                                 "qc_status_wgmlst_loci": {
-                                    "description": ""
+                                    "description": "The QC status of the whole-genome MLST loci count."
                                 },
                                 "wgmlst_loci_count": {
-                                    "description": ""
+                                    "description": "The whole-genome MLST loci count."
                                 },
                                 "qc_status_read_length": {
-                                    "description": ""
+                                    "description": "The QC status of the mean short-read length."
                                 },
                                 "mean_illumina_read_length": {
-                                    "description": ""
+                                    "description": "The mean short-read length."
                                 },
                                 "mean_long_read_length": {
-                                    "description": ""
+                                    "description": "The mean long-read length."
                                 },
                                 "qc_summary": {
-                                    "description": ""
+                                    "description": "The quality control summary message."
                                 },
                                 "Downsampled": {
-                                    "description": ""
+                                    "description": "Whether or not the reads were downsampled."
                                 },
                                 "locidex_db_name": {
-                                    "description": ""
+                                    "description": "The name of the Locidex database used."
                                 },
                                 "locidex_db_date": {
-                                    "description": ""
+                                    "description": "The date of creation of the Locidex database used."
                                 },
                                 "locidex_db_version": {
-                                    "description": ""
+                                    "description": "The version of the Locidex database used."
                                 },
                                 "locidex_db_total_loci_count": {
-                                    "description": ""
+                                    "description": "The total number of loci in the Locidex database."
                                 },
                                 "locidex_count_loci_found": {
-                                    "description": ""
+                                    "description": "The number of loci that Locidex found."
                                 },
                                 "locidex_count_loci_missing": {
-                                    "description": ""
+                                    "description": "The number of loci that Locidex reported as missing."
                                 },
                                 "locidex_loci_no_blast_hit": {
-                                    "description": ""
+                                    "description": "The number of loci for which Locidex found no BLAST hit."
                                 },
                                 "locidex_loci_single_blast_hit": {
-                                    "description": ""
+                                    "description": "The number of loci for which Locidex found one BLAST hit."
                                 },
                                 "locidex_loci_with_multiple_values": {
-                                    "description": ""
+                                    "description": "The number of loci for which Locidex found multple BLAST hits."
                                 },
                                 "locidex_loci_no_nucleotide_hits": {
-                                    "description": ""
+                                    "description": "The number of loci for which Locidex found no nucleotide BLAST hits."
                                 },
                                 "locidex_loci_no_protein_hits": {
-                                    "description": ""
+                                    "description": "The number of loci for which Locidex found no protein BLAST hits."
                                 },
                                 "ECTyper Database": {
-                                    "description": ""
+                                    "description": "The database used by ECTyper."
                                 },
                                 "ECTyper Evidence": {
-                                    "description": ""
+                                    "description": "The evidence used by ECTyper for Escherichia coli serotyping."
                                 },
                                 "ECTyper GeneCoverages (%)": {
-                                    "description": ""
+                                    "description": "The percent gene coverages of the alleles used by ECTyper for Escherichia coli serotyping."
                                 },
                                 "ECTyper GeneIdentities (%)": {
-                                    "description": ""
+                                    "description": "The percent gene identities of the alleles used by ECTyper for Escherichia coli serotyping."
                                 },
                                 "ECTyper GeneScores": {
-                                    "description": ""
+                                    "description": "The gene scores of the alleles used by ECTyper for Escherichia coli serotyping."
                                 },
                                 "ECTyper H-Antigen": {
-                                    "description": ""
+                                    "description": "The H antigen reported by ECTyper."
                                 },
                                 "ECTyper O-Antigen": {
-                                    "description": ""
+                                    "description": "The O antigen reported by ECTyper."
                                 },
                                 "ECTyper QCFlag": {
-                                    "description": ""
+                                    "description": "The quality control flag reported by ECTyper."
                                 },
                                 "ECTyper Serotype": {
-                                    "description": ""
+                                    "description": "The Escherichia coli serotype reported by ECTyper."
                                 },
                                 "ECTyper Subtyping": {
-                                    "description": ""
+                                    "description": "Species identification information reported by ECTyper in case of inadvertent sample contamination or mislabelling events."
                                 },
                                 "ECTyper Warnings": {
-                                    "description": ""
+                                    "description": "Warnings generated by ECTyper."
                                 },
                                 "ECTyper Pathotype": {
-                                    "description": ""
+                                    "description": "The Escherichia coli pathotype reported by ECTyper."
                                 },
                                 "ECTyper Pathotype Counts": {
-                                    "description": ""
+                                    "description": "The Escherichia coli pathotype gene counts reported by ECTyper."
                                 },
                                 "ECTyper Pathotype Genes": {
-                                    "description": ""
+                                    "description": "The Escherichia coli pathotype genes reported by ECTyper."
                                 },
                                 "ECTyper Pathotype Gene Names": {
-                                    "description": ""
+                                    "description": "The Escherichia coli pathotype gene names reported by ECTyper."
                                 },
                                 "ECTyper Pathotype Accessions": {
-                                    "description": ""
+                                    "description": "The Escherichia coli pathotype accessions reported by ECTyper."
                                 },
                                 "ECTyper Pathotype Allele IDs": {
-                                    "description": ""
+                                    "description": "The Escherichia coli pathotype allele IDs reported by ECTyper."
                                 },
                                 "ECTyper Pathotype Identities (%)": {
-                                    "description": ""
+                                    "description": "The Escherichia coli pathotype percent identities reported by ECTyper."
                                 },
                                 "ECTyper Pathotype Coverages (%)": {
-                                    "description": ""
+                                    "description": "The Escherichia coli pathotype percent coverages reported by ECTyper."
                                 },
                                 "ECTyper Pathotype Gene Length Ratios": {
-                                    "description": ""
+                                    "description": "The Escherichia coli pathotype gene length ratios reported by ECTyper."
                                 },
                                 "ECTyper Pathotype Rule IDs": {
-                                    "description": ""
+                                    "description": "The Escherichia coli pathotype rule IDs reported by ECTyper."
                                 },
                                 "ECTyper Pathotype Gene Counts": {
-                                    "description": ""
+                                    "description": "The Escherichia coli pathotype gene counts reported by ECTyper."
                                 },
                                 "ECTyper PathoDBVer": {
-                                    "description": ""
+                                    "description": "The pathotype database version used by ECTyper."
                                 },
                                 "ECTyper Stx Subtypes": {
-                                    "description": ""
+                                    "description": "The Shiga toxin subtypes reported by ECTyper."
                                 },
                                 "ECTyper Stx Accessions": {
-                                    "description": ""
+                                    "description": "The Shiga toxin accessions reported by ECTyper."
                                 },
                                 "ECTyper Stx Allele IDs": {
-                                    "description": ""
+                                    "description": "The Shiga toxin allele IDs reported by ECTyper."
                                 },
                                 "ECTyper Stx Allele Names": {
-                                    "description": ""
+                                    "description": "The Shiga toxin allele names reported by ECTyper."
                                 },
                                 "ECTyper Stx Identities (%)": {
-                                    "description": ""
+                                    "description": "The Shiga toxin percent identities reported by ECTyper."
                                 },
                                 "ECTyper Stx Coverages (%)": {
-                                    "description": ""
+                                    "description": "The Shiga toxin percent coverages reported by ECTyper."
                                 },
                                 "ECTyper Stx Lengths": {
-                                    "description": ""
+                                    "description": "The Shiga toxin lengths reported by ECTyper."
                                 },
                                 "ECTyper Stx Contig Names": {
-                                    "description": ""
+                                    "description": "The Shiga toxin contig names reported by ECTyper."
                                 },
                                 "ECTyper Stx Coordinates": {
-                                    "description": ""
+                                    "description": "The Shiga toxin coordinates reported by ECTyper."
                                 },
                                 "LISSERO Serotype": {
-                                    "description": ""
+                                    "description": "The Listeria monocytogenes serotype predicted by LisSero."
                                 },
                                 "gc": {
                                     "description": ""
