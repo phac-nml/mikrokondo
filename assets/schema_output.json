@@ -1,0 +1,503 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://raw.githubusercontent.com/phac-nml/mikrokondo/main/assets/schema_output.json",
+    "title": "Mikrokondo Output Schema",
+    "description": "The Mikrokondo-specific schema used for validating IRIDA Next JSON output data",
+    "type": "object",
+    "properties": {
+        "files": {
+            "type": "object",
+            "properties": {
+                "global": {
+                    "type": "array",
+                    "items": {
+                        "properties": {
+                            "path": {
+                                "anyOf": [
+                                    {
+                                        "pattern": "^.*FinalReports/.*Aggregated/.*Json/.*final_report.json$",
+                                        "description": "All tool results for all samples in JSON format."
+                                    },
+                                    {
+                                        "pattern": "^.*FinalReports/.*Aggregated/.*Tables/.*final_report.tsv$",
+                                        "description": "All tool results for all samples in TSV format."
+                                    },
+                                    {
+                                        "pattern": "^.*error/.*max_samples_exceeded.error.txt$",
+                                        "description": "A file containing an error message reporting that more samples have been provided than the max_samples parameter allows."
+                                    }
+                                ]
+                            }
+                        },
+                        "additionalProperties": false
+                    },
+                    "uniqueItems": true
+                },
+                "samples": {
+                    "type": "object",
+                    "patternProperties": {
+                        "^.*$": {
+                            "type": "array",
+                            "items": {
+                                "properties": {
+                                    "path": {
+                                        "anyOf": [
+                                            {
+                                                "pattern": "^.*Assembly/.*FinalAssembly/.*/.*.filtered.assembly.fasta.gz$",
+                                                "description": "The final output contig files from the last step in the assembly process."
+                                            },
+                                            {
+                                                "pattern": "^.*Assembly/.*Quality/.*QUAST/.*/.*.transposed.*.quast.quality.tsv$",
+                                                "description": "TSV-formmated file containing transposed QUAST assembly quality metrics."
+                                            },
+                                            {
+                                                "pattern": "^.*Assembly/.*Quality/.*CheckM2/.*/.*.quality_report.checkm2.quality.tsv$",
+                                                "description": "CheckM2 report containing the completeness and contamination information."
+                                            },
+                                            {
+                                                "pattern": "^.*Assembly/.*Quality/.*SeqKitStats/.*.seqkit.stats.summary.tsv$",
+                                                "description": "SeqKit summary statistics of assembly files."
+                                            },
+                                            {
+                                                "pattern": "^.*Assembly/.*PostProcessing/.*Speciation/.*MashScreen/.*.taxa.screen.screen$",
+                                                "description": "Mash screen results estimating species containment of provided sequences."
+                                            },
+                                            {
+                                                "pattern": "^.*Reads/.*Quality/.*Trimmed/.*MashScreen/.*.reads.screen.screen$",
+                                                "description": "Mash screen results estimating metagenomic containment of provided sequences."
+                                            },
+                                            {
+                                                "pattern": "^.*Reads/.*Quality/.*Trimmed/.*FastP/.*.fastp.summary.json$",
+                                                "description": "JSON-formatted fastp summary results for FASTQ-formatted sequences."
+                                            },
+                                            {
+                                                "pattern": "^.*Reads/.*Quality/.*RawReadQuality/.*.scan.summary.json$",
+                                                "description": "Mikrokondo-specific FASTQ summary stats."
+                                            },
+                                            {
+                                                "pattern": "^.*Assembly/.*Subtyping/.*ECTyper/.*/.*.blastn_output_alleles.ectyper.subtyping.txt$",
+                                                "description": "ECTyper BLASTN hits of the O and H antigen database."
+                                            },
+                                            {
+                                                "pattern": "^.*Assembly/.*Subtyping/.*ECTyper/.*/.*.ectyper.subtyping.log$",
+                                                "description": "ECTyper log messages."
+                                            },
+                                            {
+                                                "pattern": "^.*Assembly/.*Subtyping/.*ECTyper/.*/.*.output.ectyper.subtyping.tsv$",
+                                                "description": "ECTyper serotyping results."
+                                            },
+                                            {
+                                                "pattern": "^.*Assembly/.*Subtyping/.*Lissero/.*.lissero.subtyping.tsv$",
+                                                "description": "LisSero serogroup predictions for Listeria monocytogenes."
+                                            },
+                                            {
+                                                "pattern": "^.*Assembly/.*Subtyping/.*SISTR/.*.sistr.subtyping.tab$",
+                                                "description": "SISTR Salmonella serovar prediction primary results."
+                                            },
+                                            {
+                                                "pattern": "^.*Assembly/.*Subtyping/.*SISTR/.*.sistr.allele.subtyping.fasta$",
+                                                "description": "SISTR Salmonella serovar prediction novel cgMLST alleles from input genomes."
+                                            },
+                                            {
+                                                "pattern": "^.*Assembly/.*Subtyping/.*SISTR/.*.sistr.allele.subtyping.json$",
+                                                "description": "SISTR Salmonella serovar prediction in-depth allele search results for each input genome for each cgMLST locus."
+                                            },
+                                            {
+                                                "pattern": "^.*Assembly/.*Subtyping/.*SISTR/.*.sistr.cgmlst.subtyping.csv$",
+                                                "description": "SISTR Salmonella serovar prediction table of allele designations for each genome for each cgMLST locus."
+                                            },
+                                            {
+                                                "pattern": "^.*Assembly/.*Subtyping/.*Locidex/.*Report/.*.mlst.subtyping.json.gz$",
+                                                "description": "Locidex allele calling results."
+                                            },
+                                            {
+                                                "pattern": "^.*Assembly/.*Subtyping/.*Locidex/.*Summary/.*.locidex.summary.json$",
+                                                "description": "Locidex allele summary metrics."
+                                            },
+                                            {
+                                                "pattern": "^.*FinalReports/.*FlattenedReports/.*.flat_sample.json.gz$",
+                                                "description": "Mikrokondo aggregated and JSON-flattened final sample report."
+                                            },
+                                            {
+                                                "pattern": "^.*Assembly/.*Annotation/.*Abricate/.*abricate.annotation.txt$",
+                                                "description": "ABRicate results from screening of contigs for antimicrobial resistance or virulence genes."
+                                            },
+                                            {
+                                                "pattern": "^.*Assembly/.*Annotation/.*Mobsuite/.*Recon/.*/.*mobtyper_results.*.txt$",
+                                                "description": "Aggregate MOB-typer report files for all identified plasmids."
+                                            },
+                                            {
+                                                "pattern": "^.*Assembly/.*Annotation/.*Bakta/.*.gbff$",
+                                                "description": "Bakta annotations and sequences in (multi) GenBank format."
+                                            },
+                                            {
+                                                "pattern": "^.*Assembly/.*Annotation/.*Bakta/.*.txt$",
+                                                "description": "Bakta results summary file."
+                                            },
+                                            {
+                                                "pattern": "^.*Assembly/.*Annotation/.*StarAMR/.*/.*summary.*.tsv$",
+                                                "description": "StarAMR results summary file in TSV format."
+                                            },
+                                            {
+                                                "pattern": "^.*Assembly/.*Annotation/.*StarAMR/.*/.*detailed_summary.*.tsv$",
+                                                "description": "StarAMR detailed results summary file."
+                                            },
+                                            {
+                                                "pattern": "^.*Assembly/.*Annotation/.*StarAMR/.*/.*results.*.xlsx$",
+                                                "description": "StarAMR results summary file in XLSX format."
+                                            },
+                                            {
+                                                "pattern": "^.*pipeline_info/.*.mikrokondo.parameters.json$",
+                                                "description": "The parameters used for the Mikrokondo workflow execution."
+                                            },
+                                            {
+                                                "pattern": "^.*pipeline_info/.*.mikrokondo.software.version.yml$",
+                                                "description": "The versions of software used in the Mikrokondo workflow execution."
+                                            }
+                                        ]
+                                    }
+                                },
+                                "additionalProperties": false
+                            },
+                            "uniqueItems": true
+                        }
+                    }
+                }
+            }
+        },
+        "metadata": {
+            "type": "object",
+            "properties": {
+                "samples": {
+                    "type": "object",
+                    "patternProperties": {
+                        "^.*$": {
+                            "type": "object",
+                            "properties": {
+                                "qc_status_overall": {
+                                    "description": "Overall Mikrokondo QC status."
+                                },
+                                "qc_status_contamination": {
+                                    "description": "CheckM2-derived contamination status."
+                                },
+                                "checkm_value": {
+                                    "description": "The CheckM2-reported amount of contamination identified."
+                                },
+                                "qc_status_read_depth_fixed": {
+                                    "description": "The QC status of the average read coverage depth."
+                                },
+                                "mean_read_depth_fixed": {
+                                    "description": "The average read coverage depth."
+                                },
+                                "qc_status_assembly_n50": {
+                                    "description": "The QC status of the assembly N50 value."
+                                },
+                                "n50_value": {
+                                    "description": "The assembly N50 value."
+                                },
+                                "qc_status_read_qual": {
+                                    "description": "The QC status of the raw read average quality score."
+                                },
+                                "raw_average_quality_value": {
+                                    "description": "The raw read average quality score."
+                                },
+                                "qc_status_assembly_genome_size": {
+                                    "description": "The QC status of the assembly length."
+                                },
+                                "assembly_length": {
+                                    "description": "The assembly length."
+                                },
+                                "qc_status_assembly_num_contigs": {
+                                    "description": "The QC status of the number of assembly contigs."
+                                },
+                                "assembly_num_contigs": {
+                                    "description": "The number of assembly contigs."
+                                },
+                                "qc_status_wgmlst_loci": {
+                                    "description": "The QC status of the whole-genome MLST loci count."
+                                },
+                                "wgmlst_loci_count": {
+                                    "description": "The whole-genome MLST loci count."
+                                },
+                                "qc_status_read_length": {
+                                    "description": "The QC status of the mean short-read length."
+                                },
+                                "mean_illumina_read_length": {
+                                    "description": "The mean short-read length."
+                                },
+                                "mean_long_read_length": {
+                                    "description": "The mean long-read length."
+                                },
+                                "qc_summary": {
+                                    "description": "The quality control summary message."
+                                },
+                                "Downsampled": {
+                                    "description": "Whether or not the reads were downsampled."
+                                },
+                                "locidex_db_name": {
+                                    "description": "The name of the Locidex database used."
+                                },
+                                "locidex_db_date": {
+                                    "description": "The date of creation of the Locidex database used."
+                                },
+                                "locidex_db_version": {
+                                    "description": "The version of the Locidex database used."
+                                },
+                                "locidex_db_total_loci_count": {
+                                    "description": "The total number of loci in the Locidex database."
+                                },
+                                "locidex_count_loci_found": {
+                                    "description": "The number of loci that Locidex found."
+                                },
+                                "locidex_count_loci_missing": {
+                                    "description": "The number of loci that Locidex reported as missing."
+                                },
+                                "locidex_loci_no_blast_hit": {
+                                    "description": "The number of loci for which Locidex found no BLAST hit."
+                                },
+                                "locidex_loci_single_blast_hit": {
+                                    "description": "The number of loci for which Locidex found one BLAST hit."
+                                },
+                                "locidex_loci_with_multiple_values": {
+                                    "description": "The number of loci for which Locidex found multple BLAST hits."
+                                },
+                                "locidex_loci_no_nucleotide_hits": {
+                                    "description": "The number of loci for which Locidex found no nucleotide BLAST hits."
+                                },
+                                "locidex_loci_no_protein_hits": {
+                                    "description": "The number of loci for which Locidex found no protein BLAST hits."
+                                },
+                                "ECTyper Database": {
+                                    "description": "The database used by ECTyper."
+                                },
+                                "ECTyper Evidence": {
+                                    "description": "The evidence used by ECTyper for Escherichia coli serotyping."
+                                },
+                                "ECTyper GeneCoverages (%)": {
+                                    "description": "The percent gene coverages of the alleles used by ECTyper for Escherichia coli serotyping."
+                                },
+                                "ECTyper GeneIdentities (%)": {
+                                    "description": "The percent gene identities of the alleles used by ECTyper for Escherichia coli serotyping."
+                                },
+                                "ECTyper GeneScores": {
+                                    "description": "The gene scores of the alleles used by ECTyper for Escherichia coli serotyping."
+                                },
+                                "ECTyper H-Antigen": {
+                                    "description": "The H antigen reported by ECTyper."
+                                },
+                                "ECTyper O-Antigen": {
+                                    "description": "The O antigen reported by ECTyper."
+                                },
+                                "ECTyper QCFlag": {
+                                    "description": "The quality control flag reported by ECTyper."
+                                },
+                                "ECTyper Serotype": {
+                                    "description": "The Escherichia coli serotype reported by ECTyper."
+                                },
+                                "ECTyper Subtyping": {
+                                    "description": "Species identification information reported by ECTyper in case of inadvertent sample contamination or mislabelling events."
+                                },
+                                "ECTyper Warnings": {
+                                    "description": "Warnings generated by ECTyper."
+                                },
+                                "ECTyper Pathotype": {
+                                    "description": "The Escherichia coli pathotype reported by ECTyper."
+                                },
+                                "ECTyper Pathotype Counts": {
+                                    "description": "The Escherichia coli pathotype gene counts reported by ECTyper."
+                                },
+                                "ECTyper Pathotype Genes": {
+                                    "description": "The Escherichia coli pathotype genes reported by ECTyper."
+                                },
+                                "ECTyper Pathotype Gene Names": {
+                                    "description": "The Escherichia coli pathotype gene names reported by ECTyper."
+                                },
+                                "ECTyper Pathotype Accessions": {
+                                    "description": "The Escherichia coli pathotype accessions reported by ECTyper."
+                                },
+                                "ECTyper Pathotype Allele IDs": {
+                                    "description": "The Escherichia coli pathotype allele IDs reported by ECTyper."
+                                },
+                                "ECTyper Pathotype Identities (%)": {
+                                    "description": "The Escherichia coli pathotype percent identities reported by ECTyper."
+                                },
+                                "ECTyper Pathotype Coverages (%)": {
+                                    "description": "The Escherichia coli pathotype percent coverages reported by ECTyper."
+                                },
+                                "ECTyper Pathotype Gene Length Ratios": {
+                                    "description": "The Escherichia coli pathotype gene length ratios reported by ECTyper."
+                                },
+                                "ECTyper Pathotype Rule IDs": {
+                                    "description": "The Escherichia coli pathotype rule IDs reported by ECTyper."
+                                },
+                                "ECTyper Pathotype Gene Counts": {
+                                    "description": "The Escherichia coli pathotype gene counts reported by ECTyper."
+                                },
+                                "ECTyper PathoDBVer": {
+                                    "description": "The pathotype database version used by ECTyper."
+                                },
+                                "ECTyper Stx Subtypes": {
+                                    "description": "The Shiga toxin subtypes reported by ECTyper."
+                                },
+                                "ECTyper Stx Accessions": {
+                                    "description": "The Shiga toxin accessions reported by ECTyper."
+                                },
+                                "ECTyper Stx Allele IDs": {
+                                    "description": "The Shiga toxin allele IDs reported by ECTyper."
+                                },
+                                "ECTyper Stx Allele Names": {
+                                    "description": "The Shiga toxin allele names reported by ECTyper."
+                                },
+                                "ECTyper Stx Identities (%)": {
+                                    "description": "The Shiga toxin percent identities reported by ECTyper."
+                                },
+                                "ECTyper Stx Coverages (%)": {
+                                    "description": "The Shiga toxin percent coverages reported by ECTyper."
+                                },
+                                "ECTyper Stx Lengths": {
+                                    "description": "The Shiga toxin lengths reported by ECTyper."
+                                },
+                                "ECTyper Stx Contig Names": {
+                                    "description": "The Shiga toxin contig names reported by ECTyper."
+                                },
+                                "ECTyper Stx Coordinates": {
+                                    "description": "The Shiga toxin coordinates reported by ECTyper."
+                                },
+                                "LISSERO Serotype": {
+                                    "description": "The Listeria monocytogenes serotype predicted by LisSero."
+                                },
+                                "gc": {
+                                    "description": ""
+                                },
+                                "Mean Sequence Length Forward": {
+                                    "description": "The mean sequence length of forward reads."
+                                },
+                                "Mean Sequence Length Reverse": {
+                                    "description": "The mean sequence length of reverse reads."
+                                },
+                                "SISTR cgMLST ST": {
+                                    "description": "SISTR-reported core genome MLST Salmonella serotype."
+                                },
+                                "SISTR cgMLST Found Loci": {
+                                    "description": "The number of cgMLST loci found by SISTR."
+                                },
+                                "SISTR cgMLST Genome Match": {
+                                    "description": "The genome match reported by SISTR."
+                                },
+                                "SISTR cgMLST Matching Alleles": {
+                                    "description": "The number of matching alleles found by SISTR."
+                                },
+                                "SISTR cgMLST Subspecies": {
+                                    "description": "The cgMLST subspecies reported by SISTR."
+                                },
+                                "SISTR H1": {
+                                    "description": "The H1 antigen reported by SISTR."
+                                },
+                                "SISTR H2": {
+                                    "description": "The H2 antigen reported by SISTR."
+                                },
+                                "SISTR Antigen": {
+                                    "description": "The O antigen reported by SISTR."
+                                },
+                                "SISTR QC Message": {
+                                    "description": "The quality control message reported by SISTR."
+                                },
+                                "SISTR QC Status": {
+                                    "description": "The quality control status reported by SISTR."
+                                },
+                                "SISTR Serogroup": {
+                                    "description": "The Salmonella serogroup reported by SISTR."
+                                },
+                                "SISTR Serovar": {
+                                    "description": "The Salmonella serovar reported by SISTR."
+                                },
+                                "SISTR Serovar Antigen": {
+                                    "description": "The Salmonella serovar antigen reported by SISTR."
+                                },
+                                "SISTR Serovar cgMLST": {
+                                    "description": "The serovar cgMLST reported by SISTR."
+                                },
+                                "7 Gene ST": {
+                                    "description": "The seven gene MLST sequence type reported by MLST (the software)."
+                                },
+                                "7 Gene Scheme": {
+                                    "description": "The seven gene MLST scheme reported by MLST (the software)."
+                                },
+                                "StarAMR Genotype": {
+                                    "description": "The genotype reported by StarAMR."
+                                },
+                                "StarAMR Predicted Phenotype": {
+                                    "description": "The antimicrobial resistance phenotype reported by StarAMR."
+                                },
+                                "StarAMR CGE Predicted Phenotype": {
+                                    "description": "The CGE-predicted antimicrobial resistance phenotype reported by StarAMR."
+                                },
+                                "StarAMR Plasmid": {
+                                    "description": "Antimicrobial resistance plasmid information reported by StarAMR."
+                                },
+                                "StarAMR Quality Module": {
+                                    "description": "Quality information reported by StarAMR."
+                                },
+                                "StarAMR Sequence Type": {
+                                    "description": "The sequence type reported by StarAMR."
+                                },
+                                "StarAMR Genome Length": {
+                                    "description": "The genome length reported by StarAMR."
+                                },
+                                "StarAMR N50 Value": {
+                                    "description": "The assembly N50 value reported by StarAMR."
+                                },
+                                "StarAMR Number of Contigs Greater Than Or Equal To 300 bp": {
+                                    "description": "The number of contigs greater than or equal to 300 base pairs as reported by StarAMR."
+                                },
+                                "StarAMR Quality Module Feedback": {
+                                    "description": "Quality module feedback as reported by StarAMR."
+                                },
+                                "predicted_identification_name": {
+                                    "description": "The species name predicted by Mikrokondo."
+                                },
+                                "predicted_identification_method": {
+                                    "description": "The method used by Mikrokondo to predict the species."
+                                },
+                                "total_sequenced_bases": {
+                                    "description": "The total number of sequenced bases."
+                                },
+                                "total_sequenced_reads": {
+                                    "description": "The total number of sequenced reads."
+                                },
+                                "mikrokondo_version": {
+                                    "description": "The version of Mikrokondo."
+                                },
+                                "predicted_primary_type_name": {
+                                    "description": "The predicted primary type as determined by Mikrokondo. This can vary according to the species (ex: serovar, serotype, etc.)."
+                                },
+                                "predicted_primary_type_method": {
+                                    "description": "The method used to predict the primary type. This can vary according to the species."
+                                },
+                                "predicted_secondary_type_name": {
+                                    "description": "The predicted secondary type as determined by Mikrokondo. This can vary according to the species (ex: serovar, serotype, etc.). This uses an alternative method from the primary method to determine the type."
+                                },
+                                "predicted_secondary_type_method": {
+                                    "description": "The method used to predict the secondary type. This can vary according to the species."
+                                },
+                                "QUAST_Average_Coverage_Depth": {
+                                    "description": "The average coverage depth as reported by QUAST."
+                                },
+                                "SeqtkBaseCount": {
+                                    "description": "The base count as reported by Seqtk."
+                                },
+                                "IdentificationMethod": {
+                                    "description": "The method used to identify the species."
+                                },
+                                "SpeciesTopHit": {
+                                    "description": "The top species hit."
+                                }
+                            },
+                            "additionalProperties": false
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
