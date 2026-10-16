@@ -10,7 +10,6 @@ process MASH_ESTIMATE{
 
     input:
     tuple val(meta), path(reads)
-    val long_reads_p
 
     output:
     tuple val(meta), path("${prefix}${params.mash.sketch_ext}"), emit: sketch
@@ -19,8 +18,8 @@ process MASH_ESTIMATE{
     path "versions.yml", emit: versions
 
     script:
-    def lr_flag = long_reads_p ? "LR" : "SR" // Tag to differentiate reads in hybrid assembly runs
-    def hybrid_tag = params.platform == params.opt_platforms.hybrid ? ".${lr_flag}" : ""
+    def lr_flag = task.process.toString().contains("QC_LONG_READS") ? "LR" : "SR" // Tag to differentiate reads in hybrid assembly runs
+    hybrid_tag = meta.hybrid ? ".${lr_flag}" : ""
     prefix = task.ext.prefix ?: "${meta.id}"
     prefix = prefix + hybrid_tag
     """
