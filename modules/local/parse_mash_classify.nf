@@ -1,5 +1,5 @@
 // Determine if sample is from a metagenomic sample or isolate
-// Only true and false are read to stdout to be dcided from
+// Only true and false are read to stdout to be decided from
 
 process PARSE_MASH_CLASSIFY {
     tag "$meta.id"
