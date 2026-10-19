@@ -367,7 +367,7 @@
                                     "description": "The Listeria monocytogenes serotype predicted by LisSero."
                                 },
                                 "gc": {
-                                    "description": ""
+                                    "description": "The GC content of the sample as a percentage."
                                 },
                                 "Mean Sequence Length Forward": {
                                     "description": "The mean sequence length of forward reads."
@@ -376,7 +376,7 @@
                                     "description": "The mean sequence length of reverse reads."
                                 },
                                 "SISTR cgMLST ST": {
-                                    "description": "SISTR-reported core genome MLST Salmonella serotype."
+                                    "description": "SISTR-reported core genome MLST Sequence Type."
                                 },
                                 "SISTR cgMLST Found Loci": {
                                     "description": "The number of cgMLST loci found by SISTR."
@@ -415,7 +415,7 @@
                                     "description": "The Salmonella serovar antigen reported by SISTR."
                                 },
                                 "SISTR Serovar cgMLST": {
-                                    "description": "The serovar cgMLST reported by SISTR."
+                                    "description": "The serovar reported by SISTR derived from the cgMLST allele calls."
                                 },
                                 "7 Gene ST": {
                                     "description": "The seven gene MLST sequence type reported by MLST (the software)."
