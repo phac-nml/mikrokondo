@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Added a workaround to prevent a crash when running on Nextflow version 25 in Azure environments.
+- Added a workaround to prevent a crash when running on Nextflow version 25 in Azure environments [PR 234](https://github.com/phac-nml/mikrokondo/pull/234).
 
 ## 0.10.3
 
