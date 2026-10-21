@@ -90,13 +90,6 @@ workflow QC_READS {
         meta, reads, count -> tuple(meta, reads) // Only keeping reads that pass a threshold
     }
 
-    // Adding this to to denote long reads for hybrid assembly outputs
-    //hyb_lr = false
-    //if(platform_comp == params.opt_platforms.hybrid && (params.long_read_opt == params.opt_platforms.ont || params.long_read_opt == params.opt_platforms.pacbio)){
-    //    hyb_lr = true
-    //}
-    //def hyb_lr = platform_comp == params.opt_platforms.hybrid && (params.long_read_opt == params.opt_platforms.ont || params.long_read_opt == params.opt_platforms.pacbio)
-
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Sampling depth estimation for each set of reads
     // It is requested that only sub-sampled reads go on for further analysis e.g. when calculating coverage only downsampled reads are used
