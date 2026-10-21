@@ -64,7 +64,7 @@
                                             },
                                             {
                                                 "pattern": "^.*Reads/.*Quality/.*Trimmed/.*MashScreen/.*.reads.screen.screen$",
-                                                "description": "Mash screen results estimating metagenomic containment of provided sequences."
+                                                "description": "Mash screen estimation of the containment of the provided sequences in sketch. These results are used in automated sample metagenomic detection."
                                             },
                                             {
                                                 "pattern": "^.*Reads/.*Quality/.*Trimmed/.*FastP/.*.fastp.summary.json$",
@@ -490,7 +490,7 @@
                                     "description": "The method used to identify the species."
                                 },
                                 "SpeciesTopHit": {
-                                    "description": "The top species hit."
+                                    "description": "The top species hit, identified by Mash or Kraken2."
                                 }
                             },
                             "additionalProperties": false
