@@ -5,6 +5,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+- A Mikrokondo-specific JSON output schema that the nf-iridanext plugin will automatically validate its output against. Currently, this schema enforcement is only enabled during testing. [PR 237](https://github.com/phac-nml/mikrokondo/pull/237)
+
 ### Fixed
 
 - Added a workaround to prevent a crash when running on Nextflow version 25 in Azure environments [PR 234](https://github.com/phac-nml/mikrokondo/pull/234).

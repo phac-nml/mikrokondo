@@ -90,16 +90,14 @@ workflow QC_READS {
         meta, reads, count -> tuple(meta, reads) // Only keeping reads that pass a threshold
     }
 
-    // Adding this to to denote long reads for hybrid assembly outputs
-    def hyb_lr = false
-    if(platform_comp == params.opt_platforms.hybrid && (platform_comp == params.opt_platforms.ont || platform_comp == params.opt_platforms.pacbio)){
-        hyb_lr = true
-    }
-
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Sampling depth estimation for each set of reads
     // It is requested that only sub-sampled reads go on for further analysis e.g. when calculating coverage only downsampled reads are used
-    read_sketch = MASH_ESTIMATE(filtered_samples, Channel.value(hyb_lr))
+//    println(platform_comp == params.opt_platforms.hybrid) 
+//    println(params.long_read_opt == params.opt_platforms.ont || params.long_read_opt == params.opt_platforms.pacbio)
+//    println(hyb_lr)
+    //read_sketch = MASH_ESTIMATE(filtered_samples, Channel.value(hyb_lr))
+    read_sketch = MASH_ESTIMATE(filtered_samples)
     genome_sizes = read_sketch.gsize.map{
         meta, gsize -> tuple(meta, get_size(gsize))
     }
