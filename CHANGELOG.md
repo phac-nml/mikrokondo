@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added a workaround to prevent a crash when running on Nextflow version 25 in Azure environments [PR 234](https://github.com/phac-nml/mikrokondo/pull/234).
 
+### Changed
+
+- Six processes (CHECKM2,ECTYPER,MASH_SCREEN,PILON_ITER,QUAST, and REMOVE_CONTAMINANTS) were moved from `label 'process_medium'`-> `label 'process_high'` [PR 239](https://github.com/phac-nml/mikrokondo/pull/239)
+
 ## 0.10.3
 
 - Update StarAMR to version 0.12.3 [PR 227](https://github.com/phac-nml/mikrokondo/pull/227/)
