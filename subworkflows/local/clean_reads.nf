@@ -6,7 +6,7 @@ include { CHOPPER_TRIM } from '../../modules/local/chopper_trim.nf'
 include { MASH_SCREEN } from '../../modules/local/mash_screen.nf'
 include { MASH_ESTIMATE } from '../../modules/local/mash_estimate.nf'
 include { REMOVE_CONTAMINANTS } from '../../modules/local/remove_contaminants.nf'
-include { PARSE_MASH } from '../../modules/local/parse_mash.nf'
+include { PARSE_MASH_CLASSIFY } from '../../modules/local/parse_mash_classify.nf'
 include { CHECK_ONT } from '../../modules/local/check_ont.nf'
 include { FASTQC } from '../../modules/nf-core/fastqc/main.nf'
 include { SEQTK_SAMPLE } from '../../modules/local/seqtk_sample.nf'
@@ -90,16 +90,14 @@ workflow QC_READS {
         meta, reads, count -> tuple(meta, reads) // Only keeping reads that pass a threshold
     }
 
-    // Adding this to to denote long reads for hybrid assembly outputs
-    def hyb_lr = false
-    if(platform_comp == params.opt_platforms.hybrid && (platform_comp == params.opt_platforms.ont || platform_comp == params.opt_platforms.pacbio)){
-        hyb_lr = true
-    }
-
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Sampling depth estimation for each set of reads
     // It is requested that only sub-sampled reads go on for further analysis e.g. when calculating coverage only downsampled reads are used
-    read_sketch = MASH_ESTIMATE(filtered_samples, Channel.value(hyb_lr))
+//    println(platform_comp == params.opt_platforms.hybrid) 
+//    println(params.long_read_opt == params.opt_platforms.ont || params.long_read_opt == params.opt_platforms.pacbio)
+//    println(hyb_lr)
+    //read_sketch = MASH_ESTIMATE(filtered_samples, Channel.value(hyb_lr))
+    read_sketch = MASH_ESTIMATE(filtered_samples)
     genome_sizes = read_sketch.gsize.map{
         meta, gsize -> tuple(meta, get_size(gsize))
     }
@@ -202,9 +200,7 @@ workflow QC_READS {
             }
         }
         else{
-            def taxa_file = file([projectDir, "conf", "equivalent_taxa.json"].join(File.separator))
-            parsed_mash = PARSE_MASH(mash_screen_out.mash_data, taxa_file, Channel.value("classify")) // Classify is passed to tell the script to determine if the sample is metagenomic or not
-
+            parsed_mash = PARSE_MASH_CLASSIFY(mash_screen_out.mash_data, channel.value(file("${projectDir}/assets/equivalent_taxa.json"))) // Classify is passed to tell the script to determine if the sample is metagenomic or not
             // Update file metadata
             ch_cleaned_temp = ch_prepped_reads.join(parsed_mash.mash_out, remainder: true).map {
                 meta, fastq, m_gen -> tuple(add_meta_tag(meta, m_gen), m_gen, fastq)

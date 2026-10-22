@@ -1,9 +1,9 @@
 nextflow_process {
-    name "Test Process PARSE_MASH"
-    script "modules/local/parse_mash.nf"
-    process "PARSE_MASH"
+    name "Test Process PARSE_MASH_CLASSIFY"
+    script "modules/local/parse_mash_classify.nf"
+    process "PARSE_MASH_CLASSIFY"
     tag "modules"
-    tag "parse_mash"
+    tag "parse_mash_classify"
 
 
     test("Test equivalent taxa works"){
@@ -14,9 +14,7 @@ nextflow_process {
                     input[0] = Channel.of(
                         [["id": "ECSH"], file("$baseDir/tests/data/test_equivalent_taxa.screen")]
                     )
-                    input[1] = Channel.of(file("$baseDir/conf/equivalent_taxa.json"))
-
-                    input[2] = channel.of("classify")
+                    input[1] = Channel.of(file("$baseDir/assets/equivalent_taxa.json"))
                 """
             }
 
@@ -40,9 +38,7 @@ nextflow_process {
                     input[0] = Channel.of(
                         [["id": "iso"], file("$baseDir/tests/data/isolate_mash.screen")]
                     )
-                    input[1] = Channel.of(file("$baseDir/conf/equivalent_taxa.json"))
-
-                    input[2] = channel.of("classify")
+                    input[1] = Channel.of(file("$baseDir/assets/equivalent_taxa.json"))
                 """
             }
 
@@ -65,9 +61,7 @@ nextflow_process {
                     input[0] = Channel.of(
                         [["id": "iso"], file("$baseDir/tests/data/contaminated_mash.screen")]
                     )
-                    input[1] = Channel.of(file("$baseDir/conf/equivalent_taxa.json"))
-
-                    input[2] = channel.of("classify")
+                    input[1] = Channel.of(file("$baseDir/assets/equivalent_taxa.json"))
                 """
             }
 
@@ -78,31 +72,6 @@ nextflow_process {
             then {
                 assert process.success
                 assert process.out.mash_out[0][1] == 'true'
-            }
-        }
-    }
-
-    test("Test top hit"){
-        tag "test_sample_metagenomic"
-        when{
-            process{
-                """
-                    input[0] = Channel.of(
-                        [["id": "iso"], file("$baseDir/tests/data/contaminated_mash.screen")]
-                    )
-                    input[1] = Channel.of([])
-
-                    input[2] = channel.of("top")
-                """
-            }
-
-            params {
-                outdir = "$outputDir"
-            }
-
-            then {
-                assert process.success
-                assert process.out.mash_out[0][1] == 's__Escherichia coli'
             }
         }
     }
