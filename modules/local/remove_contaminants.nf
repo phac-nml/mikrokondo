@@ -2,9 +2,9 @@
 
 process REMOVE_CONTAMINANTS {
     tag "$meta.id"
-    label 'process_medium'
+    label 'process_high'
     container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.parameters.get('singularity') : task.ext.parameters.get('docker')}"
-
+    
     input:
     tuple val(meta), path(reads)
     path contaminant_fa
