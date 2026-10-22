@@ -21,10 +21,15 @@ process MASH_SCREEN {
     script:
     def args = task.ext.args ?: ""
     def prefix = task.ext.prefix ?: "${meta.id}"
-    // TODO figure out how to pass some workflow data with the samples, I do not like how a workflow name is being used as a variable
-    // It may need to be listed in the config file, but as It stands I do not like the implementation
-    // TODO cleaner option is to pass a variable in determing the prefix as it is already decided
-    prefix_post = task.process.toString().contains("QC_READS") ? prefix + params.mash.output_reads_ext : prefix + params.mash.output_taxa_ext
+    prefix_post = prefix // Initialize variable so it exists everywhere
+    if(task.process.toString().contains("QC_READS") || task.process.toString().contains("QC_LONG_READS")){
+      prefix_post = prefix + params.mash.output_reads_ext
+      if(meta.hybrid && task.process.toString().contains("QC_LONG_READS")){
+        prefix_post = "${prefix}.longreads.${params.mash.output_reads_ext}"
+      }
+    }else{
+      prefix_post = prefix + params.mash.output_taxa_ext
+    }
     """
     mash screen $args -p $task.cpus $sequences_sketch $reads > ${prefix_post}
     cat <<-END_VERSIONS > versions.yml

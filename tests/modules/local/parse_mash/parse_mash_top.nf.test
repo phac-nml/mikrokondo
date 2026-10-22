@@ -1,0 +1,29 @@
+nextflow_process {
+    name "Test Process PARSE_MASH_TOP"
+    script "modules/local/parse_mash_top.nf"
+    process "PARSE_MASH_TOP"
+    tag "modules"
+    tag "parse_mash_top"
+
+    test("Test top hit"){
+        tag "test_sample_metagenomic"
+        when{
+            process{
+                """
+                    input[0] = Channel.of(
+                        [["id": "iso"], file("$baseDir/tests/data/contaminated_mash.screen")]
+                    )
+                """
+            }
+
+            params {
+                outdir = "$outputDir"
+            }
+
+            then {
+                assert process.success
+                assert process.out.mash_out[0][1] == 's__Escherichia coli'
+            }
+        }
+    }
+}

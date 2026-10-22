@@ -1,0 +1,94 @@
+nextflow_pipeline {
+
+    name "Mikrokondo JSON Output Schema Integration Testing"
+    script "main.nf"
+
+    test("Schema - Bad File") {
+        tag "schema_bad_file"
+        config "${projectDir}/tests/data/configs/iridanext_bad_file.config"
+
+        when{
+            params {
+                input = "$baseDir/tests/data/samplesheets/samplesheet-test-from-assemblies-ecoli.csv"
+                outdir = "$outputDir"
+
+                platform = "illumina"
+
+                mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
+                dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+                kraken2_db = "$baseDir/tests/data/kraken2/test"
+                qt_min_contig_length = 1
+
+                skip_bakta = true
+                skip_mobrecon = true
+                skip_checkm = true
+                skip_raw_read_metrics = true
+                skip_polishing = true
+
+                skip_staramr = true
+                skip_subtyping = true
+
+                skip_allele_calling = true
+                download_checkm2_db = false
+                checkm2_db = "$baseDir/tests/data/databases/TestCheckm2DB.dmnd"
+
+                max_memory = "2.GB"
+                max_cpus = 1
+            }
+        }
+
+        then {
+            assert workflow.success
+
+            def combined_stdout = workflow.stdout.join(",")
+
+            assert combined_stdout.contains("JSON did not match schema")
+            assert combined_stdout.contains("Validation errors:")
+            assert combined_stdout.contains("FinalReports/Aggregated/Tables/") // path gets cut off
+        }
+    }
+
+    test("Schema - Bad Metadata") {
+        tag "schema_bad_metadata"
+        config "${projectDir}/tests/data/configs/iridanext_bad_metadata.config"
+
+        when{
+            params {
+                input = "$baseDir/tests/data/samplesheets/samplesheet-test-from-assemblies-ecoli.csv"
+                outdir = "$outputDir"
+
+                platform = "illumina"
+
+                mash_sketch = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy-staph-ecoli.msh"
+                dehosting_idx = "https://github.com/phac-nml/mikrokondo/raw/dev/tests/data/databases/campy.mmi"
+                kraken2_db = "$baseDir/tests/data/kraken2/test"
+                qt_min_contig_length = 1
+
+                skip_bakta = true
+                skip_mobrecon = true
+                skip_checkm = true
+                skip_raw_read_metrics = true
+                skip_polishing = true
+
+                skip_staramr = true
+                skip_subtyping = true
+
+                skip_allele_calling = true
+                download_checkm2_db = false
+                checkm2_db = "$baseDir/tests/data/databases/TestCheckm2DB.dmnd"
+
+                max_memory = "2.GB"
+                max_cpus = 1
+            }
+        }
+
+        then {
+            assert workflow.success
+
+            def combined_stdout = workflow.stdout.join(",")
+
+            assert combined_stdout.contains("JSON did not match schema")
+            assert combined_stdout.contains('metadata/samples/ecoli_GCA_000947975/BAD_METADATA failed')
+        }
+    }
+}
