@@ -5,7 +5,7 @@ process ABRICATE {
     tag "${meta.id} ${database}"
     label 'process_medium'
     container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.parameters.get('singularity') : task.ext.parameters.get('docker')}"
-    
+
 
     input:
     tuple val(meta), path(assembly)

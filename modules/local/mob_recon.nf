@@ -5,7 +5,7 @@ process MOBSUITE_RECON {
     label 'process_medium'
 
     container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.parameters.get('singularity') : task.ext.parameters.get('docker')}"
-    
+
     input:
     tuple val(meta), path(fasta)
 

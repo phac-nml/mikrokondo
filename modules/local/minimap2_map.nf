@@ -6,7 +6,7 @@ process MINIMAP2_MAP {
     tag "$meta.id"
     label 'process_medium'
     container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.parameters.get('singularity') : task.ext.parameters.get('docker')}"
-    
+
     input:
     tuple val(meta), path(reads), path(index), path(contigs)
     val paf_out

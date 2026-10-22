@@ -9,6 +9,7 @@ process KAT_HIST{
     label "process_medium"
     container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.parameters.get('singularity') : task.ext.parameters.get('docker')}"
 
+
     input:
     tuple val(meta), path(reads)
     val long_reads_p
