@@ -26,7 +26,7 @@ nextflow_process {
 
             then {
                 assert process.success
-                assert path(process.out.json.get(0).get(1)).md5 == '70f4050d665156ed99a9e2ad7a175ead'
+                assert path(process.out.json.get(0).get(1)).md5 == '0dc4125bb261807afe4bed978c67db6c'
             }
         }
     }
@@ -51,7 +51,7 @@ nextflow_process {
 
             then {
                 assert process.success
-                assert path(process.out.json.get(0).get(1)).md5 == '48ab1fe0d5585dad6eabc3df7748b10e'
+                assert path(process.out.json.get(0).get(1)).md5 == 'aaa1b1c83ad5aa20dd4dd981fe577561'
             }
         }
     }
@@ -76,7 +76,7 @@ nextflow_process {
 
             then {
                 assert process.success
-                assert path(process.out.json.get(0).get(1)).md5 == 'c1b5bf174b7af7beebba7c4e42ccc48e'
+                assert path(process.out.json.get(0).get(1)).md5 == 'a32e0b8736ef4922618bc8629bd0a09c'
             }
         }
     }
