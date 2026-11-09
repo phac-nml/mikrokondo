@@ -14,7 +14,6 @@ process PARSE_KRAKEN {
 
     script:
     """
-    //RESULT=\$(kraken2_tophit.py $kraken_report $params.kraken.tophit_level)
     RESULT=\$(MKRust kraken2-top-hit --report $kraken_report -t $params.kraken.tophit_level)
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

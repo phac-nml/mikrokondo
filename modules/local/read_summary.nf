@@ -30,7 +30,6 @@ process READ_SCAN{
     }
 
     """
-    # fastq_scan.py ${script_run} -p ${params.raw_reads.high_precision} -o ${prefix}.json
     MKRust fastq-quality ${script_run} -o ${prefix}.json
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
