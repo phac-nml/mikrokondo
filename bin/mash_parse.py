@@ -2,11 +2,12 @@
 """Determine if a sample is a metagenomic sequencing run or a single isolate
 
 
-    As I did not want to re-implement the mash screen class or deal with python imports
-    in nextflow, two programs are currently embeded in the class the *classify* option for
-    determinging if a sample is metagenomic or not and the *top* options to get the top hit
-    from a mash screen file
+As I did not want to re-implement the mash screen class or deal with python imports
+in nextflow, two programs are currently embeded in the class the *classify* option for
+determinging if a sample is metagenomic or not and the *top* options to get the top hit
+from a mash screen file
 """
+
 #! have ties return a null result
 from dataclasses import dataclass
 from collections import defaultdict
@@ -20,6 +21,7 @@ import json
 
 __META_GENOME_PROG__ = "classify"
 __BEST_MATCH__ = "top"
+
 
 @dataclass
 class MashRow:
@@ -44,7 +46,6 @@ class MashScreen:
     """From a mash screen output parse it and determine
     if a sample is metagenomic or a single isolate
     """
-
 
     _screen_delimiter = "\t"
 
@@ -84,7 +85,7 @@ class MashScreen:
         """
         Return taxa level for a field in the query note.
         """
-        return taxa[:taxa.index(self.taxon_level_split)]
+        return taxa[: taxa.index(self.taxon_level_split)]
 
     def parse_equivalent_taxa(self, taxa: pathlib.Path):
         """
@@ -129,7 +130,8 @@ class MashScreen:
 
             """
             equivalent_values = itertools.chain.from_iterable(
-                map(lambda x: x.split(self.report_taxon_delimiter), value))
+                map(lambda x: x.split(self.report_taxon_delimiter), value)
+            )
 
             for v in equivalent_values:
                 if self.get_taxa_level(v) == self.taxonomic_classification_level:
@@ -175,12 +177,14 @@ class MashScreen:
         the or "equivalent value" which is the key of our equivalent taxa.
 
         """
+        print("Normalize taxa", taxa_levels)
 
         levels = taxa_levels[self.taxonomic_classification_level]
         for k, v in self.equivalent_taxa.items():
-            if levels & v: # check if sets contain shared items
-                levels -= v # remove the shared items
-                levels.add(k) # add in the shared key for the equivalent taxa
+            if levels & v:  # check if sets contain shared items
+                levels -= v  # remove the shared items
+                levels.add(k)  # add in the shared key for the equivalent taxa
+        print("after normalize", taxa_levels)
 
     def metagenomic_p(self, mash_data):
         """Generate summary metrics of the mash screen data
@@ -221,29 +225,30 @@ class MashScreen:
         mash_rows = []
         with open(self.mash_input, "r") as mash_in:
             for line in mash_in.readlines():
-                row = line.strip().replace('"', '').split("\t")
+                row = line.strip().replace('"', "").split("\t")
                 parsed = MashRow(*row)
                 mash_rows.append(parsed)
         return mash_rows
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Script for parsing mash outputs in mikrokondo",
     )
 
-    parser.add_argument("-r", "--run-mode",
-                        help="Run mode for the mash parse script.",
-                        choices=[__META_GENOME_PROG__, __BEST_MATCH__],
-                        required=True)
+    parser.add_argument(
+        "-r",
+        "--run-mode",
+        help="Run mode for the mash parse script.",
+        choices=[__META_GENOME_PROG__, __BEST_MATCH__],
+        required=True,
+    )
 
-    parser.add_argument("-i", "--input",
-                        help="Mash screen input samples.",
-                        required=True)
+    parser.add_argument("-i", "--input", help="Mash screen input samples.", required=True)
 
-    parser.add_argument("-e", "--equivalent-taxa",
-                        help="Configuration file containing equivalent taxa.",
-                        required=False,
-                        default=None)
+    parser.add_argument(
+        "-e", "--equivalent-taxa", help="Configuration file containing equivalent taxa.", required=False, default=None
+    )
 
     args = parser.parse_args()
     if args.run_mode == __META_GENOME_PROG__ and args.equivalent_taxa:

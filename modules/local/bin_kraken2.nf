@@ -8,7 +8,7 @@ process BIN_KRAKEN2{
     tag "$meta.id"
     label "process_low"
     cache 'deep' // ! Deep caching is required to not bungle up the later metadata updates on resumes
-    container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.parameters.get('singularity') : task.ext.parameters.get('docker')}"
+    //container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.parameters.get('singularity') : task.ext.parameters.get('docker')}"
 
     input:
     tuple val(meta), path(contigs), path(kraken_report), path(kraken_output)
@@ -20,12 +20,7 @@ process BIN_KRAKEN2{
     script:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    kraken2_bin.py ${kraken_report} ${kraken_output} ${contigs} ${taxonomic_level}
-    for i in *.binned.fasta
-    do
-        mv \$i ${prefix}_\$i
-        gzip ${prefix}_\$i
-    done
+    MKRust kraken2-bin --report ${kraken_report} --kraken-output ${kraken_output} --contigs ${contigs} --prefix ${prefix} -t ${taxonomic_level}
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         python: \$(python --version | sed 's/Python //g')

@@ -167,8 +167,8 @@ nextflow_pipeline {
             def json = path("$outputDir/FinalReports/Aggregated/Json/final_report.json").json
             assert json.short.short.RawReadSummary.R1."total_bp".equals(118750)
             assert json.short.short.RawReadSummary.R1."total_reads".equals(475)
-            assert json.short.short.RawReadSummary.R1."read_qual_mean".equals(40.0)
-            assert json.short.short.RawReadSummary.R1."mean_sequence_length".equals(250.0)
+            assert json.short.short.RawReadSummary.R1."read_qual_mean".equals(40.00)
+            assert json.short.short.RawReadSummary.R1."mean_sequence_length".equals(250.00)
 
             assert json.short.short.FastP.summary.sequencing.equals("paired end (250 cycles + 250 cycles)")
             assert json.short.short.FastP.summary.before_filtering.total_reads.equals(950)
@@ -303,8 +303,8 @@ nextflow_pipeline {
 
             assert json.short.short.RawReadSummary.R1."total_bp".equals(118750)
             assert json.short.short.RawReadSummary.R1."total_reads".equals(475)
-            assert json.short.short.RawReadSummary.R1."read_qual_mean".equals(40.0)
-            assert json.short.short.RawReadSummary.R1."mean_sequence_length".equals(250.0)
+            assert json.short.short.RawReadSummary.R1."read_qual_mean".equals(40.00)
+            assert json.short.short.RawReadSummary.R1."mean_sequence_length".equals(250.00)
 
             assert json.short.short.FastP.summary.sequencing.equals("paired end (250 cycles + 250 cycles)")
             assert json.short.short.FastP.summary.before_filtering.total_reads.equals(950)
@@ -368,7 +368,7 @@ nextflow_pipeline {
             assert iridanext_metadata.short."qc_status_assembly_n50" == "PASSED"
             assert iridanext_metadata.short."n50_value" == 4949
             assert iridanext_metadata.short."qc_status_read_qual" == "PASSED"
-            assert iridanext_metadata.short."raw_average_quality_value" == 40.0
+            assert iridanext_metadata.short."raw_average_quality_value" == 40.00
             assert iridanext_metadata.short."qc_status_assembly_genome_size" == "PASSED"
             assert iridanext_metadata.short."assembly_length" == 4949
             assert iridanext_metadata.short."qc_status_assembly_num_contigs" == "PASSED"
@@ -476,8 +476,8 @@ nextflow_pipeline {
 
             assert json.short.short.RawReadSummary.R1."total_bp".equals(118750)
             assert json.short.short.RawReadSummary.R1."total_reads".equals(475)
-            assert json.short.short.RawReadSummary.R1."read_qual_mean".equals(40.0)
-            assert json.short.short.RawReadSummary.R1."mean_sequence_length".equals(250.0)
+            assert json.short.short.RawReadSummary.R1."read_qual_mean".equals(40.00)
+            assert json.short.short.RawReadSummary.R1."mean_sequence_length".equals(250.00)
 
             assert json.short.short.FastP.summary.sequencing.equals("paired end (250 cycles + 250 cycles)")
             assert json.short.short.FastP.summary.before_filtering.total_reads.equals(950)
@@ -542,7 +542,7 @@ nextflow_pipeline {
             assert iridanext_metadata.short."qc_status_assembly_n50" == "WARNING"
             assert iridanext_metadata.short."n50_value" == 4949
             assert iridanext_metadata.short."qc_status_read_qual" == "PASSED"
-            assert iridanext_metadata.short."raw_average_quality_value" == 40.0
+            assert iridanext_metadata.short."raw_average_quality_value" == 40.00
             assert iridanext_metadata.short."qc_status_assembly_genome_size" == "WARNING"
             assert iridanext_metadata.short."assembly_length" == 4949
             assert iridanext_metadata.short."qc_status_assembly_num_contigs" == "WARNING"
@@ -659,8 +659,8 @@ nextflow_pipeline {
 
             assert json.short.short.RawReadSummary.R1."total_bp".equals(118750)
             assert json.short.short.RawReadSummary.R1."total_reads".equals(475)
-            assert json.short.short.RawReadSummary.R1."read_qual_mean".equals(40.0)
-            assert json.short.short.RawReadSummary.R1."mean_sequence_length".equals(250.0)
+            assert json.short.short.RawReadSummary.R1."read_qual_mean".equals(40.00)
+            assert json.short.short.RawReadSummary.R1."mean_sequence_length".equals(250.00)
 
             assert json.short.short.FastP.summary.sequencing.equals("paired end (250 cycles + 250 cycles)")
             assert json.short.short.FastP.summary.before_filtering.total_reads.equals(950)
@@ -724,7 +724,7 @@ nextflow_pipeline {
             assert iridanext_metadata.short."qc_status_assembly_n50" == "WARNING"
             assert iridanext_metadata.short."n50_value" == 4949
             assert iridanext_metadata.short."qc_status_read_qual" == "PASSED"
-            assert iridanext_metadata.short."raw_average_quality_value" == 40.0
+            assert iridanext_metadata.short."raw_average_quality_value" == 40.00
             assert iridanext_metadata.short."qc_status_assembly_genome_size" == "WARNING"
             assert iridanext_metadata.short."assembly_length" == 4949
             assert iridanext_metadata.short."qc_status_assembly_num_contigs" == "WARNING"
@@ -1109,8 +1109,8 @@ nextflow_pipeline {
 
             assert json.short.short.RawReadSummary.R1."total_bp".equals(118750)
             assert json.short.short.RawReadSummary.R1."total_reads".equals(475)
-            assert json.short.short.RawReadSummary.R1."read_qual_mean".equals(40.0)
-            assert json.short.short.RawReadSummary.R1."mean_sequence_length".equals(250.0)
+            assert json.short.short.RawReadSummary.R1."read_qual_mean".equals(40.00)
+            assert json.short.short.RawReadSummary.R1."mean_sequence_length".equals(250.00)
 
             assert json.short.short.FastP.summary.sequencing.equals("paired end (250 cycles + 250 cycles)")
             assert json.short.short.FastP.summary.before_filtering.total_reads.equals(950)

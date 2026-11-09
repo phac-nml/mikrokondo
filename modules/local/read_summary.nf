@@ -5,7 +5,7 @@
 process READ_SCAN{
     label 'process_small'
     tag "${meta.id}"
-    container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.parameters.get('singularity') : task.ext.parameters.get('docker')}"
+    //container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.parameters.get('singularity') : task.ext.parameters.get('docker')}"
 
     input:
     tuple val(meta), path(reads), path(l_reads)
@@ -30,7 +30,8 @@ process READ_SCAN{
     }
 
     """
-    fastq_scan.py ${script_run} -p ${params.raw_reads.high_precision} -o ${prefix}.json
+    # fastq_scan.py ${script_run} -p ${params.raw_reads.high_precision} -o ${prefix}.json
+    MKRust fastq-quality ${script_run} -o ${prefix}.json
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         python: \$(python --version | sed 's/Python //g')

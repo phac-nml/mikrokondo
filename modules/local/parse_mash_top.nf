@@ -6,7 +6,7 @@
 process PARSE_MASH_TOP {
     tag "$meta.id"
     label "process_low"
-    container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.parameters.get('singularity') : task.ext.parameters.get('docker')}"
+    // container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.parameters.get('singularity') : task.ext.parameters.get('docker')}"
 
     input:
     tuple val(meta), path(mash_screen)
@@ -17,7 +17,7 @@ process PARSE_MASH_TOP {
 
     script:
     """
-    RESULT=\$(mash_parse.py -r top -i $mash_screen)
+    RESULT=\$(MKRust mash-top-hit -i $mash_screen -p 0.9)
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

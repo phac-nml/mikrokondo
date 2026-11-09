@@ -4,7 +4,7 @@
 process PARSE_MASH_CLASSIFY {
     tag "$meta.id"
     label "process_low"
-    container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.parameters.get('singularity') : task.ext.parameters.get('docker')}"
+    // container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.parameters.get('singularity') : task.ext.parameters.get('docker')}"
 
     input:
     tuple val(meta), path(mash_screen)
@@ -16,7 +16,7 @@ process PARSE_MASH_CLASSIFY {
 
     script:
     """
-    RESULT=\$(mash_parse.py -r classify -i $mash_screen -e $equivalent_taxa)
+    RESULT=\$(MKRust mash-metagenomic -i $mash_screen -e $equivalent_taxa -p 0.9)
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

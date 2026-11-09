@@ -15,7 +15,7 @@ nextflow_process {
                     file("$baseDir/tests/data/kraken2/output.k2.report"),
                     file("$baseDir/tests/data/kraken2/output.k2.out")
                 ])
-                input[1] = Channel.from("S")
+                input[1] = Channel.from("s")
                 """
             }
 

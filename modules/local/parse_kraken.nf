@@ -3,7 +3,7 @@
 process PARSE_KRAKEN {
     tag "$meta.id"
     label "process_low"
-    container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.parameters.get('singularity') : task.ext.parameters.get('docker')}"
+    //container "${workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer' ? task.ext.parameters.get('singularity') : task.ext.parameters.get('docker')}"
 
     input:
     tuple val(meta), path(kraken_report)
@@ -14,7 +14,8 @@ process PARSE_KRAKEN {
 
     script:
     """
-    RESULT=\$(kraken2_tophit.py $kraken_report $params.kraken.tophit_level)
+    //RESULT=\$(kraken2_tophit.py $kraken_report $params.kraken.tophit_level)
+    RESULT=\$(MKRust kraken2-top-hit --report $kraken_report -t $params.kraken.tophit_level)
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         python: \$(python --version | sed 's/Python //g')
